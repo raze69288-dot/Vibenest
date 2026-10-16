@@ -478,6 +478,7 @@ async function renderFollowersList(){
   const byId=new Map((profiles||[]).map(profile=>[profile.id,profile]));
   const ordered=ids.map(id=>byId.get(id)).filter(Boolean);
   out.innerHTML=ordered.map(profile=>`<div class="user-result profile-following-user"><button class="profile-tap" aria-label="Open profile" onclick="openPublicProfile('${profile.id}')">${profileAvatarMarkup(profile)}</button><button class="profile-name-tap profile-following-user-copy" onclick="openPublicProfile('${profile.id}')"><b>${safeText(profile.display_name||profile.username||'VibeNest member')}</b><div class="muted">@${safeText(profile.username||'member')}</div>${profile.bio?`<div class="muted">${safeText(profile.bio)}</div>`:''}</button>${profile.id!==currentUser.id?`<button class="join follow-button" onclick="toggleFollow('${profile.id}')">${followingIds.has(profile.id)?'✓ Following':'+ Follow'}</button>`:''}</div>`).join('')||'<p class="muted">Your followers were found, but their profiles are not visible to you.</p>';
+  if(ordered.length<4)out.insertAdjacentHTML('beforeend','<p class="profile-connection-endnote">You’re all caught up for now.</p>');
  }catch(error){console.error('Could not load followers list:',error);out.innerHTML='<p class="muted">Could not load your followers. Check the follows and profiles read policies.</p>';}
 }
 async function renderFollowingList(){
@@ -495,6 +496,7 @@ async function renderFollowingList(){
   const byId=new Map((profiles||[]).map(profile=>[profile.id,profile]));
   const ordered=ids.map(id=>byId.get(id)).filter(Boolean);
   out.innerHTML=ordered.map(profile=>`<div class="user-result profile-following-user"><button class="profile-tap" aria-label="Open profile" onclick="openPublicProfile('${profile.id}')">${profileAvatarMarkup(profile)}</button><button class="profile-name-tap profile-following-user-copy" onclick="openPublicProfile('${profile.id}')"><b>${safeText(profile.display_name||profile.username||'VibeNest member')}</b><div class="muted">@${safeText(profile.username||'member')}</div>${profile.bio?`<div class="muted">${safeText(profile.bio)}</div>`:''}</button><button class="join follow-button" onclick="toggleFollow('${profile.id}')">✓ Following</button></div>`).join('')||'<p class="muted">Your follows were found, but their profiles are not visible to you.</p>';
+  if(ordered.length<4)out.insertAdjacentHTML('beforeend','<p class="profile-connection-endnote">You’re all caught up for now.</p>');
  }catch(error){console.error('Could not load following list:',error);out.innerHTML='<p class="muted">Could not load the people you follow. Check the follows and profiles read policies.</p>';}
 }
 async function loadProfileStats(){
@@ -874,8 +876,8 @@ async function togglePublicProfileFollow(userId){await toggleFollow(userId);awai
 .profile-page.connections-list-mode{padding-top:2px}
 .profile-page.connections-list-mode .profile-following-panel{margin:0;padding:0;background:transparent;border:0;border-radius:0}
 .profile-page.connections-list-mode .profile-following-heading{display:flex;align-items:center;gap:16px;margin:0 0 16px;padding:4px 0 14px;border-bottom:1px solid rgba(190,151,230,.18)}
-.profile-page.connections-list-mode .profile-following-heading h2{font-size:24px;line-height:1.2;font-weight:800;letter-spacing:-.35px}
-.profile-page.connections-list-mode .profile-list-back{display:inline-flex;align-items:center;gap:6px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:rgba(177,138,255,.08);color:var(--purple);font-size:14px;font-weight:750}
+.profile-page.connections-list-mode .profile-following-heading h2{font-size:16px;line-height:1.35;font-weight:750;letter-spacing:0}
+.profile-page.connections-list-mode .profile-list-back{display:inline-flex;align-items:center;gap:6px;padding:8px 0;border:0;border-radius:0;background:transparent;color:#b794ff;font-size:16px;font-weight:750}
 .profile-page.connections-list-mode #profileFollowersList,.profile-page.connections-list-mode #profileFollowingList{display:flex;flex-direction:column;gap:10px}
 .profile-page.connections-list-mode .profile-following-user.user-result{display:flex;align-items:center;gap:12px;width:100%;min-width:0;margin:0;padding:13px 14px;border:1px solid rgba(190,151,230,.18);border-radius:18px;background:linear-gradient(135deg,rgba(43,29,61,.92),rgba(25,18,38,.96));box-shadow:0 5px 18px rgba(0,0,0,.08)}
 .profile-page.connections-list-mode .profile-following-user .profile-tap{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;padding:0;border:0;background:transparent;overflow:hidden}
@@ -888,7 +890,7 @@ async function togglePublicProfileFollow(userId){await toggleFollow(userId);awai
 @media(max-width:380px){.profile-page.connections-list-mode .profile-following-user.user-result{gap:8px;padding:10px}.profile-page.connections-list-mode .profile-following-user .profile-tap,.profile-page.connections-list-mode .profile-following-user .profile-tap .avatar{width:42px;height:42px;flex-basis:42px}.profile-page.connections-list-mode .profile-following-user .follow-button{padding:8px;font-size:12px}}
 /* Followers/Following title sits at the far right and blends into the VibeNest purple theme. */
 .profile-page.connections-list-mode .profile-following-heading{justify-content:space-between;gap:12px;}
-.profile-page.connections-list-mode .profile-following-heading h2{margin-left:auto;text-align:right;color:#c5a0ff;font-size:21px;font-weight:750;letter-spacing:0;}
+.profile-page.connections-list-mode .profile-following-heading h2{margin-left:auto;text-align:right;color:#c5a0ff;font-size:16px;line-height:1.35;font-weight:750;letter-spacing:0;}
 .profile-page.connections-list-mode .profile-list-back{border:0;background:transparent;border-radius:0;padding:8px 0;color:#b794ff;box-shadow:none;}
 /* Final connection-list layout override: keep avatar and action fully inside each row. */
 #profileFollowersList .profile-following-user,
@@ -902,4 +904,5 @@ async function togglePublicProfileFollow(userId){await toggleFollow(userId);awai
 #profileFollowersList .profile-following-user .follow-button,
 #profileFollowingList .profile-following-user .follow-button{box-sizing:border-box;flex:0 0 auto;max-width:124px;margin:0;white-space:nowrap}
 @media(max-width:380px){#profileFollowersList .profile-following-user,#profileFollowingList .profile-following-user{gap:8px;padding:10px}#profileFollowersList .profile-following-user .profile-tap,#profileFollowingList .profile-following-user .profile-tap .avatar{flex-basis:42px;width:42px;height:42px}#profileFollowersList .profile-following-user .profile-tap .avatar,#profileFollowingList .profile-following-user .profile-tap .avatar{max-width:42px;max-height:42px}#profileFollowersList .profile-following-user .follow-button,#profileFollowingList .profile-following-user .follow-button{max-width:112px;padding:8px;font-size:12px}}
+.profile-connection-endnote{margin:8px 4px 0;padding:10px 12px;text-align:center;color:#a996bd;font-size:13px;line-height:1.45;border-radius:12px;background:rgba(177,138,255,.045)}
 </style>
