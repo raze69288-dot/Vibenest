@@ -886,6 +886,10 @@ async function togglePublicProfileFollow(userId){await toggleFollow(userId);awai
 .profile-page.connections-list-mode .profile-following-user .follow-button{flex:0 0 auto;max-width:132px;padding:9px 11px;border-radius:13px;font-size:13px;white-space:nowrap}
 .profile-page.connections-list-mode .profile-following-user .profile-tap:focus-visible,.profile-page.connections-list-mode .profile-following-user-copy:focus-visible,.profile-page.connections-list-mode .profile-list-back:focus-visible{outline:2px solid var(--purple);outline-offset:3px}
 @media(max-width:380px){.profile-page.connections-list-mode .profile-following-user.user-result{gap:8px;padding:10px}.profile-page.connections-list-mode .profile-following-user .profile-tap,.profile-page.connections-list-mode .profile-following-user .profile-tap .avatar{width:42px;height:42px;flex-basis:42px}.profile-page.connections-list-mode .profile-following-user .follow-button{padding:8px;font-size:12px}}
+/* Followers/Following title sits at the far right and blends into the VibeNest purple theme. */
+.profile-page.connections-list-mode .profile-following-heading{justify-content:space-between;gap:12px;}
+.profile-page.connections-list-mode .profile-following-heading h2{margin-left:auto;text-align:right;color:#c5a0ff;font-size:21px;font-weight:750;letter-spacing:0;}
+.profile-page.connections-list-mode .profile-list-back{border:0;background:transparent;border-radius:0;padding:8px 0;color:#b794ff;box-shadow:none;}
 /* Final connection-list layout override: keep avatar and action fully inside each row. */
 #profileFollowersList .profile-following-user,
 #profileFollowingList .profile-following-user{box-sizing:border-box;display:flex;align-items:center;gap:12px;width:100%;min-width:0;margin:0;padding:14px;border:1px solid rgba(190,151,230,.2);border-radius:18px;background:rgba(31,22,43,.92);overflow:hidden}
