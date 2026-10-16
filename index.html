@@ -849,4 +849,21 @@ async function togglePublicProfileFollow(userId){await toggleFollow(userId);awai
 .profile-following-user-copy{min-width:0;flex:1}
 .profile-following-user-copy b{display:block;overflow-wrap:anywhere}
 .profile-following-user .avatar{flex-shrink:0}
+
+/* Refined full-page Followers / Following list */
+.profile-page.connections-list-mode{padding-top:2px}
+.profile-page.connections-list-mode .profile-following-panel{margin:0;padding:0;background:transparent;border:0;border-radius:0}
+.profile-page.connections-list-mode .profile-following-heading{display:flex;align-items:center;gap:16px;margin:0 0 16px;padding:4px 0 14px;border-bottom:1px solid rgba(190,151,230,.18)}
+.profile-page.connections-list-mode .profile-following-heading h2{font-size:24px;line-height:1.2;font-weight:800;letter-spacing:-.35px}
+.profile-page.connections-list-mode .profile-list-back{display:inline-flex;align-items:center;gap:6px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;background:rgba(177,138,255,.08);color:var(--purple);font-size:14px;font-weight:750}
+.profile-page.connections-list-mode #profileFollowersList,.profile-page.connections-list-mode #profileFollowingList{display:flex;flex-direction:column;gap:10px}
+.profile-page.connections-list-mode .profile-following-user.user-result{display:flex;align-items:center;gap:12px;width:100%;min-width:0;margin:0;padding:13px 14px;border:1px solid rgba(190,151,230,.18);border-radius:18px;background:linear-gradient(135deg,rgba(43,29,61,.92),rgba(25,18,38,.96));box-shadow:0 5px 18px rgba(0,0,0,.08)}
+.profile-page.connections-list-mode .profile-following-user .profile-tap{display:grid;place-items:center;flex:0 0 48px;width:48px;height:48px;padding:0;border:0;background:transparent;overflow:hidden}
+.profile-page.connections-list-mode .profile-following-user .profile-tap .avatar{width:48px;height:48px;border-radius:15px}
+.profile-page.connections-list-mode .profile-following-user .profile-following-user-copy{display:block;flex:1;min-width:0;padding:0 2px;border:0;background:transparent;color:var(--text);text-align:left;overflow-wrap:anywhere}
+.profile-page.connections-list-mode .profile-following-user-copy b{display:block;font-size:16px;line-height:1.35;margin-bottom:3px}
+.profile-page.connections-list-mode .profile-following-user-copy .muted{font-size:13px;line-height:1.35}
+.profile-page.connections-list-mode .profile-following-user .follow-button{flex:0 0 auto;max-width:132px;padding:9px 11px;border-radius:13px;font-size:13px;white-space:nowrap}
+.profile-page.connections-list-mode .profile-following-user .profile-tap:focus-visible,.profile-page.connections-list-mode .profile-following-user-copy:focus-visible,.profile-page.connections-list-mode .profile-list-back:focus-visible{outline:2px solid var(--purple);outline-offset:3px}
+@media(max-width:380px){.profile-page.connections-list-mode .profile-following-user.user-result{gap:8px;padding:10px}.profile-page.connections-list-mode .profile-following-user .profile-tap,.profile-page.connections-list-mode .profile-following-user .profile-tap .avatar{width:42px;height:42px;flex-basis:42px}.profile-page.connections-list-mode .profile-following-user .follow-button{padding:8px;font-size:12px}}
 </style>
