@@ -374,10 +374,10 @@ async function submitComment(postId, boxId){
   if(!currentUser){openAuth();showToast('Sign in to comment');return;}
   const targetId=boxId||('comments-feed-'+postId);
   const input=document.getElementById('comment-input-'+targetId),content=input?.value.trim();if(!content)return;
-  const {error}=await supabaseClient.from('comments').insert({post_id:postId,author_id:currentUser.id,content});
+  const {data:newComment,error}=await supabaseClient.from('comments').insert({post_id:postId,author_id:currentUser.id,content}).select('id').single();
   if(error){showToast(error.message);return;}
   const {data:postOwner}=await supabaseClient.from('posts').select('author_id').eq('id',postId).maybeSingle();
-  if(postOwner?.author_id&&postOwner.author_id!==currentUser.id)await createNotification(postOwner.author_id,'comment',postId,null);
+  if(postOwner?.author_id&&postOwner.author_id!==currentUser.id)await createNotification(postOwner.author_id,'comment',postId,newComment?.id||null);
   await loadPostComments(postId,targetId);showToast('Comment added!');
 }
 async function createPost(){
@@ -722,8 +722,10 @@ go = function(id) { oldGoForProfile(id); if (id==='profile') loadMyProfile(); if
 // Notifications: follows, likes, and comments. Uses a dedicated RLS-protected table.
 async function createNotification(recipientId,type,postId,commentId){
  if(!currentUser||!supabaseClient||!recipientId||recipientId===currentUser.id)return;
- const {error}=await supabaseClient.from('notifications').insert({recipient_id:recipientId,actor_id:currentUser.id,type,post_id:postId,comment_id:commentId});
- if(error)console.error('Notification could not be saved:',error.message);
+ const payload={recipient_id:recipientId,actor_id:currentUser.id,type,post_id:postId,comment_id:commentId};
+ const {error}=await supabaseClient.from('notifications').insert(payload);
+ // Unique indexes in Supabase prevent duplicate follow/like/comment notifications across retries and tabs.
+ if(error&&error.code!=='23505')console.error('Notification could not be saved:',error.message);
 }
 async function loadNotificationBadge(){
  const badge=document.getElementById('notificationBadge');const homeBadge=document.getElementById('homeNotificationBadge');if(!badge&&!homeBadge)return;
