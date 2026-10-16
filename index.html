@@ -1,7 +1,7 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#171222"><title>VibeNest</title><style>
 :root{--bg:#100e17;--panel:#1a1724;--line:#30283e;--text:#f6f1ff;--muted:#aaa0bd;--purple:#a77bff;--pink:#ff75bc}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px system-ui,-apple-system,sans-serif;max-width:720px;margin:auto;padding-bottom:80px}.top{padding:16px;position:sticky;top:0;background:#100e17ed;border-bottom:1px solid var(--line);z-index:2}.brand{font-size:22px;font-weight:850;text-align:center;display:flex;justify-content:center;align-items:center;width:100%}.brand span{color:var(--pink)}.search{width:100%;margin-top:14px;padding:12px;border-radius:13px;background:var(--panel);border:1px solid var(--line);color:white}.intro{padding:22px 16px 8px}.muted{color:var(--muted);font-size:13px}.intro h1{font-size:28px;margin:6px 0}.intro h1 span{color:var(--purple)}.hero{margin:12px 16px;padding:20px;border-radius:22px;background:linear-gradient(130deg,#422568,#21172f);border:1px solid #a77bff55}.hero h2{margin:12px 0 6px}.hero p{color:#d6c9ea;font-size:13px}.btn{background:linear-gradient(110deg,var(--purple),var(--pink));color:#21152e;font-weight:800;border:0;padding:10px 14px;border-radius:12px}.heading{display:flex;justify-content:space-between;align-items:center;padding:16px}.heading h2{font-size:18px;margin:0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;padding:0 16px}.card,.post{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:13px;min-width:0}.card{cursor:pointer}.community-detail{padding:20px 16px}.community-detail .hero{margin:12px 0}.detail-posts{display:grid;gap:12px;margin-top:14px}.art{height:88px;border-radius:13px;display:grid;place-items:center;font-size:39px;margin-bottom:10px}.card h3{margin:0 0 5px;font-size:15px}.card p{margin:0;color:var(--muted);font-size:12px}.cardfoot{display:flex;justify-content:space-between;align-items:center;gap:6px;margin-top:12px}.join{background:#a77bff16;color:#c8adff;border:1px solid #8f6ae055;padding:7px 10px;border-radius:10px;font-weight:700}.feed{padding:0 16px;display:grid;gap:12px}.posthead{display:flex;align-items:center;gap:9px}.avatar{width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:#50376b}.post p{font-size:14px;line-height:1.5}.actions{border-top:1px solid var(--line);padding-top:11px;display:flex;gap:20px}.actions button{background:none;color:var(--muted);border:0}.bottom{position:fixed;bottom:0;left:0;right:0;max-width:720px;margin:auto;display:flex;justify-content:space-around;background:#171321f5;border-top:1px solid var(--line);padding:10px 4px calc(10px + env(safe-area-inset-bottom));z-index:3}.bottom button{background:none;border:0;color:var(--muted);font-size:11px;display:grid;gap:3px;justify-items:center}.bottom b{font-size:20px}.bottom button.active{color:var(--purple)}.page{display:none}.page.active{display:block}.simple{padding:20px 16px}.simple h1{font-size:26px}.row{display:flex;align-items:center;gap:12px;padding:13px;background:var(--panel);border:1px solid var(--line);border-radius:16px;margin:10px 0}.row .art{width:54px;height:54px;margin:0;flex-shrink:0}.row div:nth-child(2){flex:1}.field{width:100%;background:#100e17;border:1px solid var(--line);border-radius:12px;padding:11px;color:white;margin:7px 0 12px}.notice{font-size:11px;color:var(--muted);text-align:center;padding:18px}.toast{display:none;position:fixed;bottom:85px;left:50%;transform:translateX(-50%);background:#f6f1ff;color:#21152e;border-radius:99px;padding:10px 16px;z-index:5;font-weight:700}.toast.show{display:block}
 
-.authbox{margin:18px 16px;padding:18px;background:var(--panel);border:1px solid var(--line);border-radius:20px}.authbox h2{margin:0 0 5px}.authbox p{color:var(--muted);font-size:13px}.authbox label{display:block;color:var(--muted);font-size:12px;margin:12px 0 5px}.authbox input{display:block;width:100%;background:#100e17;border:1px solid var(--line);border-radius:11px;padding:12px;color:var(--text);margin-top:5px}.authrow{display:flex;gap:8px;margin-top:14px}.authrow button{flex:1}.statusmsg{font-size:12px;color:var(--mint);margin-top:10px;overflow-wrap:anywhere}
+.comments-box{font-size:13px}.comments-box .field{font:inherit}.authbox{margin:18px 16px;padding:18px;background:var(--panel);border:1px solid var(--line);border-radius:20px}.authbox h2{margin:0 0 5px}.authbox p{color:var(--muted);font-size:13px}.authbox label{display:block;color:var(--muted);font-size:12px;margin:12px 0 5px}.authbox input{display:block;width:100%;background:#100e17;border:1px solid var(--line);border-radius:11px;padding:12px;color:var(--text);margin-top:5px}.authrow{display:flex;gap:8px;margin-top:14px}.authrow button{flex:1}.statusmsg{font-size:12px;color:var(--mint);margin-top:10px;overflow-wrap:anywhere}
 </style></head><body><header class="top"><div class="brand">✦ vibe<span>nest</span></div><button class="join" style="display:block;margin:10px auto 0" onclick="openAuth()" id="authButton">Sign in / Sign up</button><div id="authStatus" class="muted" style="text-align:center;margin-top:5px"></div><input id="search" class="search" placeholder="⌕  Find your next community..." oninput="renderCommunities()"></header>
 <section id="home" class="page active"><div class="intro"><div class="muted">YOUR CORNER OF THE INTERNET</div><h1>Find your <span>people.</span></h1></div><div class="hero"><small>✦ COMMUNITY SPOTLIGHT</small><h2>Your interests deserve a home.</h2><p>Meet people who get your fandom, creativity, and kind of weird.</p><button class="btn" onclick="go('discover')">Explore communities ↗</button></div><div class="heading"><h2>Communities for you</h2><button class="join" onclick="createCommunity()">＋ Create</button></div><div id="homeGrid" class="grid"></div><div class="heading"><h2>From your communities</h2><button class="join" onclick="createPost()">＋ Post</button></div><div id="feed" class="feed"></div><div class="notice">VibeNest preview · Your community, your vibe.</div></section>
 <section id="discover" class="page"><div class="simple"><h1>Discover ✨</h1><p class="muted">There’s a whole world around what you love.</p></div><div id="discoverGrid" class="grid"></div></section>
@@ -51,14 +51,14 @@ function renderCommunityDetail(){
  renderCommunityPosts();
 }
 function renderCommunityPosts(){
- const c=activeCommunity,el=document.getElementById('communityPosts');if(!c||!el)return;
- if(c.id && onlineCommunities.some(x=>String(x.id)===String(c.id))){
-  const matching=onlinePosts.filter(p=>String(p.community_id)===String(c.id));
-  el.innerHTML=matching.map(p=>`<article class="post"><div class="posthead"><div class="avatar">✦</div><div><b>${p.author_id===currentUser?.id?'You':'VibeNest member'}</b><div class="muted">${safeText(new Date(p.created_at).toLocaleString())}</div></div></div><p>${safeText(p.content)}</p></article>`).join('')||'<p class="muted">No posts here yet. Be the first to start a conversation!</p>';
- }else{
-  const matching=posts.filter(p=>p.community===c.name);
-  el.innerHTML=matching.map(p=>`<article class="post"><div class="posthead"><div class="avatar">${safeText(p.avatar)}</div><div><b>${safeText(p.user)}</b><div class="muted">${safeText(p.time)}</div></div></div><p>${safeText(p.text)}</p></article>`).join('')||'<p class="muted">No posts here yet. Join in and start a conversation!</p>';
- }
+  const c=activeCommunity,el=document.getElementById('communityPosts');if(!c||!el)return;
+  if(c.id && onlineCommunities.some(x=>String(x.id)===String(c.id))){
+   const matching=onlinePosts.filter(p=>String(p.community_id)===String(c.id));
+   el.innerHTML=matching.map(p=>`<article class="post"><div class="posthead"><div class="avatar">✦</div><div><b>${p.author_id===currentUser?.id?'You':'VibeNest member'}</b><div class="muted">${safeText(new Date(p.created_at).toLocaleString())}</div></div></div><p>${safeText(p.content)}</p><div class="actions"><button onclick="toggleComments('${p.id}')">▢ Comments</button></div><div id="comments-${p.id}" class="comments-box" style="display:none;margin-top:12px"></div></article>`).join('')||'<p class="muted">No posts here yet. Be the first to start a conversation!</p>';
+  }else{
+   const matching=posts.filter(p=>p.community===c.name);
+   el.innerHTML=matching.map(p=>`<article class="post"><div class="posthead"><div class="avatar">${safeText(p.avatar)}</div><div><b>${safeText(p.user)}</b><div class="muted">${safeText(p.time)}</div></div></div><p>${safeText(p.text)}</p></article>`).join('')||'<p class="muted">No posts here yet. Join in and start a conversation!</p>';
+  }
 }
 async function createPostInCommunity(){
  const c=activeCommunity;if(!c)return;
@@ -137,9 +137,31 @@ async function loadOnlinePosts(){
  onlinePosts=data||[];renderOnlinePosts();if(activeCommunity)renderCommunityPosts();
 }
 function renderOnlinePosts(){
- const communityMap=new Map(onlineCommunities.map(c=>[c.id,c.name]));
- const html=onlinePosts.map(p=>`<article class="post"><div class="posthead"><div class="avatar">✦</div><div><b>${p.author_id===currentUser?.id?'You':'VibeNest member'}</b><div class="muted">${safeText(communityMap.get(p.community_id)||'Community')} · ${safeText(new Date(p.created_at).toLocaleString())}</div></div></div><p>${safeText(p.content)}</p></article>`).join('')||'<p class="muted">No online posts yet. Join a community and create the first one!</p>';
- const feed=document.getElementById('feed');if(feed)feed.innerHTML=html;if(activeCommunity)renderCommunityPosts();
+  const communityMap=new Map(onlineCommunities.map(c=>[c.id,c.name]));
+  const html=onlinePosts.map(p=>`<article class="post"><div class="posthead"><div class="avatar">✦</div><div><b>${p.author_id===currentUser?.id?'You':'VibeNest member'}</b><div class="muted">${safeText(communityMap.get(p.community_id)||'Community')} · ${safeText(new Date(p.created_at).toLocaleString())}</div></div></div><p>${safeText(p.content)}</p><div class="actions"><button onclick="toggleComments('${p.id}')">▢ Comments</button></div><div id="comments-${p.id}" class="comments-box" style="display:none;margin-top:12px"></div></article>`).join('')||'<p class="muted">No online posts yet. Join a community and create the first one!</p>';
+  const feed=document.getElementById('feed');if(feed)feed.innerHTML=html;if(activeCommunity)renderCommunityPosts();
+}
+async function toggleComments(postId){
+  const box=document.getElementById('comments-'+postId);if(!box)return;
+  if(box.style.display==='block'){box.style.display='none';return;}
+  box.style.display='block';box.innerHTML='<p class="muted">Loading comments…</p>';
+  await loadPostComments(postId);
+}
+async function loadPostComments(postId){
+  const box=document.getElementById('comments-'+postId);if(!box)return;
+  const {data,error}=await supabaseClient.from('comments').select('id,post_id,author_id,content,created_at').eq('post_id',postId).order('created_at',{ascending:true});
+  if(error){box.innerHTML='<p class="muted">Could not load comments: '+safeText(error.message)+'</p>';return;}
+  const rows=data||[],ids=[...new Set(rows.map(x=>x.author_id))];let profiles={};
+  if(ids.length){const result=await supabaseClient.from('profiles').select('id,username,display_name').in('id',ids);if(!result.error)for(const profile of (result.data||[]))profiles[profile.id]=profile;}
+  const list=rows.map(c=>{const profile=profiles[c.author_id];const name=c.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');return `<div style="border-bottom:1px solid var(--line);padding:8px 0"><b>${safeText(name)}</b><div class="muted">${safeText(new Date(c.created_at).toLocaleString())}</div><div style="margin-top:4px;overflow-wrap:anywhere">${safeText(c.content)}</div></div>`;}).join('');
+  box.innerHTML=list+'<div style="display:flex;gap:7px;margin-top:10px"><input class="field" style="margin:0;min-width:0" id="comment-input-'+postId+'" maxlength="2000" placeholder="Write a comment…"><button class="join" onclick="submitComment(\''+postId+'\')">Send</button></div>';
+}
+async function submitComment(postId){
+  if(!currentUser){openAuth();showToast('Sign in to comment');return;}
+  const input=document.getElementById('comment-input-'+postId),content=input?.value.trim();if(!content)return;
+  const {error}=await supabaseClient.from('comments').insert({post_id:postId,author_id:currentUser.id,content});
+  if(error){showToast(error.message);return;}
+  await loadPostComments(postId);showToast('Comment added!');
 }
 async function createPost(){
  if(!currentUser){openAuth();showToast('Sign in to post');return;}
