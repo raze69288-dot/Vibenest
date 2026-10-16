@@ -120,6 +120,7 @@ function renderCommunityDetail(){
 }
 function renderCommunityPosts(){
   const c=activeCommunity,el=document.getElementById('communityPosts');if(!c||!el)return;
+  const commentState=captureOpenComments(el);
   if(c.id && onlineCommunities.some(x=>String(x.id)===String(c.id))){
    const matching=onlinePosts.filter(p=>String(p.community_id)===String(c.id));
    el.innerHTML=matching.map(p=>{const profile=onlineProfiles[p.author_id];const name=p.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');const commentsId='comments-community-'+p.id;return `<article class="post" data-post-id="${p.id}"><div class="posthead"><button class="profile-tap" aria-label="Open profile" onclick="openPublicProfile('${p.author_id}')">${profileAvatarMarkup(profile)}</button><div style="min-width:0;flex:1"><button class="profile-name-tap" onclick="openPublicProfile('${p.author_id}')"><b>${safeText(name)}</b></button><div class="muted">${safeText(new Date(p.created_at).toLocaleString())}</div></div></div>${p.content?`<p>${safeText(p.content)}</p>`:''}${p.image_url?`<img class="post-media" src="${safeText(p.image_url)}" alt="Post image" loading="lazy">`:''}${p.poll_question&&Array.isArray(p.poll_options)?`<div class="poll-card"><b>${safeText(p.poll_question)}</b>${p.poll_options.map((o,i)=>`<button class="poll-option" onclick="voteInPoll('${p.id}',${i})">${safeText(o)}</button>`).join('')}<div id="poll-results-${p.id}"></div></div>`:''}<div class="actions"><button onclick="toggleOnlineLike('${p.id}','${p.author_id}')" style="color:${likedPostIds.has(p.id)?'#ff75bc':'var(--muted)'}">${likedPostIds.has(p.id)?'♥ Liked':'♡ Like'} · ${postLikeCounts[p.id]||0}</button><button onclick="toggleComments('${p.id}','${commentsId}',this)">▢ Comments · ${postCommentCounts[p.id]||0}</button></div><div id="${commentsId}" class="comments-box" style="display:none;margin-top:12px"></div></article>`}).join('')||'<p class="muted">No posts here yet. Be the first to start a conversation!</p>';
@@ -127,6 +128,7 @@ function renderCommunityPosts(){
    const matching=posts.filter(p=>p.community===c.name);
    el.innerHTML=matching.map(p=>`<article class="post"><div class="posthead"><div class="avatar">${safeText(p.avatar)}</div><div><b>${safeText(p.user)}</b><div class="muted">${safeText(p.time)}</div></div></div><p>${safeText(p.text)}</p></article>`).join('')||'<p class="muted">No posts here yet. Join in and start a conversation!</p>';
   }
+  restoreOpenComments(el,commentState);
 }
 function toggleCommunityComposer(){
   const c=activeCommunity;
@@ -377,12 +379,33 @@ async function loadOnlinePosts(){
  if(authorIds.length){const result=await supabaseClient.from('profiles').select('id,username,display_name,avatar_url').in('id',authorIds);if(!result.error)for(const profile of result.data||[])onlineProfiles[profile.id]=profile;}
  renderOnlinePosts();if(activeCommunity)renderCommunityPosts();if(typeof renderProfileExtras==='function')renderProfileExtras();await refreshSocialCounts();renderOnlinePosts();if(activeCommunity)renderCommunityPosts();
 }
+function captureOpenComments(root){
+ const state=[];if(!root)return state;
+ root.querySelectorAll('article.post .comments-box').forEach(box=>{
+  if(box.style.display==='block'){
+   const article=box.closest('article.post'),postId=article?.dataset.postId;
+   if(postId)state.push({postId,boxId:box.id,draft:box.querySelector('input[id^="comment-input-"]')?.value||''});
+  }
+ });return state;
+}
+function restoreOpenComments(root,state){
+ if(!root||!state?.length)return;
+ state.forEach(item=>{
+  const article=[...root.querySelectorAll('article.post')].find(el=>String(el.dataset.postId)===String(item.postId));
+  const box=article?.querySelector('.comments-box');if(!box)return;
+  box.style.display='block';box.dataset.loading='0';
+  loadPostComments(item.postId,box.id).then(()=>{const input=box.querySelector('input[id^="comment-input-"]');if(input&&item.draft)input.value=item.draft;}).catch(()=>{});
+ });
+}
 function renderOnlinePosts(){
+  const commentState=[...captureOpenComments(document.getElementById('feed')),...captureOpenComments(document.getElementById('myPosts'))];
   const communityMap=new Map(onlineCommunities.map(c=>[c.id,c.name]));
   const renderOne=(p,context)=>{const profile=onlineProfiles[p.author_id];const name=p.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');const commentsId='comments-'+context+'-'+p.id;const pinned=currentUser&&p.author_id===currentUser.id&&myProfile?.pinned_post_id===p.id;const image=p.image_url?`<img class="post-media" src="${safeText(p.image_url)}" alt="Post image" loading="lazy">`:'';const poll=p.poll_question&&Array.isArray(p.poll_options)&&p.poll_options.length>=2?`<div class="poll-card" id="poll-${p.id}"><b>${safeText(p.poll_question)}</b><div class="muted">Community poll</div><div id="poll-options-${p.id}">${p.poll_options.map((o,i)=>`<button class="poll-option" onclick="voteInPoll('${p.id}',${i})">${safeText(o)}</button>`).join('')}</div><div id="poll-results-${p.id}"></div></div>`:'';return `<article class="post" data-post-id="${p.id}"><div class="posthead"><button class="profile-tap" aria-label="Open profile" onclick="openPublicProfile('${p.author_id}')">${profileAvatarMarkup(profile)}</button><div style="min-width:0;flex:1"><button class="profile-name-tap" onclick="openPublicProfile('${p.author_id}')"><b>${safeText(name)}</b></button><button class="community-source" onclick="event.stopPropagation();openCommunityById('${p.community_id}')" ${!communityMap.has(p.community_id)?'disabled':''}>✦ ${safeText(communityMap.get(p.community_id)||'Community')}</button><div class="muted">${safeText(new Date(p.created_at).toLocaleString())}</div></div>${currentUser&&p.author_id!==currentUser.id?`<button class="join follow-button" onclick="toggleFollow('${p.author_id}')">${followingIds.has(p.author_id)?'✓ Following':'+ Follow'}</button>`:''}</div>${p.content?`<p>${safeText(p.content)}</p>`:''}${image}${poll}<div class="actions"><button onclick="toggleOnlineLike('${p.id}','${p.author_id}')" style="color:${likedPostIds.has(p.id)?'#ff75bc':'var(--muted)'}">${likedPostIds.has(p.id)?'♥ Liked':'♡ Like'} · ${postLikeCounts[p.id]||0}</button><button onclick="toggleComments('${p.id}','${commentsId}',this)">▢ Comments · ${postCommentCounts[p.id]||0}</button>${currentUser&&p.author_id===currentUser.id?`<button onclick="togglePinnedPost('${p.id}')">${pinned?'📌 Unpin':'📌 Pin'}</button>`:''}</div><div id="${commentsId}" class="comments-box" style="display:none;margin-top:12px"></div></article>`};
   const feed=document.getElementById('feed');if(feed){const visible=feedMode==='following'?onlinePosts.filter(p=>!!currentUser&&p.author_id!==currentUser.id&&followingIds.has(p.author_id)):onlinePosts;feed.innerHTML=visible.map(p=>renderOne(p,'feed')).join('')||(feedMode==='following'?'<p class="muted">No posts from people you follow yet. Find people in Chats and tap Follow to see their posts here.</p>':'<p class="muted">No posts yet. Join a community and create the first one!</p>');}
   const myPosts=document.getElementById('myPosts');if(myPosts){const mine=currentUser?onlinePosts.filter(p=>p.author_id===currentUser.id):[];myPosts.innerHTML=mine.map(p=>renderOne(p,'profile')).join('')||'<p class="muted">You have not posted anything yet.</p>';}
   if(activeCommunity)renderCommunityPosts();
+  restoreOpenComments(document.getElementById('feed'),commentState);
+  restoreOpenComments(document.getElementById('myPosts'),commentState);
 }
 async function toggleComments(postId, boxId, button){
   // Resolve the comment panel from the clicked post first. This avoids a page
@@ -553,7 +576,8 @@ if(supabaseClient){supabaseClient.auth.onAuthStateChange((_event,session)=>{if(!
 // Profile customization layer. Existing community, post, comment, and messaging flows remain intact.
 let myProfile = null;
 function setProfileConnectionsView(showList){
- const ids=['profilePageHeading','profileCoverSection','profileStatsSection','profileConnectionsSection'];
+ // A connection list is its own view: hide the profile's posts and extras too.
+ const ids=['profilePageHeading','profileCoverSection','profileStatsSection','profileConnectionsSection','profileExtras'];
  ids.forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=showList?'none':'';});
  const page=document.querySelector('#profile .profile-page');
  if(page)page.classList.toggle('connections-list-mode',showList);
