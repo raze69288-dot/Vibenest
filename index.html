@@ -119,6 +119,8 @@ function renderCommunityDetail(){
  renderCommunityPosts();
 }
 function renderCommunityPosts(){
+  // Keep an open community comment panel stable until the user closes it.
+  if(vibeNestHasOpenComments()) return;
   const c=activeCommunity,el=document.getElementById('communityPosts');if(!c||!el)return;
   const commentState=captureOpenComments(el);
   if(c.id && onlineCommunities.some(x=>String(x.id)===String(c.id))){
@@ -377,7 +379,10 @@ async function loadOnlinePosts(){
  const authorIds=[...new Set(onlinePosts.map(p=>p.author_id).filter(Boolean))];
  onlineProfiles={};
  if(authorIds.length){const result=await supabaseClient.from('profiles').select('id,username,display_name,avatar_url').in('id',authorIds);if(!result.error)for(const profile of result.data||[])onlineProfiles[profile.id]=profile;}
- renderOnlinePosts();if(activeCommunity)renderCommunityPosts();if(typeof renderProfileExtras==='function')renderProfileExtras();await refreshSocialCounts();renderOnlinePosts();if(activeCommunity)renderCommunityPosts();
+ renderOnlinePosts();if(activeCommunity)renderCommunityPosts();if(typeof renderProfileExtras==='function')renderProfileExtras();await refreshSocialCounts();
+}
+function vibeNestHasOpenComments(){
+ return !!document.querySelector('article.post .comments-box[style*="display: block"], article.post .comments-box[data-open="1"]');
 }
 function captureOpenComments(root){
  const state=[];if(!root)return state;
@@ -398,6 +403,10 @@ function restoreOpenComments(root,state){
  });
 }
 function renderOnlinePosts(){
+  // Do not replace post-card DOM while the user is interacting with comments.
+  // Frequent realtime/polling refreshes otherwise destroy the panel and its input.
+  if(vibeNestHasOpenComments()) return;
+
   const commentState=[...captureOpenComments(document.getElementById('feed')),...captureOpenComments(document.getElementById('myPosts'))];
   const communityMap=new Map(onlineCommunities.map(c=>[c.id,c.name]));
   const renderOne=(p,context)=>{const profile=onlineProfiles[p.author_id];const name=p.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');const commentsId='comments-'+context+'-'+p.id;const pinned=currentUser&&p.author_id===currentUser.id&&myProfile?.pinned_post_id===p.id;const image=p.image_url?`<img class="post-media" src="${safeText(p.image_url)}" alt="Post image" loading="lazy">`:'';const poll=p.poll_question&&Array.isArray(p.poll_options)&&p.poll_options.length>=2?`<div class="poll-card" id="poll-${p.id}"><b>${safeText(p.poll_question)}</b><div class="muted">Community poll</div><div id="poll-options-${p.id}">${p.poll_options.map((o,i)=>`<button class="poll-option" onclick="voteInPoll('${p.id}',${i})">${safeText(o)}</button>`).join('')}</div><div id="poll-results-${p.id}"></div></div>`:'';return `<article class="post" data-post-id="${p.id}"><div class="posthead"><button class="profile-tap" aria-label="Open profile" onclick="openPublicProfile('${p.author_id}')">${profileAvatarMarkup(profile)}</button><div style="min-width:0;flex:1"><button class="profile-name-tap" onclick="openPublicProfile('${p.author_id}')"><b>${safeText(name)}</b></button><button class="community-source" onclick="event.stopPropagation();openCommunityById('${p.community_id}')" ${!communityMap.has(p.community_id)?'disabled':''}>✦ ${safeText(communityMap.get(p.community_id)||'Community')}</button><div class="muted">${safeText(new Date(p.created_at).toLocaleString())}</div></div>${currentUser&&p.author_id!==currentUser.id?`<button class="join follow-button" onclick="toggleFollow('${p.author_id}')">${followingIds.has(p.author_id)?'✓ Following':'+ Follow'}</button>`:''}</div>${p.content?`<p>${safeText(p.content)}</p>`:''}${image}${poll}<div class="actions"><button onclick="toggleOnlineLike('${p.id}','${p.author_id}')" style="color:${likedPostIds.has(p.id)?'#ff75bc':'var(--muted)'}">${likedPostIds.has(p.id)?'♥ Liked':'♡ Like'} · ${postLikeCounts[p.id]||0}</button><button onclick="toggleComments('${p.id}','${commentsId}',this)">▢ Comments · ${postCommentCounts[p.id]||0}</button>${currentUser&&p.author_id===currentUser.id?`<button onclick="togglePinnedPost('${p.id}')">${pinned?'📌 Unpin':'📌 Pin'}</button>`:''}</div><div id="${commentsId}" class="comments-box" style="display:none;margin-top:12px"></div></article>`};
