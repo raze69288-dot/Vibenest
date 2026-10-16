@@ -57,7 +57,7 @@ function renderCommunityPosts(){
   const c=activeCommunity,el=document.getElementById('communityPosts');if(!c||!el)return;
   if(c.id && onlineCommunities.some(x=>String(x.id)===String(c.id))){
    const matching=onlinePosts.filter(p=>String(p.community_id)===String(c.id));
-   el.innerHTML=matching.map(p=>{const profile=onlineProfiles[p.author_id];const name=p.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');return `<article class="post"><div class="posthead">${profileAvatarMarkup(profile)}<div><b>${safeText(name)}</b><div class="muted">${safeText(new Date(p.created_at).toLocaleString())}</div></div></div><p>${safeText(p.content)}</p><div class="actions"><button onclick="toggleComments('${p.id}')">▢ Comments</button></div><div id="comments-${p.id}" class="comments-box" style="display:none;margin-top:12px"></div></article>`}).join('')||'<p class="muted">No posts here yet. Be the first to start a conversation!</p>';
+   el.innerHTML=matching.map(p=>{const profile=onlineProfiles[p.author_id];const name=p.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');const commentsId='comments-community-'+p.id;return `<article class="post"><div class="posthead">${profileAvatarMarkup(profile)}<div><b>${safeText(name)}</b><div class="muted">${safeText(new Date(p.created_at).toLocaleString())}</div></div></div><p>${safeText(p.content)}</p><div class="actions"><button onclick="toggleComments('${p.id}','${commentsId}')">▢ Comments</button></div><div id="${commentsId}" class="comments-box" style="display:none;margin-top:12px"></div></article>`}).join('')||'<p class="muted">No posts here yet. Be the first to start a conversation!</p>';
   }else{
    const matching=posts.filter(p=>p.community===c.name);
    el.innerHTML=matching.map(p=>`<article class="post"><div class="posthead"><div class="avatar">${safeText(p.avatar)}</div><div><b>${safeText(p.user)}</b><div class="muted">${safeText(p.time)}</div></div></div><p>${safeText(p.text)}</p></article>`).join('')||'<p class="muted">No posts here yet. Join in and start a conversation!</p>';
@@ -146,33 +146,36 @@ async function loadOnlinePosts(){
 }
 function renderOnlinePosts(){
   const communityMap=new Map(onlineCommunities.map(c=>[c.id,c.name]));
-  const renderOne=p=>{const profile=onlineProfiles[p.author_id];const name=p.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');return `<article class="post"><div class="posthead">${profileAvatarMarkup(profile)}<div><b>${safeText(name)}</b><div class="muted">${safeText(communityMap.get(p.community_id)||'Community')} · ${safeText(new Date(p.created_at).toLocaleString())}</div></div></div><p>${safeText(p.content)}</p><div class="actions"><button onclick="toggleComments('${p.id}')">▢ Comments</button></div><div id="comments-${p.id}" class="comments-box" style="display:none;margin-top:12px"></div></article>`};
-  const html=onlinePosts.map(renderOne).join('')||'<p class="muted">No posts yet. Join a community and create the first one!</p>';
-  const feed=document.getElementById('feed');if(feed)feed.innerHTML=html;
-  const myPosts=document.getElementById('myPosts');if(myPosts){const mine=currentUser?onlinePosts.filter(p=>p.author_id===currentUser.id):[];myPosts.innerHTML=mine.map(renderOne).join('')||'<p class="muted">You have not posted anything yet.</p>';}
+  const renderOne=(p,context)=>{const profile=onlineProfiles[p.author_id];const name=p.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');const commentsId='comments-'+context+'-'+p.id;return `<article class="post"><div class="posthead">${profileAvatarMarkup(profile)}<div><b>${safeText(name)}</b><div class="muted">${safeText(communityMap.get(p.community_id)||'Community')} · ${safeText(new Date(p.created_at).toLocaleString())}</div></div></div><p>${safeText(p.content)}</p><div class="actions"><button onclick="toggleComments('${p.id}','${commentsId}')">▢ Comments</button></div><div id="${commentsId}" class="comments-box" style="display:none;margin-top:12px"></div></article>`};
+  const feed=document.getElementById('feed');if(feed)feed.innerHTML=onlinePosts.map(p=>renderOne(p,'feed')).join('')||'<p class="muted">No posts yet. Join a community and create the first one!</p>';
+  const myPosts=document.getElementById('myPosts');if(myPosts){const mine=currentUser?onlinePosts.filter(p=>p.author_id===currentUser.id):[];myPosts.innerHTML=mine.map(p=>renderOne(p,'profile')).join('')||'<p class="muted">You have not posted anything yet.</p>';}
   if(activeCommunity)renderCommunityPosts();
 }
-async function toggleComments(postId){
-  const box=document.getElementById('comments-'+postId);if(!box)return;
+async function toggleComments(postId, boxId){
+  const targetId=boxId||('comments-feed-'+postId);
+  const box=document.getElementById(targetId);if(!box)return;
   if(box.style.display==='block'){box.style.display='none';return;}
   box.style.display='block';box.innerHTML='<p class="muted">Loading comments…</p>';
-  await loadPostComments(postId);
+  await loadPostComments(postId,targetId);
 }
-async function loadPostComments(postId){
-  const box=document.getElementById('comments-'+postId);if(!box)return;
+async function loadPostComments(postId, boxId){
+  const targetId=boxId||('comments-feed-'+postId);
+  const box=document.getElementById(targetId);if(!box)return;
   const {data,error}=await supabaseClient.from('comments').select('id,post_id,author_id,content,created_at').eq('post_id',postId).order('created_at',{ascending:true});
   if(error){box.innerHTML='<p class="muted">Could not load comments: '+safeText(error.message)+'</p>';return;}
   const rows=data||[],ids=[...new Set(rows.map(x=>x.author_id))];let profiles={};
   if(ids.length){const result=await supabaseClient.from('profiles').select('id,username,display_name,avatar_url').in('id',ids);if(!result.error)for(const profile of (result.data||[]))profiles[profile.id]=profile;}
   const list=rows.map(c=>{const profile=profiles[c.author_id];const name=c.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');return `<div style="display:flex;align-items:flex-start;gap:9px;border-bottom:1px solid var(--line);padding:8px 0">${profileAvatarMarkup(profile)}<div style="min-width:0;flex:1"><b>${safeText(name)}</b><div class="muted">${safeText(new Date(c.created_at).toLocaleString())}</div><div style="margin-top:4px;overflow-wrap:anywhere">${safeText(c.content)}</div></div></div>`;}).join('');
-  box.innerHTML=list+'<div style="display:flex;gap:7px;margin-top:10px"><input class="field" style="margin:0;min-width:0" id="comment-input-'+postId+'" maxlength="2000" placeholder="Write a comment…"><button class="join" onclick="submitComment(\''+postId+'\')">Send</button></div>';
+  const inputId='comment-input-'+targetId;
+  box.innerHTML=`${list}<div style="display:flex;gap:7px;margin-top:10px"><input class="field" style="margin:0;min-width:0" id="${inputId}" maxlength="2000" placeholder="Write a comment…"><button class="join" onclick="submitComment('${postId}','${targetId}')">Send</button></div>`;
 }
-async function submitComment(postId){
+async function submitComment(postId, boxId){
   if(!currentUser){openAuth();showToast('Sign in to comment');return;}
-  const input=document.getElementById('comment-input-'+postId),content=input?.value.trim();if(!content)return;
+  const targetId=boxId||('comments-feed-'+postId);
+  const input=document.getElementById('comment-input-'+targetId),content=input?.value.trim();if(!content)return;
   const {error}=await supabaseClient.from('comments').insert({post_id:postId,author_id:currentUser.id,content});
   if(error){showToast(error.message);return;}
-  await loadPostComments(postId);showToast('Comment added!');
+  await loadPostComments(postId,targetId);showToast('Comment added!');
 }
 async function createPost(){
  if(!currentUser){openAuth();showToast('Sign in to post');return;}
