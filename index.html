@@ -374,7 +374,7 @@ async function loadPostComments(postId, boxId){
 }
 async function deleteComment(commentId,postId,boxId){
  if(!currentUser){showToast('Sign in to delete comments');return;}
- if(!confirm('Delete this comment?'))return;
+ // Delete directly inside VibeNest without the browser's native confirmation popup.
  const {error}=await supabaseClient.from('comments').delete().eq('id',commentId);
  if(error){showToast('Could not delete comment: '+error.message);return;}
  await loadPostComments(postId,boxId);showToast('Comment deleted');
