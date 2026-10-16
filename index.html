@@ -1193,6 +1193,52 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
  const navObserver=new MutationObserver(observeChat);navObserver.observe(document.documentElement,{childList:true,subtree:true});
 })();
 </script>
+
+<style id="vibenest-everything-effects">
+/* Balanced add-on pack: living profiles, richer feed, image viewer, chat swipe, celebration. */
+.profile-tap .avatar,.profile-hero-avatar,.profile-cover .profile-hero-avatar,.public-profile-hero .profile-hero-avatar{position:relative;isolation:isolate}
+.profile-tap .avatar{box-shadow:0 0 0 1px rgba(190,145,255,.35),0 0 13px rgba(161,104,255,.13)}
+.profile-cover .profile-hero-avatar,.public-profile-hero .profile-hero-avatar{box-shadow:0 0 0 4px rgba(177,138,255,.10),0 0 0 1px rgba(218,191,255,.75),0 0 24px rgba(157,95,255,.23)}
+.post-media{cursor:zoom-in;transition:filter .2s ease,transform .2s ease;border-radius:15px}
+.post-media:active{filter:brightness(.88)}
+.post.vn-post-enter,.community-detail.vn-community-enter{animation:vnPageEnter .32s ease-out both}
+@keyframes vnPageEnter{from{opacity:.55;transform:translateY(7px)}to{opacity:1;transform:translateY(0)}}
+.vn-image-viewer{position:fixed;inset:0;z-index:10000;display:flex;align-items:center;justify-content:center;padding:22px;background:rgba(8,5,14,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);animation:vnViewerIn .18s ease-out}
+.vn-image-viewer img{display:block;max-width:100%;max-height:86vh;object-fit:contain;border-radius:12px;box-shadow:0 16px 60px #0008;animation:vnImageIn .22s ease-out}
+.vn-image-viewer button{position:absolute;top:max(18px,env(safe-area-inset-top));right:18px;width:44px;height:44px;border-radius:50%;border:1px solid #c6a3ff55;background:#261a37;color:#fff;font-size:26px;line-height:1}
+@keyframes vnViewerIn{from{opacity:0}to{opacity:1}}@keyframes vnImageIn{from{opacity:.6;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+.vn-confetti-layer{position:fixed;inset:0;z-index:9998;pointer-events:none;overflow:hidden;contain:strict}
+.vn-confetti{position:absolute;top:38%;width:6px;height:10px;border-radius:2px;background:var(--piece,#b18aff);animation:vnConfettiFly 1.15s cubic-bezier(.12,.55,.25,1) forwards;will-change:transform,opacity}
+@keyframes vnConfettiFly{0%{opacity:0;transform:translate3d(0,0,0) rotate(0)}12%{opacity:1}100%{opacity:0;transform:translate3d(var(--x),var(--y),0) rotate(var(--spin))}}
+.chat-bubble.vn-swipe-hint{box-shadow:0 0 0 2px rgba(177,138,255,.5),0 0 20px rgba(177,138,255,.14)}
+.bottom button.vn-nav-tap{animation:vnNavTap .25s ease-out}
+@keyframes vnNavTap{0%{transform:scale(.92)}65%{transform:scale(1.06)}100%{transform:scale(1)}}
+@media(prefers-reduced-motion:reduce){.post.vn-post-enter,.community-detail.vn-community-enter,.vn-image-viewer,.vn-image-viewer img,.vn-confetti,.bottom button.vn-nav-tap{animation:none!important}.post-media{transition:none!important}}
+</style>
+<script id="vibenest-everything-effects-script">
+(()=>{
+ const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ let lastTap={time:0,x:0,y:0,post:null};
+ function showImage(src,alt){if(!src||document.querySelector('.vn-image-viewer'))return;const wrap=document.createElement('div');wrap.className='vn-image-viewer';wrap.setAttribute('role','dialog');wrap.setAttribute('aria-modal','true');wrap.setAttribute('aria-label','Image preview');const img=document.createElement('img');img.src=src;img.alt=alt||'Expanded image';const close=document.createElement('button');close.type='button';close.setAttribute('aria-label','Close image preview');close.textContent='×';const dismiss=()=>{wrap.remove();document.removeEventListener('keydown',onKey)};const onKey=e=>{if(e.key==='Escape')dismiss()};close.addEventListener('click',dismiss);wrap.addEventListener('click',e=>{if(e.target===wrap)dismiss()});document.addEventListener('keydown',onKey);wrap.append(img,close);document.body.appendChild(wrap);close.focus({preventScroll:true})}
+ function confetti(){if(reduced||document.querySelector('.vn-confetti-layer'))return;const layer=document.createElement('div');layer.className='vn-confetti-layer';layer.setAttribute('aria-hidden','true');const colors=['#b18aff','#f58bd1','#e7d4ff','#8b5cf6','#ffd0eb'];for(let i=0;i<30;i++){const bit=document.createElement('i');bit.className='vn-confetti';bit.style.left=(35+Math.random()*30)+'%';bit.style.setProperty('--piece',colors[i%colors.length]);bit.style.setProperty('--x',(-150+Math.random()*300)+'px');bit.style.setProperty('--y',(120+Math.random()*340)+'px');bit.style.setProperty('--spin',(-500+Math.random()*1000)+'deg');bit.style.animationDelay=(Math.random()*.12)+'s';layer.appendChild(bit)}document.body.appendChild(layer);setTimeout(()=>layer.remove(),1500)}
+ function animateCurrentPage(){const page=document.querySelector('.page.active');if(!page||reduced)return;page.classList.remove('vn-post-enter');void page.offsetWidth;page.classList.add('vn-post-enter');setTimeout(()=>page.classList.remove('vn-post-enter'),400)}
+ document.addEventListener('click',e=>{
+  const el=e.target instanceof Element?e.target:null;if(!el)return;
+  const media=el.closest('.post-media,.chat-bubble img');
+  if(media){const url=media.currentSrc||media.src;if(url){e.preventDefault();e.stopPropagation();showImage(url,media.alt);return}}
+  const post=el.closest('.post[data-post-id]');
+  if(post){const now=Date.now(),same=lastTap.post===post&&now-lastTap.time<360&&Math.abs(e.clientX-lastTap.x)<45&&Math.abs(e.clientY-lastTap.y)<45;lastTap={time:now,x:e.clientX,y:e.clientY,post};if(same){const like=[...post.querySelectorAll('.actions button')].find(b=>/toggleOnlineLike/.test(b.getAttribute('onclick')||''));if(like){lastTap={time:0,x:0,y:0,post:null};like.click();if(!reduced){const heart=document.createElement('span');heart.className='vn-heart-burst';heart.textContent='♥';heart.style.left=e.clientX+'px';heart.style.top=e.clientY+'px';heart.style.fontSize='38px';document.body.appendChild(heart);setTimeout(()=>heart.remove(),900)}}}}
+ },true);
+ // Horizontal swipe on a message offers the existing reply action; vertical scrolling remains untouched.
+ let touch=null;
+ document.addEventListener('touchstart',e=>{const b=e.target instanceof Element?e.target.closest('.chat-bubble[data-message-id]'):null;if(!b||!e.touches||!e.touches[0])return;touch={bubble:b,id:b.dataset.messageId,x:e.touches[0].clientX,y:e.touches[0].clientY};},{passive:true});
+ document.addEventListener('touchend',e=>{if(!touch||!e.changedTouches||!e.changedTouches[0]){touch=null;return}const t=e.changedTouches[0],dx=t.clientX-touch.x,dy=t.clientY-touch.y,b=touch.bubble,id=touch.id;touch=null;if(Math.abs(dx)>72&&Math.abs(dx)>Math.abs(dy)*1.35&&typeof window.replyToChatMessage==='function'){b.classList.add('vn-swipe-hint');setTimeout(()=>b.classList.remove('vn-swipe-hint'),450);window.replyToChatMessage(id)}},{passive:true});
+ // Light celebrations only for successful actions already reported by the app's existing toast.
+ const toast=document.getElementById('toast');if(toast){let prior='';const mo=new MutationObserver(()=>{const t=(toast.textContent||'').trim();if(t&&t!==prior&&/^(Joined |Post created|Community created|Post shared|Profile updated)/i.test(t))confetti();prior=t});mo.observe(toast,{childList:true,subtree:true,characterData:true})}
+ document.addEventListener('click',e=>{const el=e.target instanceof Element?e.target:null;if(!el)return;if(el.closest('.bottom [data-tab]'))setTimeout(animateCurrentPage,20);const c=el.closest('.community-source,.card[onclick*="openCommunity"],button[onclick*="openCommunityById"]');if(c&&!reduced){const detail=document.querySelector('.community-detail');if(detail){detail.classList.remove('vn-community-enter');void detail.offsetWidth;detail.classList.add('vn-community-enter')}}},false);
+})();
+</script>
+
 </body></html>
 
 <style>
