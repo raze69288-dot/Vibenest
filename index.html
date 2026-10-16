@@ -57,7 +57,7 @@ function renderCommunityPosts(){
   const c=activeCommunity,el=document.getElementById('communityPosts');if(!c||!el)return;
   if(c.id && onlineCommunities.some(x=>String(x.id)===String(c.id))){
    const matching=onlinePosts.filter(p=>String(p.community_id)===String(c.id));
-   el.innerHTML=matching.map(p=>`<article class="post"><div class="posthead"><div class="avatar">✦</div><div><b>${p.author_id===currentUser?.id?'You':'VibeNest member'}</b><div class="muted">${safeText(new Date(p.created_at).toLocaleString())}</div></div></div><p>${safeText(p.content)}</p><div class="actions"><button onclick="toggleComments('${p.id}')">▢ Comments</button></div><div id="comments-${p.id}" class="comments-box" style="display:none;margin-top:12px"></div></article>`).join('')||'<p class="muted">No posts here yet. Be the first to start a conversation!</p>';
+   el.innerHTML=matching.map(p=>{const profile=onlineProfiles[p.author_id];const name=p.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');return `<article class="post"><div class="posthead">${profileAvatarMarkup(profile)}<div><b>${safeText(name)}</b><div class="muted">${safeText(new Date(p.created_at).toLocaleString())}</div></div></div><p>${safeText(p.content)}</p><div class="actions"><button onclick="toggleComments('${p.id}')">▢ Comments</button></div><div id="comments-${p.id}" class="comments-box" style="display:none;margin-top:12px"></div></article>`}).join('')||'<p class="muted">No posts here yet. Be the first to start a conversation!</p>';
   }else{
    const matching=posts.filter(p=>p.community===c.name);
    el.innerHTML=matching.map(p=>`<article class="post"><div class="posthead"><div class="avatar">${safeText(p.avatar)}</div><div><b>${safeText(p.user)}</b><div class="muted">${safeText(p.time)}</div></div></div><p>${safeText(p.text)}</p></article>`).join('')||'<p class="muted">No posts here yet. Join in and start a conversation!</p>';
@@ -81,6 +81,7 @@ async function createPostInCommunity(){
 // VibeNest online community/post layer. Auth and tables are provided by Supabase.
 let onlineCommunities = [];
 let onlinePosts = [];
+let onlineProfiles = {};
 const starterCommunities = [
  {name:'Anime Haven',category:'Anime',description:'For the stories and characters that stay with you.'},
  {name:'Cozy Gamers',category:'Gaming',description:'Good games, comfy vibes, no pressure.'},
@@ -137,11 +138,15 @@ async function loadOnlinePosts(){
  if(!supabaseClient)return;
  const {data,error}=await supabaseClient.from('posts').select('id,community_id,author_id,content,created_at').order('created_at',{ascending:false}).limit(30);
  if(error){console.error(error);return;}
- onlinePosts=data||[];renderOnlinePosts();if(activeCommunity)renderCommunityPosts();
+ onlinePosts=data||[];
+ const authorIds=[...new Set(onlinePosts.map(p=>p.author_id).filter(Boolean))];
+ onlineProfiles={};
+ if(authorIds.length){const result=await supabaseClient.from('profiles').select('id,username,display_name,avatar_url').in('id',authorIds);if(!result.error)for(const profile of result.data||[])onlineProfiles[profile.id]=profile;}
+ renderOnlinePosts();if(activeCommunity)renderCommunityPosts();
 }
 function renderOnlinePosts(){
   const communityMap=new Map(onlineCommunities.map(c=>[c.id,c.name]));
-  const renderOne=p=>`<article class="post"><div class="posthead"><div class="avatar">✦</div><div><b>${p.author_id===currentUser?.id?'You':'VibeNest member'}</b><div class="muted">${safeText(communityMap.get(p.community_id)||'Community')} · ${safeText(new Date(p.created_at).toLocaleString())}</div></div></div><p>${safeText(p.content)}</p><div class="actions"><button onclick="toggleComments('${p.id}')">▢ Comments</button></div><div id="comments-${p.id}" class="comments-box" style="display:none;margin-top:12px"></div></article>`;
+  const renderOne=p=>{const profile=onlineProfiles[p.author_id];const name=p.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');return `<article class="post"><div class="posthead">${profileAvatarMarkup(profile)}<div><b>${safeText(name)}</b><div class="muted">${safeText(communityMap.get(p.community_id)||'Community')} · ${safeText(new Date(p.created_at).toLocaleString())}</div></div></div><p>${safeText(p.content)}</p><div class="actions"><button onclick="toggleComments('${p.id}')">▢ Comments</button></div><div id="comments-${p.id}" class="comments-box" style="display:none;margin-top:12px"></div></article>`};
   const html=onlinePosts.map(renderOne).join('')||'<p class="muted">No posts yet. Join a community and create the first one!</p>';
   const feed=document.getElementById('feed');if(feed)feed.innerHTML=html;
   const myPosts=document.getElementById('myPosts');if(myPosts){const mine=currentUser?onlinePosts.filter(p=>p.author_id===currentUser.id):[];myPosts.innerHTML=mine.map(renderOne).join('')||'<p class="muted">You have not posted anything yet.</p>';}
@@ -158,8 +163,8 @@ async function loadPostComments(postId){
   const {data,error}=await supabaseClient.from('comments').select('id,post_id,author_id,content,created_at').eq('post_id',postId).order('created_at',{ascending:true});
   if(error){box.innerHTML='<p class="muted">Could not load comments: '+safeText(error.message)+'</p>';return;}
   const rows=data||[],ids=[...new Set(rows.map(x=>x.author_id))];let profiles={};
-  if(ids.length){const result=await supabaseClient.from('profiles').select('id,username,display_name').in('id',ids);if(!result.error)for(const profile of (result.data||[]))profiles[profile.id]=profile;}
-  const list=rows.map(c=>{const profile=profiles[c.author_id];const name=c.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');return `<div style="border-bottom:1px solid var(--line);padding:8px 0"><b>${safeText(name)}</b><div class="muted">${safeText(new Date(c.created_at).toLocaleString())}</div><div style="margin-top:4px;overflow-wrap:anywhere">${safeText(c.content)}</div></div>`;}).join('');
+  if(ids.length){const result=await supabaseClient.from('profiles').select('id,username,display_name,avatar_url').in('id',ids);if(!result.error)for(const profile of (result.data||[]))profiles[profile.id]=profile;}
+  const list=rows.map(c=>{const profile=profiles[c.author_id];const name=c.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');return `<div style="display:flex;align-items:flex-start;gap:9px;border-bottom:1px solid var(--line);padding:8px 0">${profileAvatarMarkup(profile)}<div style="min-width:0;flex:1"><b>${safeText(name)}</b><div class="muted">${safeText(new Date(c.created_at).toLocaleString())}</div><div style="margin-top:4px;overflow-wrap:anywhere">${safeText(c.content)}</div></div></div>`;}).join('');
   box.innerHTML=list+'<div style="display:flex;gap:7px;margin-top:10px"><input class="field" style="margin:0;min-width:0" id="comment-input-'+postId+'" maxlength="2000" placeholder="Write a comment…"><button class="join" onclick="submitComment(\''+postId+'\')">Send</button></div>';
 }
 async function submitComment(postId){
