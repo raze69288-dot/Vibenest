@@ -93,7 +93,7 @@ function renderCommunityPosts(){
   const c=activeCommunity,el=document.getElementById('communityPosts');if(!c||!el)return;
   if(c.id && onlineCommunities.some(x=>String(x.id)===String(c.id))){
    const matching=onlinePosts.filter(p=>String(p.community_id)===String(c.id));
-   el.innerHTML=matching.map(p=>{const profile=onlineProfiles[p.author_id];const name=p.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');const commentsId='comments-community-'+p.id;return `<article class="post"><div class="posthead"><button class="profile-tap" aria-label="Open profile" onclick="openPublicProfile('${p.author_id}')">${profileAvatarMarkup(profile)}</button><div style="min-width:0;flex:1"><button class="profile-name-tap" onclick="openPublicProfile('${p.author_id}')"><b>${safeText(name)}</b></button><div class="muted">${safeText(new Date(p.created_at).toLocaleString())}</div></div></div><p>${safeText(p.content)}</p><div class="actions"><button onclick="toggleOnlineLike('${p.id}','${p.author_id}')" style="color:${likedPostIds.has(p.id)?'#ff75bc':'var(--muted)'}">${likedPostIds.has(p.id)?'♥ Liked':'♡ Like'}</button><button onclick="toggleComments('${p.id}','${commentsId}',this)">▢ Comments</button></div><div id="${commentsId}" class="comments-box" style="display:none;margin-top:12px"></div></article>`}).join('')||'<p class="muted">No posts here yet. Be the first to start a conversation!</p>';
+   el.innerHTML=matching.map(p=>{const profile=onlineProfiles[p.author_id];const name=p.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');const commentsId='comments-community-'+p.id;return `<article class="post" data-post-id="${p.id}"><div class="posthead"><button class="profile-tap" aria-label="Open profile" onclick="openPublicProfile('${p.author_id}')">${profileAvatarMarkup(profile)}</button><div style="min-width:0;flex:1"><button class="profile-name-tap" onclick="openPublicProfile('${p.author_id}')"><b>${safeText(name)}</b></button><div class="muted">${safeText(new Date(p.created_at).toLocaleString())}</div></div></div><p>${safeText(p.content)}</p><div class="actions"><button onclick="toggleOnlineLike('${p.id}','${p.author_id}')" style="color:${likedPostIds.has(p.id)?'#ff75bc':'var(--muted)'}">${likedPostIds.has(p.id)?'♥ Liked':'♡ Like'}</button><button onclick="toggleComments('${p.id}','${commentsId}',this)">▢ Comments</button></div><div id="${commentsId}" class="comments-box" style="display:none;margin-top:12px"></div></article>`}).join('')||'<p class="muted">No posts here yet. Be the first to start a conversation!</p>';
   }else{
    const matching=posts.filter(p=>p.community===c.name);
    el.innerHTML=matching.map(p=>`<article class="post"><div class="posthead"><div class="avatar">${safeText(p.avatar)}</div><div><b>${safeText(p.user)}</b><div class="muted">${safeText(p.time)}</div></div></div><p>${safeText(p.text)}</p></article>`).join('')||'<p class="muted">No posts here yet. Join in and start a conversation!</p>';
@@ -677,8 +677,16 @@ async function loadNotifications(){
  const ids=[...new Set(notificationRows.map(n=>n.actor_id).filter(Boolean))];let profiles={};
  if(ids.length){const r=await supabaseClient.from('profiles').select('id,username,display_name,avatar_url').in('id',ids);if(!r.error)for(const p of r.data||[])profiles[p.id]=p;}
  const words={follow:'started following you',like:'liked your post',comment:'commented on your post'};
- out.innerHTML=notificationRows.map(n=>{const actor=profiles[n.actor_id],name=actor?.display_name||actor?.username||'A VibeNest member',icon=n.type==='follow'?'👤':n.type==='like'?'❤️':'💬';return `<div class="notification-item ${n.read_at?'':'unread'}"><div class="notice-icon">${icon}</div><div class="notice-copy"><b>${safeText(name)}</b> ${safeText(words[n.type]||'interacted with you')}<div class="muted" style="margin-top:5px">${safeText(new Date(n.created_at).toLocaleString())}</div></div>${!n.read_at?'<span style="color:var(--purple)">●</span>':''}</div>`;}).join('')||'<p class="muted">You’re all caught up. New follows, likes, and comments will appear here.</p>';
+ out.innerHTML=notificationRows.map(n=>{const actor=profiles[n.actor_id],name=actor?.display_name||actor?.username||'A VibeNest member',icon=n.type==='follow'?'♙':n.type==='like'?'♥':'▢';return `<button type="button" class="notification-item ${n.read_at?'':'unread'}" style="width:100%;text-align:left;color:var(--text);font:inherit;cursor:pointer" onclick="openNotification('${n.id}')"><span class="notice-icon">${icon}</span><span class="notice-copy"><b>${safeText(name)}</b> ${safeText(words[n.type]||'interacted with you')}<span class="muted" style="display:block;margin-top:5px">${safeText(new Date(n.created_at).toLocaleString())}</span></span>${!n.read_at?'<span style="color:var(--purple)">●</span>':''}</button>`;}).join('')||'<p class="muted">You’re all caught up. New follows, likes, and comments will appear here.</p>';
  await loadNotificationBadge();
+}
+async function openNotification(notificationId){
+ const item=notificationRows.find(n=>n.id===notificationId);if(!item)return;
+ if(!item.read_at){const {error}=await supabaseClient.from('notifications').update({read_at:new Date().toISOString()}).eq('id',notificationId).eq('recipient_id',currentUser.id);if(!error)item.read_at=new Date().toISOString();}
+ await loadNotificationBadge();
+ if(item.type==='follow'&&item.actor_id){await openPublicProfile(item.actor_id);return;}
+ if(item.post_id){go('home');await loadOnlinePosts();setTimeout(()=>{const target=document.querySelector(`[data-post-id="${CSS.escape(item.post_id)}"]`);if(target){target.scrollIntoView({behavior:'smooth',block:'center'});target.style.outline='2px solid var(--purple)';setTimeout(()=>target.style.outline='',1800);}else showToast('That post may no longer be available.');},120);return;}
+ if(item.actor_id)await openPublicProfile(item.actor_id);
 }
 async function markAllNotificationsRead(){
  if(!currentUser||!supabaseClient){showToast('Sign in to manage notifications');return;}
@@ -704,6 +712,14 @@ async function toggleOnlineLike(postId,authorId){
 }
 if(supabaseClient){supabaseClient.auth.onAuthStateChange((_event,session)=>{currentUser=session?.user||null;if(currentUser){setTimeout(loadNotificationBadge,0);setTimeout(loadOnlineLikes,0);}else{notificationRows=[];likedPostIds=new Set();loadNotificationBadge();}});}
 if(currentUser){setTimeout(loadNotificationBadge,0);setTimeout(loadOnlineLikes,0);}
+let vibeNotificationChannel=null;
+function startNotificationRealtime(){
+ if(!supabaseClient||!currentUser)return;
+ if(vibeNotificationChannel){try{supabaseClient.removeChannel(vibeNotificationChannel)}catch(e){}}
+ vibeNotificationChannel=supabaseClient.channel('vibenest-notifications-'+currentUser.id).on('postgres_changes',{event:'*',schema:'public',table:'notifications',filter:'recipient_id=eq.'+currentUser.id},()=>{loadNotificationBadge();if(document.getElementById('notifications')?.classList.contains('active'))loadNotifications();}).subscribe();
+}
+if(supabaseClient){supabaseClient.auth.onAuthStateChange((_event,session)=>{currentUser=session?.user||null;if(currentUser){setTimeout(loadNotificationBadge,0);setTimeout(startNotificationRealtime,0);}else{if(vibeNotificationChannel){try{supabaseClient.removeChannel(vibeNotificationChannel)}catch(e){}vibeNotificationChannel=null;}notificationRows=[];loadNotificationBadge();}});}
+if(currentUser)setTimeout(startNotificationRealtime,100);
 
 </script>
 
