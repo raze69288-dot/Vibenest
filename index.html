@@ -162,14 +162,38 @@ let postLikeCounts = Object.create(null), postCommentCounts = Object.create(null
 async function refreshSocialCounts(){
  if(!supabaseClient)return;
  try{
-  const pids=onlinePosts.map(p=>p.id).filter(Boolean), cids=onlineCommunities.map(c=>c.id).filter(Boolean);
-  postLikeCounts=Object.create(null);postCommentCounts=Object.create(null);communityMemberCounts=Object.create(null);
+  const pids=[...new Set(onlinePosts.map(p=>p.id).filter(Boolean))];
+  const cids=[...new Set(onlineCommunities.map(c=>c.id).filter(Boolean))];
+  // Build fresh maps separately, then swap only after a successful query. Never
+  // clear good displayed counts before we know the database query succeeded.
   if(pids.length){
-   const [likes,comments]=await Promise.all([supabaseClient.from('post_likes').select('post_id').in('post_id',pids),supabaseClient.from('comments').select('post_id').in('post_id',pids)]);
-   if(!likes.error)for(const row of likes.data||[])postLikeCounts[row.post_id]=(postLikeCounts[row.post_id]||0)+1;else console.warn('Like counts unavailable:',likes.error.message);
-   if(!comments.error)for(const row of comments.data||[])postCommentCounts[row.post_id]=(postCommentCounts[row.post_id]||0)+1;
+   const [likes,comments]=await Promise.all([
+    supabaseClient.from('post_likes').select('post_id').in('post_id',pids),
+    supabaseClient.from('comments').select('post_id').in('post_id',pids)
+   ]);
+   if(!likes.error){
+    const next=Object.create(null);
+    for(const row of likes.data||[])next[row.post_id]=(next[row.post_id]||0)+1;
+    postLikeCounts={...postLikeCounts,...next};
+    // A successful query with zero rows means the queried posts really have no visible likes.
+    for(const id of pids)if(!(id in next))postLikeCounts[id]=0;
+   }else console.warn('Like counts unavailable (check post_likes SELECT RLS policy):',likes.error.message);
+   if(!comments.error){
+    const next=Object.create(null);
+    for(const row of comments.data||[])next[row.post_id]=(next[row.post_id]||0)+1;
+    postCommentCounts={...postCommentCounts,...next};
+    for(const id of pids)if(!(id in next))postCommentCounts[id]=0;
+   }else console.warn('Comment counts unavailable:',comments.error.message);
   }
-  if(cids.length){const members=await supabaseClient.from('memberships').select('community_id').in('community_id',cids);if(!members.error)for(const row of members.data||[])communityMemberCounts[row.community_id]=(communityMemberCounts[row.community_id]||0)+1;else console.warn('Community member counts unavailable:',members.error.message);}
+  if(cids.length){
+   const members=await supabaseClient.from('memberships').select('community_id').in('community_id',cids);
+   if(!members.error){
+    const next=Object.create(null);
+    for(const row of members.data||[])next[row.community_id]=(next[row.community_id]||0)+1;
+    communityMemberCounts={...communityMemberCounts,...next};
+    for(const id of cids)if(!(id in next))communityMemberCounts[id]=0;
+   }else console.warn('Community member counts unavailable (check memberships SELECT RLS policy):',members.error.message);
+  }
  }catch(e){console.warn('Could not refresh VibeNest counts',e);}
 }
 let onlineProfiles = {};
