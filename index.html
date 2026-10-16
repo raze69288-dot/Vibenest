@@ -8,7 +8,10 @@
 <section id="home" class="page active"><div class="intro"><div class="muted">YOUR CORNER OF THE INTERNET</div><h1>Find your <span>people.</span></h1></div><div class="hero"><small>✦ COMMUNITY SPOTLIGHT</small><h2>Your interests deserve a home.</h2><p>Meet people who get your fandom, creativity, and kind of weird.</p><button class="btn" onclick="go('discover')">Explore communities ↗</button></div><div class="heading"><h2>Communities for you</h2><button class="join" onclick="createCommunity()">＋ Create</button></div><div id="homeGrid" class="grid"></div><div class="heading"><h2>From your communities</h2><button class="join" onclick="createPost()">＋ Post</button></div><div id="feed" class="feed"></div><div class="notice">VibeNest preview · Your community, your vibe.</div></section>
 <section id="discover" class="page"><div class="simple"><h1>Discover ✨</h1><p class="muted">There’s a whole world around what you love.</p><input id="search" class="search" placeholder="⌕  Find your next community..." oninput="renderCommunities()"></div><div id="discoverGrid" class="grid"></div></section>
 <section id="create" class="page"><div class="simple"><h1>Create a post ✨</h1><p class="muted">Choose one of your joined communities first. You can write your post inside that community.</p><div id="createCommunityChoices"></div></div></section>
-<section id="community" class="page"><div class="community-detail"><button class="join" onclick="go('discover')">← Back to communities</button><div id="communityDetailContent"></div><div class="heading" style="padding:16px 0"><h2>Community posts</h2><button class="join" id="communityPostButton" onclick="createPostInCommunity()">＋ Post</button></div><div id="communityPosts" class="detail-posts"></div></div></section>
+<section id="community" class="page"><div class="community-detail"><button class="join" onclick="go('discover')">← Back to communities</button><div id="communityDetailContent"></div><div class="heading" style="padding:16px 0"><h2>Community posts</h2><button class="join" id="communityPostButton" onclick="toggleCommunityComposer()">＋ Post</button></div><div id="communityComposer" class="card" style="display:none;margin:12px 0">
+<textarea id="communityPostText" class="field" maxlength="5000" rows="4" placeholder="What would you like to share with this community?" style="resize:vertical"></textarea>
+<button class="btn" id="publishCommunityPostButton" onclick="publishCommunityPost()">Publish post</button>
+</div><div id="communityPosts" class="detail-posts"></div></div></section>
 <section id="chats" class="page"><div class="simple"><h1>Messages 💬</h1><p class="muted">Private conversations between VibeNest members.</p><div class="chat-start"><h2>Find people</h2><input id="userSearch" class="field" placeholder="Search usernames…" oninput="searchChatUsers()"><div id="userSearchResults"></div></div><h2 id="chatsHeading" style="margin-top:24px">Your conversations</h2><div id="conversationList"><p class="muted">Sign in to see your conversations.</p></div><div id="chatWindow" style="display:none;margin-top:18px"><button class="join" onclick="closeChatWindow()">← Back to conversations</button><h2 id="chatTitle" style="margin:14px 0"></h2><div id="chatMessages" class="chat-messages"></div><div class="chat-compose"><input id="chatMessageInput" class="field" maxlength="5000" placeholder="Write a message…" enterkeyhint="send" onkeydown="if(event.key === 'Enter' || event.keyCode === 13){event.preventDefault();sendChatMessage();}"><button class="join" onclick="sendChatMessage()">Send</button></div></div></div></section>
 <section id="activity" class="page"><div class="simple"><h1>Activity ♡</h1><p class="muted">Little moments from your corner of VibeNest.</p><div class="row">🌸 <div><b>Anime Haven</b><div class="muted">A new discussion is trending</div></div></div><div class="row">🎨 <div><b>Art Club</b><div class="muted">A new creative prompt is up</div></div></div></div></section>
 <section id="profile" class="page"><div class="simple"><h1>Your profile</h1><div class="hero" style="text-align:center"><div id="profileAvatarDisplay" class="profile-hero-avatar">✦</div><h2 id="pname">Your name</h2><div id="profileHandle" class="profile-handle">@username</div><p id="pbio">Add a little about yourself ✨</p><button class="btn" onclick="editProfile()">Edit profile</button><div style="margin-top:18px" class="muted">Your VibeNest profile</div></div><div class="hero" style="margin-top:14px"><h2 style="margin-top:0">Account</h2><p class="muted" style="margin-bottom:12px">Sign in or manage your VibeNest account.</p><button class="join" style="display:block;width:100%" onclick="openAuth()" id="authButton">Sign in / Sign up</button><div id="authStatus" class="muted" style="text-align:center;margin-top:8px"></div></div></div></section>
@@ -64,19 +67,42 @@ function renderCommunityPosts(){
    el.innerHTML=matching.map(p=>`<article class="post"><div class="posthead"><div class="avatar">${safeText(p.avatar)}</div><div><b>${safeText(p.user)}</b><div class="muted">${safeText(p.time)}</div></div></div><p>${safeText(p.text)}</p></article>`).join('')||'<p class="muted">No posts here yet. Join in and start a conversation!</p>';
   }
 }
-async function createPostInCommunity(){
- const c=activeCommunity;if(!c)return;
- if(c.id){
-  if(!currentUser){openAuth();showToast('Sign in to post');return;}
+function toggleCommunityComposer(){
+  const c=activeCommunity;
+  if(!c)return;
+  if(c.id && !currentUser){openAuth();showToast('Sign in to post');return;}
   if(!c.joined){showToast('Join this community before posting');return;}
-  const content=prompt('What would you like to share in '+c.name+'?');if(!content||!content.trim())return;
-  const {data,error}=await supabaseClient.from('posts').insert({community_id:c.id,author_id:currentUser.id,content:content.trim()}).select().single();
-  if(error){showToast(error.message);return;}onlinePosts.unshift(data);renderOnlinePosts();renderCommunityPosts();showToast('Post published online!');
- }else{
-  if(!c.joined){showToast('Join this community before posting');return;}
-  const content=prompt('What would you like to share in '+c.name+'?');if(!content||!content.trim())return;
-  posts.unshift({user:document.getElementById('pname').textContent,avatar:'🌌',community:c.name,time:'Just now',text:content.trim(),likes:0,liked:false});renderPosts();renderCommunityPosts();showToast('Post added to this preview!');
- }
+  const box=document.getElementById('communityComposer');
+  if(!box)return;
+  box.style.display=box.style.display==='block'?'none':'block';
+  if(box.style.display==='block')document.getElementById('communityPostText')?.focus();
+}
+async function createPostInCommunity(){toggleCommunityComposer();}
+async function publishCommunityPost(){
+  const c=activeCommunity, input=document.getElementById('communityPostText');
+  const content=input?.value.trim();
+  if(!c || !content){showToast('Write something before publishing');return;}
+  if(c.id){
+    if(!currentUser || !supabaseClient){openAuth();showToast('Sign in to post');return;}
+    if(!c.joined){showToast('Join this community before posting');return;}
+    const button=document.getElementById('publishCommunityPostButton');
+    if(button)button.disabled=true;
+    const {data,error}=await supabaseClient.from('posts').insert({community_id:c.id,author_id:currentUser.id,content}).select().single();
+    if(button)button.disabled=false;
+    if(error){showToast(error.message);return;}
+    onlinePosts.unshift(data);
+    await loadOnlinePosts();
+    renderCommunityPosts();
+    input.value='';
+    document.getElementById('communityComposer').style.display='none';
+    showToast('Post published!');
+  }else{
+    if(!c.joined){showToast('Join this community before posting');return;}
+    posts.unshift({user:document.getElementById('pname').textContent,avatar:'🌌',community:c.name,time:'Just now',text:content,likes:0,liked:false});
+    renderPosts();renderCommunityPosts();input.value='';
+    document.getElementById('communityComposer').style.display='none';
+    showToast('Post added to this preview!');
+  }
 }
 
 // VibeNest online community/post layer. Auth and tables are provided by Supabase.
