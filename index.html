@@ -419,18 +419,18 @@ async function loadConversations(silent=false){
  const ids=[...new Set(rows.map(c=>c.user_one===currentUser.id?c.user_two:c.user_one))];
  const [{data:profiles,error:profileError},{data:messages,error:messageError}]=await Promise.all([
   supabaseClient.from('profiles').select('id,username,display_name,avatar_url').in('id',ids),
-  supabaseClient.from('messages').select('id,conversation_id,sender_id,content,created_at').in('conversation_id',rows.map(c=>c.id)).order('created_at',{ascending:false}).limit(1000)
+  supabaseClient.from('messages').select('id,conversation_id,sender_id,content,created_at,delivered_at,read_at').in('conversation_id',rows.map(c=>c.id)).order('created_at',{ascending:false}).limit(1000)
  ]);
  chatProfiles={};if(!profileError)for(const p of profiles||[])chatProfiles[p.id]=p;
  const grouped={};for(const m of messages||[]){(grouped[m.conversation_id]||(grouped[m.conversation_id]=[])).push(m);}
  totalUnreadChatMessages=0;
  list.innerHTML=rows.map(c=>{
   const otherId=c.user_one===currentUser.id?c.user_two:c.user_one,profile=chatProfiles[otherId],msgs=grouped[c.id]||[],latest=msgs[0];
-  const unread=msgs.filter(m=>m.sender_id!==currentUser.id&&new Date(m.created_at).getTime()>new Date(chatSeenAt(c.id)).getTime()).length;
+  const unread=msgs.filter(m=>m.sender_id!==currentUser.id&&!m.read_at&&new Date(m.created_at).getTime()>new Date(chatSeenAt(c.id)).getTime()).length;
   totalUnreadChatMessages+=unread;
   const preview=latest?(latest.sender_id===currentUser.id?'You: ':'')+latest.content:'No messages yet. Say hello!';
   const avatar=profile?.avatar_url?`<img src="${safeText(profile.avatar_url)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">`:'✦';
-  return `<div class="conversation-item ${unread?'has-unread':''}" onclick="openConversation('${c.id}','${otherId}')"><button class="profile-tap" onclick="event.stopPropagation();openPublicProfile('${otherId}')" aria-label="Open profile"><div class="avatar">${avatar}</div></button><div class="conversation-copy"><div class="conversation-title-row"><b>${safeText(chatDisplayName(profile))}</b><span class="conversation-time">${safeText(shortChatTime(latest?.created_at))}</span></div><div class="muted">@${safeText(profile?.username||'member')}</div><div class="conversation-preview">${safeText(preview)}</div></div>${unread?`<span class="unread-pill" aria-label="${unread} unread messages">${unread>99?'99+':unread}</span>`:''}</div>`;
+  return `<div class="conversation-item ${unread?'has-unread':''}" onclick="openConversation('${c.id}','${otherId}')"><button class="profile-tap" onclick="event.stopPropagation();openPublicProfile('${otherId}')" aria-label="Open profile"><div class="avatar">${avatar}</div></button><div class="conversation-copy"><div class="conversation-title-row"><b>${safeText(chatDisplayName(profile))}</b><span class="conversation-time">${safeText(shortChatTime(latest?.created_at))}</span></div><div class="muted">@${safeText(profile?.username||'member')}</div><div class="conversation-preview">${unread?'🔴 ':''}${safeText(preview)}</div></div>${unread?`<span class="unread-pill" aria-label="${unread} unread messages">${unread>99?'99+':unread}</span>`:''}</div>`;
  }).join('');
  updateChatNavBadge(totalUnreadChatMessages);
  if(messageError)console.warn('Could not load message previews/unread counts:',messageError.message);
@@ -465,10 +465,10 @@ async function openConversation(conversationId,otherId){
 function closeChatWindow(){activeConversationId=null;activeChatUser=null;document.getElementById('chatWindow').style.display='none';document.getElementById('conversationList').style.display='block';document.getElementById('userSearchResults').style.display='block';document.getElementById('userSearch').style.display='block';const chatStart=document.querySelector('#chats .chat-start');if(chatStart)chatStart.style.display='block';const chatsHeading=document.getElementById('chatsHeading');if(chatsHeading)chatsHeading.style.display='';loadConversations();}
 async function loadChatMessages(){
  const box=document.getElementById('chatMessages');if(!box||!activeConversationId||!supabaseClient)return;const requestedId=activeConversationId;
- const {data,error}=await supabaseClient.from('messages').select('id,conversation_id,sender_id,content,created_at,read_at').eq('conversation_id',requestedId).order('created_at',{ascending:true}).limit(200);
+ const {data,error}=await supabaseClient.from('messages').select('id,conversation_id,sender_id,content,created_at,delivered_at,read_at').eq('conversation_id',requestedId).order('created_at',{ascending:true}).limit(200);
  if(requestedId!==activeConversationId)return;
  if(error){box.innerHTML='<p class="muted">Could not load messages: '+safeText(error.message)+'</p>';return;}
- const rows=data||[];if(vibeChatReadColumnAvailable){const unreadIds=rows.filter(m=>m.sender_id!==currentUser.id&&!m.read_at).map(m=>m.id);if(unreadIds.length){const marked=await supabaseClient.from('messages').update({read_at:new Date().toISOString()}).in('id',unreadIds);if(marked.error){vibeChatReadColumnAvailable=false;console.warn('Read receipts need the messages.read_at column and update policy.');}else rows.forEach(m=>{if(unreadIds.includes(m.id))m.read_at=new Date().toISOString();});}}box.innerHTML=rows.map(m=>`<div class="chat-bubble ${m.sender_id===currentUser.id?'mine':''}">${safeText(m.content)}<div class="muted">${safeText(new Date(m.created_at).toLocaleString())}</div>${m.sender_id===currentUser.id?`<div class="receipt ${m.read_at?'read':''}">${m.read_at?'✓✓ Read':'✓ Sent'}</div>`:''}</div>`).join('')||'<p class="muted">No messages yet. Say hello!</p>';
+ const rows=data||[];if(vibeChatReadColumnAvailable){const incomingIds=rows.filter(m=>m.sender_id!==currentUser.id&&(!m.delivered_at||!m.read_at)).map(m=>m.id);if(incomingIds.length){const readStamp=new Date().toISOString();const marked=await supabaseClient.from('messages').update({delivered_at:readStamp,read_at:readStamp}).in('id',incomingIds);if(marked.error){vibeChatReadColumnAvailable=false;console.warn('Message receipts need delivered_at/read_at columns and recipient update policy.',marked.error.message);}else rows.forEach(m=>{if(incomingIds.includes(m.id)){m.delivered_at=m.delivered_at||readStamp;m.read_at=readStamp;}});}}box.innerHTML=rows.map(m=>`<div class="chat-bubble ${m.sender_id===currentUser.id?'mine':''}">${safeText(m.content)}<div class="muted">${safeText(new Date(m.created_at).toLocaleString())}</div>${m.sender_id===currentUser.id?`<div class="receipt ${m.read_at?'read':''}">${m.read_at?'✓✓ Read':m.delivered_at?'✓✓ Delivered':'✓ Sent'}</div>`:''}</div>`).join('')||'<p class="muted">No messages yet. Say hello!</p>';
  box.scrollTop=box.scrollHeight;
  const latest=rows.length?rows[rows.length-1].created_at:new Date().toISOString();markChatSeen(requestedId,latest);await loadConversations(true);
 }
@@ -691,18 +691,18 @@ loadConversations = async function(silent=false) {
   const ids=[...new Set(rows.map(c=>c.user_one===currentUser.id?c.user_two:c.user_one))];
   const [{data:profiles,error:profileError},{data:messages,error:messageError}]=await Promise.all([
     supabaseClient.from('profiles').select('id,username,display_name,bio,avatar_url').in('id',ids),
-    supabaseClient.from('messages').select('id,conversation_id,sender_id,content,created_at').in('conversation_id',rows.map(c=>c.id)).order('created_at',{ascending:false}).limit(1000)
+    supabaseClient.from('messages').select('id,conversation_id,sender_id,content,created_at,delivered_at,read_at').in('conversation_id',rows.map(c=>c.id)).order('created_at',{ascending:false}).limit(1000)
   ]);
   chatProfiles={};if(!profileError)for(const pr of profiles||[])chatProfiles[pr.id]=pr;
   const grouped={};for(const m of messages||[]){(grouped[m.conversation_id]||(grouped[m.conversation_id]=[])).push(m);}
   totalUnreadChatMessages=0;
   list.innerHTML=rows.map(c=>{
     const otherId=c.user_one===currentUser.id?c.user_two:c.user_one,profile=chatProfiles[otherId],msgs=grouped[c.id]||[],latest=msgs[0];
-    const unread=msgs.filter(m=>m.sender_id!==currentUser.id&&new Date(m.created_at).getTime()>new Date(chatSeenAt(c.id)).getTime()).length;
+    const unread=msgs.filter(m=>m.sender_id!==currentUser.id&&!m.read_at&&new Date(m.created_at).getTime()>new Date(chatSeenAt(c.id)).getTime()).length;
     totalUnreadChatMessages+=unread;
     const preview=latest?(latest.sender_id===currentUser.id?'You: ':'')+latest.content:'No messages yet. Say hello!';
     const avatar=profileAvatarMarkup(profile);
-    return `<div class="conversation-item ${unread?'has-unread':''}" onclick="openConversation('${c.id}','${otherId}')">${avatar}<div class="conversation-copy"><div class="conversation-title-row"><b>${safeText(chatDisplayName(profile))}</b><span class="conversation-time">${safeText(shortChatTime(latest?.created_at))}</span></div><div class="muted">@${safeText(profile?.username||'member')}</div><div class="conversation-preview">${safeText(preview)}</div></div>${unread?`<span class="unread-pill" aria-label="${unread} unread messages">${unread>99?'99+':unread}</span>`:''}</div>`;
+    return `<div class="conversation-item ${unread?'has-unread':''}" onclick="openConversation('${c.id}','${otherId}')">${avatar}<div class="conversation-copy"><div class="conversation-title-row"><b>${safeText(chatDisplayName(profile))}</b><span class="conversation-time">${safeText(shortChatTime(latest?.created_at))}</span></div><div class="muted">@${safeText(profile?.username||'member')}</div><div class="conversation-preview">${unread?'🔴 ':''}${safeText(preview)}</div></div>${unread?`<span class="unread-pill" aria-label="${unread} unread messages">${unread>99?'99+':unread}</span>`:''}</div>`;
   }).join('');
   updateChatNavBadge(totalUnreadChatMessages);
   if(messageError)console.warn('Could not load message previews/unread counts:',messageError.message);
@@ -836,12 +836,28 @@ let vibeChatPresenceState = {};
 let vibeChatTypingTimer = null;
 let vibeChatLastTypingSent = 0;
 let vibeChatReadColumnAvailable = true;
+let vibeGlobalPresenceChannel = null;
+let vibeGlobalPresenceState = {};
+function updateChatPresenceUI(){
+  const status=document.getElementById('chatPresenceStatus');if(!status)return;
+  const online=Object.values(vibeGlobalPresenceState||{}).some(rows=>(rows||[]).some(row=>row.user_id===activeChatUser));
+  status.textContent=online?'● Online':'Offline';status.classList.toggle('is-online',online);
+}
+function startVibeGlobalPresence(){
+  if(!supabaseClient||!currentUser||!supabaseClient.channel)return;
+  if(vibeGlobalPresenceChannel){try{supabaseClient.removeChannel(vibeGlobalPresenceChannel);}catch(e){}}
+  const channel=supabaseClient.channel('vibenest-online-presence',{config:{presence:{key:currentUser.id}}});
+  channel.on('presence',{event:'sync'},()=>{vibeGlobalPresenceState=channel.presenceState();updateChatPresenceUI();});
+  channel.subscribe(async status=>{if(status==='SUBSCRIBED'){try{await channel.track({user_id:currentUser.id,online_at:new Date().toISOString()});}catch(e){}}});
+  vibeGlobalPresenceChannel=channel;
+}
 function startVibeChatInboxRealtime(){
   if(!supabaseClient||!currentUser||!supabaseClient.channel)return;
   if(vibeChatInboxRealtimeChannel){try{supabaseClient.removeChannel(vibeChatInboxRealtimeChannel);}catch(e){}}
   vibeChatInboxRealtimeChannel=supabaseClient.channel('vibenest-inbox-'+currentUser.id+'-'+Date.now())
     .on('postgres_changes',{event:'INSERT',schema:'public',table:'messages'},payload=>{
       const msg=payload?.new;if(!msg||msg.sender_id===currentUser?.id)return;
+      if(!msg.delivered_at){supabaseClient.from('messages').update({delivered_at:new Date().toISOString()}).eq('id',msg.id).then(()=>{});}
       if(activeConversationId===msg.conversation_id){loadChatMessages();}
       loadConversations(true);
     }).subscribe();
@@ -897,8 +913,8 @@ function bindChatTypingInput(){
 }
 bindChatTypingInput();
 
-if(currentUser)setTimeout(startVibeChatInboxRealtime,100);
-if(supabaseClient)supabaseClient.auth.onAuthStateChange((_event,session)=>{if(session?.user){currentUser=session.user;setTimeout(startVibeChatInboxRealtime,100);setTimeout(()=>loadConversations(true),150);}else if(vibeChatInboxRealtimeChannel){try{supabaseClient.removeChannel(vibeChatInboxRealtimeChannel);}catch(e){}vibeChatInboxRealtimeChannel=null;updateChatNavBadge(0);}});
+if(currentUser){setTimeout(startVibeChatInboxRealtime,100);setTimeout(startVibeGlobalPresence,120);}
+if(supabaseClient)supabaseClient.auth.onAuthStateChange((_event,session)=>{if(session?.user){currentUser=session.user;setTimeout(startVibeChatInboxRealtime,100);setTimeout(startVibeGlobalPresence,120);setTimeout(()=>loadConversations(true),150);}else{if(vibeChatInboxRealtimeChannel){try{supabaseClient.removeChannel(vibeChatInboxRealtimeChannel);}catch(e){}vibeChatInboxRealtimeChannel=null;}if(vibeGlobalPresenceChannel){try{supabaseClient.removeChannel(vibeGlobalPresenceChannel);}catch(e){}vibeGlobalPresenceChannel=null;vibeGlobalPresenceState={};updateChatNavBadge(0);}}});
 const vibeOriginalOpenConversation = openConversation;
 openConversation = async function(conversationId,otherId){
   await vibeOriginalOpenConversation(conversationId,otherId);
