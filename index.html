@@ -390,4 +390,68 @@ const oldGoForProfile = go;
 go = function(id) { oldGoForProfile(id); if (id==='profile') loadMyProfile(); if (id==='chats') loadConversations(); };
 </script>
 
+
+
+<style>
+/* Private messaging improvements */
+.chat-bubble{white-space:pre-wrap;line-height:1.4}
+.chat-bubble .muted{opacity:.8}
+.chat-compose button:disabled{opacity:.55;cursor:wait}
+.chat-live-note{font-size:11px;color:var(--muted);margin:4px 0 8px}
+.chat-tools{display:flex;justify-content:flex-end;gap:8px;margin:4px 0}
+.chat-tools button{font-size:12px;padding:6px 10px}
+</style>
+<script>
+// Messaging upgrade: live incoming messages, Enter-to-send, and a manual refresh fallback.
+let vibeChatRealtimeChannel = null;
+function stopVibeChatRealtime(){
+  if(vibeChatRealtimeChannel && supabaseClient){
+    try{supabaseClient.removeChannel(vibeChatRealtimeChannel);}catch(e){}
+  }
+  vibeChatRealtimeChannel=null;
+}
+function startVibeChatRealtime(conversationId){
+  stopVibeChatRealtime();
+  if(!supabaseClient || !conversationId || !supabaseClient.channel)return;
+  try{
+    vibeChatRealtimeChannel=supabaseClient.channel('vibenest-chat-'+conversationId+'-'+Date.now())
+      .on('postgres_changes',{event:'INSERT',schema:'public',table:'messages',filter:'conversation_id=eq.'+conversationId},payload=>{
+        if(activeConversationId===conversationId){loadChatMessages();}
+        if(document.getElementById('chats')?.classList.contains('active'))loadConversations();
+      }).subscribe();
+  }catch(e){console.warn('Live chat updates unavailable; use Refresh.',e);}
+}
+const vibeOriginalOpenConversation = openConversation;
+openConversation = async function(conversationId,otherId){
+  await vibeOriginalOpenConversation(conversationId,otherId);
+  if(activeConversationId===conversationId){
+    startVibeChatRealtime(conversationId);
+    const box=document.getElementById('chatMessages');
+    if(box && !document.getElementById('chatLiveNote')){
+      const note=document.createElement('div');note.id='chatLiveNote';note.className='chat-live-note';note.textContent='Messages update automatically when live connection is available.';
+      box.parentNode.insertBefore(note,box);
+    }
+  }
+};
+const vibeOriginalCloseChatWindow = closeChatWindow;
+closeChatWindow = function(){stopVibeChatRealtime();const note=document.getElementById('chatLiveNote');if(note)note.remove();vibeOriginalCloseChatWindow();};
+// Add a refresh button without changing the existing message layout or database.
+(function addChatRefreshControl(){
+  const win=document.getElementById('chatWindow');
+  if(!win || document.getElementById('chatRefreshTools'))return;
+  const tools=document.createElement('div');tools.id='chatRefreshTools';tools.className='chat-tools';
+  tools.innerHTML='<button class="join" type="button" onclick="loadChatMessages();loadConversations()">↻ Refresh messages</button>';
+  const messages=document.getElementById('chatMessages');
+  if(messages)win.insertBefore(tools,messages);
+})();
+(function enableEnterToSend(){
+  const input=document.getElementById('chatMessageInput');
+  if(!input || input.dataset.enterSendBound==='yes')return;
+  input.dataset.enterSendBound='yes';
+  input.addEventListener('keydown',event=>{
+    if(event.key==='Enter' && !event.shiftKey){event.preventDefault();sendChatMessage();}
+  });
+})();
+</script>
+
 </body></html>
