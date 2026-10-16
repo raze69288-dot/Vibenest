@@ -807,7 +807,7 @@ go=function(id){
 .public-profile-hero{text-align:center;padding:18px 12px 20px;border-radius:20px;background:radial-gradient(ellipse at 80% 0%,#a77bff22,transparent 50%),#21172f}
 .public-profile-hero .profile-hero-avatar{width:100px;height:100px;border-radius:28px}
 .public-profile-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:14px 0}
-.public-profile-stat{background:#171120;border:1px solid var(--line);border-radius:14px;text-align:center;padding:12px}
+.public-profile-stat{background:#171120;border:1px solid var(--line);border-radius:14px;text-align:center;padding:12px;cursor:pointer;color:var(--text);font:inherit;width:100%}.public-profile-stat:active{background:#2a1d3b}.public-profile-stat span{display:block;margin-top:3px}
 .public-profile-stat b{display:block;font-size:20px}
 .public-profile-post{padding:12px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
 .public-profile-post:last-child{border-bottom:0}
@@ -840,8 +840,25 @@ async function openPublicProfile(userId){
   const posts=postsResult.error?[]:(postsResult.data||[]);
   const communityIds=[...new Set(posts.map(p=>p.community_id).filter(Boolean))];let communityNames={};
   if(communityIds.length){const c=await supabaseClient.from('communities').select('id,name').in('id',communityIds);if(!c.error)for(const item of c.data||[])communityNames[item.id]=item.name;}
-  out.innerHTML=`<div class="public-profile-hero"><div class="profile-hero-avatar">${avatar}</div><h2 style="margin:8px 0 4px">${safeText(name)}</h2><div class="profile-handle">@${safeText(profile.username||'member')}</div><p style="margin:14px auto 16px;max-width:380px;overflow-wrap:anywhere">${safeText(profile.bio||'No bio yet.')}</p><div style="display:flex;justify-content:center;gap:9px;flex-wrap:wrap">${currentUser?`<button class="join" onclick="togglePublicProfileFollow('${userId}')">${isFollowing?'✓ Following':'＋ Follow'}</button><button class="btn" onclick="closePublicProfile();startConversation('${userId}')">Message</button>`:''}</div></div><div class="public-profile-stats"><div class="public-profile-stat"><b>${followersResult.error?'—':(followersResult.data||[]).length}</b><span class="muted">Followers</span></div><div class="public-profile-stat"><b>${followingResult.error?'—':(followingResult.data||[]).length}</b><span class="muted">Following</span></div></div><h3 style="margin:18px 2px 6px">Posts</h3><div>${posts.map(post=>`<div class="public-profile-post"><p style="margin:0 0 7px">${safeText(post.content||'')}</p><div class="muted">${safeText(communityNames[post.community_id]||'Community')} · ${safeText(new Date(post.created_at).toLocaleString())}</div></div>`).join('')||'<p class="muted">No posts yet.</p>'}</div>`;
+  out.innerHTML=`<div class="public-profile-hero"><div class="profile-hero-avatar">${avatar}</div><h2 style="margin:8px 0 4px">${safeText(name)}</h2><div class="profile-handle">@${safeText(profile.username||'member')}</div><p style="margin:14px auto 16px;max-width:380px;overflow-wrap:anywhere">${safeText(profile.bio||'No bio yet.')}</p><div style="display:flex;justify-content:center;gap:9px;flex-wrap:wrap">${currentUser?`<button class="join" id="publicProfileFollowButton" onclick="togglePublicProfileFollow('${userId}')">${isFollowing?'✓ Following':'＋ Follow'}</button><button class="btn" onclick="closePublicProfile();startConversation('${userId}')">Message</button>`:''}</div></div><div class="public-profile-stats"><button type="button" class="public-profile-stat" onclick="openPublicProfileConnections('${userId}','followers')"><b>${followersResult.error?'—':(followersResult.data||[]).length}</b><span class="muted">Followers</span></button><button type="button" class="public-profile-stat" onclick="openPublicProfileConnections('${userId}','following')"><b>${followingResult.error?'—':(followingResult.data||[]).length}</b><span class="muted">Following</span></button></div><h3 style="margin:18px 2px 6px">Posts</h3><div>${posts.map(post=>`<div class="public-profile-post"><p style="margin:0 0 7px">${safeText(post.content||'')}</p><div class="muted">${safeText(communityNames[post.community_id]||'Community')} · ${safeText(new Date(post.created_at).toLocaleString())}</div></div>`).join('')||'<p class="muted">No posts yet.</p>'}</div>`;
  }catch(error){console.error('Could not open public profile:',error);out.innerHTML=`<p class="muted">Could not load this profile: ${safeText(error.message||'Please try again.')}</p>`;}
+}
+async function openPublicProfileConnections(userId,kind){
+ const out=document.getElementById('publicProfileContent');if(!out)return;
+ out.innerHTML='<p class="muted">Loading '+(kind==='followers'?'followers':'following')+'…</p>';
+ try{
+  const column=kind==='followers'?'follower_id':'following_id';
+  const filterColumn=kind==='followers'?'following_id':'follower_id';
+  const {data:rows,error}=await supabaseClient.from('follows').select(column).eq(filterColumn,userId);
+  if(error)throw error;
+  const ids=[...new Set((rows||[]).map(row=>row[column]).filter(Boolean))];
+  if(!ids.length){out.innerHTML=`<button class="join" onclick="openPublicProfile('${userId}')">← Back to profile</button><p class="muted" style="text-align:center;padding:22px 8px">${kind==='followers'?'No followers yet.':'Not following anyone yet.'}</p>`;return;}
+  const {data:profiles,error:profileError}=await supabaseClient.from('profiles').select('id,username,display_name,bio,avatar_url').in('id',ids);
+  if(profileError)throw profileError;
+  const map=new Map((profiles||[]).map(item=>[item.id,item]));
+  const list=ids.map(id=>map.get(id)).filter(Boolean);
+  out.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px"><button class="join" onclick="openPublicProfile('${userId}')">← Back to profile</button><b style="color:var(--purple)">${kind==='followers'?'Followers':'Following'}</b></div>${list.map(person=>`<div class="user-result" style="display:flex;align-items:center;gap:10px;padding:10px"><button class="profile-tap" onclick="openPublicProfile('${person.id}')">${profileAvatarMarkup(person)}</button><button class="profile-name-tap" style="flex:1;text-align:left;background:none;border:0;color:var(--text);font:inherit;min-width:0" onclick="openPublicProfile('${person.id}')"><b>${safeText(person.display_name||person.username||'VibeNest member')}</b><div class="muted">@${safeText(person.username||'member')}</div></button>${currentUser&&person.id!==currentUser.id?`<button class="join follow-button" onclick="toggleFollow('${person.id}')">${followingIds.has(person.id)?'✓ Following':'+ Follow'}</button>`:''}</div>`).join('')||'<p class="muted">These profiles are not available.</p>'}`;
+ }catch(error){console.error('Could not load public profile connections:',error);out.innerHTML=`<button class="join" onclick="openPublicProfile('${userId}')">← Back to profile</button><p class="muted">Could not load this list. Check the follows and profiles read policies.</p>`;}
 }
 async function togglePublicProfileFollow(userId){const changed=await toggleFollow(userId);if(changed)await openPublicProfile(userId);}
 </script>
