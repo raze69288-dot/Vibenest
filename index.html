@@ -680,17 +680,32 @@ searchChatUsers = async function() {
   const rows=data||[]; if(!rows.length){out.innerHTML='<p class="muted">No users found. Search by their username.</p>';return;}
   out.innerHTML=rows.map(p=>`<div class="user-result"><button class="profile-tap" aria-label="Open profile" onclick="openPublicProfile('${p.id}')">${profileAvatarMarkup(p)}</button><button class="profile-name-tap profile-search-copy" onclick="openPublicProfile('${p.id}')"><b>${safeText(chatDisplayName(p))}</b><div class="muted">@${safeText(p.username||'member')}</div>${p.bio?`<div class="muted">${safeText(p.bio)}</div>`:''}</button><button class="join" onclick="startConversation('${p.id}')">Message</button></div>`).join('');
 };
-loadConversations = async function() {
+loadConversations = async function(silent=false) {
   const list=document.getElementById('conversationList'); if(!list)return;
   if(!currentUser||!supabaseClient){list.innerHTML='<p class="muted">Sign in to use private messages.</p>';totalUnreadChatMessages=0;updateChatNavBadge(0);return;}
-  list.innerHTML='<p class="muted">Loading conversations…</p>';
+  if(!silent)list.innerHTML='<p class="muted">Loading conversations…</p>';
   const {data,error}=await supabaseClient.from('conversations').select('id,user_one,user_two,created_at').or('user_one.eq.'+currentUser.id+',user_two.eq.'+currentUser.id).order('created_at',{ascending:false});
-  if(error){list.innerHTML='<p class="muted">Could not load conversations: '+safeText(error.message)+'</p>';return;}
-  const rows=data||[]; if(!rows.length){list.innerHTML='<p class="muted">No conversations yet. Search for a username above to start one.</p>';return;}
+  if(error){if(!silent)list.innerHTML='<p class="muted">Could not load conversations: '+safeText(error.message)+'</p>';return;}
+  const rows=data||[];
+  if(!rows.length){list.innerHTML='<p class="muted">No conversations yet. Search for a username above to start one.</p>';totalUnreadChatMessages=0;updateChatNavBadge(0);return;}
   const ids=[...new Set(rows.map(c=>c.user_one===currentUser.id?c.user_two:c.user_one))];
-  const {data:profiles,error:profileError}=await supabaseClient.from('profiles').select('id,username,display_name,bio,avatar_url').in('id',ids);
-  chatProfiles={}; if(!profileError)for(const p of profiles||[])chatProfiles[p.id]=p;
-  list.innerHTML=rows.map(c=>{const otherId=c.user_one===currentUser.id?c.user_two:c.user_one;const profile=chatProfiles[otherId];return `<div class="conversation-item" onclick="openConversation('${c.id}','${otherId}')">${profileAvatarMarkup(profile)}<div><b>${safeText(chatDisplayName(profile))}</b><div class="muted">@${safeText(profile?.username||'member')}</div></div><span class="muted">Open ›</span></div>`}).join('');
+  const [{data:profiles,error:profileError},{data:messages,error:messageError}]=await Promise.all([
+    supabaseClient.from('profiles').select('id,username,display_name,bio,avatar_url').in('id',ids),
+    supabaseClient.from('messages').select('id,conversation_id,sender_id,content,created_at').in('conversation_id',rows.map(c=>c.id)).order('created_at',{ascending:false}).limit(1000)
+  ]);
+  chatProfiles={};if(!profileError)for(const pr of profiles||[])chatProfiles[pr.id]=pr;
+  const grouped={};for(const m of messages||[]){(grouped[m.conversation_id]||(grouped[m.conversation_id]=[])).push(m);}
+  totalUnreadChatMessages=0;
+  list.innerHTML=rows.map(c=>{
+    const otherId=c.user_one===currentUser.id?c.user_two:c.user_one,profile=chatProfiles[otherId],msgs=grouped[c.id]||[],latest=msgs[0];
+    const unread=msgs.filter(m=>m.sender_id!==currentUser.id&&new Date(m.created_at).getTime()>new Date(chatSeenAt(c.id)).getTime()).length;
+    totalUnreadChatMessages+=unread;
+    const preview=latest?(latest.sender_id===currentUser.id?'You: ':'')+latest.content:'No messages yet. Say hello!';
+    const avatar=profileAvatarMarkup(profile);
+    return `<div class="conversation-item ${unread?'has-unread':''}" onclick="openConversation('${c.id}','${otherId}')">${avatar}<div class="conversation-copy"><div class="conversation-title-row"><b>${safeText(chatDisplayName(profile))}</b><span class="conversation-time">${safeText(shortChatTime(latest?.created_at))}</span></div><div class="muted">@${safeText(profile?.username||'member')}</div><div class="conversation-preview">${safeText(preview)}</div></div>${unread?`<span class="unread-pill" aria-label="${unread} unread messages">${unread>99?'99+':unread}</span>`:''}</div>`;
+  }).join('');
+  updateChatNavBadge(totalUnreadChatMessages);
+  if(messageError)console.warn('Could not load message previews/unread counts:',messageError.message);
 };
 // Refresh the profile whenever the active account changes.
 if (supabaseClient) {
@@ -813,6 +828,17 @@ if(currentUser)setTimeout(startNotificationRealtime,100);
 <script>
 // Messaging upgrade: live incoming messages, Enter-to-send, and a manual refresh fallback.
 let vibeChatRealtimeChannel = null;
+let vibeChatInboxRealtimeChannel = null;
+function startVibeChatInboxRealtime(){
+  if(!supabaseClient||!currentUser||!supabaseClient.channel)return;
+  if(vibeChatInboxRealtimeChannel){try{supabaseClient.removeChannel(vibeChatInboxRealtimeChannel);}catch(e){}}
+  vibeChatInboxRealtimeChannel=supabaseClient.channel('vibenest-inbox-'+currentUser.id+'-'+Date.now())
+    .on('postgres_changes',{event:'INSERT',schema:'public',table:'messages'},payload=>{
+      const msg=payload?.new;if(!msg||msg.sender_id===currentUser?.id)return;
+      if(activeConversationId===msg.conversation_id){loadChatMessages();}
+      loadConversations(true);
+    }).subscribe();
+}
 function stopVibeChatRealtime(){
   if(vibeChatRealtimeChannel && supabaseClient){
     try{supabaseClient.removeChannel(vibeChatRealtimeChannel);}catch(e){}
@@ -826,10 +852,12 @@ function startVibeChatRealtime(conversationId){
     vibeChatRealtimeChannel=supabaseClient.channel('vibenest-chat-'+conversationId+'-'+Date.now())
       .on('postgres_changes',{event:'INSERT',schema:'public',table:'messages',filter:'conversation_id=eq.'+conversationId},payload=>{
         if(activeConversationId===conversationId){loadChatMessages();}
-        if(document.getElementById('chats')?.classList.contains('active'))loadConversations();
+        if(document.getElementById('chats')?.classList.contains('active'))loadConversations(true);
       }).subscribe();
   }catch(e){console.warn('Live chat updates unavailable; check connection and reopen the conversation.',e);}
 }
+if(currentUser)setTimeout(startVibeChatInboxRealtime,100);
+if(supabaseClient)supabaseClient.auth.onAuthStateChange((_event,session)=>{if(session?.user){currentUser=session.user;setTimeout(startVibeChatInboxRealtime,100);setTimeout(()=>loadConversations(true),150);}else if(vibeChatInboxRealtimeChannel){try{supabaseClient.removeChannel(vibeChatInboxRealtimeChannel);}catch(e){}vibeChatInboxRealtimeChannel=null;updateChatNavBadge(0);}});
 const vibeOriginalOpenConversation = openConversation;
 openConversation = async function(conversationId,otherId){
   await vibeOriginalOpenConversation(conversationId,otherId);
@@ -1035,4 +1063,10 @@ async function togglePublicProfileFollow(userId){const changed=await toggleFollo
 #profileFollowingList .profile-following-user .follow-button{box-sizing:border-box;flex:0 0 auto;max-width:124px;margin:0;white-space:nowrap}
 @media(max-width:380px){#profileFollowersList .profile-following-user,#profileFollowingList .profile-following-user{gap:8px;padding:10px}#profileFollowersList .profile-following-user .profile-tap,#profileFollowingList .profile-following-user .profile-tap .avatar{flex-basis:42px;width:42px;height:42px}#profileFollowersList .profile-following-user .profile-tap .avatar,#profileFollowingList .profile-following-user .profile-tap .avatar{max-width:42px;max-height:42px}#profileFollowersList .profile-following-user .follow-button,#profileFollowingList .profile-following-user .follow-button{max-width:112px;padding:8px;font-size:12px}}
 .profile-connection-endnote{margin:8px 4px 0;padding:10px 12px;text-align:center;color:#a996bd;font-size:13px;line-height:1.45;border-radius:12px;background:rgba(177,138,255,.045)}
+</style>
+<style>
+/* Make the sender/conversation with unread messages unmistakable. */
+.conversation-item.has-unread{border-color:#ff526f;background:linear-gradient(135deg,rgba(105,40,82,.72),rgba(32,19,42,.98));box-shadow:inset 3px 0 0 #ff526f}
+.conversation-item.has-unread .conversation-title-row b{color:#ff8ca0}
+.conversation-item.has-unread .conversation-preview{color:#fff;font-weight:800}
 </style>
