@@ -3,15 +3,16 @@
 
 .comments-box{font-size:13px}.comments-box .field{font:inherit}.authbox{margin:18px 16px;padding:18px;background:var(--panel);border:1px solid var(--line);border-radius:20px}.authbox h2{margin:0 0 5px}.authbox p{color:var(--muted);font-size:13px}.authbox label{display:block;color:var(--muted);font-size:12px;margin:12px 0 5px}.authbox input{display:block;width:100%;background:#100e17;border:1px solid var(--line);border-radius:11px;padding:12px;color:var(--text);margin-top:5px}.authrow{display:flex;gap:8px;margin-top:14px}.authrow button{flex:1}.statusmsg{font-size:12px;color:var(--mint);margin-top:10px;overflow-wrap:anywhere}
 
-.chat-start{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px}.chat-start h2{font-size:16px;margin:0 0 8px}.user-result,.conversation-item{display:flex;align-items:center;gap:10px;padding:11px 8px;border-bottom:1px solid var(--line);cursor:pointer}.user-result:last-child,.conversation-item:last-child{border-bottom:0}.user-result .avatar,.conversation-item .avatar{flex-shrink:0}.user-result div:nth-child(2),.conversation-item div:nth-child(2){min-width:0;flex:1}.chat-messages{display:flex;flex-direction:column;gap:9px;padding:12px 0;max-height:45vh;overflow-y:auto}.chat-bubble{max-width:85%;padding:10px 12px;border-radius:14px;background:var(--panel);border:1px solid var(--line);overflow-wrap:anywhere;align-self:flex-start}.chat-bubble.mine{align-self:flex-end;background:#39264e;border-color:#7955a0}.chat-bubble .muted{font-size:10px;margin-top:4px}.chat-compose{display:flex;gap:8px;align-items:center}.chat-compose .field{min-width:0;flex:1;margin:0}.chat-compose button{flex-shrink:0}
+.chat-start{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px}.chat-start h2{font-size:16px;margin:0 0 8px}.user-result,.conversation-item{display:flex;align-items:center;gap:10px;padding:11px 8px;border-bottom:1px solid var(--line);cursor:pointer}.user-result:last-child,.conversation-item:last-child{border-bottom:0}.user-result .avatar,.conversation-item .avatar{flex-shrink:0}.user-result div:nth-child(2),.conversation-item div:nth-child(2){min-width:0;flex:1}.chat-messages{display:flex;flex-direction:column;gap:9px;padding:12px 0;max-height:45vh;overflow-y:auto}.chat-bubble{max-width:85%;padding:10px 12px;border-radius:14px;background:var(--panel);border:1px solid var(--line);overflow-wrap:anywhere;align-self:flex-start}.chat-bubble.mine{align-self:flex-end;background:#39264e;border-color:#7955a0}.chat-bubble .muted{font-size:10px;margin-top:4px}.chat-compose{display:flex;gap:8px;align-items:center}.chat-compose .field{min-width:0;flex:1;margin:0}.chat-compose button{flex-shrink:0}.avatar-photo{overflow:hidden;padding:0}.avatar-photo img{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit}.profile-hero-avatar{width:112px;height:112px;border-radius:32px;margin:0 auto 14px;background:#50376b;border:2px solid #a77bff;display:grid;place-items:center;font-size:48px;overflow:hidden}.profile-hero-avatar img{width:100%;height:100%;object-fit:cover}.profile-handle{color:var(--muted);font-size:13px;margin-top:-5px}.profile-edit-modal{display:none;position:fixed;inset:0;z-index:40;background:#100e17f7;overflow:auto;padding:18px 0 35px}.profile-edit-card{max-width:520px;margin:20px 16px;padding:18px;background:var(--panel);border:1px solid var(--line);border-radius:20px}.profile-edit-card label{display:block;color:var(--muted);font-size:12px;margin:12px 0 5px}.profile-edit-card input,.profile-edit-card textarea{display:block;width:100%;background:#100e17;border:1px solid var(--line);border-radius:11px;padding:12px;color:var(--text);margin-top:5px;font:inherit}.profile-edit-card textarea{min-height:100px;resize:vertical}.profile-edit-actions{display:flex;gap:8px;margin-top:14px}.profile-edit-actions button{flex:1}.profile-preview{width:90px;height:90px;border-radius:26px;object-fit:cover;background:#50376b;display:block;margin:8px auto 12px}.profile-hint{font-size:12px;color:var(--muted);line-height:1.5}
 </style></head><body><header class="top"><div class="brand">✦ vibe<span>nest</span></div><button class="join" style="display:block;margin:10px auto 0" onclick="openAuth()" id="authButton">Sign in / Sign up</button><div id="authStatus" class="muted" style="text-align:center;margin-top:5px"></div><input id="search" class="search" placeholder="⌕  Find your next community..." oninput="renderCommunities()"></header>
 <section id="home" class="page active"><div class="intro"><div class="muted">YOUR CORNER OF THE INTERNET</div><h1>Find your <span>people.</span></h1></div><div class="hero"><small>✦ COMMUNITY SPOTLIGHT</small><h2>Your interests deserve a home.</h2><p>Meet people who get your fandom, creativity, and kind of weird.</p><button class="btn" onclick="go('discover')">Explore communities ↗</button></div><div class="heading"><h2>Communities for you</h2><button class="join" onclick="createCommunity()">＋ Create</button></div><div id="homeGrid" class="grid"></div><div class="heading"><h2>From your communities</h2><button class="join" onclick="createPost()">＋ Post</button></div><div id="feed" class="feed"></div><div class="notice">VibeNest preview · Your community, your vibe.</div></section>
 <section id="discover" class="page"><div class="simple"><h1>Discover ✨</h1><p class="muted">There’s a whole world around what you love.</p></div><div id="discoverGrid" class="grid"></div></section>
 <section id="community" class="page"><div class="community-detail"><button class="join" onclick="go('discover')">← Back to communities</button><div id="communityDetailContent"></div><div class="heading" style="padding:16px 0"><h2>Community posts</h2><button class="join" id="communityPostButton" onclick="createPostInCommunity()">＋ Post</button></div><div id="communityPosts" class="detail-posts"></div></div></section>
 <section id="chats" class="page"><div class="simple"><h1>Messages 💬</h1><p class="muted">Private conversations between VibeNest members.</p><div class="chat-start"><h2>Find people</h2><input id="userSearch" class="field" placeholder="Search usernames…" oninput="searchChatUsers()"><div id="userSearchResults"></div></div><h2 style="margin-top:24px">Your conversations</h2><div id="conversationList"><p class="muted">Sign in to see your conversations.</p></div><div id="chatWindow" style="display:none;margin-top:18px"><button class="join" onclick="closeChatWindow()">← Back to conversations</button><h2 id="chatTitle" style="margin:14px 0"></h2><div id="chatMessages" class="chat-messages"></div><div class="chat-compose"><input id="chatMessageInput" class="field" maxlength="5000" placeholder="Write a message…"><button class="join" onclick="sendChatMessage()">Send</button></div></div></div></section>
 <section id="activity" class="page"><div class="simple"><h1>Activity ♡</h1><p class="muted">Little moments from your corner of VibeNest.</p><div class="row">🌸 <div><b>Anime Haven</b><div class="muted">A new discussion is trending</div></div></div><div class="row">🎨 <div><b>Art Club</b><div class="muted">A new creative prompt is up</div></div></div></div></section>
-<section id="profile" class="page"><div class="simple"><h1>Your profile</h1><div class="hero" style="text-align:center"><div style="font-size:50px">🌌</div><h2 id="pname">StarrySoul</h2><p id="pbio">Collecting little moments ✨</p><button class="btn" onclick="editProfile()">Edit profile</button><div style="margin-top:18px">1 post　·　2 communities　·　128 followers</div></div><h2>Your posts</h2><div id="myPosts"></div></div></section>
+<section id="profile" class="page"><div class="simple"><h1>Your profile</h1><div class="hero" style="text-align:center"><div id="profileAvatarDisplay" class="profile-hero-avatar">✦</div><h2 id="pname">Your name</h2><div id="profileHandle" class="profile-handle">@username</div><p id="pbio">Add a little about yourself ✨</p><button class="btn" onclick="editProfile()">Edit profile</button><div style="margin-top:18px" class="muted">Your VibeNest profile</div></div><h2>Your posts</h2><div id="myPosts"></div></div></section>
 <div id="authModal" style="display:none;position:fixed;inset:0;z-index:30;background:#100e17f7;overflow:auto;padding:20px 0 35px"><div class="authbox" style="max-width:520px;margin:25px auto"><button class="join" onclick="closeAuth()" style="float:right">Close ✕</button><div style="font-size:13px;color:var(--purple);font-weight:800;letter-spacing:1px">✦ VIBENEST ACCOUNT</div><h2 id="authTitle" style="margin-top:12px">Welcome back</h2><p id="authSubtitle">Sign in to your corner of the internet.</p><div id="signupNameWrap" style="display:none"><label>Username<input id="authUsername" autocomplete="username" placeholder="e.g. StarrySoul" maxlength="24"></label></div><label>Email<input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com"></label><label>Password<input id="authPassword" type="password" autocomplete="current-password" placeholder="At least 8 characters" minlength="8"></label><div class="authrow"><button class="btn" id="authSubmit" onclick="submitAuth()">Sign in</button><button class="join" id="authSwitch" onclick="switchAuthMode()">Create account</button></div><div id="authMessage" class="statusmsg"></div><p style="margin-top:16px">VibeNest online features use your Supabase project. Never put a service-role key in this app.</p></div></div>
+<div id="profileEditModal" class="profile-edit-modal"><div class="profile-edit-card"><button class="join" onclick="closeProfileEditor()" style="float:right">Close ✕</button><h2 style="margin-top:8px">Customize your profile</h2><p class="muted">Update how other VibeNest members see you.</p><img id="profilePreview" class="profile-preview" alt="Profile picture preview" src="" style="display:none"><div id="profilePreviewFallback" class="profile-hero-avatar" style="width:90px;height:90px;border-radius:26px;font-size:38px">✦</div><label>Profile picture<input id="profileAvatarFile" type="file" accept="image/*" onchange="previewProfilePicture(event)"></label><div class="profile-hint">Choose an image up to 5 MB. JPG, PNG, WebP, and other browser-supported image formats work.</div><label>Username<input id="profileUsernameInput" maxlength="24" autocomplete="username" placeholder="e.g. daze"></label><label>Display name<input id="profileDisplayNameInput" maxlength="40" placeholder="How people see your name"></label><label>Bio<textarea id="profileBioInput" maxlength="240" placeholder="Tell people a little about yourself…"></textarea></label><div id="profileEditMessage" class="statusmsg"></div><div class="profile-edit-actions"><button class="btn" id="saveProfileButton" onclick="saveProfileChanges()">Save profile</button><button class="join" onclick="closeProfileEditor()">Cancel</button></div></div></div>
 <nav class="bottom"><button class="active" data-tab="home" onclick="go('home')"><b>⌂</b>Home</button><button data-tab="discover" onclick="go('discover')"><b>⌕</b>Discover</button><button onclick="createPost()"><b>＋</b>Create</button><button data-tab="chats" onclick="go('chats')"><b>▤</b>Chats</button><button data-tab="profile" onclick="go('profile')"><b>◉</b>Profile</button></nav><div id="toast" class="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./config.js"></script>
@@ -248,6 +249,126 @@ const originalGoForChats=go;
 go=function(id){originalGoForChats(id);if(id==='chats'){loadConversations();}};
 if(supabaseClient){supabaseClient.auth.onAuthStateChange((_event,session)=>{if(!session){activeConversationId=null;activeChatUser=null;}if(document.getElementById('chats')?.classList.contains('active'))loadConversations();});}
 
+</script>
+
+
+<script>
+// Profile customization layer. Existing community, post, comment, and messaging flows remain intact.
+let myProfile = null;
+function profileAvatarMarkup(profile, fallback='✦') {
+  const url = profile && profile.avatar_url;
+  return `<div class="avatar avatar-photo">${url ? `<img src="${safeText(url)}" alt="Profile picture" loading="lazy">` : fallback}</div>`;
+}
+function renderMyProfile() {
+  const profile = myProfile || {};
+  const name = profile.display_name || profile.username || currentUser?.user_metadata?.username || 'VibeNest member';
+  const nameEl = document.getElementById('pname');
+  const handleEl = document.getElementById('profileHandle');
+  const bioEl = document.getElementById('pbio');
+  const avatarEl = document.getElementById('profileAvatarDisplay');
+  if (nameEl) nameEl.textContent = name;
+  if (handleEl) handleEl.textContent = profile.username ? '@' + profile.username : '';
+  if (bioEl) bioEl.textContent = profile.bio || 'Add a little about yourself ✨';
+  if (avatarEl) avatarEl.innerHTML = profile.avatar_url ? `<img src="${safeText(profile.avatar_url)}" alt="Profile picture">` : '✦';
+  updateAuthUI();
+}
+async function loadMyProfile() {
+  if (!supabaseClient || !currentUser) { myProfile = null; renderMyProfile(); return; }
+  const { data, error } = await supabaseClient.from('profiles').select('id,username,display_name,bio,avatar_url').eq('id', currentUser.id).maybeSingle();
+  if (error) { console.error('Profile load failed:', error); showToast('Could not load profile: ' + error.message); return; }
+  myProfile = data || null;
+  renderMyProfile();
+  if (document.getElementById('chats')?.classList.contains('active')) loadConversations();
+}
+function editProfile() {
+  if (!currentUser || !supabaseClient) { openAuth(); showToast('Sign in to customize your profile'); return; }
+  const p = myProfile || {};
+  document.getElementById('profileUsernameInput').value = p.username || currentUser.user_metadata?.username || '';
+  document.getElementById('profileDisplayNameInput').value = p.display_name || p.username || currentUser.user_metadata?.username || '';
+  document.getElementById('profileBioInput').value = p.bio || '';
+  document.getElementById('profileAvatarFile').value = '';
+  document.getElementById('profileEditMessage').textContent = '';
+  const preview = document.getElementById('profilePreview'), fallback = document.getElementById('profilePreviewFallback');
+  if (p.avatar_url) { preview.src = p.avatar_url; preview.style.display = 'block'; fallback.style.display = 'none'; }
+  else { preview.removeAttribute('src'); preview.style.display = 'none'; fallback.style.display = 'grid'; }
+  document.getElementById('profileEditModal').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+}
+function closeProfileEditor() { document.getElementById('profileEditModal').style.display = 'none'; document.body.style.overflow = ''; }
+function previewProfilePicture(event) {
+  const file = event.target.files?.[0]; if (!file) return;
+  const msg = document.getElementById('profileEditMessage');
+  if (!file.type.startsWith('image/')) { msg.textContent = 'Please choose an image file.'; event.target.value = ''; return; }
+  if (file.size > 5 * 1024 * 1024) { msg.textContent = 'That image is over 5 MB. Choose a smaller image.'; event.target.value = ''; return; }
+  const preview = document.getElementById('profilePreview'), fallback = document.getElementById('profilePreviewFallback');
+  preview.src = URL.createObjectURL(file); preview.style.display = 'block'; fallback.style.display = 'none'; msg.textContent = '';
+}
+async function saveProfileChanges() {
+  if (!currentUser || !supabaseClient) { showToast('Please sign in again'); return; }
+  const username = document.getElementById('profileUsernameInput').value.trim();
+  const display_name = document.getElementById('profileDisplayNameInput').value.trim();
+  const bio = document.getElementById('profileBioInput').value.trim();
+  const file = document.getElementById('profileAvatarFile').files?.[0];
+  const msg = document.getElementById('profileEditMessage'), button = document.getElementById('saveProfileButton');
+  if (!/^[a-zA-Z0-9_.]{3,24}$/.test(username)) { msg.textContent = 'Username must be 3–24 characters and use only letters, numbers, underscores, or dots.'; return; }
+  if (!display_name) { msg.textContent = 'Enter a display name.'; return; }
+  if (bio.length > 240) { msg.textContent = 'Bio must be 240 characters or fewer.'; return; }
+  if (file && (!file.type.startsWith('image/') || file.size > 5 * 1024 * 1024)) { msg.textContent = 'Choose an image file up to 5 MB.'; return; }
+  button.disabled = true; msg.textContent = 'Saving profile…';
+  try {
+    let avatar_url = myProfile?.avatar_url || null;
+    if (file) {
+      const extFromName = file.name.includes('.') ? file.name.split('.').pop().toLowerCase() : '';
+      const ext = /^[a-z0-9]{2,5}$/.test(extFromName) ? extFromName : (file.type.split('/')[1] || 'jpg').replace('jpeg','jpg');
+      const path = `${currentUser.id}/avatar-${Date.now()}.${ext}`;
+      const uploaded = await supabaseClient.storage.from('profile-avatars').upload(path, file, {contentType:file.type, upsert:false});
+      if (uploaded.error) throw new Error('Picture upload failed: ' + uploaded.error.message + '. Check the profile-avatars bucket and its policies.');
+      avatar_url = supabaseClient.storage.from('profile-avatars').getPublicUrl(path).data.publicUrl;
+    }
+    const row = {id:currentUser.id, username, display_name, bio, avatar_url};
+    const saved = await supabaseClient.from('profiles').upsert(row, {onConflict:'id'}).select('id,username,display_name,bio,avatar_url').single();
+    if (saved.error) throw saved.error;
+    myProfile = saved.data; renderMyProfile();
+    closeProfileEditor(); showToast('Profile saved!');
+    if (document.getElementById('chats')?.classList.contains('active')) { searchChatUsers(); loadConversations(); }
+  } catch (e) { console.error(e); msg.textContent = e.message || 'Could not save profile.'; }
+  finally { button.disabled = false; }
+}
+// Display the saved avatar and name in member search and conversation lists.
+searchChatUsers = async function() {
+  const input=document.getElementById('userSearch'),out=document.getElementById('userSearchResults'); if(!input||!out)return;
+  const q=input.value.trim().replace(/^@/,''); if(!q){out.innerHTML='';return;}
+  if(!currentUser||!supabaseClient){out.innerHTML='<p class="muted">Sign in to find members.</p>';return;}
+  if(q.length<2){out.innerHTML='<p class="muted">Type at least 2 characters.</p>';return;}
+  out.innerHTML='<p class="muted">Searching…</p>';
+  const {data,error}=await supabaseClient.from('profiles').select('id,username,display_name,bio,avatar_url').ilike('username','%'+q.replace(/[%_,]/g,'')+'%').neq('id',currentUser.id).limit(10);
+  if(error){out.innerHTML='<p class="muted">Could not search users: '+safeText(error.message)+'</p>';return;}
+  const rows=data||[]; if(!rows.length){out.innerHTML='<p class="muted">No users found. Search by their username.</p>';return;}
+  out.innerHTML=rows.map(p=>`<div class="user-result">${profileAvatarMarkup(p)}<div><b>${safeText(chatDisplayName(p))}</b><div class="muted">@${safeText(p.username||'member')}</div>${p.bio?`<div class="muted">${safeText(p.bio)}</div>`:''}</div><button class="join" onclick="startConversation('${p.id}')">Message</button></div>`).join('');
+};
+loadConversations = async function() {
+  const list=document.getElementById('conversationList'); if(!list)return;
+  if(!currentUser||!supabaseClient){list.innerHTML='<p class="muted">Sign in to use private messages.</p>';return;}
+  list.innerHTML='<p class="muted">Loading conversations…</p>';
+  const {data,error}=await supabaseClient.from('conversations').select('id,user_one,user_two,created_at').or('user_one.eq.'+currentUser.id+',user_two.eq.'+currentUser.id).order('created_at',{ascending:false});
+  if(error){list.innerHTML='<p class="muted">Could not load conversations: '+safeText(error.message)+'</p>';return;}
+  const rows=data||[]; if(!rows.length){list.innerHTML='<p class="muted">No conversations yet. Search for a username above to start one.</p>';return;}
+  const ids=[...new Set(rows.map(c=>c.user_one===currentUser.id?c.user_two:c.user_one))];
+  const {data:profiles,error:profileError}=await supabaseClient.from('profiles').select('id,username,display_name,bio,avatar_url').in('id',ids);
+  chatProfiles={}; if(!profileError)for(const p of profiles||[])chatProfiles[p.id]=p;
+  list.innerHTML=rows.map(c=>{const otherId=c.user_one===currentUser.id?c.user_two:c.user_one;const profile=chatProfiles[otherId];return `<div class="conversation-item" onclick="openConversation('${c.id}','${otherId}')">${profileAvatarMarkup(profile)}<div><b>${safeText(chatDisplayName(profile))}</b><div class="muted">@${safeText(profile?.username||'member')}</div></div><span class="muted">Open ›</span></div>`}).join('');
+};
+// Refresh the profile whenever the active account changes.
+if (supabaseClient) {
+  supabaseClient.auth.onAuthStateChange((_event, session) => {
+    currentUser = session?.user || null;
+    if (currentUser) setTimeout(loadMyProfile, 0);
+    else { myProfile = null; renderMyProfile(); }
+  });
+  if (currentUser) setTimeout(loadMyProfile, 0);
+}
+const oldGoForProfile = go;
+go = function(id) { oldGoForProfile(id); if (id==='profile') loadMyProfile(); if (id==='chats') loadConversations(); };
 </script>
 
 </body></html>
