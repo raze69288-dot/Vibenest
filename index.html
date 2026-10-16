@@ -419,7 +419,7 @@ function startVibeChatRealtime(conversationId){
         if(activeConversationId===conversationId){loadChatMessages();}
         if(document.getElementById('chats')?.classList.contains('active'))loadConversations();
       }).subscribe();
-  }catch(e){console.warn('Live chat updates unavailable; use Refresh.',e);}
+  }catch(e){console.warn('Live chat updates unavailable; check connection and reopen the conversation.',e);}
 }
 const vibeOriginalOpenConversation = openConversation;
 openConversation = async function(conversationId,otherId){
@@ -435,15 +435,7 @@ openConversation = async function(conversationId,otherId){
 };
 const vibeOriginalCloseChatWindow = closeChatWindow;
 closeChatWindow = function(){stopVibeChatRealtime();const note=document.getElementById('chatLiveNote');if(note)note.remove();vibeOriginalCloseChatWindow();};
-// Add a refresh button without changing the existing message layout or database.
-(function addChatRefreshControl(){
-  const win=document.getElementById('chatWindow');
-  if(!win || document.getElementById('chatRefreshTools'))return;
-  const tools=document.createElement('div');tools.id='chatRefreshTools';tools.className='chat-tools';
-  tools.innerHTML='<button class="join" type="button" onclick="loadChatMessages();loadConversations()">↻ Refresh messages</button>';
-  const messages=document.getElementById('chatMessages');
-  if(messages)win.insertBefore(tools,messages);
-})();
+// Manual refresh control removed; messages load on opening and update via Supabase Realtime.
 (function enableEnterToSend(){
   const input=document.getElementById('chatMessageInput');
   if(!input || input.dataset.enterSendBound==='yes')return;
