@@ -1360,6 +1360,16 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{
 })();
 </script>
 
+
+<style id="vibenest-global-tap-highlight-fix">
+/* Remove the unwanted rectangular focus/tap box across the whole app while retaining subtle active-tab text/icon glow. */
+*, *::before, *::after { -webkit-tap-highlight-color: transparent; }
+button, a, [role="button"], input, textarea, select { -webkit-tap-highlight-color: transparent; }
+button:focus, button:focus-visible, a:focus, a:focus-visible, [role="button"]:focus, [role="button"]:focus-visible { outline: none !important; box-shadow: none; }
+.bottom button.active { background: transparent !important; }
+.bottom button.active:focus, .bottom button.active:focus-visible { outline: none !important; box-shadow: none !important; }
+</style>
+
 </body></html>
 
 <style>
