@@ -1173,6 +1173,36 @@ go=function(id){
 .public-profile-post{padding:12px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}
 .public-profile-post:last-child{border-bottom:0}.public-profile-hero .profile-hero-avatar{border-color:var(--public-accent,#b18aff)}.public-profile-hero h2{color:var(--public-accent,#b18aff)}
 </style>
+
+<style>
+/* Full, polished public member profile */
+.public-profile-overlay{padding:0;background:rgba(7,4,12,.94);backdrop-filter:blur(14px)}
+.public-profile-card{max-width:620px;min-height:100%;margin:0 auto;padding:0 0 36px;border:0;border-radius:0;background:#100b18;box-shadow:none;overflow:hidden}
+.public-profile-top{position:sticky;top:0;z-index:3;padding:18px 18px 13px;margin:0;background:#100b18ed;backdrop-filter:blur(12px);border-bottom:1px solid #ffffff0c}
+.public-profile-top .profile-eyebrow{font-size:10px;letter-spacing:2px}
+.public-profile-top .join{padding:8px 12px;border-radius:12px}
+.public-profile-hero{position:relative;text-align:left!important;padding:0 20px 22px!important;border-radius:0 0 26px 26px!important;background:linear-gradient(180deg,transparent 0 100%),#1c1427!important}
+.public-profile-cover-art{height:116px;margin:0 -20px 0;background:radial-gradient(ellipse at 78% 0%,#f37ecb66,transparent 38%),radial-gradient(ellipse at 20% 40%,#9c6dff77,transparent 45%),linear-gradient(125deg,#35214d,#21152e 65%,#3a1e3c);position:relative;overflow:hidden}
+.public-profile-cover-art:after{content:'✦  ·  ✧';position:absolute;right:20px;top:18px;color:#e6caff66;font-size:28px;letter-spacing:12px}
+.public-profile-identity{display:flex;align-items:flex-end;gap:14px;margin-top:-42px;position:relative}
+.public-profile-hero .profile-hero-avatar{width:94px;height:94px;flex:0 0 94px;border:4px solid #1c1427!important;border-radius:28px!important;background:#50376b;box-shadow:0 6px 25px #0005;margin:0!important;font-size:36px}
+.public-profile-hero .profile-hero-avatar img{width:100%;height:100%;object-fit:cover;border-radius:inherit}
+.public-profile-identity-copy{min-width:0;padding-bottom:6px}
+.public-profile-hero h2{font-size:25px!important;line-height:1.15;margin:0 0 5px!important;overflow-wrap:anywhere}
+.public-profile-handle{font-size:13px;color:#b9a9c9;overflow-wrap:anywhere}
+.public-profile-bio{margin:16px 0 15px!important;max-width:none!important;line-height:1.55;font-size:14px;color:#e6dced}
+.public-profile-buttons{display:flex;gap:10px;flex-wrap:wrap}
+.public-profile-buttons button{min-width:125px;border-radius:13px;padding:11px 16px}
+.public-profile-stats{margin:0!important;padding:14px 20px;gap:10px;background:#100b18;border-bottom:1px solid #ffffff0c}
+.public-profile-stat{padding:13px 8px;border-radius:15px;background:#1b1325;border-color:#ffffff12}
+.public-profile-stat b{font-size:22px}
+.public-profile-posts-wrap{padding:20px}
+.public-profile-posts-heading{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.public-profile-posts-heading h3{font-size:19px;margin:0}
+.public-profile-post{padding:15px 0;border-bottom:1px solid #ffffff12;font-size:14px;line-height:1.55}
+.public-profile-post .post-media{margin-top:10px;border-radius:15px;max-height:420px;object-fit:contain;background:#0c0910}
+@media(min-width:560px){.public-profile-card{min-height:0;margin:24px auto;border:1px solid #a77bff44;border-radius:24px}.public-profile-overlay{padding:20px 12px}.public-profile-top{border-radius:24px 24px 0 0}}
+</style>
 <script>
 function ensurePublicProfileModal(){
  let modal=document.getElementById('publicProfileModal');if(modal)return modal;
@@ -1201,7 +1231,7 @@ async function openPublicProfile(userId){
   const posts=postsResult.error?[]:(postsResult.data||[]);if(profile.pinned_post_id)posts.sort((a,b)=>(b.id===profile.pinned_post_id?1:0)-(a.id===profile.pinned_post_id?1:0));
   const communityIds=[...new Set(posts.map(p=>p.community_id).filter(Boolean))];let communityNames={};
   if(communityIds.length){const c=await supabaseClient.from('communities').select('id,name').in('id',communityIds);if(!c.error)for(const item of c.data||[])communityNames[item.id]=item.name;}
-  out.innerHTML=`<div class="public-profile-hero" style="--public-accent:${profile.profile_theme==='rose'?'#ff8dc9':profile.profile_theme==='ocean'?'#7bdcff':profile.profile_theme==='emerald'?'#76e3b2':'#b18aff'}"><div class="profile-hero-avatar">${avatar}</div><h2 style="margin:8px 0 4px">${safeText(name)}</h2><div class="profile-handle">@${safeText(profile.username||'member')}</div><p style="margin:14px auto 16px;max-width:380px;overflow-wrap:anywhere">${safeText(profile.bio||'No bio yet.')}</p><div style="display:flex;justify-content:center;gap:9px;flex-wrap:wrap">${currentUser?`<button class="join" id="publicProfileFollowButton" onclick="togglePublicProfileFollow('${userId}')">${isFollowing?'✓ Following':'＋ Follow'}</button><button class="btn" onclick="closePublicProfile();startConversation('${userId}')">Message</button>`:''}</div></div><div class="public-profile-stats"><button type="button" class="public-profile-stat" onclick="openPublicProfileConnections('${userId}','followers')"><b id="publicProfileFollowersCount">${followersResult.error?'—':(followersResult.data||[]).length}</b><span class="muted">Followers</span></button><button type="button" class="public-profile-stat" onclick="openPublicProfileConnections('${userId}','following')"><b id="publicProfileFollowingCount">${followingResult.error?'—':(followingResult.data||[]).length}</b><span class="muted">Following</span></button></div><h3 style="margin:18px 2px 6px">Posts</h3><div>${posts.map(post=>`<div class="public-profile-post">${profile.pinned_post_id===post.id?'<span class="profile-badge">📌 Pinned</span>':''}<p style="margin:0 0 7px">${safeText(post.content||'')}</p>${post.image_url?`<img class="post-media" src="${safeText(post.image_url)}" alt="Post image">`:''}<div class="muted">${safeText(communityNames[post.community_id]||'Community')} · ${safeText(new Date(post.created_at).toLocaleString())}</div></div>`).join('')||'<p class="muted">No posts yet.</p>'}</div>`;
+  out.innerHTML=`<div class="public-profile-hero" style="--public-accent:${profile.profile_theme==='rose'?'#ff8dc9':profile.profile_theme==='ocean'?'#7bdcff':profile.profile_theme==='emerald'?'#76e3b2':'#b18aff'}"><div class="public-profile-cover-art"></div><div class="public-profile-identity"><div class="profile-hero-avatar">${avatar}</div><div class="public-profile-identity-copy"><h2>${safeText(name)}</h2><div class="public-profile-handle">@${safeText(profile.username||'member')}</div></div></div><p class="public-profile-bio">${safeText(profile.bio||'This member hasn’t added a bio yet.')}</p><div class="public-profile-buttons">${currentUser?`<button class="join" id="publicProfileFollowButton" onclick="togglePublicProfileFollow('${userId}')">${isFollowing?'✓ Following':'＋ Follow'}</button><button class="btn" onclick="closePublicProfile();startConversation('${userId}')">Message</button>`:''}</div></div><div class="public-profile-stats"><button type="button" class="public-profile-stat" onclick="openPublicProfileConnections('${userId}','followers')"><b id="publicProfileFollowersCount">${followersResult.error?'—':(followersResult.data||[]).length}</b><span class="muted">Followers</span></button><button type="button" class="public-profile-stat" onclick="openPublicProfileConnections('${userId}','following')"><b id="publicProfileFollowingCount">${followingResult.error?'—':(followingResult.data||[]).length}</b><span class="muted">Following</span></button></div><div class="public-profile-posts-wrap"><div class="public-profile-posts-heading"><h3>Posts</h3><span class="muted">${posts.length} ${posts.length===1?'post':'posts'}</span></div><div>${posts.map(post=>`<div class="public-profile-post">${profile.pinned_post_id===post.id?'<span class="profile-badge">📌 Pinned</span>':''}<p style="margin:0 0 7px">${safeText(post.content||'')}</p>${post.image_url?`<img class="post-media" src="${safeText(post.image_url)}" alt="Post image">`:''}<div class="muted">${safeText(communityNames[post.community_id]||'Community')} · ${safeText(new Date(post.created_at).toLocaleString())}</div></div>`).join('')||'<p class="muted">No posts yet.</p>'}</div></div>`;
  }catch(error){console.error('Could not open public profile:',error);out.innerHTML=`<p class="muted">Could not load this profile: ${safeText(error.message||'Please try again.')}</p>`;}
 }
 async function openPublicProfileConnections(userId,kind){
