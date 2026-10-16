@@ -57,7 +57,7 @@ function renderCommunityPosts(){
   const c=activeCommunity,el=document.getElementById('communityPosts');if(!c||!el)return;
   if(c.id && onlineCommunities.some(x=>String(x.id)===String(c.id))){
    const matching=onlinePosts.filter(p=>String(p.community_id)===String(c.id));
-   el.innerHTML=matching.map(p=>{const profile=onlineProfiles[p.author_id];const name=p.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');const commentsId='comments-community-'+p.id;return `<article class="post"><div class="posthead">${profileAvatarMarkup(profile)}<div><b>${safeText(name)}</b><div class="muted">${safeText(new Date(p.created_at).toLocaleString())}</div></div></div><p>${safeText(p.content)}</p><div class="actions"><button onclick="toggleComments('${p.id}','${commentsId}')">▢ Comments</button></div><div id="${commentsId}" class="comments-box" style="display:none;margin-top:12px"></div></article>`}).join('')||'<p class="muted">No posts here yet. Be the first to start a conversation!</p>';
+   el.innerHTML=matching.map(p=>{const profile=onlineProfiles[p.author_id];const name=p.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');const commentsId='comments-community-'+p.id;return `<article class="post"><div class="posthead">${profileAvatarMarkup(profile)}<div><b>${safeText(name)}</b><div class="muted">${safeText(new Date(p.created_at).toLocaleString())}</div></div></div><p>${safeText(p.content)}</p><div class="actions"><button onclick="toggleComments('${p.id}','${commentsId}',this)">▢ Comments</button></div><div id="${commentsId}" class="comments-box" style="display:none;margin-top:12px"></div></article>`}).join('')||'<p class="muted">No posts here yet. Be the first to start a conversation!</p>';
   }else{
    const matching=posts.filter(p=>p.community===c.name);
    el.innerHTML=matching.map(p=>`<article class="post"><div class="posthead"><div class="avatar">${safeText(p.avatar)}</div><div><b>${safeText(p.user)}</b><div class="muted">${safeText(p.time)}</div></div></div><p>${safeText(p.text)}</p></article>`).join('')||'<p class="muted">No posts here yet. Join in and start a conversation!</p>';
@@ -146,17 +146,25 @@ async function loadOnlinePosts(){
 }
 function renderOnlinePosts(){
   const communityMap=new Map(onlineCommunities.map(c=>[c.id,c.name]));
-  const renderOne=(p,context)=>{const profile=onlineProfiles[p.author_id];const name=p.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');const commentsId='comments-'+context+'-'+p.id;return `<article class="post"><div class="posthead">${profileAvatarMarkup(profile)}<div><b>${safeText(name)}</b><div class="muted">${safeText(communityMap.get(p.community_id)||'Community')} · ${safeText(new Date(p.created_at).toLocaleString())}</div></div></div><p>${safeText(p.content)}</p><div class="actions"><button onclick="toggleComments('${p.id}','${commentsId}')">▢ Comments</button></div><div id="${commentsId}" class="comments-box" style="display:none;margin-top:12px"></div></article>`};
+  const renderOne=(p,context)=>{const profile=onlineProfiles[p.author_id];const name=p.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');const commentsId='comments-'+context+'-'+p.id;return `<article class="post"><div class="posthead">${profileAvatarMarkup(profile)}<div><b>${safeText(name)}</b><div class="muted">${safeText(communityMap.get(p.community_id)||'Community')} · ${safeText(new Date(p.created_at).toLocaleString())}</div></div></div><p>${safeText(p.content)}</p><div class="actions"><button onclick="toggleComments('${p.id}','${commentsId}',this)">▢ Comments</button></div><div id="${commentsId}" class="comments-box" style="display:none;margin-top:12px"></div></article>`};
   const feed=document.getElementById('feed');if(feed)feed.innerHTML=onlinePosts.map(p=>renderOne(p,'feed')).join('')||'<p class="muted">No posts yet. Join a community and create the first one!</p>';
   const myPosts=document.getElementById('myPosts');if(myPosts){const mine=currentUser?onlinePosts.filter(p=>p.author_id===currentUser.id):[];myPosts.innerHTML=mine.map(p=>renderOne(p,'profile')).join('')||'<p class="muted">You have not posted anything yet.</p>';}
   if(activeCommunity)renderCommunityPosts();
 }
-async function toggleComments(postId, boxId){
-  const targetId=boxId||('comments-feed-'+postId);
-  const box=document.getElementById(targetId);if(!box)return;
-  if(box.style.display==='block'){box.style.display='none';return;}
-  box.style.display='block';box.innerHTML='<p class="muted">Loading comments…</p>';
-  await loadPostComments(postId,targetId);
+async function toggleComments(postId, boxId, button){
+  // Resolve the comment panel from the clicked post first. This avoids a page
+  // context/duplicate-ID mismatch between Home, Community, and Profile.
+  const article = button && button.closest ? button.closest('article.post') : null;
+  const box = (article && article.querySelector('.comments-box')) || document.getElementById(boxId || ('comments-feed-' + postId));
+  if(!box){showToast('Could not open comments. Please refresh and try again.');return;}
+  const targetId = box.id || (boxId || ('comments-feed-' + postId));
+  if(box.dataset.loading === '1') return;
+  if(box.style.display === 'block') { box.style.display = 'none'; return; }
+  box.style.display = 'block';
+  box.innerHTML='<p class="muted">Loading comments…</p>';
+  box.dataset.loading='1';
+  try { await loadPostComments(postId,targetId); }
+  finally { box.dataset.loading='0'; }
 }
 async function loadPostComments(postId, boxId){
   const targetId=boxId||('comments-feed-'+postId);
