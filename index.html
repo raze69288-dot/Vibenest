@@ -954,7 +954,7 @@ let vibeChatLastTypingSent = 0;
 let vibeChatReadColumnAvailable = true;
 let vibeGlobalPresenceChannel = null;
 let vibeGlobalPresenceState = {};
-function updateChatPresenceUI(){
+function updateGlobalPresenceUI(){
   const status=document.getElementById('chatPresenceStatus');if(!status)return;
   const online=Object.values(vibeGlobalPresenceState||{}).some(rows=>(rows||[]).some(row=>row.user_id===activeChatUser));
   status.textContent=online?'● Online':'Offline';status.classList.toggle('is-online',online);
@@ -963,7 +963,7 @@ function startVibeGlobalPresence(){
   if(!supabaseClient||!currentUser||!supabaseClient.channel)return;
   if(vibeGlobalPresenceChannel){try{supabaseClient.removeChannel(vibeGlobalPresenceChannel);}catch(e){}}
   const channel=supabaseClient.channel('vibenest-online-presence',{config:{presence:{key:currentUser.id}}});
-  channel.on('presence',{event:'sync'},()=>{vibeGlobalPresenceState=channel.presenceState();updateChatPresenceUI();});
+  channel.on('presence',{event:'sync'},()=>{vibeGlobalPresenceState=channel.presenceState();updateGlobalPresenceUI();});
   channel.subscribe(async status=>{if(status==='SUBSCRIBED'){try{await channel.track({user_id:currentUser.id,online_at:new Date().toISOString()});}catch(e){}}});
   vibeGlobalPresenceChannel=channel;
 }
