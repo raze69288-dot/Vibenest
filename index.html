@@ -61,7 +61,7 @@ body:has(#home.active)>.app-topbar{display:none}
 <textarea id="communityPostText" class="field" maxlength="5000" rows="4" placeholder="What would you like to share with this community?" style="resize:vertical"></textarea>
 <button class="btn" id="publishCommunityPostButton" onclick="publishCommunityPost()">Publish post</button>
 </div><div id="communityPosts" class="detail-posts"></div></div></section>
-<section id="chats" class="page"><div class="simple"><h1>Messages 💬</h1><p class="muted">Private conversations between VibeNest members.</p><div class="chat-start"><h2>Find people</h2><input id="userSearch" class="field" placeholder="Search usernames…" oninput="searchChatUsers()"><div id="userSearchResults"></div></div><h2 id="chatsHeading" style="margin-top:24px">Your conversations</h2><div id="conversationList"><p class="muted">Sign in to see your conversations.</p></div><div id="chatWindow" style="display:none;margin-top:18px"><button class="join" onclick="closeChatWindow()">← Back to conversations</button><h2 id="chatTitle" style="margin:14px 0"></h2><div id="chatMessages" class="chat-messages"></div><div class="chat-compose"><input id="chatMessageInput" class="field" maxlength="5000" placeholder="Write a message…" enterkeyhint="send" onkeydown="if(event.key === 'Enter' || event.keyCode === 13){event.preventDefault();sendChatMessage();}"><button class="join" onclick="sendChatMessage()">Send</button></div></div></div></section>
+<section id="chats" class="page"><div class="simple"><h1>Messages 💬</h1><p class="muted">Private conversations between VibeNest members.</p><div class="chat-start"><h2>Find people</h2><input id="userSearch" class="field" placeholder="Search usernames…" oninput="searchChatUsers()"><div id="userSearchResults"></div></div><h2 id="chatsHeading" style="margin-top:24px">Your conversations</h2><div id="conversationList"><p class="muted">Sign in to see your conversations.</p></div><div id="chatWindow" style="display:none;margin-top:18px"><button class="join" onclick="closeChatWindow()">← Back to conversations</button><h2 id="chatTitle" style="margin:14px 0 2px"></h2><div id="chatPresenceStatus" class="chat-presence-status">Offline</div><div id="chatTypingStatus" class="chat-typing-status" aria-live="polite"></div><div id="chatMessages" class="chat-messages"></div><div class="chat-compose"><input id="chatMessageInput" class="field" maxlength="5000" placeholder="Write a message…" enterkeyhint="send" onkeydown="if(event.key === 'Enter' || event.keyCode === 13){event.preventDefault();sendChatMessage();}"><button class="join" onclick="sendChatMessage()">Send</button></div></div></div></section>
 <section id="activity" class="page"><div class="simple"><h1>Activity ♡</h1><p class="muted">Little moments from your corner of VibeNest.</p><div class="row">🌸 <div><b>Anime Haven</b><div class="muted">A new discussion is trending</div></div></div><div class="row">🎨 <div><b>Art Club</b><div class="muted">A new creative prompt is up</div></div></div></div></section>
 <section id="profile" class="page"><div class="simple profile-page"><div id="profilePageHeading" class="profile-page-heading" aria-hidden="true" style="display:none"></div><div id="profileCoverSection" class="profile-cover"><button class="profile-settings profile-settings-inside" onclick="openAuth()" aria-label="Account settings" title="Account settings"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.8 1.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5v.2h-2.6v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1-1.8-1.8.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H6.3v-2.6h.2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1 1.8-1.8.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.5v-.2H15v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1 1.8 1.8-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1h.2v2.6h-.2a1.7 1.7 0 0 0-1.5 1z"/></svg></button><div class="profile-cover-glow"></div><div id="profileAvatarDisplay" class="profile-hero-avatar">✦</div><h2 id="pname">Your name</h2><div id="profileHandle" class="profile-handle">@username</div><p id="pbio">Add a little about yourself ✨</p><button class="btn profile-edit-btn" onclick="editProfile()"><span aria-hidden="true">✎</span> Edit profile</button></div><div id="profileStatsSection" class="profile-stats profile-stats-connections"><button type="button" onclick="toggleFollowersList()"><strong id="profileFollowersCount">—</strong><span>Followers</span></button><button type="button" onclick="toggleFollowingList()"><strong id="profileFollowingCount">—</strong><span>Following</span></button></div><div id="profileFollowersPanel" class="profile-following-panel" hidden><div class="profile-following-heading"><button type="button" class="profile-list-back" onclick="closeProfileConnectionsList()">← Profile</button><h2>Followers</h2></div><div id="profileFollowersList"><p class="muted">Loading followers…</p></div></div><div id="profileFollowingPanel" class="profile-following-panel" hidden><div class="profile-following-heading"><button type="button" class="profile-list-back" onclick="closeProfileConnectionsList()">← Profile</button><h2>Following</h2></div><div id="profileFollowingList"><p class="muted">Loading following…</p></div></div></div></section>
 <div id="authModal" style="display:none;position:fixed;inset:0;z-index:30;background:#100e17f7;overflow:auto;padding:20px 0 35px"><div class="authbox" style="max-width:520px;margin:25px auto"><button class="join" onclick="closeAuth()" style="float:right">Close ✕</button><div style="font-size:13px;color:var(--purple);font-weight:800;letter-spacing:1px">✦ VIBENEST ACCOUNT</div><h2 id="authTitle" style="margin-top:12px">Welcome back</h2><p id="authSubtitle">Sign in to your corner of the internet.</p><div id="signupNameWrap" style="display:none"><label>Username<input id="authUsername" autocomplete="username" placeholder="e.g. StarrySoul" maxlength="24"></label></div><label id="authEmailLabel">Email<input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com"></label><label id="authPasswordLabel">Password<input id="authPassword" type="password" autocomplete="current-password" placeholder="At least 8 characters" minlength="8"></label><div class="authrow"><button class="btn" id="authSubmit" onclick="submitAuth()">Sign in</button><button class="join" id="authSwitch" onclick="switchAuthMode()">Create account</button></div><div id="authMessage" class="statusmsg"></div><p class="auth-security-note" style="margin-top:16px">VibeNest online features use your Supabase project. Never put a service-role key in this app.</p></div></div>
@@ -465,10 +465,10 @@ async function openConversation(conversationId,otherId){
 function closeChatWindow(){activeConversationId=null;activeChatUser=null;document.getElementById('chatWindow').style.display='none';document.getElementById('conversationList').style.display='block';document.getElementById('userSearchResults').style.display='block';document.getElementById('userSearch').style.display='block';const chatStart=document.querySelector('#chats .chat-start');if(chatStart)chatStart.style.display='block';const chatsHeading=document.getElementById('chatsHeading');if(chatsHeading)chatsHeading.style.display='';loadConversations();}
 async function loadChatMessages(){
  const box=document.getElementById('chatMessages');if(!box||!activeConversationId||!supabaseClient)return;const requestedId=activeConversationId;
- const {data,error}=await supabaseClient.from('messages').select('id,conversation_id,sender_id,content,created_at').eq('conversation_id',requestedId).order('created_at',{ascending:true}).limit(200);
+ const {data,error}=await supabaseClient.from('messages').select('id,conversation_id,sender_id,content,created_at,read_at').eq('conversation_id',requestedId).order('created_at',{ascending:true}).limit(200);
  if(requestedId!==activeConversationId)return;
  if(error){box.innerHTML='<p class="muted">Could not load messages: '+safeText(error.message)+'</p>';return;}
- const rows=data||[];box.innerHTML=rows.map(m=>`<div class="chat-bubble ${m.sender_id===currentUser.id?'mine':''}">${safeText(m.content)}<div class="muted">${safeText(new Date(m.created_at).toLocaleString())}</div></div>`).join('')||'<p class="muted">No messages yet. Say hello!</p>';
+ const rows=data||[];if(vibeChatReadColumnAvailable){const unreadIds=rows.filter(m=>m.sender_id!==currentUser.id&&!m.read_at).map(m=>m.id);if(unreadIds.length){const marked=await supabaseClient.from('messages').update({read_at:new Date().toISOString()}).in('id',unreadIds);if(marked.error){vibeChatReadColumnAvailable=false;console.warn('Read receipts need the messages.read_at column and update policy.');}else rows.forEach(m=>{if(unreadIds.includes(m.id))m.read_at=new Date().toISOString();});}}box.innerHTML=rows.map(m=>`<div class="chat-bubble ${m.sender_id===currentUser.id?'mine':''}">${safeText(m.content)}<div class="muted">${safeText(new Date(m.created_at).toLocaleString())}</div>${m.sender_id===currentUser.id?`<div class="receipt ${m.read_at?'read':''}">${m.read_at?'✓✓ Read':'✓ Sent'}</div>`:''}</div>`).join('')||'<p class="muted">No messages yet. Say hello!</p>';
  box.scrollTop=box.scrollHeight;
  const latest=rows.length?rows[rows.length-1].created_at:new Date().toISOString();markChatSeen(requestedId,latest);await loadConversations(true);
 }
@@ -818,6 +818,9 @@ if(currentUser)setTimeout(startNotificationRealtime,100);
 
 <style>
 /* Private messaging improvements */
+.chat-presence-status{font-size:12px;color:var(--muted);margin:0 0 8px}.chat-presence-status.is-online{color:#65e6a3}.chat-typing-status{font-size:12px;color:#e98bd5;min-height:0;margin:0}.chat-typing-status:not(:empty){min-height:18px;margin:0 0 6px}
+.chat-bubble .receipt{font-size:10px;text-align:right;margin-top:4px;color:#d4b6f5}
+.chat-bubble .receipt.read{color:#69d9ff}
 .chat-bubble{white-space:pre-wrap;line-height:1.4}
 .chat-bubble .muted{opacity:.8}
 .chat-compose button:disabled{opacity:.55;cursor:wait}
@@ -829,6 +832,10 @@ if(currentUser)setTimeout(startNotificationRealtime,100);
 // Messaging upgrade: live incoming messages, Enter-to-send, and a manual refresh fallback.
 let vibeChatRealtimeChannel = null;
 let vibeChatInboxRealtimeChannel = null;
+let vibeChatPresenceState = {};
+let vibeChatTypingTimer = null;
+let vibeChatLastTypingSent = 0;
+let vibeChatReadColumnAvailable = true;
 function startVibeChatInboxRealtime(){
   if(!supabaseClient||!currentUser||!supabaseClient.channel)return;
   if(vibeChatInboxRealtimeChannel){try{supabaseClient.removeChannel(vibeChatInboxRealtimeChannel);}catch(e){}}
@@ -843,26 +850,60 @@ function stopVibeChatRealtime(){
   if(vibeChatRealtimeChannel && supabaseClient){
     try{supabaseClient.removeChannel(vibeChatRealtimeChannel);}catch(e){}
   }
-  vibeChatRealtimeChannel=null;
+  vibeChatRealtimeChannel=null;vibeChatPresenceState={};const status=document.getElementById('chatPresenceStatus');if(status){status.textContent='Offline';status.classList.remove('is-online');}const typing=document.getElementById('chatTypingStatus');if(typing)typing.textContent='';if(vibeChatTypingTimer)clearTimeout(vibeChatTypingTimer);
+}
+function updateChatPresenceUI(){
+  const status=document.getElementById('chatPresenceStatus');if(!status)return;
+  const online=Object.values(vibeChatPresenceState||{}).some(rows=>(rows||[]).some(row=>row.user_id===activeChatUser));
+  status.textContent=online?'● Online':'Offline';status.classList.toggle('is-online',online);
 }
 function startVibeChatRealtime(conversationId){
   stopVibeChatRealtime();
   if(!supabaseClient || !conversationId || !supabaseClient.channel)return;
   try{
-    vibeChatRealtimeChannel=supabaseClient.channel('vibenest-chat-'+conversationId+'-'+Date.now())
+    const channel=supabaseClient.channel('vibenest-chat-'+conversationId,{config:{presence:{key:currentUser?.id||'guest'}}});
+    channel
       .on('postgres_changes',{event:'INSERT',schema:'public',table:'messages',filter:'conversation_id=eq.'+conversationId},payload=>{
         if(activeConversationId===conversationId){loadChatMessages();}
         if(document.getElementById('chats')?.classList.contains('active'))loadConversations(true);
-      }).subscribe();
+      })
+      .on('postgres_changes',{event:'UPDATE',schema:'public',table:'messages',filter:'conversation_id=eq.'+conversationId},payload=>{
+        if(activeConversationId===conversationId)loadChatMessages();
+      })
+      .on('presence',{event:'sync'},()=>{vibeChatPresenceState=channel.presenceState();updateChatPresenceUI();})
+      .on('broadcast',{event:'typing'},payload=>{
+        if(payload?.payload?.user_id===currentUser?.id)return;
+        const label=document.getElementById('chatTypingStatus');if(!label)return;
+        label.textContent=(payload?.payload?.display_name||'They')+' is typing…';
+        if(vibeChatTypingTimer)clearTimeout(vibeChatTypingTimer);
+        vibeChatTypingTimer=setTimeout(()=>{label.textContent='';},2200);
+      })
+      .subscribe(async status=>{
+        if(status==='SUBSCRIBED'){
+          try{await channel.track({user_id:currentUser.id,online_at:new Date().toISOString()});}catch(e){}
+        }
+      });
+    vibeChatRealtimeChannel=channel;
   }catch(e){console.warn('Live chat updates unavailable; check connection and reopen the conversation.',e);}
 }
+function sendChatTyping(){
+  if(!vibeChatRealtimeChannel||!activeConversationId||!currentUser)return;
+  const now=Date.now();if(now-vibeChatLastTypingSent<900)return;vibeChatLastTypingSent=now;
+  try{vibeChatRealtimeChannel.send({type:'broadcast',event:'typing',payload:{user_id:currentUser.id,display_name:myProfile?.display_name||myProfile?.username||'Someone'}});}catch(e){}
+}
+function bindChatTypingInput(){
+  const input=document.getElementById('chatMessageInput');if(!input||input.dataset.typingBound==='yes')return;
+  input.dataset.typingBound='yes';input.addEventListener('input',sendChatTyping);
+}
+bindChatTypingInput();
+
 if(currentUser)setTimeout(startVibeChatInboxRealtime,100);
 if(supabaseClient)supabaseClient.auth.onAuthStateChange((_event,session)=>{if(session?.user){currentUser=session.user;setTimeout(startVibeChatInboxRealtime,100);setTimeout(()=>loadConversations(true),150);}else if(vibeChatInboxRealtimeChannel){try{supabaseClient.removeChannel(vibeChatInboxRealtimeChannel);}catch(e){}vibeChatInboxRealtimeChannel=null;updateChatNavBadge(0);}});
 const vibeOriginalOpenConversation = openConversation;
 openConversation = async function(conversationId,otherId){
   await vibeOriginalOpenConversation(conversationId,otherId);
   if(activeConversationId===conversationId){
-    startVibeChatRealtime(conversationId);
+    startVibeChatRealtime(conversationId);bindChatTypingInput();
     const box=document.getElementById('chatMessages');
     if(box && !document.getElementById('chatLiveNote')){
       const note=document.createElement('div');note.id='chatLiveNote';note.className='chat-live-note';note.textContent='Messages update automatically when live connection is available.';
