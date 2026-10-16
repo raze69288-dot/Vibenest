@@ -1010,6 +1010,14 @@ async function togglePublicProfileFollow(userId){const changed=await toggleFollo
  #profileFollowingList .profile-following-user .follow-button{font-size:12px;padding-right:0}
 }
 </style>
+<script>
+// Leaving the Chats tab exits the open conversation so unread indicators can be seen next time.
+const goBeforeChatExitReset = go;
+go = function(id) {
+  if (id !== 'chats' && activeConversationId) closeChatWindow();
+  goBeforeChatExitReset(id);
+};
+</script>
 </body></html>
 
 <style>
