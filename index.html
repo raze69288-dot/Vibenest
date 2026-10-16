@@ -366,9 +366,18 @@ async function loadPostComments(postId, boxId){
   if(error){box.innerHTML='<p class="muted">Could not load comments: '+safeText(error.message)+'</p>';return;}
   const rows=data||[],ids=[...new Set(rows.map(x=>x.author_id))];let profiles={};
   if(ids.length){const result=await supabaseClient.from('profiles').select('id,username,display_name,avatar_url').in('id',ids);if(!result.error)for(const profile of (result.data||[]))profiles[profile.id]=profile;}
-  const list=rows.map(c=>{const profile=profiles[c.author_id];const name=c.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');return `<div style="display:flex;align-items:flex-start;gap:9px;border-bottom:1px solid var(--line);padding:8px 0"><button type="button" class="profile-tap" aria-label="Open ${safeText(name)} profile" onclick="openPublicProfile('${c.author_id}')">${profileAvatarMarkup(profile)}</button><div style="min-width:0;flex:1"><button type="button" class="profile-name-tap" style="display:block;text-align:left;color:var(--text);background:transparent;border:0;padding:0;font:inherit" onclick="openPublicProfile('${c.author_id}')"><b>${safeText(name)}</b></button><div class="muted">${safeText(new Date(c.created_at).toLocaleString())}</div><div style="margin-top:4px;overflow-wrap:anywhere">${safeText(c.content)}</div></div></div>`;}).join('');
+  const {data:postInfo}=await supabaseClient.from('posts').select('author_id').eq('id',postId).maybeSingle();
+  const canModerate=!!currentUser&&postInfo?.author_id===currentUser.id;
+  const list=rows.map(c=>{const profile=profiles[c.author_id];const name=c.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');const canDelete=!!currentUser&&(c.author_id===currentUser.id||canModerate);return `<div style="display:flex;align-items:flex-start;gap:9px;border-bottom:1px solid var(--line);padding:8px 0"><button type="button" class="profile-tap" aria-label="Open ${safeText(name)} profile" onclick="openPublicProfile('${c.author_id}')">${profileAvatarMarkup(profile)}</button><div style="min-width:0;flex:1"><div style="display:flex;align-items:center;gap:8px;justify-content:space-between"><button type="button" class="profile-name-tap" style="display:block;text-align:left;color:var(--text);background:transparent;border:0;padding:0;font:inherit" onclick="openPublicProfile('${c.author_id}')"><b>${safeText(name)}</b></button>${canDelete?`<button type="button" class="join" style="padding:4px 8px;font-size:12px" onclick="deleteComment('${c.id}','${postId}','${targetId}')">Delete</button>`:''}</div><div class="muted">${safeText(new Date(c.created_at).toLocaleString())}</div><div style="margin-top:4px;overflow-wrap:anywhere">${safeText(c.content)}</div></div></div>`;}).join('');
   const inputId='comment-input-'+targetId;
   box.innerHTML=`${list}<div style="display:flex;gap:7px;margin-top:10px"><input class="field" style="margin:0;min-width:0" id="${inputId}" maxlength="2000" placeholder="Write a comment…"><button class="join" onclick="submitComment('${postId}','${targetId}')">Send</button></div>`;
+}
+async function deleteComment(commentId,postId,boxId){
+ if(!currentUser){showToast('Sign in to delete comments');return;}
+ if(!confirm('Delete this comment?'))return;
+ const {error}=await supabaseClient.from('comments').delete().eq('id',commentId);
+ if(error){showToast('Could not delete comment: '+error.message);return;}
+ await loadPostComments(postId,boxId);showToast('Comment deleted');
 }
 async function submitComment(postId, boxId){
   if(!currentUser){openAuth();showToast('Sign in to comment');return;}
