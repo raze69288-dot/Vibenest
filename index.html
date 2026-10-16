@@ -830,6 +830,26 @@ async function togglePublicProfileFollow(userId){await toggleFollow(userId);awai
 .profile-tap:focus-visible,.profile-name-tap:focus-visible{outline:2px solid #c49aff;outline-offset:3px;border-radius:8px}
 </style>
 
+
+<style>
+/* Connection status should be quiet text, not a boxed button. */
+#profileFollowersList .profile-following-user .follow-button,
+#profileFollowingList .profile-following-user .follow-button{
+  margin-left:auto; flex:0 0 auto; max-width:none; padding:7px 2px;
+  border:0 !important; border-radius:0 !important;
+  background:transparent !important; box-shadow:none !important;
+  color:var(--muted) !important; font:600 13px/1.2 system-ui,-apple-system,sans-serif;
+  white-space:nowrap; text-align:right;
+}
+#profileFollowersList .profile-following-user .follow-button:active,
+#profileFollowingList .profile-following-user .follow-button:active{background:transparent !important}
+#profileFollowersList .profile-following-user,
+#profileFollowingList .profile-following-user{gap:12px}
+@media(max-width:380px){
+ #profileFollowersList .profile-following-user .follow-button,
+ #profileFollowingList .profile-following-user .follow-button{font-size:12px;padding-right:0}
+}
+</style>
 </body></html>
 
 <style>
