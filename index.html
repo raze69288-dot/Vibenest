@@ -102,6 +102,19 @@ body:has(#home.active)>.app-topbar{display:none}
 @media(max-width:380px){.community-hero-orb{right:-45px;opacity:.45}.community-hub-hero{padding:22px 17px}.room-hub-heading{flex-direction:column}.room-hub-heading .btn{width:100%}.community-discover-grid{gap:9px}.community-discover-grid .community-card-cover{height:88px}.room-card{gap:8px;padding:9px}.room-card .join{padding:7px 8px;font-size:11px}}
 </style>
 
+
+<style id="vibenest-chatroom-fullscreen-fix">
+#communityRoomChatPanel.room-chat-fullscreen{position:fixed!important;inset:0!important;z-index:9999!important;display:flex!important;flex-direction:column!important;width:100vw!important;height:100vh!important;height:100dvh!important;max-height:100dvh!important;margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:radial-gradient(ellipse at top left,#302044 0%,#17101f 52%,#100b17 100%)!important;overflow:hidden!important;box-shadow:none!important}
+#communityRoomChatPanel.room-chat-fullscreen .room-chat-head{flex:0 0 auto;padding:calc(env(safe-area-inset-top,0px) + 14px) 16px 14px;border-radius:0;border-bottom:1px solid #49345e;background:#21172f;min-height:76px;box-sizing:border-box}
+#communityRoomChatPanel.room-chat-fullscreen .room-chat-head>div{flex:1}
+#communityRoomChatPanel.room-chat-fullscreen .room-chat-head b{font-size:19px}
+#communityRoomChatPanel.room-chat-fullscreen .room-chat-messages{height:auto!important;min-height:0;flex:1 1 auto;overflow-y:auto;padding:16px 14px;overscroll-behavior:contain}
+#communityRoomChatPanel.room-chat-fullscreen .room-chat-compose{flex:0 0 auto;padding:12px 12px calc(env(safe-area-inset-bottom,0px) + 12px);background:#17101f;border-top:1px solid #49345e}
+#communityRoomChatPanel.room-chat-fullscreen .room-chat-compose input{font-size:16px}
+#communityRoomChatPanel.room-chat-fullscreen .room-chat-error{padding:15px;border:1px solid #8e536e;background:#351927;border-radius:14px;color:#ffd5e5;line-height:1.55;overflow-wrap:anywhere}
+#communityRoomChatPanel.room-chat-fullscreen .room-chat-error small{display:block;color:#e5bdce;margin-top:7px;font-size:11px}
+body.room-chat-open{overflow:hidden!important}
+</style>
 </head><body>
 <section id="home" class="page active">
   <div class="vn-home-topline"><div class="vn-home-brandmark"><span class="vn-mark">✳</span><span>Vibe<span class="vn-brand-accent">Nest</span></span></div><button class="home-icon-button vn-notify" aria-label="Notifications" title="Notifications" onclick="go('notifications');loadNotifications()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span id="homeNotificationBadge" class="nav-badge" style="display:none">0</span></button></div>
@@ -223,13 +236,13 @@ async function openCommunityRoom(roomId){
  if(error||!room){showToast('Could not open this room');return;}
  const {data:existing}=await supabaseClient.from('community_room_members').select('room_id').eq('room_id',roomId).eq('user_id',currentUser.id).maybeSingle();
  if(!existing){const {count}=await supabaseClient.from('community_room_members').select('user_id',{count:'exact',head:true}).eq('room_id',roomId);if((count||0)>=100){showToast('This room has reached its 100-person limit');return;}const add=await supabaseClient.from('community_room_members').insert({room_id:roomId,user_id:currentUser.id});if(add.error && !/duplicate key|community_room_members_pkey|23505/i.test(add.error.message+' '+(add.error.code||''))){showToast(/100|full|capacity/i.test(add.error.message)?'This room is full (100 people).':add.error.message);return;}}
- activeCommunityRoom=room;document.getElementById('communityRoomTitle').textContent=room.name;document.getElementById('communityRoomMeta').textContent=(room.description||activeCommunity.name)+' · up to 100 people';document.getElementById('communityRoomChatPanel').style.display='block';document.getElementById('communityRooms').style.display='none';await loadCommunityRoomMessages();document.getElementById('communityRoomMessageInput')?.focus();if(communityRoomPoll)clearInterval(communityRoomPoll);communityRoomPoll=setInterval(()=>{if(activeCommunityRoom)loadCommunityRoomMessages(true)},4000);
+ activeCommunityRoom=room;document.getElementById('communityRoomTitle').textContent=room.name;document.getElementById('communityRoomMeta').textContent=(room.description||activeCommunity.name)+' · up to 100 people';const panel=document.getElementById('communityRoomChatPanel');panel.classList.add('room-chat-fullscreen');panel.style.display='flex';document.body.classList.add('room-chat-open');await loadCommunityRoomMessages();document.getElementById('communityRoomMessageInput')?.focus();if(communityRoomPoll)clearInterval(communityRoomPoll);communityRoomPoll=setInterval(()=>{if(activeCommunityRoom)loadCommunityRoomMessages(true)},4000);
 }
-function closeCommunityRoom(){activeCommunityRoom=null;if(communityRoomPoll)clearInterval(communityRoomPoll);communityRoomPoll=null;document.getElementById('communityRoomChatPanel').style.display='none';document.getElementById('communityRooms').style.display='grid';}
+function closeCommunityRoom(){activeCommunityRoom=null;if(communityRoomPoll)clearInterval(communityRoomPoll);communityRoomPoll=null;const panel=document.getElementById('communityRoomChatPanel');panel.classList.remove('room-chat-fullscreen');panel.style.display='none';document.body.classList.remove('room-chat-open');document.getElementById('communityRooms').style.display='grid';}
 async function loadCommunityRoomMessages(quiet=false){
  const room=activeCommunityRoom,out=document.getElementById('communityRoomMessages');if(!room||!out||!supabaseClient)return;
  const {data,error}=await supabaseClient.from('community_room_messages').select('id,room_id,user_id,content,created_at').eq('room_id',room.id).order('created_at',{ascending:true}).limit(150);
- if(error){if(!quiet)out.innerHTML='<div class="room-empty">Could not load messages. Check room message policies.</div>';return;}
+ if(error){if(!quiet)out.innerHTML='<div class="room-chat-error"><b>Messages could not be loaded.</b><small>'+safeText(error.message||error.code||'Unknown Supabase error')+(error.code?' · Code: '+safeText(error.code):'')+'</small><small>Check the SQL policies below if this is a permission error.</small></div>';return;}
  const wasNearBottom=out.scrollHeight-out.scrollTop-out.clientHeight<90;
  const ids=(data||[]).map(m=>m.id).join(',');if(out.dataset.messageIds===ids)return;out.dataset.messageIds=ids;
  const userIds=[...new Set((data||[]).map(m=>m.user_id))];let names={};if(userIds.length){const {data:profiles}=await supabaseClient.from('profiles').select('id,username,display_name').in('id',userIds);(profiles||[]).forEach(p=>names[p.id]=p.display_name||p.username||'Member');}
@@ -1662,3 +1675,7 @@ button:focus, button:focus-visible, a:focus, a:focus-visible, [role="button"]:fo
 .conversation-item.has-unread .conversation-title-row b{color:#ff8ca0}
 .conversation-item.has-unread .conversation-preview{color:#fff;font-weight:800}
 </style>
+
+<script>
+if(!window.roomChatEscapeHandler){window.roomChatEscapeHandler=true;document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('communityRoomChatPanel')?.classList.contains('room-chat-fullscreen'))closeCommunityRoom();});}
+</script>
