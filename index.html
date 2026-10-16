@@ -1146,6 +1146,53 @@ button,input,textarea,select{font:inherit}button{cursor:pointer;transition:trans
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 </style>
 
+<!-- VibeNest Ultimate Effects: presentation-only; existing app logic and integrations stay untouched. -->
+<style id="vibenest-ultimate-effects">
+:root{--vn-glow:rgba(177,112,255,.48);--vn-glow-strong:rgba(177,112,255,.78)}
+body{isolation:isolate}
+body:before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(ellipse at 12% 15%,rgba(131,63,220,.12),transparent 38%),radial-gradient(ellipse at 90% 72%,rgba(82,37,151,.13),transparent 42%);animation:vnAmbient 16s ease-in-out infinite alternate}
+@keyframes vnAmbient{0%{opacity:.55;transform:scale(1)}100%{opacity:1;transform:scale(1.04)}}
+.card,.post,.notification-item,.chat-start,.conversation-item,.poll-card{transition:transform .22s ease,border-color .22s ease,box-shadow .22s ease}
+.card:active,.post:active{transform:scale(.992)}
+.card:hover,.post:hover,.notification-item:hover{border-color:rgba(190,145,255,.4);box-shadow:0 9px 28px rgba(0,0,0,.17),0 0 22px rgba(148,83,255,.08)}
+button,.join,.bottom button{transition:transform .16s ease,filter .18s ease,box-shadow .18s ease}
+button:active,.join:active{transform:scale(.95);filter:brightness(1.18)}
+button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid #c7a2ff;outline-offset:3px}
+.bottom{backdrop-filter:blur(22px) saturate(1.4);-webkit-backdrop-filter:blur(22px) saturate(1.4);border-top-color:rgba(184,139,255,.2);box-shadow:0 -8px 32px rgba(0,0,0,.18),0 -1px 18px rgba(132,75,220,.08)}
+.bottom button{position:relative;overflow:visible}
+.bottom button.active{color:#d7baff;text-shadow:0 0 15px rgba(181,127,255,.65)}
+.bottom button.active:before{content:"";position:absolute;top:2px;left:28%;right:28%;height:3px;border-radius:99px;background:linear-gradient(90deg,#8b5cf6,#e0b7ff);box-shadow:0 0 12px rgba(182,129,255,.9);animation:vnNavIn .24s ease-out}
+.bottom button.active .nav-icon{filter:drop-shadow(0 0 5px rgba(192,145,255,.9));animation:vnNavPop .28s cubic-bezier(.2,1.7,.4,1)}
+@keyframes vnNavIn{from{transform:scaleX(.2);opacity:.2}to{transform:scaleX(1);opacity:1}}
+@keyframes vnNavPop{from{transform:translateY(2px) scale(.78)}to{transform:translateY(0) scale(1)}}
+.chat-bubble{animation:vnBubbleIn .24s cubic-bezier(.2,.8,.2,1) both;transform-origin:left bottom}
+.chat-bubble.mine{transform-origin:right bottom}
+@keyframes vnBubbleIn{from{opacity:0;transform:translateY(7px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.chat-message-tools button:active{box-shadow:0 0 0 3px rgba(181,127,255,.14),0 0 18px rgba(181,127,255,.2)}
+.vn-particle-layer{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;contain:strict}
+.vn-particle{position:absolute;bottom:-20px;width:4px;height:4px;border-radius:50%;background:#c8a4ff;opacity:0;box-shadow:0 0 8px 2px rgba(175,121,255,.5);animation:vnFloat var(--dur,16s) linear var(--delay,0s) infinite}
+@keyframes vnFloat{0%{transform:translate3d(0,0,0) scale(.65);opacity:0}10%{opacity:var(--alpha,.36)}75%{opacity:var(--alpha,.36)}100%{transform:translate3d(var(--drift,24px),-110vh,0) scale(1.25);opacity:0}}
+.vn-heart-burst{position:fixed;z-index:9999;pointer-events:none;font-size:23px;line-height:1;text-shadow:0 0 12px rgba(255,72,159,.8);animation:vnHeartBurst .72s cubic-bezier(.15,.7,.25,1) forwards}
+@keyframes vnHeartBurst{0%{opacity:0;transform:translate(-50%,-30%) scale(.25) rotate(-18deg)}18%{opacity:1;transform:translate(-50%,-65%) scale(1.35) rotate(8deg)}70%{opacity:1;transform:translate(calc(-50% + var(--dx,0px)),-105%) scale(1) rotate(var(--rot,12deg))}100%{opacity:0;transform:translate(calc(-50% + var(--dx,0px)),-155%) scale(.7) rotate(var(--rot,12deg))}}
+.vn-heart-ring{position:absolute;inset:-5px;border:2px solid rgba(255,102,177,.85);border-radius:50%;animation:vnHeartRing .5s ease-out forwards}
+@keyframes vnHeartRing{from{transform:scale(.2);opacity:.9}to{transform:scale(2.3);opacity:0}}
+@media(max-width:600px){.card:hover,.post:hover,.notification-item:hover{box-shadow:none}.vn-particle{width:3px;height:3px;box-shadow:0 0 5px 1px rgba(175,121,255,.4)}}
+@media(prefers-reduced-motion:reduce){body:before,.vn-particle,.chat-bubble,.bottom button.active .nav-icon,.bottom button.active:before{animation:none!important}*,*:before,*:after{scroll-behavior:auto!important;transition-duration:.01ms!important}}
+</style>
+<script id="vibenest-ultimate-effects-script">
+(()=>{
+ const reduced=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ // A small, fixed set of particles avoids expensive continuous DOM creation on phones.
+ function addParticles(){if(reduced||document.querySelector('.vn-particle-layer'))return;const layer=document.createElement('div');layer.className='vn-particle-layer';layer.setAttribute('aria-hidden','true');const count=window.innerWidth<600?12:18;for(let i=0;i<count;i++){const dot=document.createElement('i');dot.className='vn-particle';dot.style.left=(Math.random()*100)+'%';dot.style.setProperty('--dur',(13+Math.random()*13)+'s');dot.style.setProperty('--delay',(-Math.random()*24)+'s');dot.style.setProperty('--drift',(-35+Math.random()*70)+'px');dot.style.setProperty('--alpha',(0.16+Math.random()*.22).toFixed(2));layer.appendChild(dot)}document.body.prepend(layer)}
+ function heartBurst(x,y){if(reduced)return;const heart=document.createElement('span');heart.className='vn-heart-burst';heart.textContent='♥';heart.style.left=x+'px';heart.style.top=y+'px';heart.style.setProperty('--dx',(-22+Math.random()*44)+'px');heart.style.setProperty('--rot',(-25+Math.random()*50)+'deg');const ring=document.createElement('i');ring.className='vn-heart-ring';heart.appendChild(ring);document.body.appendChild(heart);heart.addEventListener('animationend',()=>heart.remove(),{once:true});setTimeout(()=>heart.remove(),900)}
+ document.addEventListener('click',e=>{const target=e.target instanceof Element?e.target:null;if(!target)return;const btn=target.closest('button');if(!btn)return;const action=btn.getAttribute('onclick')||'';if(/likePost\s*\(/.test(action)||(/like|heart/i.test(btn.getAttribute('aria-label')||'')&&btn.closest('.post,.post-card,.feed-item'))){const r=btn.getBoundingClientRect();heartBurst(r.left+r.width/2,r.top+r.height/2)}},true);
+ // Observe only the chat message container; animate newly inserted bubbles without changing chat logic.
+ function observeChat(){const box=document.getElementById('chatMessages');if(!box||box.dataset.vnEffectsObserved)return;box.dataset.vnEffectsObserved='1';const observer=new MutationObserver(records=>{for(const rec of records)for(const node of rec.addedNodes){if(node.nodeType===1&&node.classList.contains('chat-bubble')){node.style.animationDelay='0ms'}}});observer.observe(box,{childList:true})}
+ function init(){addParticles();observeChat();document.querySelectorAll('.bottom [data-tab]').forEach(btn=>btn.addEventListener('click',()=>{document.querySelectorAll('.bottom [data-tab]').forEach(b=>b.classList.remove('vn-nav-tap'));btn.classList.add('vn-nav-tap')}))}
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init,{once:true});else init();
+ const navObserver=new MutationObserver(observeChat);navObserver.observe(document.documentElement,{childList:true,subtree:true});
+})();
+</script>
 </body></html>
 
 <style>
