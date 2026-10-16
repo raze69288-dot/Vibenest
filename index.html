@@ -320,7 +320,7 @@ async function loadOnlinePosts(){
 }
 function renderOnlinePosts(){
   const communityMap=new Map(onlineCommunities.map(c=>[c.id,c.name]));
-  const renderOne=(p,context)=>{const profile=onlineProfiles[p.author_id];const name=p.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');const commentsId='comments-'+context+'-'+p.id;return `<article class="post"><div class="posthead"><button class="profile-tap" aria-label="Open profile" onclick="openPublicProfile('${p.author_id}')">${profileAvatarMarkup(profile)}</button><div style="min-width:0;flex:1"><button class="profile-name-tap" onclick="openPublicProfile('${p.author_id}')"><b>${safeText(name)}</b></button><div class="muted">${safeText(communityMap.get(p.community_id)||'Community')} · ${safeText(new Date(p.created_at).toLocaleString())}</div></div>${currentUser&&p.author_id!==currentUser.id?`<button class="join follow-button" onclick="toggleFollow('${p.author_id}')">${followingIds.has(p.author_id)?'✓ Following':'+ Follow'}</button>`:''}</div><p>${safeText(p.content)}</p><div class="actions"><button onclick="toggleOnlineLike('${p.id}','${p.author_id}')" style="color:${likedPostIds.has(p.id)?'#ff75bc':'var(--muted)'}">${likedPostIds.has(p.id)?'♥ Liked':'♡ Like'}</button><button onclick="toggleComments('${p.id}','${commentsId}',this)">▢ Comments</button></div><div id="${commentsId}" class="comments-box" style="display:none;margin-top:12px"></div></article>`};
+  const renderOne=(p,context)=>{const profile=onlineProfiles[p.author_id];const name=p.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');const commentsId='comments-'+context+'-'+p.id;return `<article class="post" data-post-id="${p.id}"><div class="posthead"><button class="profile-tap" aria-label="Open profile" onclick="openPublicProfile('${p.author_id}')">${profileAvatarMarkup(profile)}</button><div style="min-width:0;flex:1"><button class="profile-name-tap" onclick="openPublicProfile('${p.author_id}')"><b>${safeText(name)}</b></button><div class="muted">${safeText(communityMap.get(p.community_id)||'Community')} · ${safeText(new Date(p.created_at).toLocaleString())}</div></div>${currentUser&&p.author_id!==currentUser.id?`<button class="join follow-button" onclick="toggleFollow('${p.author_id}')">${followingIds.has(p.author_id)?'✓ Following':'+ Follow'}</button>`:''}</div><p>${safeText(p.content)}</p><div class="actions"><button onclick="toggleOnlineLike('${p.id}','${p.author_id}')" style="color:${likedPostIds.has(p.id)?'#ff75bc':'var(--muted)'}">${likedPostIds.has(p.id)?'♥ Liked':'♡ Like'}</button><button onclick="toggleComments('${p.id}','${commentsId}',this)">▢ Comments</button></div><div id="${commentsId}" class="comments-box" style="display:none;margin-top:12px"></div></article>`};
   const feed=document.getElementById('feed');if(feed){const visible=feedMode==='following'?onlinePosts.filter(p=>!!currentUser&&p.author_id!==currentUser.id&&followingIds.has(p.author_id)):onlinePosts;feed.innerHTML=visible.map(p=>renderOne(p,'feed')).join('')||(feedMode==='following'?'<p class="muted">No posts from people you follow yet. Find people in Chats and tap Follow to see their posts here.</p>':'<p class="muted">No posts yet. Join a community and create the first one!</p>');}
   const myPosts=document.getElementById('myPosts');if(myPosts){const mine=currentUser?onlinePosts.filter(p=>p.author_id===currentUser.id):[];myPosts.innerHTML=mine.map(p=>renderOne(p,'profile')).join('')||'<p class="muted">You have not posted anything yet.</p>';}
   if(activeCommunity)renderCommunityPosts();
@@ -682,10 +682,36 @@ async function loadNotifications(){
 }
 async function openNotification(notificationId){
  const item=notificationRows.find(n=>n.id===notificationId);if(!item)return;
+ if(!currentUser||!supabaseClient){showToast('Sign in to open notifications');return;}
  if(!item.read_at){const {error}=await supabaseClient.from('notifications').update({read_at:new Date().toISOString()}).eq('id',notificationId).eq('recipient_id',currentUser.id);if(!error)item.read_at=new Date().toISOString();}
  await loadNotificationBadge();
  if(item.type==='follow'&&item.actor_id){await openPublicProfile(item.actor_id);return;}
- if(item.post_id){go('home');await loadOnlinePosts();setTimeout(()=>{const target=document.querySelector(`[data-post-id="${CSS.escape(item.post_id)}"]`);if(target){target.scrollIntoView({behavior:'smooth',block:'center'});target.style.outline='2px solid var(--purple)';setTimeout(()=>target.style.outline='',1800);}else showToast('That post may no longer be available.');},120);return;}
+ if(item.post_id){
+  // Like/comment notifications open the post's community, then scroll to the exact post.
+  const {data:post,error}=await supabaseClient.from('posts').select('id,community_id,author_id,content,created_at').eq('id',item.post_id).maybeSingle();
+  if(error||!post){showToast('That post may have been deleted or is unavailable.');return;}
+  let community=onlineCommunities.find(c=>String(c.id)===String(post.community_id));
+  if(!community){
+   const result=await supabaseClient.from('communities').select('id,name,description,category,created_by,created_at,cover_url').eq('id',post.community_id).maybeSingle();
+   if(!result.error&&result.data){community={...result.data,joined:false};onlineCommunities.push(community);}
+  }
+  if(!community){showToast('The community for this post is unavailable.');return;}
+  await loadOnlinePosts();
+  if(!onlinePosts.some(p=>String(p.id)===String(post.id)))onlinePosts.push(post);
+  if(post.author_id&&!onlineProfiles[post.author_id]){
+   const author=await supabaseClient.from('profiles').select('id,username,display_name,avatar_url').eq('id',post.author_id).maybeSingle();
+   if(!author.error&&author.data)onlineProfiles[post.author_id]=author.data;
+  }
+  activeCommunity=community;
+  renderCommunityDetail();
+  go('community');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+   const target=document.querySelector(`#communityPosts [data-post-id="${CSS.escape(String(post.id))}"]`);
+   if(target){target.scrollIntoView({behavior:'smooth',block:'center'});target.style.outline='2px solid var(--purple)';target.style.boxShadow='0 0 0 4px #b18aff22';setTimeout(()=>{target.style.outline='';target.style.boxShadow='';},2400);}
+   else showToast('Opened the community, but this post could not be displayed.');
+  }));
+  return;
+ }
  if(item.actor_id)await openPublicProfile(item.actor_id);
 }
 async function markAllNotificationsRead(){
