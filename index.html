@@ -3,6 +3,9 @@
 
 .comments-box{font-size:13px}.comments-box .field{font:inherit}.authbox{margin:18px 16px;padding:18px;background:var(--panel);border:1px solid var(--line);border-radius:20px}.authbox h2{margin:0 0 5px}.authbox p{color:var(--muted);font-size:13px}.authbox label{display:block;color:var(--muted);font-size:12px;margin:12px 0 5px}.authbox input{display:block;width:100%;background:#100e17;border:1px solid var(--line);border-radius:11px;padding:12px;color:var(--text);margin-top:5px}.authrow{display:flex;gap:8px;margin-top:14px}.authrow button{flex:1}.statusmsg{font-size:12px;color:var(--mint);margin-top:10px;overflow-wrap:anywhere}
 
+
+.conversation-item{padding:13px 10px;border:1px solid var(--line);border-radius:15px;background:linear-gradient(135deg,rgba(48,32,70,.75),rgba(27,20,41,.95));margin:8px 0;gap:11px;align-items:center}.conversation-item .avatar{width:44px;height:44px;border-radius:15px}.conversation-copy{flex:1;min-width:0}.conversation-title-row{display:flex;align-items:center;justify-content:space-between;gap:8px}.conversation-preview{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:4px}.conversation-time{font-size:10px;color:var(--muted);white-space:nowrap}.unread-pill{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:999px;background:var(--purple);color:#21152e;font-size:11px;font-weight:900;flex-shrink:0}.conversation-item.has-unread{border-color:#a77bff88;background:linear-gradient(135deg,rgba(75,46,108,.72),rgba(27,20,41,.96))}.chat-live-note{font-size:11px;color:var(--muted);margin:0 0 8px}
+
 .chat-start{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:14px}.chat-start h2{font-size:16px;margin:0 0 8px}.user-result,.conversation-item{display:flex;align-items:center;gap:10px;padding:11px 8px;border-bottom:1px solid var(--line);cursor:pointer}.user-result:last-child,.conversation-item:last-child{border-bottom:0}.user-result .avatar,.conversation-item .avatar{flex-shrink:0}.user-result div:nth-child(2),.conversation-item div:nth-child(2){min-width:0;flex:1}.chat-messages{display:flex;flex-direction:column;gap:9px;padding:12px 0;max-height:45vh;overflow-y:auto}.chat-bubble{max-width:85%;padding:10px 12px;border-radius:14px;background:var(--panel);border:1px solid var(--line);overflow-wrap:anywhere;align-self:flex-start}.chat-bubble.mine{align-self:flex-end;background:#39264e;border-color:#7955a0}.chat-bubble .muted{font-size:10px;margin-top:4px}.chat-compose{display:flex;gap:8px;align-items:center}.chat-compose .field{min-width:0;flex:1;margin:0}.chat-compose button{flex-shrink:0}.avatar-photo{overflow:hidden;padding:0}.avatar-photo img{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit}.profile-hero-avatar{width:112px;height:112px;border-radius:32px;margin:0 auto 14px;background:#50376b;border:2px solid #a77bff;display:grid;place-items:center;font-size:48px;overflow:hidden}.profile-hero-avatar img{width:100%;height:100%;object-fit:cover}.profile-handle{color:var(--muted);font-size:13px;margin-top:-5px}.profile-edit-modal{display:none;position:fixed;inset:0;z-index:40;background:#100e17f7;overflow:auto;padding:18px 0 35px}.profile-edit-card{max-width:520px;margin:20px 16px;padding:18px;background:var(--panel);border:1px solid var(--line);border-radius:20px}.profile-edit-card label{display:block;color:var(--muted);font-size:12px;margin:12px 0 5px}.profile-edit-card input,.profile-edit-card textarea{display:block;width:100%;background:#100e17;border:1px solid var(--line);border-radius:11px;padding:12px;color:var(--text);margin-top:5px;font:inherit}.profile-edit-card textarea{min-height:100px;resize:vertical}.profile-edit-actions{display:flex;gap:8px;margin-top:14px}.profile-edit-actions button{flex:1}.profile-preview{width:90px;height:90px;border-radius:26px;object-fit:cover;background:#50376b;display:block;margin:8px auto 12px}.profile-hint{font-size:12px;color:var(--muted);line-height:1.5}.notification-item{display:flex;gap:10px;padding:14px;background:var(--panel);border:1px solid var(--line);border-radius:14px;margin:9px 0}.notification-item.unread{border-color:#a77bff99;background:#241b32}.notification-item .notice-icon{font-size:22px;flex-shrink:0}.notification-item .notice-copy{min-width:0;flex:1}.nav-badge{display:inline-block;min-width:16px;padding:1px 4px;border-radius:99px;background:var(--pink);color:#21152e;font-size:10px;font-weight:900;margin-left:3px}
 
 .app-topbar{position:relative;top:auto;z-index:4;display:flex;align-items:center;justify-content:flex-end;min-height:58px;padding:8px 18px;background:linear-gradient(180deg,rgba(40,23,59,.58),rgba(19,12,31,.18));border-bottom:1px solid rgba(177,138,255,.10);backdrop-filter:blur(12px)}.app-topbar .brand{width:auto;text-align:left;justify-content:flex-start;font-size:21px}.notification-top-button{position:relative;background:transparent;color:#e1c9ff;border:0;box-shadow:none;border-radius:0;padding:8px 4px;font-size:21px;line-height:1;appearance:none}.notification-top-button .nav-badge{position:absolute;top:-7px;right:-7px;margin:0;min-width:17px}.notification-bell-emoji{display:block;font-size:25px;line-height:1}
@@ -381,20 +384,36 @@ if(supabaseClient){
 const originalRenderCommunities=renderCommunities;
 renderCommunities=function(){if(currentUser&&supabaseClient){renderOnlineCommunities();}else{originalRenderCommunities();}};
 
-// Private one-to-one messaging using Supabase conversations and messages.
-let activeConversationId=null, activeChatUser=null, chatProfiles={};
+// Private one-to-one messaging with previews, unread counts, and live refresh.
+let activeConversationId=null, activeChatUser=null, chatProfiles={}, chatRealtimeChannel=null, chatRefreshTimer=null;
 function chatDisplayName(profile){return profile?.display_name||profile?.username||'VibeNest member';}
-async function loadConversations(){
+function chatSeenKey(id){return 'vibenest-chat-seen:'+String(currentUser?.id||'guest')+':'+String(id);}
+function chatSeenAt(id){try{return localStorage.getItem(chatSeenKey(id))||'1970-01-01T00:00:00.000Z';}catch(e){return '1970-01-01T00:00:00.000Z';}}
+function markChatSeen(id,stamp){try{localStorage.setItem(chatSeenKey(id),stamp||new Date().toISOString());}catch(e){}}
+function shortChatTime(value){if(!value)return '';const d=new Date(value);if(Number.isNaN(d.getTime()))return '';const now=new Date();return d.toDateString()===now.toDateString()?d.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}):d.toLocaleDateString([], {month:'short',day:'numeric'});}
+function escapeInline(value){return String(value||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,' ');}
+async function loadConversations(silent=false){
  const list=document.getElementById('conversationList');if(!list)return;
  if(!currentUser||!supabaseClient){list.innerHTML='<p class="muted">Sign in to use private messages.</p>';return;}
- list.innerHTML='<p class="muted">Loading conversations…</p>';
+ if(!silent)list.innerHTML='<p class="muted">Loading conversations…</p>';
  const {data,error}=await supabaseClient.from('conversations').select('id,user_one,user_two,created_at').or('user_one.eq.'+currentUser.id+',user_two.eq.'+currentUser.id).order('created_at',{ascending:false});
- if(error){list.innerHTML='<p class="muted">Could not load conversations: '+safeText(error.message)+'</p>';return;}
+ if(error){if(!silent)list.innerHTML='<p class="muted">Could not load conversations: '+safeText(error.message)+'</p>';return;}
  const rows=data||[];if(!rows.length){list.innerHTML='<p class="muted">No conversations yet. Search for a username above to start one.</p>';return;}
  const ids=[...new Set(rows.map(c=>c.user_one===currentUser.id?c.user_two:c.user_one))];
- const {data:profiles,error:profileError}=await supabaseClient.from('profiles').select('id,username,display_name').in('id',ids);
+ const [{data:profiles,error:profileError},{data:messages,error:messageError}]=await Promise.all([
+  supabaseClient.from('profiles').select('id,username,display_name,avatar_url').in('id',ids),
+  supabaseClient.from('messages').select('id,conversation_id,sender_id,content,created_at').in('conversation_id',rows.map(c=>c.id)).order('created_at',{ascending:false}).limit(1000)
+ ]);
  chatProfiles={};if(!profileError)for(const p of profiles||[])chatProfiles[p.id]=p;
- list.innerHTML=rows.map(c=>{const otherId=c.user_one===currentUser.id?c.user_two:c.user_one;const profile=chatProfiles[otherId];return `<div class="conversation-item" onclick="openConversation('${c.id}','${otherId}')"><button class="profile-tap" onclick="event.stopPropagation();openPublicProfile('${otherId}')" aria-label="Open profile"><div class="avatar">✦</div></button><button class="profile-name-tap" onclick="event.stopPropagation();openPublicProfile('${otherId}')"><b>${safeText(chatDisplayName(profile))}</b><div class="muted">@${safeText(profile?.username||'member')}</div></button><span class="muted">Open ›</span></div>`}).join('');
+ const grouped={};for(const m of messages||[]){(grouped[m.conversation_id]||(grouped[m.conversation_id]=[])).push(m);}
+ list.innerHTML=rows.map(c=>{
+  const otherId=c.user_one===currentUser.id?c.user_two:c.user_one,profile=chatProfiles[otherId],msgs=grouped[c.id]||[],latest=msgs[0];
+  const unread=msgs.filter(m=>m.sender_id!==currentUser.id&&new Date(m.created_at).getTime()>new Date(chatSeenAt(c.id)).getTime()).length;
+  const preview=latest?(latest.sender_id===currentUser.id?'You: ':'')+latest.content:'No messages yet. Say hello!';
+  const avatar=profile?.avatar_url?`<img src="${safeText(profile.avatar_url)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">`:'✦';
+  return `<div class="conversation-item ${unread?'has-unread':''}" onclick="openConversation('${c.id}','${otherId}')"><button class="profile-tap" onclick="event.stopPropagation();openPublicProfile('${otherId}')" aria-label="Open profile"><div class="avatar">${avatar}</div></button><div class="conversation-copy"><div class="conversation-title-row"><b>${safeText(chatDisplayName(profile))}</b><span class="conversation-time">${safeText(shortChatTime(latest?.created_at))}</span></div><div class="muted">@${safeText(profile?.username||'member')}</div><div class="conversation-preview">${safeText(preview)}</div></div>${unread?`<span class="unread-pill" aria-label="${unread} unread messages">${unread>99?'99+':unread}</span>`:''}</div>`;
+ }).join('');
+ if(messageError)console.warn('Could not load message previews/unread counts:',messageError.message);
 }
 async function searchChatUsers(){
  const input=document.getElementById('userSearch'),out=document.getElementById('userSearchResults');if(!input||!out)return;
@@ -402,10 +421,10 @@ async function searchChatUsers(){
  if(!currentUser||!supabaseClient){out.innerHTML='<p class="muted">Sign in to find members.</p>';return;}
  if(q.length<2){out.innerHTML='<p class="muted">Type at least 2 characters.</p>';return;}
  out.innerHTML='<p class="muted">Searching…</p>';
- const {data,error}=await supabaseClient.from('profiles').select('id,username,display_name').ilike('username','%'+q.replace(/[%_,]/g,'')+'%').neq('id',currentUser.id).limit(10);
+ const {data,error}=await supabaseClient.from('profiles').select('id,username,display_name,avatar_url').ilike('username','%'+q.replace(/[%_,]/g,'')+'%').neq('id',currentUser.id).limit(10);
  if(error){out.innerHTML='<p class="muted">Could not search users: '+safeText(error.message)+'</p>';return;}
  const rows=data||[];if(!rows.length){out.innerHTML='<p class="muted">No users found. Search by their username.</p>';return;}
- out.innerHTML=rows.map(p=>`<div class="user-result"><button class="profile-tap" aria-label="Open profile" onclick="openPublicProfile('${p.id}')"><div class="avatar">✦</div></button><button class="profile-name-tap profile-search-copy" onclick="openPublicProfile('${p.id}')"><b>${safeText(chatDisplayName(p))}</b><div class="muted">@${safeText(p.username||'member')}</div></button><button class="join" onclick="startConversation('${p.id}')">Message</button></div>`).join('');
+ out.innerHTML=rows.map(p=>`<div class="user-result"><button class="profile-tap" aria-label="Open profile" onclick="openPublicProfile('${p.id}')"><div class="avatar">${p.avatar_url?`<img src="${safeText(p.avatar_url)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">`:'✦'}</div></button><button class="profile-name-tap profile-search-copy" onclick="openPublicProfile('${p.id}')"><b>${safeText(chatDisplayName(p))}</b><div class="muted">@${safeText(p.username||'member')}</div></button><button class="join" onclick="startConversation('${p.id}')">Message</button></div>`).join('');
 }
 async function startConversation(otherId){
  if(!currentUser||!supabaseClient){openAuth();showToast('Sign in to message members');return;}
@@ -414,22 +433,24 @@ async function startConversation(otherId){
  let {data,error}=await supabaseClient.from('conversations').select('id,user_one,user_two').eq('user_one',pair[0]).eq('user_two',pair[1]).maybeSingle();
  if(error){showToast('Could not check conversation: '+error.message);return;}
  if(!data){const made=await supabaseClient.from('conversations').insert({user_one:pair[0],user_two:pair[1]}).select('id,user_one,user_two').single();if(made.error){if(made.error.code==='23505'){const retry=await supabaseClient.from('conversations').select('id,user_one,user_two').eq('user_one',pair[0]).eq('user_two',pair[1]).single();if(retry.error){showToast(retry.error.message);return;}data=retry.data;}else{showToast('Could not start chat: '+made.error.message);return;}}else data=made.data;}
- const {data:profile}=await supabaseClient.from('profiles').select('id,username,display_name').eq('id',otherId).maybeSingle();if(profile)chatProfiles[otherId]=profile;
- await openConversation(data.id,otherId);await loadConversations();
+ const {data:profile}=await supabaseClient.from('profiles').select('id,username,display_name,avatar_url').eq('id',otherId).maybeSingle();if(profile)chatProfiles[otherId]=profile;
+ await openConversation(data.id,otherId);await loadConversations(true);
 }
 async function openConversation(conversationId,otherId){
  activeConversationId=conversationId;activeChatUser=otherId;
  const profile=chatProfiles[otherId];document.getElementById('chatTitle').textContent=chatDisplayName(profile);
  document.getElementById('chatWindow').style.display='block';document.getElementById('conversationList').style.display='none';document.getElementById('userSearchResults').style.display='none';document.getElementById('userSearch').style.display='none';const chatStart=document.querySelector('#chats .chat-start');if(chatStart)chatStart.style.display='none';const chatsHeading=document.getElementById('chatsHeading');if(chatsHeading)chatsHeading.style.display='none';
- await loadChatMessages();
+ await loadChatMessages();await loadConversations(true);
 }
 function closeChatWindow(){activeConversationId=null;activeChatUser=null;document.getElementById('chatWindow').style.display='none';document.getElementById('conversationList').style.display='block';document.getElementById('userSearchResults').style.display='block';document.getElementById('userSearch').style.display='block';const chatStart=document.querySelector('#chats .chat-start');if(chatStart)chatStart.style.display='block';const chatsHeading=document.getElementById('chatsHeading');if(chatsHeading)chatsHeading.style.display='';loadConversations();}
 async function loadChatMessages(){
- const box=document.getElementById('chatMessages');if(!box||!activeConversationId)return;box.innerHTML='<p class="muted">Loading messages…</p>';
- const {data,error}=await supabaseClient.from('messages').select('id,conversation_id,sender_id,content,created_at').eq('conversation_id',activeConversationId).order('created_at',{ascending:true}).limit(200);
+ const box=document.getElementById('chatMessages');if(!box||!activeConversationId||!supabaseClient)return;const requestedId=activeConversationId;
+ const {data,error}=await supabaseClient.from('messages').select('id,conversation_id,sender_id,content,created_at').eq('conversation_id',requestedId).order('created_at',{ascending:true}).limit(200);
+ if(requestedId!==activeConversationId)return;
  if(error){box.innerHTML='<p class="muted">Could not load messages: '+safeText(error.message)+'</p>';return;}
- const rows=data||[];box.innerHTML=rows.map(m=>`<div class="chat-bubble ${m.sender_id===currentUser.id?'mine':''} ">${safeText(m.content)}<div class="muted">${safeText(new Date(m.created_at).toLocaleString())}</div></div>`).join('')||'<p class="muted">No messages yet. Say hello!</p>';
+ const rows=data||[];box.innerHTML=rows.map(m=>`<div class="chat-bubble ${m.sender_id===currentUser.id?'mine':''}">${safeText(m.content)}<div class="muted">${safeText(new Date(m.created_at).toLocaleString())}</div></div>`).join('')||'<p class="muted">No messages yet. Say hello!</p>';
  box.scrollTop=box.scrollHeight;
+ const latest=rows.length?rows[rows.length-1].created_at:new Date().toISOString();markChatSeen(requestedId,latest);await loadConversations(true);
 }
 async function sendChatMessage(){
  if(!currentUser||!activeConversationId){showToast('Open a conversation first');return;}
@@ -438,12 +459,21 @@ async function sendChatMessage(){
  const {error}=await supabaseClient.from('messages').insert({conversation_id:activeConversationId,sender_id:currentUser.id,content});
  input.disabled=false;
  if(error){showToast('Could not send message: '+error.message);return;}
- input.value='';await loadChatMessages();await loadConversations();
+ input.value='';await loadChatMessages();await loadConversations(true);
+}
+function setupChatRealtime(){
+ if(!supabaseClient||!currentUser)return;
+ try{if(chatRealtimeChannel)supabaseClient.removeChannel(chatRealtimeChannel);}catch(e){}
+ chatRealtimeChannel=supabaseClient.channel('vibenest-messages-'+currentUser.id).on('postgres_changes',{event:'INSERT',schema:'public',table:'messages'},payload=>{
+  const m=payload.new;if(!m)return;
+  if(m.conversation_id===activeConversationId){loadChatMessages();}else if(document.getElementById('chats')?.classList.contains('active')){loadConversations(true);}
+ }).subscribe();
+ if(chatRefreshTimer)clearInterval(chatRefreshTimer);
+ chatRefreshTimer=setInterval(()=>{if(!currentUser||!document.getElementById('chats')?.classList.contains('active'))return;if(activeConversationId)loadChatMessages();else loadConversations(true);},15000);
 }
 const originalGoForChats=go;
-go=function(id){originalGoForChats(id);if(id==='chats'){loadConversations();}if(id==='profile'){loadMyProfile();loadProfileStats();}};
-if(supabaseClient){supabaseClient.auth.onAuthStateChange((_event,session)=>{if(!session){activeConversationId=null;activeChatUser=null;}if(document.getElementById('chats')?.classList.contains('active'))loadConversations();});}
-
+go=function(id){originalGoForChats(id);if(id==='chats'){loadConversations();setupChatRealtime();}if(id==='profile'){loadMyProfile();loadProfileStats();}};
+if(supabaseClient){supabaseClient.auth.onAuthStateChange((_event,session)=>{if(!session){activeConversationId=null;activeChatUser=null;if(chatRealtimeChannel){supabaseClient.removeChannel(chatRealtimeChannel);chatRealtimeChannel=null;}if(chatRefreshTimer){clearInterval(chatRefreshTimer);chatRefreshTimer=null;}}else{setupChatRealtime();}if(document.getElementById('chats')?.classList.contains('active'))loadConversations();});}
 </script>
 
 
