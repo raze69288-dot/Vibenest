@@ -253,18 +253,38 @@ function setFeedMode(mode){
  if(following)following.style.background=mode==='following'?'#a77bff33':'';
  renderOnlinePosts();
 }
+const followActionLocks = new Set();
 async function toggleFollow(userId){
- if(!currentUser||!supabaseClient){openAuth();showToast('Sign in to follow people');return;}
- if(!userId||userId===currentUser.id)return;
- if(followingIds.has(userId)){
-  const {error}=await supabaseClient.from('follows').delete().eq('follower_id',currentUser.id).eq('following_id',userId);
-  if(error){showToast(error.message);return;} followingIds.delete(userId);loadProfileStats();showToast('Unfollowed member');
- }else{
-  const {error}=await supabaseClient.from('follows').insert({follower_id:currentUser.id,following_id:userId});
-  if(error){showToast(error.message);return;} followingIds.add(userId);await createNotification(userId,'follow',null,null);loadProfileStats();showToast('Following member');
- }
- searchPeople();renderOnlinePosts();
- const followingPanel=document.getElementById('profileFollowingPanel');if(followingPanel&&!followingPanel.hidden)renderFollowingList();
+ if(!currentUser||!supabaseClient){openAuth();showToast('Sign in to follow people');return false;}
+ if(!userId||userId===currentUser.id||followActionLocks.has(userId))return false;
+ followActionLocks.add(userId);
+ try{
+  if(followingIds.has(userId)){
+   const {error}=await supabaseClient.from('follows').delete().eq('follower_id',currentUser.id).eq('following_id',userId);
+   if(error)throw error;
+   followingIds.delete(userId);
+   showToast('Unfollowed member');
+  }else{
+   const {error}=await supabaseClient.from('follows').insert({follower_id:currentUser.id,following_id:userId});
+   if(error){
+    // A duplicate row can happen if a tap is repeated or another tab already followed this person.
+    if(!/duplicate|unique/i.test(error.message||''))throw error;
+   }
+   followingIds.add(userId);
+   await createNotification(userId,'follow',null,null);
+   showToast('Following member');
+  }
+  await loadFollowing();
+  await loadProfileStats();
+  searchPeople();
+  renderOnlinePosts();
+  const followersPanel=document.getElementById('profileFollowersPanel');
+  const followingPanel=document.getElementById('profileFollowingPanel');
+  if(followersPanel&&!followersPanel.hidden)await renderFollowersList();
+  if(followingPanel&&!followingPanel.hidden)await renderFollowingList();
+  return true;
+ }catch(error){console.error('Follow action failed:',error);showToast(error.message||'Could not update follow status');return false;}
+ finally{followActionLocks.delete(userId);}
 }
 function showDiscoverMode(mode){
  const choices=document.getElementById('discoverChoices');
@@ -801,6 +821,7 @@ function ensurePublicProfileModal(){
 function closePublicProfile(){const modal=document.getElementById('publicProfileModal');if(modal)modal.style.display='none';document.body.style.overflow='';}
 async function openPublicProfile(userId){
  if(!userId)return;
+ if(currentUser&&supabaseClient)await loadFollowing();
  if(currentUser&&userId===currentUser.id){go('profile');return;}
  const modal=ensurePublicProfileModal(),out=document.getElementById('publicProfileContent');modal.style.display='block';document.body.style.overflow='hidden';out.innerHTML='<p class="muted">Loading profile…</p>';
  if(!supabaseClient){out.innerHTML='<p class="muted">Profiles are unavailable while the app is offline.</p>';return;}
@@ -822,7 +843,7 @@ async function openPublicProfile(userId){
   out.innerHTML=`<div class="public-profile-hero"><div class="profile-hero-avatar">${avatar}</div><h2 style="margin:8px 0 4px">${safeText(name)}</h2><div class="profile-handle">@${safeText(profile.username||'member')}</div><p style="margin:14px auto 16px;max-width:380px;overflow-wrap:anywhere">${safeText(profile.bio||'No bio yet.')}</p><div style="display:flex;justify-content:center;gap:9px;flex-wrap:wrap">${currentUser?`<button class="join" onclick="togglePublicProfileFollow('${userId}')">${isFollowing?'✓ Following':'＋ Follow'}</button><button class="btn" onclick="closePublicProfile();startConversation('${userId}')">Message</button>`:''}</div></div><div class="public-profile-stats"><div class="public-profile-stat"><b>${followersResult.error?'—':(followersResult.data||[]).length}</b><span class="muted">Followers</span></div><div class="public-profile-stat"><b>${followingResult.error?'—':(followingResult.data||[]).length}</b><span class="muted">Following</span></div></div><h3 style="margin:18px 2px 6px">Posts</h3><div>${posts.map(post=>`<div class="public-profile-post"><p style="margin:0 0 7px">${safeText(post.content||'')}</p><div class="muted">${safeText(communityNames[post.community_id]||'Community')} · ${safeText(new Date(post.created_at).toLocaleString())}</div></div>`).join('')||'<p class="muted">No posts yet.</p>'}</div>`;
  }catch(error){console.error('Could not open public profile:',error);out.innerHTML=`<p class="muted">Could not load this profile: ${safeText(error.message||'Please try again.')}</p>`;}
 }
-async function togglePublicProfileFollow(userId){await toggleFollow(userId);await openPublicProfile(userId);}
+async function togglePublicProfileFollow(userId){const changed=await toggleFollow(userId);if(changed)await openPublicProfile(userId);}
 </script>
 
 
