@@ -393,8 +393,8 @@ function restoreOpenComments(root,state){
  state.forEach(item=>{
   const article=[...root.querySelectorAll('article.post')].find(el=>String(el.dataset.postId)===String(item.postId));
   const box=article?.querySelector('.comments-box');if(!box)return;
-  box.style.display='block';box.dataset.loading='0';
-  loadPostComments(item.postId,box.id).then(()=>{const input=box.querySelector('input[id^="comment-input-"]');if(input&&item.draft)input.value=item.draft;}).catch(()=>{});
+  box.style.display='block';box.dataset.open='1';box.dataset.loading='0';
+  loadPostComments(item.postId,box.id).then(()=>{if(box.dataset.open==='0'){box.style.display='none';return;}const input=box.querySelector('input[id^="comment-input-"]');if(input&&item.draft)input.value=item.draft;}).catch(()=>{});
  });
 }
 function renderOnlinePosts(){
@@ -407,20 +407,24 @@ function renderOnlinePosts(){
   restoreOpenComments(document.getElementById('feed'),commentState);
   restoreOpenComments(document.getElementById('myPosts'),commentState);
 }
+const vibeCommentToggleAt = new Map();
 async function toggleComments(postId, boxId, button){
-  // Resolve the comment panel from the clicked post first. This avoids a page
-  // context/duplicate-ID mismatch between Home, Community, and Profile.
+  // Resolve the panel from the clicked card, not a potentially stale ID.
+  // Ignore duplicate taps fired by mobile click/touch handling within 700 ms.
   const article = button && button.closest ? button.closest('article.post') : null;
   const box = (article && article.querySelector('.comments-box')) || document.getElementById(boxId || ('comments-feed-' + postId));
   if(!box){showToast('Could not open comments. Please refresh and try again.');return;}
   const targetId = box.id || (boxId || ('comments-feed-' + postId));
+  const now=Date.now(),last=vibeCommentToggleAt.get(targetId)||0;
+  if(now-last<700)return;
+  vibeCommentToggleAt.set(targetId,now);
   if(box.dataset.loading === '1') return;
-  if(box.style.display === 'block') { box.style.display = 'none'; return; }
-  box.style.display = 'block';
+  if(box.style.display === 'block') { box.style.display = 'none'; box.dataset.open='0'; return; }
+  box.style.display = 'block'; box.dataset.open='1';
   box.innerHTML='<p class="muted">Loading comments…</p>';
   box.dataset.loading='1';
   try { await loadPostComments(postId,targetId); }
-  finally { box.dataset.loading='0'; }
+  finally { box.dataset.loading='0'; if(box.dataset.open==='0')box.style.display='none'; }
 }
 async function loadPostComments(postId, boxId){
   const targetId=boxId||('comments-feed-'+postId);
