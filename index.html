@@ -960,7 +960,7 @@ async function openPublicProfile(userId){
   const posts=postsResult.error?[]:(postsResult.data||[]);
   const communityIds=[...new Set(posts.map(p=>p.community_id).filter(Boolean))];let communityNames={};
   if(communityIds.length){const c=await supabaseClient.from('communities').select('id,name').in('id',communityIds);if(!c.error)for(const item of c.data||[])communityNames[item.id]=item.name;}
-  out.innerHTML=`<div class="public-profile-hero"><div class="profile-hero-avatar">${avatar}</div><h2 style="margin:8px 0 4px">${safeText(name)}</h2><div class="profile-handle">@${safeText(profile.username||'member')}</div><p style="margin:14px auto 16px;max-width:380px;overflow-wrap:anywhere">${safeText(profile.bio||'No bio yet.')}</p><div style="display:flex;justify-content:center;gap:9px;flex-wrap:wrap">${currentUser?`<button class="join" id="publicProfileFollowButton" onclick="togglePublicProfileFollow('${userId}')">${isFollowing?'✓ Following':'＋ Follow'}</button><button class="btn" onclick="closePublicProfile();startConversation('${userId}')">Message</button>`:''}</div></div><div class="public-profile-stats"><button type="button" class="public-profile-stat" onclick="openPublicProfileConnections('${userId}','followers')"><b>${followersResult.error?'—':(followersResult.data||[]).length}</b><span class="muted">Followers</span></button><button type="button" class="public-profile-stat" onclick="openPublicProfileConnections('${userId}','following')"><b>${followingResult.error?'—':(followingResult.data||[]).length}</b><span class="muted">Following</span></button></div><h3 style="margin:18px 2px 6px">Posts</h3><div>${posts.map(post=>`<div class="public-profile-post"><p style="margin:0 0 7px">${safeText(post.content||'')}</p><div class="muted">${safeText(communityNames[post.community_id]||'Community')} · ${safeText(new Date(post.created_at).toLocaleString())}</div></div>`).join('')||'<p class="muted">No posts yet.</p>'}</div>`;
+  out.innerHTML=`<div class="public-profile-hero"><div class="profile-hero-avatar">${avatar}</div><h2 style="margin:8px 0 4px">${safeText(name)}</h2><div class="profile-handle">@${safeText(profile.username||'member')}</div><p style="margin:14px auto 16px;max-width:380px;overflow-wrap:anywhere">${safeText(profile.bio||'No bio yet.')}</p><div style="display:flex;justify-content:center;gap:9px;flex-wrap:wrap">${currentUser?`<button class="join" id="publicProfileFollowButton" onclick="togglePublicProfileFollow('${userId}')">${isFollowing?'✓ Following':'＋ Follow'}</button><button class="btn" onclick="closePublicProfile();startConversation('${userId}')">Message</button>`:''}</div></div><div class="public-profile-stats"><button type="button" class="public-profile-stat" onclick="openPublicProfileConnections('${userId}','followers')"><b id="publicProfileFollowersCount">${followersResult.error?'—':(followersResult.data||[]).length}</b><span class="muted">Followers</span></button><button type="button" class="public-profile-stat" onclick="openPublicProfileConnections('${userId}','following')"><b id="publicProfileFollowingCount">${followingResult.error?'—':(followingResult.data||[]).length}</b><span class="muted">Following</span></button></div><h3 style="margin:18px 2px 6px">Posts</h3><div>${posts.map(post=>`<div class="public-profile-post"><p style="margin:0 0 7px">${safeText(post.content||'')}</p><div class="muted">${safeText(communityNames[post.community_id]||'Community')} · ${safeText(new Date(post.created_at).toLocaleString())}</div></div>`).join('')||'<p class="muted">No posts yet.</p>'}</div>`;
  }catch(error){console.error('Could not open public profile:',error);out.innerHTML=`<p class="muted">Could not load this profile: ${safeText(error.message||'Please try again.')}</p>`;}
 }
 async function openPublicProfileConnections(userId,kind){
@@ -980,7 +980,27 @@ async function openPublicProfileConnections(userId,kind){
   out.innerHTML=`<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px"><button class="join" onclick="openPublicProfile('${userId}')">← Back to profile</button><b style="color:var(--purple)">${kind==='followers'?'Followers':'Following'}</b></div>${list.map(person=>`<div class="user-result" style="display:flex;align-items:center;gap:10px;padding:10px"><button class="profile-tap" onclick="openPublicProfile('${person.id}')">${profileAvatarMarkup(person)}</button><button class="profile-name-tap" style="flex:1;text-align:left;background:none;border:0;color:var(--text);font:inherit;min-width:0" onclick="openPublicProfile('${person.id}')"><b>${safeText(person.display_name||person.username||'VibeNest member')}</b><div class="muted">@${safeText(person.username||'member')}</div></button>${currentUser&&person.id!==currentUser.id?`<button class="join follow-button" onclick="toggleFollow('${person.id}')">${followingIds.has(person.id)?'✓ Following':'+ Follow'}</button>`:''}</div>`).join('')||'<p class="muted">These profiles are not available.</p>'}`;
  }catch(error){console.error('Could not load public profile connections:',error);out.innerHTML=`<button class="join" onclick="openPublicProfile('${userId}')">← Back to profile</button><p class="muted">Could not load this list. Check the follows and profiles read policies.</p>`;}
 }
-async function togglePublicProfileFollow(userId){const changed=await toggleFollow(userId);if(changed)await openPublicProfile(userId);}
+async function togglePublicProfileFollow(userId){
+ const button=document.getElementById('publicProfileFollowButton');
+ if(!button||button.disabled)return;
+ const wasFollowing=followingIds.has(userId);
+ button.disabled=true;button.style.opacity='.65';
+ const changed=await toggleFollow(userId);
+ button.disabled=false;button.style.opacity='';
+ if(!changed)return;
+ // Update the open profile in place; don't reload the modal or show 'Loading profile…'.
+ button.textContent=wasFollowing?'＋ Follow':'✓ Following';
+ const followersCount=document.getElementById('publicProfileFollowersCount');
+ if(followersCount&&followersCount.textContent!=='—'){
+  const n=parseInt(followersCount.textContent,10);
+  if(Number.isFinite(n))followersCount.textContent=String(Math.max(0,n+(wasFollowing?-1:1)));
+ }
+ // Reconcile the count in the background in case another device changed it too.
+ if(supabaseClient){
+  const {count,error}=await supabaseClient.from('follows').select('follower_id',{count:'exact',head:true}).eq('following_id',userId);
+  if(!error&&followersCount)followersCount.textContent=String(count??0);
+ }
+}
 </script>
 
 
