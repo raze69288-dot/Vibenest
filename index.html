@@ -114,7 +114,7 @@ function openCommunityById(id){
 function renderCommunityDetail(){
  const c=activeCommunity;if(!c)return;
  const content=document.getElementById('communityDetailContent');
- content.innerHTML=`<div class="hero">${c.cover_url?communityCoverMarkup(c,true):'<div style="font-size:42px">✦</div>'}<div class="muted">${safeText(c.category||c.cat||'Community')}</div><h1 style="margin:8px 0">${safeText(c.name)}</h1><p>${safeText(c.description||c.desc||'A place to connect with people who share this interest.')}</p><button class="join" onclick="${c.id?'toggleOnlineJoin(\''+c.id+'\')':'toggleJoin(\''+c.name+'\')'}">${c.joined?'✓ Joined':'＋ Join community'}</button></div>`;
+ content.innerHTML=`<div class="hero">${c.cover_url?communityCoverMarkup(c,true):'<div style="font-size:42px">✦</div>'}<div class="muted">${safeText(c.category||c.cat||'Community')} · ${communityMemberCounts[c.id]||0} members</div><h1 style="margin:8px 0">${safeText(c.name)}</h1><p>${safeText(c.description||c.desc||'A place to connect with people who share this interest.')}</p><button class="join" onclick="${c.id?'toggleOnlineJoin(\''+c.id+'\')':'toggleJoin(\''+c.name+'\')'}">${c.joined?'✓ Joined':'＋ Join community'}</button></div>`;
  const postButton=document.getElementById('communityPostButton');if(postButton)postButton.style.display='';
  renderCommunityPosts();
 }
@@ -517,7 +517,7 @@ function setupChatRealtime(){
   if(m.conversation_id===activeConversationId){loadChatMessages();}else if(document.getElementById('chats')?.classList.contains('active')){loadConversations(true);}
  }).subscribe();
  if(chatRefreshTimer)clearInterval(chatRefreshTimer);
- chatRefreshTimer=setInterval(()=>{if(!currentUser)return;if(document.getElementById('chats')?.classList.contains('active')&&activeConversationId)loadChatMessages();else loadConversations(true);},15000);
+ chatRefreshTimer=setInterval(()=>{if(!currentUser)return;if(document.getElementById('chats')?.classList.contains('active')&&activeConversationId)loadChatMessages();else loadConversations(true);},4000);
 }
 const originalGoForChats=go;
 go=function(id){originalGoForChats(id);if(id==='chats'){loadConversations();setupChatRealtime();}if(id==='profile'){loadMyProfile();loadProfileStats();}};
@@ -846,7 +846,63 @@ function startNotificationRealtime(){
  vibeNotificationChannel=supabaseClient.channel('vibenest-notifications-'+currentUser.id).on('postgres_changes',{event:'*',schema:'public',table:'notifications',filter:'recipient_id=eq.'+currentUser.id},()=>{loadNotificationBadge();if(document.getElementById('notifications')?.classList.contains('active'))loadNotifications();}).subscribe();
 }
 if(supabaseClient){supabaseClient.auth.onAuthStateChange((_event,session)=>{currentUser=session?.user||null;if(currentUser){setTimeout(loadNotificationBadge,0);setTimeout(startNotificationRealtime,0);}else{if(vibeNotificationChannel){try{supabaseClient.removeChannel(vibeNotificationChannel)}catch(e){}vibeNotificationChannel=null;}notificationRows=[];loadNotificationBadge();}});}
+
 if(currentUser)setTimeout(startNotificationRealtime,100);
+
+/* VibeNest reliability layer: realtime subscriptions plus lightweight polling fallback.
+   This keeps counts, feeds, inboxes and notifications fresh even when Realtime publication
+   is not enabled for a table or a mobile connection drops a websocket. */
+let vibeSocialRealtimeChannel=null, vibeSocialRefreshTimer=null, vibeNotificationRefreshTimer=null;
+let vibeSocialRefreshBusy=false, vibeNotificationRefreshBusy=false;
+function startVibeSocialRealtime(){
+ if(!supabaseClient||!currentUser||!supabaseClient.channel)return;
+ if(vibeSocialRealtimeChannel){try{supabaseClient.removeChannel(vibeSocialRealtimeChannel)}catch(e){}}
+ const refresh=async()=>{
+  if(vibeSocialRefreshBusy||!currentUser||!supabaseClient)return;
+  vibeSocialRefreshBusy=true;
+  try{
+   await Promise.all([loadOnlinePosts(),refreshSocialCounts()]);
+   renderOnlinePosts();if(activeCommunity)renderCommunityDetail();
+   if(document.getElementById('discover')?.classList.contains('active')||document.getElementById('communities')?.classList.contains('active')){await ensureStarterCommunities();}
+  }catch(e){console.warn('Social refresh failed',e)}finally{vibeSocialRefreshBusy=false;}
+ };
+ vibeSocialRealtimeChannel=supabaseClient.channel('vibenest-social-live-'+currentUser.id)
+  .on('postgres_changes',{event:'*',schema:'public',table:'post_likes'},refresh)
+  .on('postgres_changes',{event:'*',schema:'public',table:'posts'},refresh)
+  .on('postgres_changes',{event:'*',schema:'public',table:'comments'},refresh)
+  .on('postgres_changes',{event:'*',schema:'public',table:'memberships'},refresh)
+  .subscribe();
+ if(vibeSocialRefreshTimer)clearInterval(vibeSocialRefreshTimer);
+ vibeSocialRefreshTimer=setInterval(()=>{
+  if(!currentUser||document.visibilityState==='hidden')return;
+  refreshSocialCounts();
+  if(['home','profile','community','discover','communities'].some(id=>document.getElementById(id)?.classList.contains('active'))){
+   if(!vibeSocialRefreshBusy){vibeSocialRefreshBusy=true;loadOnlinePosts().finally(()=>{vibeSocialRefreshBusy=false;});}
+   if(document.getElementById('discover')?.classList.contains('active')||document.getElementById('communities')?.classList.contains('active'))ensureStarterCommunities();
+  }
+ },5000);
+}
+function startVibeNotificationFallback(){
+ if(vibeNotificationRefreshTimer)clearInterval(vibeNotificationRefreshTimer);
+ vibeNotificationRefreshTimer=setInterval(async()=>{
+  if(!currentUser||!supabaseClient||document.visibilityState==='hidden'||vibeNotificationRefreshBusy)return;
+  vibeNotificationRefreshBusy=true;
+  try{await loadNotificationBadge();if(document.getElementById('notifications')?.classList.contains('active'))await loadNotifications();}
+  finally{vibeNotificationRefreshBusy=false;}
+ },5000);
+}
+if(supabaseClient){supabaseClient.auth.onAuthStateChange((_event,session)=>{
+ currentUser=session?.user||null;
+ if(currentUser){setTimeout(startVibeSocialRealtime,250);setTimeout(startVibeNotificationFallback,300);}
+ else{
+  [vibeSocialRealtimeChannel].filter(Boolean).forEach(ch=>{try{supabaseClient.removeChannel(ch)}catch(e){}});vibeSocialRealtimeChannel=null;
+  if(vibeSocialRefreshTimer)clearInterval(vibeSocialRefreshTimer);vibeSocialRefreshTimer=null;
+  if(vibeNotificationRefreshTimer)clearInterval(vibeNotificationRefreshTimer);vibeNotificationRefreshTimer=null;
+ }
+});}
+if(currentUser){setTimeout(startVibeSocialRealtime,250);setTimeout(startVibeNotificationFallback,300);}
+document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'&&currentUser){loadNotificationBadge();if(document.getElementById('notifications')?.classList.contains('active'))loadNotifications();if(activeConversationId)loadChatMessages();refreshSocialCounts();}});
+
 
 </script>
 
