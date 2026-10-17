@@ -2484,6 +2484,28 @@ renderCommunityDetail=function(){initializeCommunitySections();vnOldRenderCommun
 })();
 </script>
 
+<style>
+/* Keep direct chat clean; navigation back is handled with a right-swipe gesture. */
+body.direct-chat-open #chatWindow > .join:first-child{display:none!important}
+</style>
+<script>
+(()=>{
+  let startX=0,startY=0,tracking=false;
+  document.addEventListener('touchstart',e=>{
+    if(!document.body.classList.contains('direct-chat-open')||!e.touches||e.touches.length!==1)return;
+    const t=e.touches[0];
+    startX=t.clientX;startY=t.clientY;
+    tracking=startX<=42;
+  },{passive:true});
+  document.addEventListener('touchend',e=>{
+    if(!tracking||!document.body.classList.contains('direct-chat-open')||!e.changedTouches||!e.changedTouches[0]){tracking=false;return;}
+    const t=e.changedTouches[0],dx=t.clientX-startX,dy=t.clientY-startY;
+    tracking=false;
+    if(dx>95&&Math.abs(dx)>Math.abs(dy)*1.35&&typeof window.closeChatWindow==='function')window.closeChatWindow();
+  },{passive:true});
+  document.addEventListener('touchcancel',()=>{tracking=false},{passive:true});
+})();
+</script>
 </body></html>
 
 <style>
