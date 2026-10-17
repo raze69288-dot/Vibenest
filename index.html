@@ -787,7 +787,8 @@ async function loadConversations(silent=false){
   totalUnreadChatMessages+=unread;
   const preview=latest?(latest.sender_id===currentUser.id?'You: ':'')+latest.content:'No messages yet. Say hello!';
   const avatar=profile?.avatar_url?`<img src="${safeText(profile.avatar_url)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">`:'✦';
-  return `<div class="conversation-item ${unread?'has-unread':''}" onclick="openConversation('${c.id}','${otherId}')"><button class="profile-tap" onclick="event.stopPropagation();openPublicProfile('${otherId}')" aria-label="Open profile"><div class="avatar">${avatar}</div></button><div class="conversation-copy"><div class="conversation-title-row"><b>${safeText(chatDisplayName(profile))}</b><span class="conversation-time">${safeText(shortChatTime(latest?.created_at))}</span></div><div class="muted">@${safeText(profile?.username||'member')}</div><div class="conversation-preview">${unread?'🔴 ':''}${safeText(preview)}</div></div>${unread?`<span class="unread-pill" aria-label="${unread} unread messages">${unread>99?'99+':unread}</span>`:''}</div>`;
+  const online=isVibeUserOnline(otherId);
+  return `<div class="conversation-item ${unread?'has-unread':''}" data-user-id="${safeText(otherId)}" onclick="openConversation('${c.id}','${otherId}')"><button class="profile-tap" onclick="event.stopPropagation();openPublicProfile('${otherId}')" aria-label="Open profile"><div class="avatar vn-avatar-presence">${avatar}<span class="vn-online-dot ${online?'is-online':''}" title="${online?'Online':'Offline'}" aria-label="${online?'Online':'Offline'}"></span></div></button><div class="conversation-copy"><div class="conversation-title-row"><b>${safeText(chatDisplayName(profile))}</b><span class="conversation-time">${safeText(shortChatTime(latest?.created_at))}</span></div><div class="muted">@${safeText(profile?.username||'member')}</div><div class="conversation-preview">${unread?'🔴 ':''}${safeText(preview)}</div></div>${unread?`<span class="unread-pill" aria-label="${unread} unread messages">${unread>99?'99+':unread}</span>`:''}</div>`;
  }).join('');
  filterConversations();
  updateChatNavBadge(totalUnreadChatMessages);
@@ -1257,6 +1258,11 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
 .chat-tools{display:flex;justify-content:flex-end;gap:8px;margin:4px 0}
 .chat-tools button{font-size:12px;padding:6px 10px}
 </style>
+<style id="vn-presence-dot-style">
+.vn-avatar-presence{position:relative!important;overflow:visible!important}
+.vn-online-dot{position:absolute;right:-2px;bottom:-2px;width:11px;height:11px;border-radius:50%;background:#777;border:2px solid var(--card,#17131e);box-sizing:content-box;z-index:2}
+.vn-online-dot.is-online{background:#36d67b;box-shadow:0 0 0 2px rgba(54,214,123,.13)}
+</style>
 <script>
 // Messaging upgrade: live incoming messages, Enter-to-send, and a manual refresh fallback.
 let vibeChatRealtimeChannel = null;
@@ -1267,10 +1273,19 @@ let vibeChatLastTypingSent = 0;
 let vibeChatReadColumnAvailable = true;
 let vibeGlobalPresenceChannel = null;
 let vibeGlobalPresenceState = {};
+function isVibeUserOnline(userId){
+  if(!userId)return false;
+  return Object.values(vibeGlobalPresenceState||{}).some(rows=>(rows||[]).some(row=>String(row.user_id)===String(userId)));
+}
 function updateGlobalPresenceUI(){
-  const status=document.getElementById('chatPresenceStatus');if(!status)return;
-  const online=Object.values(vibeGlobalPresenceState||{}).some(rows=>(rows||[]).some(row=>row.user_id===activeChatUser));
-  status.textContent=online?'● Online':'Offline';status.classList.toggle('is-online',online);
+  const status=document.getElementById('chatPresenceStatus');if(status){
+    const online=isVibeUserOnline(activeChatUser);
+    status.textContent=online?'● Online':'Offline';status.classList.toggle('is-online',online);
+  }
+  document.querySelectorAll('#conversationList .conversation-item[data-user-id]').forEach(row=>{
+    const online=isVibeUserOnline(row.dataset.userId);
+    const dot=row.querySelector('.vn-online-dot');if(dot){dot.classList.toggle('is-online',online);dot.title=online?'Online':'Offline';dot.setAttribute('aria-label',online?'Online':'Offline');}
+  });
 }
 function startVibeGlobalPresence(){
   if(!supabaseClient||!currentUser||!supabaseClient.channel)return;
@@ -1343,6 +1358,14 @@ function bindChatTypingInput(){
 bindChatTypingInput();
 
 if(currentUser){setTimeout(startVibeChatInboxRealtime,100);setTimeout(startVibeGlobalPresence,120);}
+document.addEventListener('visibilitychange',()=>{
+  if(!vibeGlobalPresenceChannel||!currentUser)return;
+  if(document.visibilityState==='hidden'){
+    try{vibeGlobalPresenceChannel.untrack();}catch(e){}
+  }else{
+    try{vibeGlobalPresenceChannel.track({user_id:currentUser.id,online_at:new Date().toISOString()});}catch(e){}
+  }
+});
 if(supabaseClient)supabaseClient.auth.onAuthStateChange((_event,session)=>{if(session?.user){currentUser=session.user;setTimeout(startVibeChatInboxRealtime,100);setTimeout(startVibeGlobalPresence,120);setTimeout(()=>loadConversations(true),150);}else{if(vibeChatInboxRealtimeChannel){try{supabaseClient.removeChannel(vibeChatInboxRealtimeChannel);}catch(e){}vibeChatInboxRealtimeChannel=null;}if(vibeGlobalPresenceChannel){try{supabaseClient.removeChannel(vibeGlobalPresenceChannel);}catch(e){}vibeGlobalPresenceChannel=null;vibeGlobalPresenceState={};updateChatNavBadge(0);}}});
 const vibeOriginalOpenConversation = openConversation;
 openConversation = async function(conversationId,otherId){
