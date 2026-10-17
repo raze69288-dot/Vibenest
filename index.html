@@ -235,24 +235,64 @@ async function saveCommunityRoom(){
 }
 async function openCommunityRoom(roomId){
  if(!currentUser||!supabaseClient){openAuth();return;}
- if(!activeCommunity?.joined){showToast('Join the community first');return;}
- const {data:room,error}=await supabaseClient.from('community_rooms').select('id,community_id,name,description').eq('id',roomId).single();
- if(error||!room){showToast('Could not open this room');return;}
- const {data:existing}=await supabaseClient.from('community_room_members').select('room_id').eq('room_id',roomId).eq('user_id',currentUser.id).maybeSingle();
- if(!existing){const {count}=await supabaseClient.from('community_room_members').select('user_id',{count:'exact',head:true}).eq('room_id',roomId);if((count||0)>=100){showToast('This room has reached its 100-person limit');return;}const add=await supabaseClient.from('community_room_members').insert({room_id:roomId,user_id:currentUser.id});if(add.error && !/duplicate key|community_room_members_pkey|23505/i.test(add.error.message+' '+(add.error.code||''))){showToast(/100|full|capacity/i.test(add.error.message)?'This room is full (100 people).':add.error.message);return;}}
- activeCommunityRoom=room;document.getElementById('communityRoomTitle').textContent=room.name;document.getElementById('communityRoomMeta').textContent=(room.description||activeCommunity.name)+' · up to 100 people';const panel=document.getElementById('communityRoomChatPanel');panel.classList.add('room-chat-fullscreen');panel.style.display='flex';document.body.classList.add('room-chat-open');await loadCommunityRoomMessages();document.getElementById('communityRoomMessageInput')?.focus();if(communityRoomPoll)clearInterval(communityRoomPoll);communityRoomPoll=setInterval(()=>{if(activeCommunityRoom)loadCommunityRoomMessages(true)},4000);
+ if(!activeCommunity?.id||!activeCommunity.joined){showToast('Join the community first');return;}
+ const {data:room,error:roomError}=await supabaseClient.from('community_rooms').select('id,community_id,name,description').eq('id',roomId).maybeSingle();
+ if(roomError){showToast('Could not open room: '+roomError.message);return;}
+ if(!room||String(room.community_id)!==String(activeCommunity.id)){showToast('This room is not available in this community');return;}
+ const {data:existing,error:memberReadError}=await supabaseClient.from('community_room_members').select('room_id').eq('room_id',roomId).eq('user_id',currentUser.id).maybeSingle();
+ if(memberReadError){showToast('Could not check room membership: '+memberReadError.message);return;}
+ if(!existing){
+  const {error:addError}=await supabaseClient.from('community_room_members').insert({room_id:roomId,user_id:currentUser.id});
+  if(addError&&!/duplicate key|community_room_members_pkey|23505/i.test(addError.message+' '+(addError.code||''))){showToast(/100|full|capacity/i.test(addError.message)?'This room is full (100 people).':addError.message);return;}
+ }
+ if(communityRoomPoll)clearInterval(communityRoomPoll);
+ activeCommunityRoom=room;
+ const title=document.getElementById('communityRoomTitle'),meta=document.getElementById('communityRoomMeta'),out=document.getElementById('communityRoomMessages');
+ if(title)title.textContent=room.name;
+ if(meta)meta.textContent=(room.description||activeCommunity.name)+' · up to 100 people';
+ if(out){out.dataset.messageIds='';out.innerHTML='<div class="room-empty">Loading messages…</div>';}
+ const panel=document.getElementById('communityRoomChatPanel');panel.classList.add('room-chat-fullscreen');panel.style.display='flex';document.body.classList.add('room-chat-open');
+ await loadCommunityRoomMessages();
+ document.getElementById('communityRoomMessageInput')?.focus();
+ communityRoomPoll=setInterval(()=>{if(activeCommunityRoom&&String(activeCommunityRoom.id)===String(room.id))loadCommunityRoomMessages(true)},4000);
 }
-function closeCommunityRoom(){activeCommunityRoom=null;if(communityRoomPoll)clearInterval(communityRoomPoll);communityRoomPoll=null;const panel=document.getElementById('communityRoomChatPanel');panel.classList.remove('room-chat-fullscreen');panel.style.display='none';document.body.classList.remove('room-chat-open');document.getElementById('communityRooms').style.display='grid';}
+function closeCommunityRoom(){activeCommunityRoom=null;if(communityRoomPoll)clearInterval(communityRoomPoll);communityRoomPoll=null;const panel=document.getElementById('communityRoomChatPanel');panel.classList.remove('room-chat-fullscreen');panel.style.display='none';document.body.classList.remove('room-chat-open');const out=document.getElementById('communityRoomMessages');if(out){out.dataset.messageIds='';out.innerHTML='';}const input=document.getElementById('communityRoomMessageInput');if(input)input.value='';document.getElementById('communityRooms').style.display='grid';}
 async function loadCommunityRoomMessages(quiet=false){
  const room=activeCommunityRoom,out=document.getElementById('communityRoomMessages');if(!room||!out||!supabaseClient)return;
- const {data,error}=await supabaseClient.from('community_room_messages').select('id,room_id,user_id,content,created_at').eq('room_id',room.id).order('created_at',{ascending:true}).limit(150);
- if(error){if(!quiet)out.innerHTML='<div class="room-chat-error"><b>Messages could not be loaded.</b><small>'+safeText(error.message||error.code||'Unknown Supabase error')+(error.code?' · Code: '+safeText(error.code):'')+'</small><small>Check the SQL policies below if this is a permission error.</small></div>';return;}
- const wasNearBottom=out.scrollHeight-out.scrollTop-out.clientHeight<90;
- const ids=(data||[]).map(m=>m.id).join(',');if(out.dataset.messageIds===ids)return;out.dataset.messageIds=ids;
- const userIds=[...new Set((data||[]).map(m=>m.user_id))];let names={};if(userIds.length){const {data:profiles}=await supabaseClient.from('profiles').select('id,username,display_name').in('id',userIds);(profiles||[]).forEach(p=>names[p.id]=p.display_name||p.username||'Member');}
- out.innerHTML=(data||[]).map(m=>`<article class="room-message ${m.user_id===currentUser.id?'mine':''}"><b>${safeText(m.user_id===currentUser.id?'You':names[m.user_id]||'Member')}</b><p>${safeText(m.content)}</p><time>${safeText(new Date(m.created_at).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}))}</time></article>`).join('')||'<div class="room-empty">It’s quiet in here. Say hello 👋</div>';if(wasNearBottom||!quiet)out.scrollTop=out.scrollHeight;
+ try{
+  const {data,error}=await supabaseClient.from('community_room_messages').select('id,room_id,user_id,content,created_at').eq('room_id',room.id).order('created_at',{ascending:true}).limit(150);
+  if(error){
+   // Clear the cache key so a later successful poll can replace this error panel,
+   // even when the message IDs are unchanged from the last successful load.
+   out.dataset.messageIds='';
+   if(!quiet)out.innerHTML='<div class="room-chat-error"><b>Messages could not be loaded.</b><small>'+safeText(error.message||error.code||'Unknown Supabase error')+(error.code?' · Code: '+safeText(error.code):'')+'</small><small>Check that room membership and message SELECT policies are configured.</small></div>';
+   return;
+  }
+  const rows=data||[],ids=rows.map(m=>m.id).join(',');
+  const wasNearBottom=out.scrollHeight-out.scrollTop-out.clientHeight<90;
+  if(out.dataset.messageIds===ids&&!out.querySelector('.room-chat-error'))return;
+  const userIds=[...new Set(rows.map(m=>m.user_id))];let names={};
+  if(userIds.length){const {data:profiles, error:profileError}=await supabaseClient.from('profiles').select('id,username,display_name').in('id',userIds);if(!profileError)(profiles||[]).forEach(p=>names[p.id]=p.display_name||p.username||'Member');}
+  out.innerHTML=rows.map(m=>`<article class="room-message ${m.user_id===currentUser?.id?'mine':''}"><b>${safeText(m.user_id===currentUser?.id?'You':names[m.user_id]||'Member')}</b><p>${safeText(m.content)}</p><time>${safeText(new Date(m.created_at).toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'}))}</time></article>`).join('')||'<div class="room-empty">It’s quiet in here. Say hello 👋</div>';
+  out.dataset.messageIds=ids;
+  if(wasNearBottom||!quiet)out.scrollTop=out.scrollHeight;
+ }catch(err){
+  out.dataset.messageIds='';
+  if(!quiet)out.innerHTML='<div class="room-chat-error"><b>Connection problem.</b><small>'+safeText(err?.message||'Could not contact Supabase. Check your connection and retry.')+'</small></div>';
+ }
 }
-async function sendCommunityRoomMessage(event){event?.preventDefault();const room=activeCommunityRoom,input=document.getElementById('communityRoomMessageInput'),content=input?.value.trim();if(!room||!content)return;if(!currentUser||!supabaseClient){openAuth();return;}const btn=input.form?.querySelector('button');if(btn)btn.disabled=true;const {error}=await supabaseClient.from('community_room_messages').insert({room_id:room.id,user_id:currentUser.id,content});if(error){showToast(error.message);if(btn)btn.disabled=false;return;}input.value='';if(btn)btn.disabled=false;await loadCommunityRoomMessages();}
+async function sendCommunityRoomMessage(event){
+ event?.preventDefault();const room=activeCommunityRoom,input=document.getElementById('communityRoomMessageInput'),content=input?.value.trim();
+ if(!room||!content)return;if(!currentUser||!supabaseClient){openAuth();return;}
+ if(content.length>1500){showToast('Messages can be up to 1500 characters');return;}
+ const btn=input.form?.querySelector('button');if(btn)btn.disabled=true;
+ try{
+  const {error}=await supabaseClient.from('community_room_messages').insert({room_id:room.id,user_id:currentUser.id,content});
+  if(error){showToast('Could not send: '+error.message);return;}
+  input.value='';await loadCommunityRoomMessages();input.focus();
+ }catch(err){showToast('Could not send: '+(err?.message||'Check your connection'));}
+ finally{if(btn)btn.disabled=false;}
+}
 function toggleCommunityComposer(){
   const c=activeCommunity;
   if(!c)return;
