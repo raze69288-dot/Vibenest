@@ -2249,3 +2249,55 @@ button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible,
 @media(max-width:380px){#chatWindow .chat-bubble{max-width:94%!important;padding:12px 13px!important}#chatWindow .chat-message-tools button{padding:6px 9px!important;min-height:36px!important}#chatWindow .chat-compose>label{min-width:48px!important}}
 @media(prefers-reduced-motion:reduce){#chatWindow *{scroll-behavior:auto!important;transition:none!important}}
 </style>
+
+
+<style id="vn-chat-finish-polish-20261017">
+/* Final, scoped polish: preserve chat layout/behavior; only change its visual surface. */
+body.direct-chat-open #chatWindow[style*="display: block"]{
+  background:rgba(13,10,19,.84)!important;
+  background-image:linear-gradient(145deg,rgba(31,22,43,.74),rgba(12,10,17,.88))!important;
+  -webkit-backdrop-filter:blur(18px) saturate(125%)!important;
+  backdrop-filter:blur(18px) saturate(125%)!important;
+  isolation:isolate!important;
+}
+body.direct-chat-open #chatWindow[style*="display: block"]:before{
+  content:""!important;position:fixed!important;inset:0!important;z-index:-1!important;pointer-events:none!important;
+  background-color:transparent!important;
+  background-image:
+    radial-gradient(1.5px 1.5px at 8% 18%,rgba(239,225,255,.85) 45%,transparent 100%),
+    radial-gradient(1px 1px at 24% 62%,rgba(188,157,255,.8) 45%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 43% 28%,rgba(255,255,255,.68) 45%,transparent 100%),
+    radial-gradient(1px 1px at 61% 74%,rgba(202,178,255,.8) 45%,transparent 100%),
+    radial-gradient(1.5px 1.5px at 79% 16%,rgba(255,255,255,.7) 45%,transparent 100%),
+    radial-gradient(1px 1px at 92% 48%,rgba(189,156,255,.8) 45%,transparent 100%),
+    radial-gradient(1px 1px at 72% 92%,rgba(255,255,255,.55) 45%,transparent 100%),
+    radial-gradient(ellipse at 12% 0%,rgba(129,83,173,.15),transparent 48%),
+    radial-gradient(ellipse at 92% 88%,rgba(93,61,130,.13),transparent 42%)!important;
+  background-size:100% 100%!important;opacity:.72!important;
+  animation:vnChatStarsDrift 24s ease-in-out infinite alternate!important;
+}
+@keyframes vnChatStarsDrift{from{transform:translate3d(0,0,0);opacity:.52}to{transform:translate3d(0,-5px,0);opacity:.82}}
+body.direct-chat-open #chatWindow .chat-search-wrap{
+  width:42px!important;height:42px!important;min-height:42px!important;right:14px!important;top:calc(env(safe-area-inset-top,0px) + 52px)!important;
+  border:1px solid rgba(214,190,241,.25)!important;border-radius:14px!important;
+  background:rgba(45,34,57,.48)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 5px 18px rgba(0,0,0,.12)!important;
+  -webkit-backdrop-filter:blur(12px)!important;backdrop-filter:blur(12px)!important;
+}
+body.direct-chat-open #chatWindow .chat-search-wrap>span:before{width:13px!important;height:13px!important;border-width:2px!important;border-color:#d9baf7!important}
+body.direct-chat-open #chatWindow .chat-search-wrap>span:after{width:8px!important;height:2px!important;background:#d9baf7!important;transform:translate(6px,7px) rotate(48deg)!important}
+body.direct-chat-open #chatWindow .chat-search-wrap.is-open{width:min(250px,calc(100vw - 42px))!important;background:rgba(32,25,40,.94)!important}
+/* Later global comfort styles were reintroducing the Send label and oversized control. */
+body.direct-chat-open #chatWindow .chat-compose button.join{
+  flex:0 0 44px!important;width:44px!important;min-width:44px!important;max-width:44px!important;
+  height:44px!important;min-height:44px!important;max-height:44px!important;padding:0!important;
+  font-size:0!important;line-height:0!important;text-indent:-9999px!important;overflow:hidden!important;
+  border:1px solid rgba(222,199,246,.42)!important;border-radius:14px!important;
+  background:linear-gradient(145deg,rgba(206,176,239,.98),rgba(169,130,211,.98))!important;
+  color:transparent!important;box-shadow:0 4px 14px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.32)!important;
+  display:grid!important;place-items:center!important;position:relative!important;
+}
+body.direct-chat-open #chatWindow .chat-compose button.join:before{content:""!important;position:absolute!important;width:13px!important;height:2px!important;left:12px!important;top:20px!important;background:#25192f!important;border:0!important;border-radius:2px!important}
+body.direct-chat-open #chatWindow .chat-compose button.join:after{content:""!important;position:absolute!important;left:18px!important;top:15px!important;width:0!important;height:0!important;border-top:7px solid transparent!important;border-bottom:7px solid transparent!important;border-left:11px solid #25192f!important;transform:none!important;font-size:0!important;line-height:0!important}
+body.direct-chat-open #chatWindow .chat-compose button.join:active{transform:scale(.96)!important}
+@media(prefers-reduced-motion:reduce){body.direct-chat-open #chatWindow:before{animation:none!important}}
+</style>
