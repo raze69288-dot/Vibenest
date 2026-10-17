@@ -2195,6 +2195,38 @@ renderCommunityDetail=function(){initializeCommunitySections();vnOldRenderCommun
 
 
 
+
+<style id="vn-community-native-back">
+/* Community detail uses Android/browser back gesture instead of an in-page back button. */
+#community .community-back { display:none !important; }
+</style>
+<script id="vn-community-history-back">
+(function(){
+  if (window.__vnCommunityBackInstalled) return;
+  window.__vnCommunityBackInstalled = true;
+  const originalGo = window.go;
+  if (typeof originalGo !== 'function') return;
+  let handlingPop = false;
+  window.go = function(id) {
+    const active = document.querySelector('.page.active')?.id || '';
+    if (id === 'community' && active !== 'community' && !handlingPop) {
+      history.pushState({vibeNestCommunityDetail:true}, '', location.pathname + location.search + '#community');
+    }
+    return originalGo.apply(this, arguments);
+  };
+  window.addEventListener('popstate', function() {
+    const active = document.querySelector('.page.active')?.id || '';
+    if (active === 'community') {
+      handlingPop = true;
+      if (typeof closeCommunityRoom === 'function' && window.activeCommunityRoom) closeCommunityRoom();
+      if (typeof closeCommunityDescriptionDesigner === 'function') closeCommunityDescriptionDesigner();
+      originalGo('communities');
+      handlingPop = false;
+    }
+  });
+})();
+</script>
+
 </body></html>
 
 <style>
