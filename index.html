@@ -2150,7 +2150,7 @@ body.direct-chat-open .chat-compose>button.join:active{transform:scale(.96)}
 <style id="vn-search-icon-send-v3">
 /* Conversation search lives in the header as a small toggle, not a full-width bar. */
 body.direct-chat-open #chatWindow[style*="display: block"]{position:relative!important}
-body.direct-chat-open .chat-search-wrap{position:absolute!important;top:calc(env(safe-area-inset-top,0px) + 12px)!important;right:14px!important;z-index:8!important;width:38px!important;height:38px!important;min-height:38px!important;margin:0!important;padding:0!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:0!important;border:1px solid rgba(201,174,230,.24)!important;border-radius:50%!important;background:rgba(35,29,43,.86)!important;box-shadow:none!important;overflow:hidden!important;transition:width .18s ease,border-radius .18s ease,background .18s ease!important}
+body.direct-chat-open .chat-search-wrap{position:absolute!important;top:calc(env(safe-area-inset-top,0px) + 70px)!important;right:14px!important;z-index:8!important;width:38px!important;height:38px!important;min-height:38px!important;margin:0!important;padding:0!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:0!important;border:1px solid rgba(201,174,230,.24)!important;border-radius:50%!important;background:rgba(35,29,43,.86)!important;box-shadow:none!important;overflow:hidden!important;transition:width .18s ease,border-radius .18s ease,background .18s ease!important}
 body.direct-chat-open .chat-search-wrap>span{display:grid!important;place-items:center!important;width:100%!important;height:100%!important;margin:0!important;font-size:0!important;transform:none!important;cursor:pointer!important;flex:0 0 38px!important}
 body.direct-chat-open .chat-search-wrap>span:before{content:"";width:12px;height:12px;border:2px solid #d7b8f5;border-radius:50%;display:block;transform:translate(-1px,-1px)}
 body.direct-chat-open .chat-search-wrap>span:after{content:"";position:absolute;width:7px;height:2px;background:#d7b8f5;transform:translate(6px,7px) rotate(48deg);border-radius:2px}
@@ -2165,7 +2165,7 @@ body.direct-chat-open .chat-compose>button.join{font-size:0!important;flex:0 0 4
 body.direct-chat-open .chat-compose>button.join:after{content:""!important;display:block!important;width:0!important;height:0!important;border-top:7px solid transparent!important;border-bottom:7px solid transparent!important;border-left:12px solid #251a30!important;transform:translateX(1px)!important;font-size:0!important;line-height:0!important}
 body.direct-chat-open .chat-compose>button.join:before{content:"";position:absolute;width:14px;height:2px;background:#251a30;left:12px;top:21px;border-radius:2px}
 body.direct-chat-open .chat-compose>button.join:active{transform:scale(.97)!important}
-@media(max-width:380px){body.direct-chat-open .chat-search-wrap{right:10px!important}body.direct-chat-open .chat-search-wrap.is-open{width:min(220px,calc(100vw - 34px))!important}}
+@media(max-width:380px){body.direct-chat-open .chat-search-wrap{right:10px!important;top:calc(env(safe-area-inset-top,0px) + 70px)!important}body.direct-chat-open .chat-search-wrap.is-open{width:min(220px,calc(100vw - 34px))!important}}
 </style>
 <script id="vn-search-icon-toggle-v3">
 (function(){
