@@ -2200,28 +2200,73 @@ renderCommunityDetail=function(){initializeCommunitySections();vnOldRenderCommun
 /* Community detail uses Android/browser back gesture instead of an in-page back button. */
 #community .community-back { display:none !important; }
 </style>
-<script id="vn-community-history-back">
+<script id="vn-global-android-back">
 (function(){
-  if (window.__vnCommunityBackInstalled) return;
-  window.__vnCommunityBackInstalled = true;
-  const originalGo = window.go;
-  if (typeof originalGo !== 'function') return;
+  if (window.__vnGlobalBackInstalled) return;
+  window.__vnGlobalBackInstalled = true;
+  const nativeGo = window.go;
+  if (typeof nativeGo !== 'function') return;
   let handlingPop = false;
-  window.go = function(id) {
-    const active = document.querySelector('.page.active')?.id || '';
-    if (id === 'community' && active !== 'community' && !handlingPop) {
-      history.pushState({vibeNestCommunityDetail:true}, '', location.pathname + location.search + '#community');
-    }
-    return originalGo.apply(this, arguments);
-  };
-  window.addEventListener('popstate', function() {
-    const active = document.querySelector('.page.active')?.id || '';
-    if (active === 'community') {
-      handlingPop = true;
-      if (typeof closeCommunityRoom === 'function' && window.activeCommunityRoom) closeCommunityRoom();
+  let currentPage = document.querySelector('.page.active')?.id || 'home';
+  try { history.replaceState({...history.state, vnPage: currentPage, vnRoot: true}, '', location.href); } catch(e) {}
+
+  function closeTopLayer(){
+    // Close transient UI before leaving its underlying page.
+    const designer = document.getElementById('communityDescriptionDesigner');
+    if (designer && getComputedStyle(designer).display !== 'none') {
       if (typeof closeCommunityDescriptionDesigner === 'function') closeCommunityDescriptionDesigner();
-      originalGo('communities');
+      else designer.style.display = 'none';
+      return true;
+    }
+    if (window.activeCommunityRoom && typeof closeCommunityRoom === 'function') {
+      closeCommunityRoom();
+      return true;
+    }
+    const visibleModal = Array.from(document.querySelectorAll('[role="dialog"], .modal, .modal-backdrop, .overlay-modal'))
+      .reverse().find(el => {
+        const st = getComputedStyle(el);
+        return st.display !== 'none' && st.visibility !== 'hidden' && Number(st.opacity || 1) > 0 && el.getBoundingClientRect().width > 0;
+      });
+    if (visibleModal) {
+      const close = visibleModal.querySelector('[data-close], .close, .modal-close, [aria-label*="Close"], [aria-label*="close"]');
+      if (close) { close.click(); return true; }
+    }
+    return false;
+  }
+
+  window.go = function(id){
+    const before = document.querySelector('.page.active')?.id || currentPage || 'home';
+    if (!handlingPop && id && id !== before) {
+      try { history.pushState({ ...(history.state || {}), vnPage: id }, '', location.href); } catch(e) {}
+    }
+    const result = nativeGo.apply(this, arguments);
+    currentPage = id || document.querySelector('.page.active')?.id || currentPage;
+    return result;
+  };
+
+  window.addEventListener('popstate', function(event){
+    if (closeTopLayer()) {
+      // Keep the current page entry after consuming a back action for an overlay.
+      const active = document.querySelector('.page.active')?.id || currentPage || 'home';
+      try { history.pushState({ ...(history.state || {}), vnPage: active }, '', location.href); } catch(e) {}
+      return;
+    }
+    const target = event.state && event.state.vnPage;
+    const active = document.querySelector('.page.active')?.id || currentPage || 'home';
+    if (target && target !== active && document.getElementById(target)?.classList.contains('page')) {
+      handlingPop = true;
+      if (active === 'community' && target !== 'community') {
+        if (window.activeCommunityRoom && typeof closeCommunityRoom === 'function') closeCommunityRoom();
+        if (typeof closeCommunityDescriptionDesigner === 'function') closeCommunityDescriptionDesigner();
+      }
+      nativeGo(target);
+      currentPage = target;
       handlingPop = false;
+      return;
+    }
+    // Fallback for pages reached before the history handler was installed.
+    if (active !== 'home' && document.getElementById('home')) {
+      handlingPop = true; nativeGo('home'); currentPage = 'home'; handlingPop = false;
     }
   });
 })();
