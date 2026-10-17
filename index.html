@@ -227,7 +227,7 @@ button,input,textarea,select{font-family:inherit}button{cursor:pointer}button:fo
 <label class="muted" for="communityPollQuestion">Add a poll (optional)</label><input id="communityPollQuestion" class="field" maxlength="180" placeholder="Poll question"><input id="communityPollOption1" class="field" maxlength="80" placeholder="Option 1"><input id="communityPollOption2" class="field" maxlength="80" placeholder="Option 2"><input id="communityPollOption3" class="field" maxlength="80" placeholder="Option 3 (optional)"><input id="communityPollOption4" class="field" maxlength="80" placeholder="Option 4 (optional)">
 <button class="btn" id="publishCommunityPostButton" onclick="publishCommunityPost()">Publish post</button>
 </div><div id="communityPosts" class="detail-posts"></div></div></section>
-<section id="chats" class="page"><div class="simple"><h1>Messages 💬</h1><p class="muted">Private conversations between VibeNest members.</p><div class="chat-start"><h2>Find people</h2><input id="userSearch" class="field" placeholder="Search usernames…" oninput="searchChatUsers()"><div id="userSearchResults"></div></div><div class="vn-inbox-heading"><div><span class="vn-inbox-kicker">YOUR INBOX</span><h2 id="chatsHeading">Conversations</h2></div><span class="vn-inbox-live"><i></i> PRIVATE</span></div><input id="conversationSearch" class="field vn-conversation-search" placeholder="Search conversations…" oninput="filterConversations()" aria-label="Search conversations"><div class="vn-inbox-filters" role="group" aria-label="Filter conversations"><button type="button" class="active" data-inbox-filter="all" onclick="setConversationFilter('all',this)">All chats</button><button type="button" data-inbox-filter="unread" onclick="setConversationFilter('unread',this)">Unread</button></div><div id="conversationList"><p class="muted">Sign in to see your conversations.</p></div><div id="chatWindow" style="display:none;margin-top:18px"><button class="join" onclick="closeChatWindow()">← Back to conversations</button><h2 id="chatTitle" style="margin:14px 0 2px"></h2><div id="chatPresenceStatus" class="chat-presence-status">Offline</div><div id="chatTypingStatus" class="chat-typing-status" aria-live="polite"></div><input id="chatMessageSearch" class="field" placeholder="Search this conversation…" oninput="loadChatMessages(true)" style="margin:8px 0"><div id="chatReplyPreview" class="muted" style="display:none;margin:4px 0"></div><div id="chatMessages" class="chat-messages"></div><div class="chat-compose"><label class="join" style="display:grid;place-items:center;min-width:48px;cursor:pointer" title="Attach image">＋<input id="chatImageFile" type="file" accept="image/*" style="display:none" onchange="sendChatImage(event)"></label><input id="chatMessageInput" class="field" maxlength="5000" placeholder="Write a message…" enterkeyhint="send" onkeydown="if(event.key === 'Enter' || event.keyCode === 13){event.preventDefault();sendChatMessage();}"><button class="join" onclick="sendChatMessage()">Send</button></div></div></div></section>
+<section id="chats" class="page"><div class="simple"><h1>Messages 💬</h1><p class="muted">Private conversations between VibeNest members.</p><div class="chat-start"><h2>Find people</h2><input id="userSearch" class="field" placeholder="Search usernames…" oninput="searchChatUsers()"><div id="userSearchResults"></div></div><div class="vn-inbox-heading"><div><span class="vn-inbox-kicker">YOUR INBOX</span><h2 id="chatsHeading">Conversations</h2></div><span class="vn-inbox-live"><i></i> PRIVATE</span></div><input id="conversationSearch" class="field vn-conversation-search" placeholder="Search conversations…" oninput="filterConversations()" aria-label="Search conversations"><div class="vn-inbox-filters" role="group" aria-label="Filter conversations"><button type="button" class="active" data-inbox-filter="all" onclick="setConversationFilter('all',this)">All chats</button><button type="button" data-inbox-filter="unread" onclick="setConversationFilter('unread',this)">Unread</button></div><div id="conversationList"><p class="muted">Sign in to see your conversations.</p></div><div id="chatWindow" style="display:none;margin-top:18px"><button class="join" onclick="closeChatWindow()">← Back to conversations</button><h2 id="chatTitle" style="margin:14px 0 2px"></h2><div id="chatTypingStatus" class="chat-typing-status" aria-live="polite"></div><input id="chatMessageSearch" class="field" placeholder="Search this conversation…" oninput="loadChatMessages(true)" style="margin:8px 0"><div id="chatReplyPreview" class="muted" style="display:none;margin:4px 0"></div><div id="chatMessages" class="chat-messages"></div><div class="chat-compose"><label class="join" style="display:grid;place-items:center;min-width:48px;cursor:pointer" title="Attach image">＋<input id="chatImageFile" type="file" accept="image/*" style="display:none" onchange="sendChatImage(event)"></label><input id="chatMessageInput" class="field" maxlength="5000" placeholder="Write a message…" enterkeyhint="send" onkeydown="if(event.key === 'Enter' || event.keyCode === 13){event.preventDefault();sendChatMessage();}"><button class="join" onclick="sendChatMessage()">Send</button></div></div></div></section>
 <section id="activity" class="page"><div class="simple"><h1>Activity ♡</h1><p class="muted">Little moments from your corner of VibeNest.</p><div class="row">🌸 <div><b>Anime Haven</b><div class="muted">A new discussion is trending</div></div></div><div class="row">🎨 <div><b>Art Club</b><div class="muted">A new creative prompt is up</div></div></div></div></section>
 <section id="profile" class="page"><div class="simple profile-page"><div id="profilePageHeading" class="profile-page-heading" aria-hidden="true" style="display:none"></div><div id="profileCoverSection" class="profile-cover"><button class="profile-settings profile-settings-inside" onclick="openAuth()" aria-label="Account settings" title="Account settings"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.8 1.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5v.2h-2.6v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1-1.8-1.8.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H6.3v-2.6h.2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9l-.1-.1 1.8-1.8.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.5v-.2H15v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1 1.8 1.8-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1h.2v2.6h-.2a1.7 1.7 0 0 0-1.5 1z"/></svg></button><div class="profile-cover-glow"></div><div id="profileAvatarDisplay" class="profile-hero-avatar">✦</div><h2 id="pname">Your name</h2><div id="profileHandle" class="profile-handle">@username</div><p id="pbio">Add a little about yourself ✨</p><button class="btn profile-edit-btn" onclick="editProfile()"><span aria-hidden="true">✎</span> Edit profile</button></div><div id="profileStatsSection" class="profile-stats profile-stats-connections"><button type="button" onclick="toggleFollowersList()"><strong id="profileFollowersCount">—</strong><span>Followers</span></button><button type="button" onclick="toggleFollowingList()"><strong id="profileFollowingCount">—</strong><span>Following</span></button></div><section id="profileExtras" class="profile-extras"><div id="profileBadges" class="profile-badges"></div><div class="profile-section-title"><h3>Your posts</h3><span class="muted">Pin one to your profile</span></div><div id="myPosts"></div></section><div id="profileFollowersPanel" class="profile-following-panel" hidden><div class="profile-following-heading"><button type="button" class="profile-list-back" onclick="closeProfileConnectionsList()">← Profile</button><h2>Followers</h2></div><div id="profileFollowersList"><p class="muted">Loading followers…</p></div></div><div id="profileFollowingPanel" class="profile-following-panel" hidden><div class="profile-following-heading"><button type="button" class="profile-list-back" onclick="closeProfileConnectionsList()">← Profile</button><h2>Following</h2></div><div id="profileFollowingList"><p class="muted">Loading following…</p></div></div></div></section>
 <div id="authModal" style="display:none;position:fixed;inset:0;z-index:30;background:#100e17f7;overflow:auto;padding:20px 0 35px"><div class="authbox" style="max-width:520px;margin:25px auto"><button class="join" onclick="closeAuth()" style="float:right">Close ✕</button><div style="font-size:13px;color:var(--purple);font-weight:800;letter-spacing:1px">✦ VIBENEST ACCOUNT</div><h2 id="authTitle" style="margin-top:12px">Welcome back</h2><p id="authSubtitle">Sign in to your corner of the internet.</p><div id="signupNameWrap" style="display:none"><label>Username<input id="authUsername" autocomplete="username" placeholder="e.g. StarrySoul" maxlength="24"></label></div><label id="authEmailLabel">Email<input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com"></label><label id="authPasswordLabel">Password<input id="authPassword" type="password" autocomplete="current-password" placeholder="At least 8 characters" minlength="8"></label><div class="authrow"><button class="btn" id="authSubmit" onclick="submitAuth()">Sign in</button><button class="join" id="authSwitch" onclick="switchAuthMode()">Create account</button></div><div id="authMessage" class="statusmsg"></div><p class="auth-security-note" style="margin-top:16px">VibeNest online features use your Supabase project. Never put a service-role key in this app.</p></div></div>
@@ -787,8 +787,7 @@ async function loadConversations(silent=false){
   totalUnreadChatMessages+=unread;
   const preview=latest?(latest.sender_id===currentUser.id?'You: ':'')+latest.content:'No messages yet. Say hello!';
   const avatar=profile?.avatar_url?`<img src="${safeText(profile.avatar_url)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">`:'✦';
-  const online=isVibeUserOnline(otherId);
-  return `<div class="conversation-item ${unread?'has-unread':''}" data-user-id="${safeText(otherId)}" onclick="openConversation('${c.id}','${otherId}')"><button class="profile-tap" onclick="event.stopPropagation();openPublicProfile('${otherId}')" aria-label="Open profile"><div class="avatar vn-avatar-presence">${avatar}<span class="vn-online-dot ${online?'is-online':''}" title="${online?'Online':'Offline'}" aria-label="${online?'Online':'Offline'}"></span></div></button><div class="conversation-copy"><div class="conversation-title-row"><b>${safeText(chatDisplayName(profile))}</b><span class="conversation-time">${safeText(shortChatTime(latest?.created_at))}</span></div><div class="muted">@${safeText(profile?.username||'member')}</div><div class="conversation-preview">${unread?'🔴 ':''}${safeText(preview)}</div></div>${unread?`<span class="unread-pill" aria-label="${unread} unread messages">${unread>99?'99+':unread}</span>`:''}</div>`;
+  return `<div class="conversation-item ${unread?'has-unread':''}" data-user-id="${safeText(otherId)}" onclick="openConversation('${c.id}','${otherId}')"><button class="profile-tap" onclick="event.stopPropagation();openPublicProfile('${otherId}')" aria-label="Open profile"><div class="avatar">${avatar}</div></button><div class="conversation-copy"><div class="conversation-title-row"><b>${safeText(chatDisplayName(profile))}</b><span class="conversation-time">${safeText(shortChatTime(latest?.created_at))}</span></div><div class="muted">@${safeText(profile?.username||'member')}</div><div class="conversation-preview">${unread?'🔴 ':''}${safeText(preview)}</div></div>${unread?`<span class="unread-pill" aria-label="${unread} unread messages">${unread>99?'99+':unread}</span>`:''}</div>`;
  }).join('');
  filterConversations();
  updateChatNavBadge(totalUnreadChatMessages);
@@ -828,7 +827,7 @@ async function loadChatMessages(){
  if(requestedId!==activeConversationId)return;
  if(error){box.innerHTML='<p class="muted">Could not load messages: '+safeText(error.message)+'</p>';return;}
  const wasNearBottom=(box.scrollHeight-box.scrollTop-box.clientHeight)<90;const previousScrollTop=box.scrollTop;const hadRenderedMessages=!!box.querySelector('.chat-bubble');
- const rows=data||[];if(vibeChatReadColumnAvailable){const incomingIds=rows.filter(m=>m.sender_id!==currentUser.id&&(!m.delivered_at||!m.read_at)).map(m=>m.id);if(incomingIds.length){const readStamp=new Date().toISOString();const marked=await supabaseClient.from('messages').update({delivered_at:readStamp,read_at:readStamp}).in('id',incomingIds);if(marked.error){vibeChatReadColumnAvailable=false;console.warn('Message receipts need delivered_at/read_at columns and recipient update policy.',marked.error.message);}else rows.forEach(m=>{if(incomingIds.includes(m.id)){m.delivered_at=m.delivered_at||readStamp;m.read_at=readStamp;}});}}const search=(document.getElementById('chatMessageSearch')?.value||'').trim().toLowerCase();const visibleRows=search?rows.filter(m=>(m.content||'').toLowerCase().includes(search)):rows;let reactions=[];try{const rr=await supabaseClient.from('message_reactions').select('message_id,user_id,reaction').in('message_id',visibleRows.map(m=>m.id));if(!rr.error)reactions=rr.data||[];}catch(e){}const renderSignature=JSON.stringify({search,rows:visibleRows.map(m=>[m.id,m.content,m.media_url,m.created_at,m.delivered_at,m.read_at,m.reply_to_id]),reactions:reactions.map(r=>[r.message_id,r.user_id,r.reaction])});const shouldRender=box.dataset.renderSignature!==renderSignature;if(shouldRender){box.dataset.renderSignature=renderSignature;box.innerHTML=visibleRows.map(m=>{const rs=reactions.filter(r=>r.message_id===m.id);const quoted=m.reply_to_id?rows.find(x=>x.id===m.reply_to_id):null;return `<div class="chat-bubble ${m.sender_id===currentUser.id?'mine':''}" data-message-id="${m.id}">${quoted?`<div class="chat-quoted">↪ ${safeText(quoted.content||'Photo')}</div>`:''}${safeText(m.content||'')}${m.media_url?`<a href="${safeText(m.media_url)}" target="_blank" rel="noopener"><img class="post-media" style="max-height:260px" src="${safeText(m.media_url)}" alt="Shared image"></a>`:''}<div class="muted">${safeText(new Date(m.created_at).toLocaleString())}</div><div class="chat-message-tools"><button class="join" onclick="replyToChatMessage('${m.id}')">↩ Reply</button><button class="join" onclick="reactToChatMessage('${m.id}','❤️')">❤️ ${rs.filter(r=>r.reaction==='❤️').length||''}</button><button class="join" onclick="reactToChatMessage('${m.id}','😂')">😂 ${rs.filter(r=>r.reaction==='😂').length||''}</button><button class="join" onclick="reactToChatMessage('${m.id}','👍')">👍 ${rs.filter(r=>r.reaction==='👍').length||''}</button></div>${m.sender_id===currentUser.id?`<div class="receipt ${m.read_at?'read':''}">${m.read_at?'✓✓ Read':m.delivered_at?'✓✓ Delivered':'✓ Sent'}</div>`:''}</div>`}).join('')||`<p class="muted">${search?'No messages match that search.':'No messages yet. Say hello!'}</p>`;}
+ const rows=data||[];if(vibeChatReadColumnAvailable){const incomingIds=rows.filter(m=>m.sender_id!==currentUser.id&&(!m.delivered_at||!m.read_at)).map(m=>m.id);if(incomingIds.length){const readStamp=new Date().toISOString();const marked=await supabaseClient.from('messages').update({delivered_at:readStamp,read_at:readStamp}).in('id',incomingIds);if(marked.error){vibeChatReadColumnAvailable=false;console.warn('Message receipts need delivered_at/read_at columns and recipient update policy.',marked.error.message);}else rows.forEach(m=>{if(incomingIds.includes(m.id)){m.delivered_at=m.delivered_at||readStamp;m.read_at=readStamp;}});}}const search=(document.getElementById('chatMessageSearch')?.value||'').trim().toLowerCase();const visibleRows=search?rows.filter(m=>(m.content||'').toLowerCase().includes(search)):rows;let reactions=[];try{const rr=await supabaseClient.from('message_reactions').select('message_id,user_id,reaction').in('message_id',visibleRows.map(m=>m.id));if(!rr.error)reactions=rr.data||[];}catch(e){}const renderSignature=JSON.stringify({search,rows:visibleRows.map(m=>[m.id,m.content,m.media_url,m.created_at,m.delivered_at,m.read_at,m.reply_to_id]),reactions:reactions.map(r=>[r.message_id,r.user_id,r.reaction])});const shouldRender=box.dataset.renderSignature!==renderSignature;if(shouldRender){box.dataset.renderSignature=renderSignature;box.innerHTML=visibleRows.map(m=>{const rs=reactions.filter(r=>r.message_id===m.id);const quoted=m.reply_to_id?rows.find(x=>x.id===m.reply_to_id):null;return `<div class="chat-bubble ${m.sender_id===currentUser.id?'mine':''}" data-message-id="${m.id}">${quoted?`<div class="chat-quoted">↪ ${safeText(quoted.content||'Photo')}</div>`:''}${safeText(m.content||'')}${m.media_url?`<a href="${safeText(m.media_url)}" target="_blank" rel="noopener"><img class="post-media" style="max-height:260px" src="${safeText(m.media_url)}" alt="Shared image"></a>`:''}<div class="muted">${safeText(new Date(m.created_at).toLocaleString())}</div><div class="chat-message-tools"><button class="join" onclick="replyToChatMessage('${m.id}')">↩ Reply</button><button class="join" onclick="reactToChatMessage('${m.id}','❤️')">❤️ ${rs.filter(r=>r.reaction==='❤️').length||''}</button><button class="join" onclick="reactToChatMessage('${m.id}','😂')">😂 ${rs.filter(r=>r.reaction==='😂').length||''}</button><button class="join" onclick="reactToChatMessage('${m.id}','👍')">👍 ${rs.filter(r=>r.reaction==='👍').length||''}</button></div>${m.sender_id===currentUser.id?`<div class="receipt ${m.read_at?'read':''}" aria-label="${m.read_at?'Read':m.delivered_at?'Delivered':'Sent'}">${m.read_at?'✓✓':m.delivered_at?'✓✓':'✓'}<span>${m.read_at?'Read':m.delivered_at?'Delivered':'Sent'}</span></div>`:''}</div>`}).join('')||`<p class="muted">${search?'No messages match that search.':'No messages yet. Say hello!'}</p>`;}
  if(shouldRender){if(wasNearBottom||!hadRenderedMessages){box.scrollTop=box.scrollHeight;}else{box.scrollTop=previousScrollTop;}}
  const latest=rows.length?rows[rows.length-1].created_at:new Date().toISOString();markChatSeen(requestedId,latest);await loadConversations(true);
 }
@@ -1249,7 +1248,7 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
 <style>
 /* Private messaging improvements */
 .chat-presence-status{font-size:12px;color:var(--muted);margin:0 0 8px}.chat-presence-status.is-online{color:#65e6a3}.chat-typing-status{font-size:12px;color:#e98bd5;min-height:0;margin:0}.chat-typing-status:not(:empty){min-height:18px;margin:0 0 6px}
-.chat-bubble .receipt{font-size:10px;text-align:right;margin-top:4px;color:#d4b6f5}
+.chat-bubble .receipt{display:flex;align-items:center;justify-content:flex-end;gap:5px;font-size:10px;text-align:right;margin-top:5px;color:#9b91a8;letter-spacing:.01em}.chat-bubble .receipt span{font-size:10px;font-weight:500;color:#9b91a8}.chat-bubble .receipt.read,.chat-bubble .receipt.read span{color:#b9a7d5}
 .chat-bubble .receipt.read{color:#69d9ff}
 .chat-bubble{white-space:pre-wrap;line-height:1.4}
 .chat-bubble .muted{opacity:.8}
@@ -1258,11 +1257,7 @@ document.addEventListener('visibilitychange',()=>{if(document.visibilityState===
 .chat-tools{display:flex;justify-content:flex-end;gap:8px;margin:4px 0}
 .chat-tools button{font-size:12px;padding:6px 10px}
 </style>
-<style id="vn-presence-dot-style">
-.vn-avatar-presence{position:relative!important;overflow:visible!important}
-.vn-online-dot{position:absolute;right:-2px;bottom:-2px;width:11px;height:11px;border-radius:50%;background:#777;border:2px solid var(--card,#17131e);box-sizing:content-box;z-index:2}
-.vn-online-dot.is-online{background:#36d67b;box-shadow:0 0 0 2px rgba(54,214,123,.13)}
-</style>
+
 <script>
 // Messaging upgrade: live incoming messages, Enter-to-send, and a manual refresh fallback.
 let vibeChatRealtimeChannel = null;
@@ -1271,30 +1266,12 @@ let vibeChatPresenceState = {};
 let vibeChatTypingTimer = null;
 let vibeChatLastTypingSent = 0;
 let vibeChatReadColumnAvailable = true;
+// Online presence intentionally disabled; messaging and typing remain available.
 let vibeGlobalPresenceChannel = null;
 let vibeGlobalPresenceState = {};
-function isVibeUserOnline(userId){
-  if(!userId)return false;
-  return Object.values(vibeGlobalPresenceState||{}).some(rows=>(rows||[]).some(row=>String(row.user_id)===String(userId)));
-}
-function updateGlobalPresenceUI(){
-  const status=document.getElementById('chatPresenceStatus');if(status){
-    const online=isVibeUserOnline(activeChatUser);
-    status.textContent=online?'● Online':'Offline';status.classList.toggle('is-online',online);
-  }
-  document.querySelectorAll('#conversationList .conversation-item[data-user-id]').forEach(row=>{
-    const online=isVibeUserOnline(row.dataset.userId);
-    const dot=row.querySelector('.vn-online-dot');if(dot){dot.classList.toggle('is-online',online);dot.title=online?'Online':'Offline';dot.setAttribute('aria-label',online?'Online':'Offline');}
-  });
-}
-function startVibeGlobalPresence(){
-  if(!supabaseClient||!currentUser||!supabaseClient.channel)return;
-  if(vibeGlobalPresenceChannel){try{supabaseClient.removeChannel(vibeGlobalPresenceChannel);}catch(e){}}
-  const channel=supabaseClient.channel('vibenest-online-presence',{config:{presence:{key:currentUser.id}}});
-  channel.on('presence',{event:'sync'},()=>{vibeGlobalPresenceState=channel.presenceState();updateGlobalPresenceUI();});
-  channel.subscribe(async status=>{if(status==='SUBSCRIBED'){try{await channel.track({user_id:currentUser.id,online_at:new Date().toISOString()});}catch(e){}}});
-  vibeGlobalPresenceChannel=channel;
-}
+function isVibeUserOnline(){ return false; }
+function updateGlobalPresenceUI(){}
+function startVibeGlobalPresence(){}
 function startVibeChatInboxRealtime(){
   if(!supabaseClient||!currentUser||!supabaseClient.channel)return;
   if(vibeChatInboxRealtimeChannel){try{supabaseClient.removeChannel(vibeChatInboxRealtimeChannel);}catch(e){}}
@@ -1310,7 +1287,7 @@ function stopVibeChatRealtime(){
   if(vibeChatRealtimeChannel && supabaseClient){
     try{supabaseClient.removeChannel(vibeChatRealtimeChannel);}catch(e){}
   }
-  vibeChatRealtimeChannel=null;vibeChatPresenceState={};const status=document.getElementById('chatPresenceStatus');if(status){status.textContent='Offline';status.classList.remove('is-online');}const typing=document.getElementById('chatTypingStatus');if(typing)typing.textContent='';if(vibeChatTypingTimer)clearTimeout(vibeChatTypingTimer);
+  vibeChatRealtimeChannel=null;vibeChatPresenceState={};const typing=document.getElementById('chatTypingStatus');if(typing)typing.textContent='';if(vibeChatTypingTimer)clearTimeout(vibeChatTypingTimer);
 }
 function updateChatPresenceUI(){
   const status=document.getElementById('chatPresenceStatus');if(!status)return;
@@ -1330,7 +1307,6 @@ function startVibeChatRealtime(conversationId){
       .on('postgres_changes',{event:'UPDATE',schema:'public',table:'messages',filter:'conversation_id=eq.'+conversationId},payload=>{
         if(activeConversationId===conversationId)loadChatMessages();
       })
-      .on('presence',{event:'sync'},()=>{vibeChatPresenceState=channel.presenceState();updateChatPresenceUI();})
       .on('broadcast',{event:'typing'},payload=>{
         if(payload?.payload?.user_id===currentUser?.id)return;
         const label=document.getElementById('chatTypingStatus');if(!label)return;
@@ -1338,11 +1314,7 @@ function startVibeChatRealtime(conversationId){
         if(vibeChatTypingTimer)clearTimeout(vibeChatTypingTimer);
         vibeChatTypingTimer=setTimeout(()=>{label.textContent='';},2200);
       })
-      .subscribe(async status=>{
-        if(status==='SUBSCRIBED'){
-          try{await channel.track({user_id:currentUser.id,online_at:new Date().toISOString()});}catch(e){}
-        }
-      });
+      .subscribe();
     vibeChatRealtimeChannel=channel;
   }catch(e){console.warn('Live chat updates unavailable; check connection and reopen the conversation.',e);}
 }
@@ -1357,16 +1329,9 @@ function bindChatTypingInput(){
 }
 bindChatTypingInput();
 
-if(currentUser){setTimeout(startVibeChatInboxRealtime,100);setTimeout(startVibeGlobalPresence,120);}
-document.addEventListener('visibilitychange',()=>{
-  if(!vibeGlobalPresenceChannel||!currentUser)return;
-  if(document.visibilityState==='hidden'){
-    try{vibeGlobalPresenceChannel.untrack();}catch(e){}
-  }else{
-    try{vibeGlobalPresenceChannel.track({user_id:currentUser.id,online_at:new Date().toISOString()});}catch(e){}
-  }
-});
-if(supabaseClient)supabaseClient.auth.onAuthStateChange((_event,session)=>{if(session?.user){currentUser=session.user;setTimeout(startVibeChatInboxRealtime,100);setTimeout(startVibeGlobalPresence,120);setTimeout(()=>loadConversations(true),150);}else{if(vibeChatInboxRealtimeChannel){try{supabaseClient.removeChannel(vibeChatInboxRealtimeChannel);}catch(e){}vibeChatInboxRealtimeChannel=null;}if(vibeGlobalPresenceChannel){try{supabaseClient.removeChannel(vibeGlobalPresenceChannel);}catch(e){}vibeGlobalPresenceChannel=null;vibeGlobalPresenceState={};updateChatNavBadge(0);}}});
+if(currentUser){setTimeout(startVibeChatInboxRealtime,100);}
+
+if(supabaseClient)supabaseClient.auth.onAuthStateChange((_event,session)=>{if(session?.user){currentUser=session.user;setTimeout(startVibeChatInboxRealtime,100);setTimeout(()=>loadConversations(true),150);}else{if(vibeChatInboxRealtimeChannel){try{supabaseClient.removeChannel(vibeChatInboxRealtimeChannel);}catch(e){}vibeChatInboxRealtimeChannel=null;}if(vibeGlobalPresenceChannel){try{supabaseClient.removeChannel(vibeGlobalPresenceChannel);}catch(e){}vibeGlobalPresenceChannel=null;vibeGlobalPresenceState={};updateChatNavBadge(0);}}});
 const vibeOriginalOpenConversation = openConversation;
 openConversation = async function(conversationId,otherId){
   await vibeOriginalOpenConversation(conversationId,otherId);
