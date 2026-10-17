@@ -639,7 +639,7 @@ async function toggleOnlineJoin(id){
    onlineCommunities=onlineCommunities.filter(item=>String(item.id)!==String(id));
    onlinePosts=onlinePosts.filter(post=>String(post.community_id)!==String(id));
    delete communityMemberCounts[id];
-   if(activeCommunity&&String(activeCommunity.id)===String(id)){activeCommunity=null;go('discover');}
+   if(activeCommunity&&String(activeCommunity.id)===String(id)){activeCommunity=null;go('communities');}
    renderOnlineCommunities();
    if(typeof renderProfileExtras==='function')renderProfileExtras();
    showToast('Community deleted');
