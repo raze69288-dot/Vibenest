@@ -273,6 +273,25 @@ button,input,textarea,select{font-family:inherit}button{cursor:pointer}button:fo
 #chatWindow .chat-messages{flex:1 1 0!important;min-height:0!important;max-height:none!important;height:auto!important;overflow-y:auto!important}
 @media(min-width:721px){#chatWindow[style*="display: block"],#chatWindow[style*="display:block"]{left:50%!important;right:auto!important;width:min(100%,720px)!important;transform:translateX(-50%)!important;border-left:1px solid var(--line)!important;border-right:1px solid var(--line)!important}}
 </style>
+
+<style id="vibenest-chat-alignment-fix-final">
+/* Final Android chat alignment fix: prevent composer clipping and horizontal overflow. */
+html,body{max-width:100%;overflow-x:hidden!important}
+body.direct-chat-open{padding-bottom:0!important;overflow:hidden!important}
+body.direct-chat-open #chatWindow,
+#chatWindow[style*="display: block"]{box-sizing:border-box!important;position:fixed!important;left:0!important;right:0!important;top:0!important;bottom:0!important;width:100%!important;max-width:100%!important;height:100dvh!important;max-height:100dvh!important;margin:0!important;transform:none!important;padding-top:calc(env(safe-area-inset-top,0px) + 10px)!important;padding-left:16px!important;padding-right:16px!important;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 10px)!important;gap:0!important;overflow:hidden!important}
+#chatWindow .chat-messages{box-sizing:border-box!important;width:100%!important;max-width:100%!important;min-width:0!important;flex:1 1 0!important;overflow-y:auto!important;overflow-x:hidden!important;padding:12px 4px 18px!important;scrollbar-width:thin}
+#chatWindow .chat-bubble{box-sizing:border-box!important;width:fit-content!important;max-width:min(88%, 520px)!important;min-width:0!important;overflow-wrap:anywhere!important;word-break:break-word!important}
+#chatWindow .chat-bubble.mine{margin-left:auto!important;margin-right:0!important}
+#chatWindow .chat-compose{box-sizing:border-box!important;display:flex!important;align-items:center!important;gap:8px!important;width:100%!important;max-width:100%!important;min-width:0!important;flex:0 0 auto!important;margin:0!important;padding:10px 0 calc(env(safe-area-inset-bottom,0px) + 8px)!important;overflow:visible!important}
+#chatWindow .chat-compose>label.join{box-sizing:border-box!important;flex:0 0 46px!important;width:46px!important;min-width:46px!important;height:46px!important;min-height:46px!important;margin:0!important}
+#chatWindow .chat-compose .field{box-sizing:border-box!important;flex:1 1 0!important;width:0!important;min-width:0!important;max-width:100%!important;height:auto!important;min-height:48px!important;margin:0!important;padding:12px!important;font-size:16px!important}
+#chatWindow .chat-compose button.join{box-sizing:border-box!important;flex:0 0 48px!important;width:48px!important;min-width:48px!important;height:48px!important;min-height:48px!important;margin:0!important;padding:0!important}
+#chatWindow #chatTitle{max-width:100%!important;overflow-wrap:anywhere}
+@media(max-width:380px){body.direct-chat-open #chatWindow,#chatWindow[style*="display: block"]{padding-left:11px!important;padding-right:11px!important}#chatWindow .chat-compose{gap:6px!important}#chatWindow .chat-compose>label.join{flex-basis:42px!important;width:42px!important;min-width:42px!important}#chatWindow .chat-compose button.join{flex-basis:44px!important;width:44px!important;min-width:44px!important}}
+@media(prefers-reduced-motion:reduce){#chatWindow *{animation:none!important;transition:none!important}}
+</style>
+
 </head><body>
 <section id="home" class="page active">
   <div class="vn-home-topline"><div class="vn-home-brandmark"><span class="vn-mark">✳</span><span>Vibe<span class="vn-brand-accent">Nest</span></span></div><button class="home-icon-button vn-notify" aria-label="Notifications" title="Notifications" onclick="go('notifications');loadNotifications()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span id="homeNotificationBadge" class="nav-badge" style="display:none">0</span></button></div>
