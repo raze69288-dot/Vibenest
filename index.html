@@ -2741,3 +2741,11 @@ body.direct-chat-open #chatWindow .chat-search-wrap.is-open{width:min(250px,calc
 @keyframes vncmConfirmIn{from{opacity:0;transform:translateY(7px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
 @media(prefers-reduced-motion:reduce){.vncm-confirm-dialog{animation:none}}
 </style>
+
+<style id="vn-public-profile-action-alignment-fix">
+/* Public profile actions: equal-width buttons, centered in matching left/right halves. */
+.public-profile-buttons{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;align-items:stretch!important;justify-content:stretch!important;gap:12px!important;width:100%!important;margin:14px 0 0!important}
+.public-profile-buttons>button{box-sizing:border-box!important;display:flex!important;align-items:center!important;justify-content:center!important;width:100%!important;min-width:0!important;max-width:none!important;min-height:48px!important;margin:0!important;padding:12px 8px!important;text-align:center!important;white-space:normal!important;line-height:1.25!important;border-radius:15px!important}
+.public-profile-buttons .public-profile-message-button{grid-column:auto!important}
+@media(max-width:360px){.public-profile-buttons{gap:8px!important}.public-profile-buttons>button{font-size:13px!important;padding:10px 5px!important}}
+</style>
