@@ -1760,6 +1760,23 @@ button:focus, button:focus-visible, a:focus, a:focus-visible, [role="button"]:fo
 #notifications .notification-page-top .join{margin:0;white-space:nowrap}
 @media(max-width:380px){.notification-back{padding:8px 11px}#notifications .notification-page-top .join{padding:8px 10px;font-size:12px}}
 </style>
+
+<style id="vibenest-tab-alignment-fix">
+/* Feed tabs: two equal, centered choices with an underline tied to each button. */
+#home .vn-feed-control{width:100%!important;margin:0!important;padding:0 18px!important;box-sizing:border-box!important}
+#home .vn-feed-control .vn-feed-filters{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr))!important;width:100%!important;max-width:440px!important;margin:0 auto!important;padding:0!important;gap:0!important;box-sizing:border-box!important;border-bottom:1px solid rgba(190,160,225,.18)!important}
+#home .vn-feed-control .vn-feed-filters>button{position:relative!important;width:100%!important;min-width:0!important;margin:0!important;padding:12px 6px 15px!important;display:flex!important;align-items:center!important;justify-content:center!important;box-sizing:border-box!important;border:0!important;border-radius:0!important;background:transparent!important;box-shadow:none!important;white-space:nowrap!important}
+#home .vn-feed-control .vn-feed-filters>button:after{content:none!important}
+#home .vn-feed-control .vn-feed-filters>button.active:after,#home .vn-feed-control .vn-feed-filters>button[aria-pressed="true"]:after{content:""!important;display:block!important;position:absolute!important;left:20%!important;right:20%!important;bottom:-1px!important;height:3px!important;border-radius:4px 4px 0 0!important;background:linear-gradient(90deg,#b995ff,#ff8acb)!important;box-shadow:0 0 12px rgba(177,138,255,.3)!important}
+/* Bottom navigation: center each icon and its active indicator in its own quarter. */
+nav.bottom{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;align-items:stretch!important}
+nav.bottom>button{position:relative!important;display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;min-width:0!important;width:100%!important;box-sizing:border-box!important;margin:0!important;text-align:center!important}
+nav.bottom>button .nav-icon{display:block!important;margin:0 auto 5px!important;flex:0 0 auto!important}
+nav.bottom>button:before{left:50%!important;right:auto!important;transform:translateX(-50%)!important;width:38px!important}
+nav.bottom>button:after{left:50%!important;right:auto!important;transform:translateX(-50%)!important}
+@media(max-width:380px){#home .vn-feed-control{padding-left:12px!important;padding-right:12px!important}#home .vn-feed-control .vn-feed-filters>button{font-size:12px!important}}
+</style>
+
 </body></html>
 
 <style>
