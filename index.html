@@ -2098,6 +2098,40 @@ body.direct-chat-open #chatMessages { flex: 1 1 auto !important; min-height: 0 !
 body.direct-chat-open .chat-compose { flex: 0 0 auto !important; margin-top: 0 !important; }
 </style>
 
+
+<style id="vn-chat-search-scrollbar-fix">
+/* Use a conventional, crisp magnifying-glass icon; keep the existing toggle behavior. */
+body.direct-chat-open #chatWindow .chat-search-wrap{
+  width:40px!important;height:40px!important;min-height:40px!important;right:14px!important;
+  border-radius:50%!important;background:rgba(35,28,44,.72)!important;
+  border:1px solid rgba(210,190,230,.24)!important;box-shadow:none!important;
+  -webkit-backdrop-filter:blur(8px)!important;backdrop-filter:blur(8px)!important;
+}
+body.direct-chat-open #chatWindow .chat-search-wrap>span{
+  position:relative!important;display:block!important;width:40px!important;height:40px!important;
+  flex:0 0 40px!important;font-size:0!important;transform:none!important;
+}
+body.direct-chat-open #chatWindow .chat-search-wrap>span:before{
+  content:""!important;position:absolute!important;left:12px!important;top:10px!important;
+  width:12px!important;height:12px!important;border:2px solid #d8c3ef!important;
+  border-radius:50%!important;transform:none!important;background:transparent!important;
+}
+body.direct-chat-open #chatWindow .chat-search-wrap>span:after{
+  content:""!important;position:absolute!important;left:25px!important;top:24px!important;
+  width:7px!important;height:2px!important;background:#d8c3ef!important;
+  border:0!important;border-radius:2px!important;transform:rotate(45deg)!important;
+}
+/* Hide the scrollbar track/thumb without disabling normal touch scrolling. */
+body.direct-chat-open #chatMessages,
+body.direct-chat-open #chatWindow .chat-messages{
+  scrollbar-width:none!important;-ms-overflow-style:none!important;
+}
+body.direct-chat-open #chatMessages::-webkit-scrollbar,
+body.direct-chat-open #chatWindow .chat-messages::-webkit-scrollbar{
+  display:none!important;width:0!important;height:0!important;background:transparent!important;
+}
+</style>
+
 </body></html>
 
 <style>
