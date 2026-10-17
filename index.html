@@ -612,6 +612,28 @@ async function toggleOnlineJoin(id){
  if(!currentUser||!supabaseClient){openAuth();showToast('Sign in to join a community');return;}
  const c=onlineCommunities.find(x=>String(x.id)===String(id));if(!c)return;
  const wasJoined=!!c.joined;
+ // A community creator cannot leave their own community: confirming this action deletes it.
+ if(wasJoined&&String(c.created_by)===String(currentUser.id)){
+  const confirmed=confirm(`You created “${c.name}”. Leaving will permanently delete this community and its data, including its posts, rooms, memberships, and messages. This cannot be undone.
+
+Delete the community?`);
+  if(!confirmed)return;
+  try{
+   const {data,error}=await supabaseClient.from('communities').delete().eq('id',id).eq('created_by',currentUser.id).select('id').maybeSingle();
+   if(error)throw error;
+   if(!data)throw new Error('The community was not deleted. Only its creator can delete it, or the database permissions may need checking.');
+   onlineCommunities=onlineCommunities.filter(item=>String(item.id)!==String(id));
+   onlinePosts=onlinePosts.filter(post=>String(post.community_id)!==String(id));
+   delete communityMemberCounts[id];
+   if(activeCommunity&&String(activeCommunity.id)===String(id)){activeCommunity=null;go('discover');}
+   renderOnlineCommunities();
+   if(typeof renderProfileExtras==='function')renderProfileExtras();
+   showToast('Community deleted');
+   await Promise.all([refreshSocialCounts(),loadTotalCommunityPeople()]);
+   renderOnlineCommunities();
+  }catch(error){console.error('Could not delete creator-owned community:',error);showToast(error.message||'Could not delete the community.');}
+  return;
+ }
  if(wasJoined){const {error}=await supabaseClient.from('memberships').delete().eq('community_id',id).eq('user_id',currentUser.id);if(error){showToast(error.message);return;}c.joined=false;communityMemberCounts[id]=Math.max(0,(communityMemberCounts[id]||0)-1);}
  else {const {error}=await supabaseClient.from('memberships').insert({community_id:id,user_id:currentUser.id});if(error){showToast(error.message);return;}c.joined=true;communityMemberCounts[id]=(communityMemberCounts[id]||0)+1;}
  renderOnlineCommunities();if(activeCommunity&&String(activeCommunity.id)===String(c.id)){activeCommunity=c;renderCommunityDetail();}if(typeof renderProfileExtras==='function')renderProfileExtras();showToast(c.joined?'Joined '+c.name:'Left '+c.name);
