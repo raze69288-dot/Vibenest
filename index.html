@@ -990,6 +990,7 @@ async function startConversation(otherId){
  go('chats');await openConversation(data.id,otherId);await loadConversations(true);
 }
 async function openConversation(conversationId,otherId){
+ if(activeConversationId!==conversationId){try{history.pushState({...history.state,vnPage:'chats',vnChatConversation:conversationId},'',location.href);}catch(e){}}
  activeConversationId=conversationId;activeChatUser=otherId;
  const profile=chatProfiles[otherId];document.getElementById('chatTitle').textContent=chatDisplayName(profile);
  document.body.classList.add('direct-chat-open');document.getElementById('chatWindow').style.display='block';document.getElementById('conversationList').style.display='none';document.getElementById('userSearchResults').style.display='none';document.getElementById('userSearch').style.display='none';const chatStart=document.querySelector('#chats .chat-start');if(chatStart)chatStart.style.display='none';const chatsHeading=document.getElementById('chatsHeading');if(chatsHeading)chatsHeading.style.display='none';
@@ -2149,7 +2150,7 @@ body.direct-chat-open .chat-compose>button.join:active{transform:scale(.96)}
 <style id="vn-search-icon-send-v3">
 /* Conversation search lives in the header as a small toggle, not a full-width bar. */
 body.direct-chat-open #chatWindow[style*="display: block"]{position:relative!important}
-body.direct-chat-open .chat-search-wrap{position:absolute!important;top:calc(env(safe-area-inset-top,0px) + 48px)!important;right:14px!important;z-index:8!important;width:38px!important;height:38px!important;min-height:38px!important;margin:0!important;padding:0!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:0!important;border:1px solid rgba(201,174,230,.24)!important;border-radius:50%!important;background:rgba(35,29,43,.86)!important;box-shadow:none!important;overflow:hidden!important;transition:width .18s ease,border-radius .18s ease,background .18s ease!important}
+body.direct-chat-open .chat-search-wrap{position:absolute!important;top:calc(env(safe-area-inset-top,0px) + 12px)!important;right:14px!important;z-index:8!important;width:38px!important;height:38px!important;min-height:38px!important;margin:0!important;padding:0!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:0!important;border:1px solid rgba(201,174,230,.24)!important;border-radius:50%!important;background:rgba(35,29,43,.86)!important;box-shadow:none!important;overflow:hidden!important;transition:width .18s ease,border-radius .18s ease,background .18s ease!important}
 body.direct-chat-open .chat-search-wrap>span{display:grid!important;place-items:center!important;width:100%!important;height:100%!important;margin:0!important;font-size:0!important;transform:none!important;cursor:pointer!important;flex:0 0 38px!important}
 body.direct-chat-open .chat-search-wrap>span:before{content:"";width:12px;height:12px;border:2px solid #d7b8f5;border-radius:50%;display:block;transform:translate(-1px,-1px)}
 body.direct-chat-open .chat-search-wrap>span:after{content:"";position:absolute;width:7px;height:2px;background:#d7b8f5;transform:translate(6px,7px) rotate(48deg);border-radius:2px}
@@ -2316,6 +2317,12 @@ renderCommunityDetail=function(){initializeCommunitySections();vnOldRenderCommun
   };
 
   window.addEventListener('popstate', function(event){
+    // An open direct message is a nested screen: Android/browser Back returns to the chats inbox first.
+    if (document.body.classList.contains('direct-chat-open') && typeof window.closeChatWindow === 'function') {
+      window.closeChatWindow();
+      currentPage = 'chats';
+      return;
+    }
     if (closeTopLayer()) {
       // Keep the current page entry after consuming a back action for an overlay.
       const active = document.querySelector('.page.active')?.id || currentPage || 'home';
