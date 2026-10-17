@@ -2756,3 +2756,18 @@ body.direct-chat-open #chatMessages .chat-date-separator span{display:inline-fle
 body.direct-chat-open #chatMessages .chat-message-time{display:block!important;margin-top:7px!important;text-align:right!important;font-size:11px!important;line-height:1.25!important;color:#d1c3df!important;opacity:.9!important}
 body.direct-chat-open #chatMessages .chat-bubble .receipt{display:none!important}
 </style>
+
+<style id="vn-chat-remove-excessive-message-gap">
+/* Keep the date chip and messages together at the top of the scrollable conversation. */
+body.direct-chat-open #chatMessages {
+  justify-content: flex-start !important;
+  align-content: flex-start !important;
+  row-gap: 9px !important;
+  column-gap: 9px !important;
+}
+body.direct-chat-open #chatMessages .chat-date-separator {
+  flex: 0 0 100% !important;
+  margin: 4px 0 2px !important;
+  padding: 0 !important;
+}
+</style>
