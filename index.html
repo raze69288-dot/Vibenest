@@ -2041,6 +2041,43 @@ body.direct-chat-open .chat-compose>button.join:after{content:"➤";font-family:
 body.direct-chat-open .chat-compose>button.join:active{transform:scale(.96)}
 @media(max-width:380px){body.direct-chat-open #chatWindow[style*="display: block"]{padding-left:10px!important;padding-right:10px!important}body.direct-chat-open .chat-compose{gap:6px!important}body.direct-chat-open .chat-compose>label.join{flex-basis:39px!important;width:39px!important;min-width:39px!important}body.direct-chat-open .chat-compose>button.join{flex-basis:43px!important;width:43px!important;min-width:43px!important}}
 </style>
+<style id="vn-search-icon-send-v3">
+/* Conversation search lives in the header as a small toggle, not a full-width bar. */
+body.direct-chat-open #chatWindow[style*="display: block"]{position:relative!important}
+body.direct-chat-open .chat-search-wrap{position:absolute!important;top:calc(env(safe-area-inset-top,0px) + 48px)!important;right:14px!important;z-index:8!important;width:38px!important;height:38px!important;min-height:38px!important;margin:0!important;padding:0!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:0!important;border:1px solid rgba(201,174,230,.24)!important;border-radius:50%!important;background:rgba(35,29,43,.86)!important;box-shadow:none!important;overflow:hidden!important;transition:width .18s ease,border-radius .18s ease,background .18s ease!important}
+body.direct-chat-open .chat-search-wrap>span{display:grid!important;place-items:center!important;width:100%!important;height:100%!important;margin:0!important;font-size:0!important;transform:none!important;cursor:pointer!important;flex:0 0 38px!important}
+body.direct-chat-open .chat-search-wrap>span:before{content:"";width:12px;height:12px;border:2px solid #d7b8f5;border-radius:50%;display:block;transform:translate(-1px,-1px)}
+body.direct-chat-open .chat-search-wrap>span:after{content:"";position:absolute;width:7px;height:2px;background:#d7b8f5;transform:translate(6px,7px) rotate(48deg);border-radius:2px}
+body.direct-chat-open .chat-search-wrap #chatMessageSearch{display:none!important;opacity:0!important;width:0!important;min-width:0!important;flex:0 0 0!important;padding:0!important}
+body.direct-chat-open .chat-search-wrap.is-open{width:min(250px,calc(100vw - 42px))!important;height:40px!important;min-height:40px!important;border-radius:12px!important;justify-content:flex-start!important;padding:0 10px!important;gap:8px!important;background:#201b27!important}
+body.direct-chat-open .chat-search-wrap.is-open>span{width:18px!important;height:38px!important;flex-basis:18px!important}
+body.direct-chat-open .chat-search-wrap.is-open #chatMessageSearch{display:block!important;opacity:1!important;flex:1 1 auto!important;width:auto!important;min-width:0!important;min-height:36px!important;padding:5px 0!important;font-size:14px!important}
+body.direct-chat-open .chat-search-wrap.is-open #chatMessageSearch::placeholder{color:#aaa0b7!important}
+body.direct-chat-open #chatTitle{padding-right:48px!important}
+/* Keep send control icon-only, restrained, and consistent with the composer. */
+body.direct-chat-open .chat-compose>button.join{font-size:0!important;flex:0 0 44px!important;width:44px!important;min-width:44px!important;height:44px!important;min-height:44px!important;padding:0!important;border:1px solid rgba(213,190,240,.4)!important;border-radius:14px!important;background:#b99add!important;color:#251a30!important;box-shadow:none!important;position:relative!important;display:grid!important;place-items:center!important}
+body.direct-chat-open .chat-compose>button.join:after{content:""!important;display:block!important;width:0!important;height:0!important;border-top:7px solid transparent!important;border-bottom:7px solid transparent!important;border-left:12px solid #251a30!important;transform:translateX(1px)!important;font-size:0!important;line-height:0!important}
+body.direct-chat-open .chat-compose>button.join:before{content:"";position:absolute;width:14px;height:2px;background:#251a30;left:12px;top:21px;border-radius:2px}
+body.direct-chat-open .chat-compose>button.join:active{transform:scale(.97)!important}
+@media(max-width:380px){body.direct-chat-open .chat-search-wrap{right:10px!important}body.direct-chat-open .chat-search-wrap.is-open{width:min(220px,calc(100vw - 34px))!important}}
+</style>
+<script id="vn-search-icon-toggle-v3">
+(function(){
+ function setup(){
+  const wrap=document.getElementById('chatSearchWrap');
+  const icon=wrap&&wrap.querySelector('span');
+  const input=document.getElementById('chatMessageSearch');
+  if(!wrap||!icon||!input||icon.dataset.vnToggle==='1')return;
+  icon.dataset.vnToggle='1'; icon.setAttribute('role','button'); icon.setAttribute('tabindex','0'); icon.setAttribute('aria-label','Search messages'); icon.setAttribute('title','Search messages');
+  function toggle(){const opened=wrap.classList.toggle('is-open');if(opened){input.focus()}else{input.value='';if(typeof window.loadChatMessages==='function')window.loadChatMessages(true)}}
+  icon.addEventListener('click',toggle);icon.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle()}});
+  input.addEventListener('keydown',e=>{if(e.key==='Escape'){input.value='';wrap.classList.remove('is-open');if(typeof window.loadChatMessages==='function')window.loadChatMessages(true)}});
+ }
+ if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',setup);else setup();
+ const observer=new MutationObserver(setup);observer.observe(document.documentElement,{childList:true,subtree:true});
+})();
+</script>
+
 </body></html>
 
 <style>
