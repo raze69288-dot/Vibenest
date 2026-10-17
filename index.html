@@ -1950,6 +1950,28 @@ body.direct-chat-open .chat-message-tools button{min-height:32px!important;paddi
 body.direct-chat-open #chatMessages *{font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif!important;letter-spacing:0!important}
 @media(max-width:380px){body.direct-chat-open #chatWindow{padding-left:12px!important;padding-right:12px!important}body.direct-chat-open .chat-bubble{max-width:89%!important}}
 </style>
+
+<!-- VibeNest scroll recovery: preserve document scrolling on mobile. -->
+<style id="vn-scroll-recovery">
+  html { height:auto!important; min-height:100%!important; overflow-x:hidden!important; overflow-y:auto!important; -webkit-overflow-scrolling:touch; }
+  body:not(.direct-chat-open) { height:auto!important; min-height:100vh!important; overflow-x:hidden!important; overflow-y:auto!important; touch-action:pan-y; }
+  body.direct-chat-open #chatMessages { touch-action:pan-y; -webkit-overflow-scrolling:touch; }
+  #profileEditModal, #publicProfileModal, #communityCreateModal, #roomCreateModal, #authModal { overscroll-behavior:contain; -webkit-overflow-scrolling:touch; }
+</style>
+<script id="vn-scroll-recovery-guard">
+(function(){
+  function recoverDocumentScroll(){
+    if(document.body && !document.body.classList.contains('direct-chat-open')){
+      document.body.style.removeProperty('overflow');
+      document.body.style.removeProperty('overflow-y');
+    }
+  }
+  window.addEventListener('pageshow',recoverDocumentScroll);
+  window.addEventListener('focus',recoverDocumentScroll);
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)recoverDocumentScroll();});
+})();
+</script>
+
 </body></html>
 
 <style>
