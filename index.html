@@ -376,9 +376,15 @@ function openCommunityByName(name){
  activeCommunity={id:null,name:c.name,category:c.cat,description:c.desc,joined:c.joined,preview:true};
  renderCommunityDetail();go('community');
 }
-function openCommunityById(id){
+function openCommunityById(id, openComposer=false){
  const c=onlineCommunities.find(x=>String(x.id)===String(id));if(!c)return;
  activeCommunity=c;renderCommunityDetail();go('community');
+ if(openComposer){
+  // Let the community page render and become active before opening its composer.
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+   if(activeCommunity&&String(activeCommunity.id)===String(id))toggleCommunityComposer();
+  }));
+ }
 }
 function renderCommunityDetail(){
  const c=activeCommunity;if(!c)return;
@@ -1556,7 +1562,7 @@ function renderCreateCommunityChoices(){
     box.innerHTML='<div class="card"><h3>No joined communities yet</h3><p>Join a community in Communities before creating a post.</p><div style="margin-top:12px"><button class="join" onclick="go(\'discover\')">Explore communities</button></div></div>';
     return;
   }
-  box.innerHTML=joined.map(c=>`<button class="card" style="display:flex;align-items:center;gap:12px;width:100%;text-align:left;color:var(--text);margin:10px 0" onclick="openCommunityById('${c.id}')"><span class="art" style="width:64px;height:64px;flex-shrink:0;margin:0;background:linear-gradient(135deg,#55346c,#21172f)">✦</span><span><b>${safeText(c.name)}</b><br><span class="muted">${safeText(c.category||'Community')} · Tap to open and post</span></span><span style="margin-left:auto">›</span></button>`).join('');
+  box.innerHTML=joined.map(c=>`<button class="card" style="display:flex;align-items:center;gap:12px;width:100%;text-align:left;color:var(--text);margin:10px 0" onclick="openCommunityById('${c.id}',true)"><span class="art" style="width:64px;height:64px;flex-shrink:0;margin:0;background:linear-gradient(135deg,#55346c,#21172f)">✦</span><span><b>${safeText(c.name)}</b><br><span class="muted">${safeText(c.category||'Community')} · Tap to open and post</span></span><span style="margin-left:auto">›</span></button>`).join('');
 }
 const previousGoForCreateChooser=go;
 go=function(id){
