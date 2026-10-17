@@ -2716,3 +2716,12 @@ body.direct-chat-open #chatWindow .chat-compose button.join:after{content:""!imp
 body.direct-chat-open #chatWindow .chat-compose button.join:active{transform:scale(.96)!important}
 @media(prefers-reduced-motion:reduce){body.direct-chat-open #chatWindow:before{animation:none!important}}
 </style>
+
+<style id="vn-chat-header-alignment-final-fix">
+/* Final mobile DM header layout: profile/name on the left, search on the same row at right. */
+body.direct-chat-open #chatWindow > button.join:first-child{display:none!important;height:0!important;min-height:0!important;margin:0!important;padding:0!important;flex:0 0 0!important}
+body.direct-chat-open #chatWindow #chatTitle{position:relative!important;display:flex!important;align-items:center!important;gap:12px!important;width:100%!important;max-width:100%!important;min-height:54px!important;margin:0 54px 12px 0!important;padding:0!important;box-sizing:border-box!important;flex:0 1 auto!important;overflow:hidden!important;white-space:nowrap!important;text-overflow:ellipsis!important}
+body.direct-chat-open #chatWindow .chat-search-wrap{position:absolute!important;top:calc(env(safe-area-inset-top,0px) + 12px)!important;right:14px!important;left:auto!important;z-index:20!important;width:42px!important;min-width:42px!important;height:42px!important;min-height:42px!important;margin:0!important;padding:0!important;box-sizing:border-box!important;flex:0 0 42px!important;border-radius:14px!important}
+body.direct-chat-open #chatWindow .chat-search-wrap.is-open{width:min(250px,calc(100vw - 42px))!important;min-width:0!important;max-width:calc(100vw - 28px)!important}
+@media(max-width:380px){body.direct-chat-open #chatWindow #chatTitle{margin-right:50px!important}body.direct-chat-open #chatWindow .chat-search-wrap{right:10px!important;top:calc(env(safe-area-inset-top,0px) + 12px)!important}}
+</style>
