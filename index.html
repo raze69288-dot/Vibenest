@@ -383,7 +383,7 @@ function openCommunityById(id){
 function renderCommunityDetail(){
  const c=activeCommunity;if(!c)return;
  const content=document.getElementById('communityDetailContent');
- content.innerHTML=`<div class="hero community-detail-hero">${communityCoverMarkup(c,true)}<div class="community-detail-topline"><span>${safeText(c.category||c.cat||'Community')}</span><span>✦ ${communityMemberCounts[c.id]||0} members</span></div><h1 style="margin:9px 0">${safeText(c.name)}</h1><div class="community-detail-actions"><button class="btn" onclick="${c.id?'toggleOnlineJoin(\''+c.id+'\')':'toggleJoin(\''+c.name+'\')'}">${c.joined?'Leave community':'＋ Join community'}</button><span class="muted">${c.joined?'You’re part of this space':'Join to post and chat'}</span></div></div>`;
+ content.innerHTML=`<div class="hero community-detail-hero">${communityCoverMarkup(c,true)}<div class="community-detail-topline"><span>${safeText(c.category||c.cat||'Community')}</span><span>✦ ${communityMemberCounts[c.id]||0} members</span></div><h1 style="margin:9px 0">${safeText(c.name)}</h1><div class="community-detail-actions"><button class="btn" onclick="${c.id?'toggleOnlineJoin(\''+c.id+'\')':'toggleJoin(\''+c.name+'\')'}">${c.joined?'Leave community':'＋ Join community'}</button></div></div>`;
  const postButton=document.getElementById('communityPostButton');if(postButton)postButton.style.display='';
  renderCommunityRooms();
  renderCommunityPosts();
@@ -2428,8 +2428,11 @@ renderCommunityDetail=function(){initializeCommunitySections();vnOldRenderCommun
 #community .community-detail-cover{width:100%;height:clamp(140px,34vw,210px)!important;margin:0 auto 18px!important;border-radius:20px!important;}
 #community .community-detail-topline{align-items:center;gap:14px;margin:0 2px 10px;font-size:12px;}
 #community #communityDetailContent>h1,#community #communityDetailContent h1{margin:8px 2px 18px!important;line-height:1.15;letter-spacing:-.5px;}
-#community .community-detail-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));align-items:stretch;gap:10px;margin:16px 0 20px!important;}
-#community .community-detail-actions>*{min-width:0!important;width:100%;min-height:48px;justify-content:center;text-align:center;}
+#community .community-detail-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:stretch;gap:12px;margin:16px 0 20px!important;width:100%;}
+#community .community-detail-actions>*{box-sizing:border-box;min-width:0!important;width:100%;min-height:52px;justify-content:center;text-align:center;margin:0!important;}
+#community .community-detail-actions:not(:has(#manageCommunityButton)){grid-template-columns:minmax(0,1fr);}
+#community .community-detail-actions:has(#manageCommunityButton){grid-template-columns:repeat(2,minmax(0,1fr));}
+#community .community-detail-actions .btn,#community .community-detail-actions .join{white-space:normal;line-height:1.25;}
 #community .community-section-tabs{position:sticky;top:62px;z-index:2;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:18px 0 20px;padding:7px;border-radius:17px;box-shadow:0 8px 22px #0002;}
 #community .community-section-tabs button{min-width:0;min-height:46px;padding:9px 4px;font-size:13px;white-space:nowrap;}
 #community [data-community-panel]{width:100%;min-width:0;}
