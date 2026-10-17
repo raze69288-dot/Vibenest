@@ -292,6 +292,11 @@ body.direct-chat-open #chatWindow,
 @media(prefers-reduced-motion:reduce){#chatWindow *{animation:none!important;transition:none!important}}
 </style>
 
+
+<style id="vn-notifications-rooms-quality-pass">
+.notification-item{transition:background .16s ease,border-color .16s ease;min-width:0}.notification-item:focus-visible,.room-card button:focus-visible{outline:2px solid #c4a9f4;outline-offset:3px}.notification-item .notice-copy{overflow-wrap:anywhere}.notification-item img{border:1px solid #b18aff30}.room-card-copy small{line-height:1.45}
+</style>
+
 </head><body>
 <section id="home" class="page active">
   <div class="vn-home-topline"><div class="vn-home-brandmark"><span class="vn-mark">✳</span><span>Vibe<span class="vn-brand-accent">Nest</span></span></div><button class="home-icon-button vn-notify" aria-label="Notifications" title="Notifications" onclick="go('notifications');loadNotifications()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span id="homeNotificationBadge" class="nav-badge" style="display:none">0</span></button></div>
@@ -389,7 +394,7 @@ function renderCommunityPosts(){
 }
 
 // Community chatrooms use community_rooms + community_room_messages tables (SQL setup provided with this update).
-let activeCommunityRoom=null,communityRoomPoll=null;
+let activeCommunityRoom=null,communityRoomPoll=null,communityRoomLoadBusy=false;
 async function renderCommunityRooms(){
  const out=document.getElementById('communityRooms'),createBtn=document.getElementById('createRoomButton'),c=activeCommunity;
  if(!out||!c)return;
@@ -402,8 +407,8 @@ async function renderCommunityRooms(){
  if(error){console.error(error);out.innerHTML='<div class="room-empty">Chatrooms need the VibeNest chatroom database setup. Run the SQL included with this update, then reload.</div>';return;}
  const rooms=data||[];
  if(!rooms.length){out.innerHTML='<div class="room-empty">No chatrooms yet. Create the first one for this community.</div>';return;}
- const memberResults=await Promise.all(rooms.map(r=>supabaseClient.from('community_room_messages').select('id',{count:'exact',head:true}).eq('room_id',r.id)));
- out.innerHTML=rooms.map((r,i)=>`<article class="room-card"><div class="room-card-icon">${['💬','🌙','⚡','🎧'][i%4]}</div><div class="room-card-copy"><b>${safeText(r.name)}</b><small>${safeText(r.description||'Open conversation')} · max 100 people</small></div><button class="join" onclick="openCommunityRoom('${r.id}')">Open →</button></article>`).join('');
+ const memberResults=await Promise.all(rooms.map(r=>supabaseClient.from('community_room_members').select('user_id',{count:'exact',head:true}).eq('room_id',r.id)));
+ out.innerHTML=rooms.map((r,i)=>{const memberCount=memberResults[i]?.error?null:(memberResults[i]?.count||0);return `<article class="room-card"><div class="room-card-icon">${['💬','🌙','⚡','🎧'][i%4]}</div><div class="room-card-copy"><b>${safeText(r.name)}</b><small>${safeText(r.description||'Open conversation')} · ${memberCount===null?'Up to 100 people':`${memberCount} ${memberCount===1?'member':'members'} · max 100`}</small></div><button class="join" onclick="openCommunityRoom('${r.id}')">Open →</button></article>`}).join('');
 }
 function createCommunityRoom(){
  const c=activeCommunity;if(!c||!c.id||!c.joined){showToast('Join this community first');return;}if(!currentUser||!supabaseClient){openAuth();return;}
@@ -452,7 +457,8 @@ async function openCommunityRoom(roomId){
 }
 function closeCommunityRoom(){activeCommunityRoom=null;if(communityRoomPoll)clearInterval(communityRoomPoll);communityRoomPoll=null;const panel=document.getElementById('communityRoomChatPanel');panel.classList.remove('room-chat-fullscreen');panel.style.display='none';document.body.classList.remove('room-chat-open');const parentId=panel.dataset.originalParent||'community',parent=document.getElementById(parentId);const nextId=panel.dataset.originalNext,next=nextId?document.getElementById(nextId):null;if(parent&&panel.parentElement!==parent)parent.insertBefore(panel,next&&next.parentElement===parent?next:null);const out=document.getElementById('communityRoomMessages');if(out){out.dataset.messageIds='';out.innerHTML='';}const input=document.getElementById('communityRoomMessageInput');if(input)input.value='';const rooms=document.getElementById('communityRooms');if(rooms)rooms.style.display='grid';}
 async function loadCommunityRoomMessages(quiet=false){
- const room=activeCommunityRoom,out=document.getElementById('communityRoomMessages');if(!room||!out||!supabaseClient)return;
+ const room=activeCommunityRoom,out=document.getElementById('communityRoomMessages');if(!room||!out||!supabaseClient||communityRoomLoadBusy)return;
+ communityRoomLoadBusy=true;
  try{
   const {data,error}=await supabaseClient.from('community_room_messages').select('id,room_id,user_id,content,created_at').eq('room_id',room.id).order('created_at',{ascending:true}).limit(150);
   if(error){
@@ -473,7 +479,7 @@ async function loadCommunityRoomMessages(quiet=false){
  }catch(err){
   out.dataset.messageIds='';
   if(!quiet)out.innerHTML='<div class="room-chat-error"><b>Connection problem.</b><small>'+safeText(err?.message||'Could not contact Supabase. Check your connection and retry.')+'</small></div>';
- }
+ }finally{communityRoomLoadBusy=false;}
 }
 async function sendCommunityRoomMessage(event){
  event?.preventDefault();const room=activeCommunityRoom,input=document.getElementById('communityRoomMessageInput'),content=input?.value.trim();
@@ -1211,7 +1217,7 @@ async function loadNotifications(){
  const ids=[...new Set(notificationRows.map(n=>n.actor_id).filter(Boolean))];let profiles={};
  if(ids.length){const r=await supabaseClient.from('profiles').select('id,username,display_name,avatar_url').in('id',ids);if(!r.error)for(const p of r.data||[])profiles[p.id]=p;}
  const words={follow:'started following you',like:'liked your post',comment:'commented on your post'};
- out.innerHTML=notificationRows.map(n=>{const actor=profiles[n.actor_id],name=actor?.display_name||actor?.username||'A VibeNest member',icon=n.type==='follow'?'♙':n.type==='like'?'♥':'▢';return `<button type="button" class="notification-item ${n.read_at?'':'unread'}" style="width:100%;text-align:left;color:var(--text);font:inherit;cursor:pointer" onclick="openNotification('${n.id}')"><span class="notice-icon">${icon}</span><span class="notice-copy"><b>${safeText(name)}</b> ${safeText(words[n.type]||'interacted with you')}<span class="muted" style="display:block;margin-top:5px">${safeText(new Date(n.created_at).toLocaleString())}</span></span>${!n.read_at?'<span style="color:var(--purple)">●</span>':''}</button>`;}).join('')||'<p class="muted">You’re all caught up. New follows, likes, and comments will appear here.</p>';
+ out.innerHTML=notificationRows.map(n=>{const actor=profiles[n.actor_id],name=actor?.display_name||actor?.username||'A VibeNest member',icon=n.type==='follow'?'♙':n.type==='like'?'♥':'▢',avatar=actor?.avatar_url?`<img src="${safeText(actor.avatar_url)}" alt="" loading="lazy" style="width:38px;height:38px;object-fit:cover;border-radius:50%;flex-shrink:0">`:`<span class="notice-icon">${icon}</span>`;return `<button type="button" class="notification-item ${n.read_at?'':'unread'}" style="width:100%;text-align:left;color:var(--text);font:inherit;cursor:pointer;align-items:center" onclick="openNotification('${n.id}')">${avatar}<span class="notice-copy"><b>${safeText(name)}</b> ${safeText(words[n.type]||'interacted with you')}<span class="muted" style="display:block;margin-top:5px">${safeText(new Date(n.created_at).toLocaleString())}</span></span>${!n.read_at?'<span style="color:var(--purple)">●</span>':''}</button>`;}).join('')||'<p class="muted">You’re all caught up. New follows, likes, and comments will appear here.</p>';
  await loadNotificationBadge();
 }
 async function openNotification(notificationId){
