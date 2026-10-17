@@ -1,20 +1,32 @@
+
 name: VibeNest Database Migrations
 
 on:
   workflow_dispatch:
 
 jobs:
-  validate:
+  migrate:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Verify migration files exist
+      - name: Setup Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Link Supabase project
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
         run: |
-          if [ ! -d "supabase/migrations" ]; then
-            echo "No migration directory found."
-            exit 1
-          fi
-          echo "Migration directory exists."
-          find supabase/migrations -maxdepth 1 -type f -name '*.sql' -print
+          supabase link --project-ref vipiwmwzrnnihqyllepx \
+            --password "$SUPABASE_DB_PASSWORD"
+
+      - name: Apply migrations
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: |
+          supabase db push --dry-run
