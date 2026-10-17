@@ -1207,11 +1207,18 @@ async function loadNotificationBadge(){
  if(error){console.error(error);return;}
  [badge,homeBadge].filter(Boolean).forEach(el=>{el.textContent=count>99?'99+':String(count||0);el.style.display=count?'inline-block':'none';});
 }
-async function loadNotifications(){
+let notificationsLoadPromise=null;
+let notificationsLoadedForUser=null;
+async function loadNotifications(force=false){
  const out=document.getElementById('notificationsList');if(!out)return;
  if(!currentUser||!supabaseClient){out.innerHTML='<p class="muted">Sign in to view notifications.</p>';await loadNotificationBadge();return;}
- out.innerHTML='<p class="muted">Loading notifications…</p>';
- const {data,error}=await supabaseClient.from('notifications').select('id,actor_id,type,post_id,created_at,read_at').eq('recipient_id',currentUser.id).order('created_at',{ascending:false}).limit(60);
+ // Avoid duplicate calls from navigation, realtime, and visibility refreshes. Keep existing rows visible.
+ if(notificationsLoadPromise && notificationsLoadedForUser===currentUser.id)return notificationsLoadPromise;
+ const userId=currentUser.id;
+ if(force||!out.dataset.hasRows)out.innerHTML='<p class="muted">Loading notifications…</p>';
+ notificationsLoadedForUser=userId;
+ notificationsLoadPromise=(async()=>{
+ const {data,error}=await supabaseClient.from('notifications').select('id,actor_id,type,post_id,created_at,read_at').eq('recipient_id',userId).order('created_at',{ascending:false}).limit(60);
  if(error){out.innerHTML='<p class="muted">Could not load notifications: '+safeText(error.message)+'</p>';return;}
  notificationRows=data||[];
  const ids=[...new Set(notificationRows.map(n=>n.actor_id).filter(Boolean))];let profiles={};
@@ -1219,6 +1226,9 @@ async function loadNotifications(){
  const words={follow:'started following you',like:'liked your post',comment:'commented on your post'};
  out.innerHTML=notificationRows.map(n=>{const actor=profiles[n.actor_id],name=actor?.display_name||actor?.username||'A VibeNest member',icon=n.type==='follow'?'♙':n.type==='like'?'♥':'▢',avatar=actor?.avatar_url?`<img src="${safeText(actor.avatar_url)}" alt="" loading="lazy" style="width:38px;height:38px;object-fit:cover;border-radius:50%;flex-shrink:0">`:`<span class="notice-icon">${icon}</span>`;return `<button type="button" class="notification-item ${n.read_at?'':'unread'}" style="width:100%;text-align:left;color:var(--text);font:inherit;cursor:pointer;align-items:center" onclick="openNotification('${n.id}')">${avatar}<span class="notice-copy"><b>${safeText(name)}</b> ${safeText(words[n.type]||'interacted with you')}<span class="muted" style="display:block;margin-top:5px">${safeText(new Date(n.created_at).toLocaleString())}</span></span>${!n.read_at?'<span style="color:var(--purple)">●</span>':''}</button>`;}).join('')||'<p class="muted">You’re all caught up. New follows, likes, and comments will appear here.</p>';
  await loadNotificationBadge();
+ out.dataset.hasRows='1';
+ })();
+ try{await notificationsLoadPromise;}finally{notificationsLoadPromise=null;}
 }
 async function openNotification(notificationId){
  const item=notificationRows.find(n=>n.id===notificationId);if(!item)return;
@@ -1852,6 +1862,24 @@ button:focus, button:focus-visible, a:focus, a:focus-visible, [role="button"]:fo
 @media(max-width:380px){#home .vn-feed-control{margin-left:14px!important;margin-right:14px!important}#home .vn-feed-control .feed-filter-row{gap:4px!important;padding:0!important}#home .vn-feed-control .feed-filter-row .join{gap:4px!important;font-size:12px!important;padding-left:2px!important;padding-right:2px!important}}
 </style>
 
+<style id="vibenest-notification-back-arrow-center-fix">
+#notifications .notification-page-top .notification-back{
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:8px!important;
+  line-height:1!important;
+}
+#notifications .notification-page-top .notification-back::first-letter{
+  line-height:1!important;
+  vertical-align:middle!important;
+}
+#notifications .notification-page-top .notification-back span{
+  display:inline-flex!important;
+  align-items:center!important;
+  line-height:1.2!important;
+}
+</style>
 <style id="vibenest-notification-back-button">
 .notification-page-top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 16px}
 .notification-back{display:inline-flex;align-items:center;justify-content:center;gap:7px;min-height:42px;padding:9px 15px;border-radius:14px;border:1px solid var(--line);background:rgba(167,123,255,.10);color:var(--text);font:inherit;font-weight:700;cursor:pointer;white-space:nowrap}
