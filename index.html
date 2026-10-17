@@ -831,7 +831,25 @@ async function submitComment(postId, boxId){
   const targetId=boxId||('comments-feed-'+postId);
   const input=document.getElementById('comment-input-'+targetId),content=input?.value.trim();if(!content)return;
   const {data:newComment,error}=await supabaseClient.from('comments').insert({post_id:postId,author_id:currentUser.id,content}).select('id').single();
-  if(error){showToast(error.message);return;}
+  if(error){
+    const box=document.getElementById(targetId);
+    const isMembershipBlock=error.code==='42501'||/row-level security policy|permission denied/i.test(error.message||'');
+    if(isMembershipBlock&&box){
+      const oldNotice=box.querySelector('[data-comment-membership-notice]');
+      if(oldNotice)oldNotice.remove();
+      const notice=document.createElement('p');
+      notice.dataset.commentMembershipNotice='1';
+      notice.className='muted';
+      notice.style.cssText='margin:8px 0;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--muted);';
+      notice.textContent='Join the community first to comment on this post.';
+      const form=box.querySelector('input[id^="comment-input-"]')?.parentElement;
+      if(form)box.insertBefore(notice,form);else box.appendChild(notice);
+      if(input)input.focus();
+    }else{
+      showToast('Could not add comment. Please try again.');
+    }
+    return;
+  }
   const {data:postOwner}=await supabaseClient.from('posts').select('author_id').eq('id',postId).maybeSingle();
   if(postOwner?.author_id&&postOwner.author_id!==currentUser.id)await createNotification(postOwner.author_id,'comment',postId,newComment?.id||null);
   await loadPostComments(postId,targetId);await refreshSocialCounts();renderOnlinePosts();showToast('Comment added!');
