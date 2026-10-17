@@ -1952,23 +1952,69 @@ body.direct-chat-open #chatMessages *{font-family:Inter,ui-sans-serif,system-ui,
 </style>
 
 <!-- VibeNest scroll recovery: preserve document scrolling on mobile. -->
-<style id="vn-scroll-recovery">
-  html { height:auto!important; min-height:100%!important; overflow-x:hidden!important; overflow-y:auto!important; -webkit-overflow-scrolling:touch; }
-  body:not(.direct-chat-open) { height:auto!important; min-height:100vh!important; overflow-x:hidden!important; overflow-y:auto!important; touch-action:pan-y; }
-  body.direct-chat-open #chatMessages { touch-action:pan-y; -webkit-overflow-scrolling:touch; }
-  #profileEditModal, #publicProfileModal, #communityCreateModal, #roomCreateModal, #authModal { overscroll-behavior:contain; -webkit-overflow-scrolling:touch; }
+
+<style id="vibenest-global-scroll-fix-v2">
+/* Global mobile scroll recovery: page content must not be trapped in a fixed-height viewport. */
+html, body {
+  height: auto !important;
+  min-height: 100% !important;
+  max-height: none !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  overscroll-behavior-y: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+body {
+  position: relative !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+  touch-action: pan-y pinch-zoom !important;
+}
+/* Regular navigation pages follow document flow and scroll with the document. */
+.page {
+  height: auto !important;
+  max-height: none !important;
+  overflow: visible !important;
+  overscroll-behavior: auto !important;
+  touch-action: pan-y pinch-zoom !important;
+}
+/* Preserve independent scrolling inside actual message lists and modal sheets. */
+#chatMessages, .chat-messages, .room-chat-messages, .community-room-messages {
+  overscroll-behavior-y: contain;
+  -webkit-overflow-scrolling: touch;
+  touch-action: pan-y !important;
+}
+#authModal, #profileEditModal, #publicProfileModal, #communityCreateModal,
+#roomCreateModal, .profile-edit-modal, .modal {
+  -webkit-overflow-scrolling: touch;
+}
 </style>
-<script id="vn-scroll-recovery-guard">
-(function(){
-  function recoverDocumentScroll(){
-    if(document.body && !document.body.classList.contains('direct-chat-open')){
+<script id="vibenest-global-scroll-recovery-v2">
+(function () {
+  function unlockPageScroll() {
+    if (!document.body) return;
+    const chatOpen = document.body.classList.contains('direct-chat-open') ||
+                     document.body.classList.contains('room-chat-open');
+    // Modal/chat functions may lock the body; only clear stale locks when no overlay is open.
+    const visibleOverlay = Array.from(document.querySelectorAll(
+      '#authModal,#profileEditModal,#publicProfileModal,#communityCreateModal,#roomCreateModal,#communityRoomChatPanel,#chatWindow'
+    )).some(el => {
+      if (!el || !el.isConnected) return false;
+      const cs = getComputedStyle(el);
+      return cs.display !== 'none' && cs.visibility !== 'hidden' && Number(cs.opacity || 1) > 0 &&
+             (el.id === 'communityRoomChatPanel' || el.id === 'chatWindow' ? (cs.position === 'fixed') : true);
+    });
+    if (!chatOpen && !visibleOverlay) {
       document.body.style.removeProperty('overflow');
       document.body.style.removeProperty('overflow-y');
+      document.body.style.removeProperty('position');
+      document.documentElement.style.removeProperty('overflow');
+      document.documentElement.style.removeProperty('overflow-y');
     }
   }
-  window.addEventListener('pageshow',recoverDocumentScroll);
-  window.addEventListener('focus',recoverDocumentScroll);
-  document.addEventListener('visibilitychange',function(){if(!document.hidden)recoverDocumentScroll();});
+  window.addEventListener('pageshow', unlockPageScroll, {passive:true});
+  window.addEventListener('load', unlockPageScroll, {passive:true});
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) unlockPageScroll(); });
 })();
 </script>
 
