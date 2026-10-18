@@ -2720,6 +2720,18 @@ body{background:#100e14!important;background-image:none!important;background-att
 @media(max-width:380px){#authModal{padding-left:14px!important;padding-right:14px!important}#authModal .authbox{padding:25px 19px 22px!important}#authModal .vn-auth-brand{font-size:30px!important}#authModal #authTitle{font-size:25px!important}}
 </style>
 
+
+<style id="vn-direct-chat-safe-area-correction">
+/* Android direct-message correction: compact top header and composer clear of gesture navigation. */
+html,body{overscroll-behavior:none}
+body.direct-chat-open #chatWindow[style*="display: block"],body.direct-chat-open #chatWindow[style*="display:block"]{top:0!important;bottom:0!important;height:100dvh!important;max-height:100dvh!important;padding-top:0!important;padding-bottom:calc(env(safe-area-inset-bottom,0px) + 30px)!important;overflow:hidden!important}
+body.direct-chat-open #chatWindow #chatTitle{margin-top:0!important;margin-bottom:6px!important;min-height:50px!important;padding-top:0!important;transform:translateY(-2px)!important}
+body.direct-chat-open #chatWindow .chat-search-wrap{top:4px!important}
+body.direct-chat-open #chatWindow #chatMessages{min-height:0!important;flex:1 1 0!important;overflow-y:auto!important}
+body.direct-chat-open #chatWindow .chat-compose{position:relative!important;z-index:10!important;flex:0 0 auto!important;margin:0 0 2px!important;padding:9px!important;border:1px solid rgba(201,174,230,.28)!important;border-radius:25px!important;background:#100b18!important;box-sizing:border-box!important;overflow:visible!important}
+body.direct-chat-open #chatWindow #chatMessageInput{min-width:0!important;max-width:100%!important;flex:1 1 0!important}
+@media(max-height:760px){body.direct-chat-open #chatWindow[style*="display: block"],body.direct-chat-open #chatWindow[style*="display:block"]{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 34px)!important}}
+</style>
 </body></html>
 
 <style>
