@@ -305,6 +305,54 @@ body.direct-chat-open #chatWindow,
 @media(max-width:560px){.vn-composer-columns{grid-template-columns:1fr}.vn-composer-option{padding:13px}.vn-composer-option textarea{min-height:105px}.vn-image-picker{min-height:105px}.vn-composer-head h3{font-size:19px}}
 </style>
 </head><body>
+<style id="vibenest-opening-splash-style">
+#vn-opening-splash{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,rgba(115,75,160,.22),transparent 43%),linear-gradient(160deg,#171020 0%,#100b18 60%,#0d0914 100%);opacity:1;visibility:visible;transition:opacity .65s ease,visibility .65s ease;color:#f8f2ff}
+#vn-opening-splash.vn-splash-leaving{opacity:0;visibility:hidden;pointer-events:none}
+.vn-splash-stage{position:relative;width:min(100vw,560px);height:100dvh;min-height:440px;display:grid;place-items:center}
+.vn-splash-wordmark{position:relative;z-index:2;font-size:clamp(38px,10vw,58px);font-weight:850;letter-spacing:-2.8px;line-height:1;opacity:0;transform:translateY(8px) scale(.84);animation:vn-wordmark-pop .75s cubic-bezier(.2,.85,.25,1.2) .25s forwards;white-space:nowrap;text-shadow:0 5px 32px #b18aff1c}
+.vn-splash-wordmark span{color:#c9a9ff}
+.vn-splash-tagline{position:absolute;top:calc(50% + 43px);left:0;right:0;text-align:center;color:#b9a9cb;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;opacity:0;animation:vn-tagline-in .6s ease 1s forwards}
+.vn-splash-bird{position:absolute;z-index:3;width:clamp(52px,13vw,68px);height:auto;left:calc(50% + 26px);top:calc(100% + 70px);opacity:0;filter:drop-shadow(0 7px 12px #0005);transform-origin:50% 55%;animation:vn-bird-flight 2.1s cubic-bezier(.22,.7,.22,1) .65s forwards}
+.vn-bird-wing{transform-box:fill-box;transform-origin:75% 75%;animation:vn-wing-flap .22s ease-in-out infinite alternate}
+.vn-bird-wing.back{animation-delay:-.11s}
+.vn-splash-glow{position:absolute;width:190px;height:190px;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%;background:#a77bff0a;filter:blur(18px);animation:vn-splash-breathe 3.2s ease-in-out infinite}
+.vn-splash-grain{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(#fff 0.6px,transparent .8px);background-size:37px 37px;opacity:.055;mask-image:linear-gradient(transparent,#000 25%,#000 75%,transparent)}
+@keyframes vn-wordmark-pop{0%{opacity:0;transform:translateY(8px) scale(.84)}70%{opacity:1;transform:translateY(-2px) scale(1.035)}100%{opacity:1;transform:translateY(0) scale(1)}}
+@keyframes vn-tagline-in{to{opacity:.8}}
+@keyframes vn-bird-flight{0%{opacity:0;top:calc(100% + 70px);left:calc(50% - 14px);transform:translate(0,0) rotate(-17deg) scale(.82)}12%{opacity:1}45%{top:calc(50% - 74px);left:calc(50% - 8px);transform:translate(-13px,0) rotate(-8deg) scale(1)}72%{top:calc(50% - 66px);left:calc(50% + 24px);transform:translate(0,0) rotate(5deg) scale(1)}84%{top:calc(50% - 73px);left:calc(50% + 26px);transform:translate(0,0) rotate(-3deg) scale(1)}100%{opacity:1;top:calc(50% - 66px);left:calc(50% + 26px);transform:translate(0,0) rotate(0) scale(1)}}
+@keyframes vn-wing-flap{from{transform:rotate(-27deg)}to{transform:rotate(32deg)}}
+@keyframes vn-splash-breathe{0%,100%{opacity:.55;transform:translate(-50%,-50%) scale(.92)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}}
+@media(prefers-reduced-motion:reduce){.vn-splash-wordmark,.vn-splash-tagline,.vn-splash-bird,.vn-bird-wing,.vn-splash-glow{animation-duration:.01ms!important;animation-iteration-count:1!important}#vn-opening-splash{transition:none}}
+</style>
+<div id="vn-opening-splash" role="status" aria-label="VibeNest is opening">
+ <div class="vn-splash-stage"><div class="vn-splash-glow"></div><div class="vn-splash-grain"></div>
+  <div class="vn-splash-wordmark">Vibe<span>Nest</span></div>
+  <div class="vn-splash-tagline">where connections feel like home</div>
+  <svg class="vn-splash-bird" viewBox="0 0 100 76" role="img" aria-label="Bird flying in to land on the VibeNest logo">
+   <defs><linearGradient id="vnBirdBody" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f8edff"/><stop offset=".58" stop-color="#cbb0f5"/><stop offset="1" stop-color="#9272c5"/></linearGradient><linearGradient id="vnBirdWing" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff7ff"/><stop offset="1" stop-color="#ad8bdc"/></linearGradient></defs>
+   <path d="M20 43 C8 36 4 26 7 13 C18 23 29 28 39 31 C47 25 57 23 67 27 C73 21 80 18 89 20 L80 29 C85 32 91 33 97 32 C89 42 79 46 67 44 C58 55 44 59 30 53 L18 63 L22 49 Z" fill="url(#vnBirdBody)"/>
+   <path class="vn-bird-wing back" d="M40 34 C29 19 30 7 36 3 C48 12 55 20 58 29 C54 35 48 38 40 34Z" fill="#a88bd2" opacity=".9"/>
+   <path class="vn-bird-wing" d="M42 34 C38 19 46 7 57 5 C64 17 64 26 58 34 C53 38 47 38 42 34Z" fill="url(#vnBirdWing)"/>
+   <circle cx="77" cy="28" r="2" fill="#342444"/><path d="M89 32 L99 35 L89 38Z" fill="#e9a66b"/><path d="M38 53 L36 59 M46 55 L45 61" stroke="#e9b77f" stroke-width="2.4" stroke-linecap="round"/>
+  </svg>
+ </div>
+</div>
+<script id="vibenest-opening-splash-script">
+(function(){
+ const splash=document.getElementById('vn-opening-splash');
+ if(!splash)return;
+ let finished=false;
+ function finishSplash(){
+  if(finished)return;finished=true;
+  splash.classList.add('vn-splash-leaving');
+  document.body.style.overflow='';
+  window.setTimeout(function(){splash.remove();if(!window.currentUser){try{openAuth();}catch(e){}}},650);
+ }
+ document.body.style.overflow='hidden';
+ window.setTimeout(finishSplash,3650);
+})();
+</script>
+
 <section id="home" class="page active">
   <div class="vn-home-topline"><div class="vn-home-brandmark"><span class="vn-mark">✳</span><span>Vibe<span class="vn-brand-accent">Nest</span></span></div><button class="home-icon-button vn-notify" aria-label="Notifications" title="Notifications" onclick="go('notifications');loadNotifications()"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span id="homeNotificationBadge" class="nav-badge" style="display:none">0</span></button></div>
   <div class="vn-home-hero"><div class="vn-hero-orbit vn-orbit-one"></div><div class="vn-hero-orbit vn-orbit-two"></div><div class="vn-hero-copy"><div class="vn-live-label"><span></span> YOUR CORNER OF THE INTERNET</div><h1>Find your <em>people.</em><br>Feel your vibe.</h1><p>Good conversations start in the right places.</p><div class="vn-hero-actions"><button class="vn-primary-cta" onclick="go('create')"><span>＋</span> Share a vibe</button><button class="vn-secondary-cta" onclick="go('communities')">Explore spaces <span>↗</span></button></div></div><div class="vn-hero-art" aria-hidden="true"><div class="vn-orb vn-orb-back"></div><div class="vn-orb vn-orb-front">✳</div><span class="vn-spark vn-spark-a">✦</span><span class="vn-spark vn-spark-b">✧</span><span class="vn-spark vn-spark-c">·</span></div></div>
