@@ -312,15 +312,15 @@ body.direct-chat-open #chatWindow,
 .vn-splash-wordmark{position:relative;z-index:2;font-size:clamp(38px,10vw,58px);font-weight:850;letter-spacing:-2.8px;line-height:1;opacity:0;transform:translateY(8px) scale(.84);animation:vn-wordmark-pop .75s cubic-bezier(.2,.85,.25,1.2) .25s forwards;white-space:nowrap;text-shadow:0 5px 32px #b18aff1c}
 .vn-splash-wordmark span{color:#c9a9ff}
 .vn-splash-tagline{position:absolute;top:calc(50% + 43px);left:0;right:0;text-align:center;color:#b9a9cb;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;opacity:0;animation:vn-tagline-in .6s ease 1s forwards}
-.vn-splash-bird{position:absolute;z-index:3;width:clamp(52px,13vw,68px);height:auto;left:calc(50% + 26px);top:calc(100% + 70px);opacity:0;filter:drop-shadow(0 7px 12px #0005);transform-origin:50% 55%;animation:vn-bird-flight 2.1s cubic-bezier(.22,.7,.22,1) .65s forwards}
-.vn-bird-wing{transform-box:fill-box;transform-origin:75% 75%;animation:vn-wing-flap .22s ease-in-out infinite alternate}
+.vn-splash-bird{position:absolute;z-index:3;width:clamp(52px,13vw,68px);height:auto;left:calc(50% + 26px);top:calc(100% + 70px);opacity:0;filter:drop-shadow(0 3px 5px #0004);transform-origin:50% 55%;animation:vn-bird-flight 2.8s cubic-bezier(.22,.7,.22,1) .65s forwards}
+.vn-bird-wing{transform-box:fill-box;transform-origin:75% 75%;animation:vn-wing-flap .22s ease-in-out 0s 9 alternate forwards}
 .vn-bird-wing.back{animation-delay:-.11s}
 .vn-splash-glow{position:absolute;width:190px;height:190px;left:50%;top:50%;transform:translate(-50%,-50%);border-radius:50%;background:#a77bff0a;filter:blur(18px);animation:vn-splash-breathe 3.2s ease-in-out infinite}
 .vn-splash-grain{position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(#fff 0.6px,transparent .8px);background-size:37px 37px;opacity:.055;mask-image:linear-gradient(transparent,#000 25%,#000 75%,transparent)}
 @keyframes vn-wordmark-pop{0%{opacity:0;transform:translateY(8px) scale(.84)}70%{opacity:1;transform:translateY(-2px) scale(1.035)}100%{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes vn-tagline-in{to{opacity:.8}}
-@keyframes vn-bird-flight{0%{opacity:0;top:calc(100% + 70px);left:calc(50% - 14px);transform:translate(0,0) rotate(-17deg) scale(.82)}12%{opacity:1}45%{top:calc(50% - 74px);left:calc(50% - 8px);transform:translate(-13px,0) rotate(-8deg) scale(1)}72%{top:calc(50% - 66px);left:calc(50% + 24px);transform:translate(0,0) rotate(5deg) scale(1)}84%{top:calc(50% - 73px);left:calc(50% + 26px);transform:translate(0,0) rotate(-3deg) scale(1)}100%{opacity:1;top:calc(50% - 66px);left:calc(50% + 26px);transform:translate(0,0) rotate(0) scale(1)}}
-@keyframes vn-wing-flap{from{transform:rotate(-27deg)}to{transform:rotate(32deg)}}
+@keyframes vn-bird-flight{0%{opacity:0;top:calc(100% + 70px);left:calc(50% - 14px);transform:translate(0,0) rotate(-17deg) scale(.82)}10%{opacity:1}38%{top:calc(50% - 90px);left:calc(50% - 10px);transform:translate(-12px,0) rotate(-9deg) scale(1)}58%{top:calc(50% - 79px);left:calc(50% + 8px);transform:translate(0,0) rotate(4deg) scale(1)}72%{top:calc(50% - 82px);left:calc(50% + 16px);transform:translate(0,0) rotate(-4deg) scale(1)}82%{top:calc(50% - 79px);left:calc(50% + 16px);transform:translate(0,0) rotate(2deg) scale(1)}90%,100%{opacity:1;top:calc(50% - 79px);left:calc(50% + 16px);transform:translate(0,0) rotate(0) scale(1)}}
+@keyframes vn-wing-flap{0%{transform:rotate(-27deg)}50%{transform:rotate(32deg)}100%{transform:rotate(-3deg)}}
 @keyframes vn-splash-breathe{0%,100%{opacity:.55;transform:translate(-50%,-50%) scale(.92)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}}
 @media(prefers-reduced-motion:reduce){.vn-splash-wordmark,.vn-splash-tagline,.vn-splash-bird,.vn-bird-wing,.vn-splash-glow{animation-duration:.01ms!important;animation-iteration-count:1!important}#vn-opening-splash{transition:none}}
 </style>
@@ -349,7 +349,7 @@ body.direct-chat-open #chatWindow,
   window.setTimeout(function(){splash.remove();if(!window.currentUser){try{openAuth();}catch(e){}}},650);
  }
  document.body.style.overflow='hidden';
- window.setTimeout(finishSplash,3650);
+ window.setTimeout(finishSplash,5700);
 })();
 </script>
 
