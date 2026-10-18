@@ -1066,10 +1066,14 @@ if(supabaseClient){supabaseClient.auth.onAuthStateChange((_event,session)=>{if(!
 // Profile customization layer. Existing community, post, comment, and messaging flows remain intact.
 let myProfile = null;
 function setProfileConnectionsView(showList){
- // A connection list is its own view: hide the profile's posts and extras too.
+ // Treat Followers/Following as a nested screen so Android Back returns to this profile.
+ const page=document.querySelector('#profile .profile-page');
+ const wasList=!!page?.classList.contains('connections-list-mode');
+ if(showList&&!wasList&&!window.__vnHandlingProfileConnectionsBack){
+  try{history.pushState({...history.state,vnPage:'profile',vnProfileConnections:true},'',location.href);}catch(e){}
+ }
  const ids=['profilePageHeading','profileCoverSection','profileStatsSection','profileConnectionsSection','profileExtras'];
  ids.forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=showList?'none':'';});
- const page=document.querySelector('#profile .profile-page');
  if(page)page.classList.toggle('connections-list-mode',showList);
 }
 function closeProfileConnectionsList(){
@@ -2352,6 +2356,15 @@ renderCommunityDetail=function(){initializeCommunitySections();vnOldRenderCommun
   };
 
   window.addEventListener('popstate', function(event){
+    // Back from the signed-in user's Followers/Following list returns to their profile, not Home.
+    const ownProfilePage=document.querySelector('#profile .profile-page');
+    if(ownProfilePage&&ownProfilePage.classList.contains('connections-list-mode')){
+      window.__vnHandlingProfileConnectionsBack=true;
+      if(typeof window.closeProfileConnectionsList==='function')window.closeProfileConnectionsList();
+      window.__vnHandlingProfileConnectionsBack=false;
+      currentPage='profile';
+      return;
+    }
     // Public profiles are nested screens: Back closes the profile overlay before changing app tabs.
     const publicProfileModal=document.getElementById('publicProfileModal');
     if(publicProfileModal && getComputedStyle(publicProfileModal).display !== 'none') {
