@@ -2570,6 +2570,42 @@ body.direct-chat-open #chatWindow > .join:first-child{display:none!important}
   document.addEventListener('touchcancel',()=>{tracking=false},{passive:true});
 })();
 </script>
+
+<style id="vn-native-swipe-transitions">
+/* Quiet, directional page transitions: no popups or cards, just the page moving into place. */
+.page.vn-swipe-enter-right{animation:vnPageFromRight .30s cubic-bezier(.22,.7,.25,1) both}
+.page.vn-swipe-enter-left{animation:vnPageFromLeft .30s cubic-bezier(.22,.7,.25,1) both}
+@keyframes vnPageFromRight{from{opacity:.72;transform:translate3d(30px,0,0)}to{opacity:1;transform:translate3d(0,0,0)}}
+@keyframes vnPageFromLeft{from{opacity:.72;transform:translate3d(-30px,0,0)}to{opacity:1;transform:translate3d(0,0,0)}}
+.profile-following-panel.vn-list-enter-right{animation:vnListFromRight .28s cubic-bezier(.22,.7,.25,1) both}
+.profile-following-panel.vn-list-enter-left{animation:vnListFromLeft .28s cubic-bezier(.22,.7,.25,1) both}
+@keyframes vnListFromRight{from{opacity:.7;transform:translate3d(24px,0,0)}to{opacity:1;transform:translate3d(0,0,0)}}
+@keyframes vnListFromLeft{from{opacity:.7;transform:translate3d(-24px,0,0)}to{opacity:1;transform:translate3d(0,0,0)}}
+@media(prefers-reduced-motion:reduce){.page.vn-swipe-enter-right,.page.vn-swipe-enter-left,.profile-following-panel.vn-list-enter-right,.profile-following-panel.vn-list-enter-left{animation:none!important}}
+</style>
+<script id="vn-touch-swipe-navigation">
+(()=>{
+ if(window.__vnTouchSwipeNavigation)return;window.__vnTouchSwipeNavigation=true;
+ const tabs=['home','communities','chats','profile'];let sx=0,sy=0,started=false,origin=null;
+ const ignored=e=>!!e.target.closest('input,textarea,select,button,a,[contenteditable="true"],.chat-messages,.room-chat-messages,.community-rooms,.modal,.public-profile-overlay,[data-no-page-swipe]');
+ document.addEventListener('touchstart',e=>{if(e.touches.length!==1){started=false;return}const t=e.touches[0];sx=t.clientX;sy=t.clientY;origin=document.querySelector('.page.active');started=!!origin&&!ignored(e)&&!document.body.classList.contains('direct-chat-open');},{passive:true});
+ document.addEventListener('touchend',e=>{if(!started||!e.changedTouches?.[0])return;started=false;const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;if(Math.abs(dx)<76||Math.abs(dx)<Math.abs(dy)*1.35)return;
+  const own=document.querySelector('#profile .profile-page');
+  if(origin?.id==='profile'&&own?.classList.contains('connections-list-mode')){
+   const followers=document.getElementById('profileFollowersPanel'),following=document.getElementById('profileFollowingPanel');
+   if(dx<0&&followers&&!followers.hidden){following&&toggleFollowingList(true);}
+   else if(dx>0&&following&&!following.hidden){followers&&toggleFollowersList(true);}
+   else return;
+   const panel=document.getElementById(dx<0?'profileFollowingPanel':'profileFollowersPanel');if(panel){panel.classList.remove('vn-list-enter-left','vn-list-enter-right');void panel.offsetWidth;panel.classList.add(dx<0?'vn-list-enter-right':'vn-list-enter-left');}
+   return;
+  }
+  if(!origin||!tabs.includes(origin.id))return;const i=tabs.indexOf(origin.id),next=i+(dx<0?1:-1);if(next<0||next>=tabs.length)return;
+  const target=tabs[next];if(typeof window.go!=='function')return;window.go(target);const page=document.getElementById(target);if(page){page.classList.remove('vn-swipe-enter-left','vn-swipe-enter-right');void page.offsetWidth;page.classList.add(dx<0?'vn-swipe-enter-right':'vn-swipe-enter-left');}
+ },{passive:true});
+ document.addEventListener('touchcancel',()=>{started=false},{passive:true});
+})();
+</script>
+
 </body></html>
 
 <style>
