@@ -3006,3 +3006,33 @@ body.direct-chat-open,body.direct-chat-open #chatWindow,body.room-chat-open,#com
 @media(min-width:600px){body{border-left:0!important;border-right:0!important}.bottom{border-left:0!important;border-right:0!important}}
 </style>
 
+
+<style id="vn-chat-layout-correction-20261018">
+/* Chat uses the full app viewport: compact header and composer fully above gesture navigation. */
+body.direct-chat-open #chatWindow[style*="display: block"],
+body.direct-chat-open #chatWindow[style*="display:block"]{
+  inset:0!important; height:100dvh!important; max-height:100dvh!important;
+  padding:calc(env(safe-area-inset-top,0px) + 4px) 14px calc(env(safe-area-inset-bottom,0px) + 10px)!important;
+  box-sizing:border-box!important; gap:0!important;
+}
+body.direct-chat-open #chatWindow:before{content:none!important;display:none!important;background:none!important;animation:none!important}
+body.direct-chat-open #chatWindow #chatTitle{
+  min-height:48px!important;height:48px!important;margin:0 50px 6px 0!important;
+  padding:0!important;align-items:center!important;overflow:visible!important;
+}
+body.direct-chat-open #chatWindow .chat-search-wrap{top:calc(env(safe-area-inset-top,0px) + 4px)!important;right:14px!important}
+body.direct-chat-open #chatWindow .chat-messages{
+  flex:1 1 0!important;min-height:0!important;height:0!important;max-height:none!important;
+  overflow-y:auto!important;padding:8px 2px 12px!important;
+}
+body.direct-chat-open #chatWindow .chat-compose{
+  flex:0 0 auto!important;display:flex!important;align-items:center!important;gap:8px!important;
+  margin:8px 0 0!important;padding:8px!important;
+  border:1px solid rgba(190,160,220,.25)!important;border-radius:22px!important;
+  background:#100b18!important;box-sizing:border-box!important;
+}
+body.direct-chat-open #chatWindow .chat-compose>label{flex:0 0 44px!important;width:44px!important;min-width:44px!important;height:44px!important;min-height:44px!important;padding:0!important;display:grid!important;place-items:center!important}
+body.direct-chat-open #chatWindow .chat-compose .field{flex:1 1 0!important;width:0!important;min-width:0!important;height:44px!important;min-height:44px!important;max-height:100px!important;box-sizing:border-box!important;padding:10px 12px!important}
+body.direct-chat-open #chatWindow .chat-compose button.join{flex:0 0 44px!important;width:44px!important;min-width:44px!important;height:44px!important;min-height:44px!important;max-height:44px!important;padding:0!important}
+@media(max-width:380px){body.direct-chat-open #chatWindow{padding-left:10px!important;padding-right:10px!important}body.direct-chat-open #chatWindow .chat-compose{gap:6px!important;padding:6px!important}}
+</style>
