@@ -312,14 +312,14 @@ body.direct-chat-open #chatWindow,
 .vn-splash-wordmark{position:relative;z-index:2;font-size:clamp(38px,10vw,58px);font-weight:900;letter-spacing:-2.8px;line-height:1;opacity:0;transform:translateY(8px) scale(.84);animation:vn-wordmark-pop .75s cubic-bezier(.2,.85,.25,1.2) .25s forwards;white-space:nowrap;background:none;-webkit-background-clip:initial;background-clip:initial;color:#fff;-webkit-text-fill-color:#fff;filter:none}
 .vn-splash-wordmark span{background:linear-gradient(110deg,#c7a0ff 0%,#9a70ee 55%,#8058d4 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
 .vn-splash-tagline{position:absolute;top:calc(50% + 43px);left:0;right:0;text-align:center;color:#b9a9cb;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;opacity:0;animation:vn-tagline-in .6s ease 1s forwards}
-.vn-splash-bird{position:absolute;z-index:3;width:clamp(66px,16vw,82px);height:auto;left:calc(50% + 24px);top:calc(100% + 70px);opacity:0;filter:drop-shadow(0 2px 2px #05020c55);transform-origin:50% 55%;animation:vn-bird-flight 3.45s cubic-bezier(.22,.7,.22,1) .65s forwards}
-.vn-bird-wing{transform-box:fill-box;transform-origin:75% 75%;animation:vn-wing-flap .22s ease-in-out 0s 9 alternate forwards}
-.vn-bird-wing.back{animation-delay:-.11s}
+.vn-splash-bird{position:absolute;z-index:3;width:clamp(56px,14vw,68px);height:auto;left:calc(50% + 22px);top:calc(100% + 60px);opacity:0;filter:none;transform-origin:50% 70%;animation:vn-bird-flight 3.9s cubic-bezier(.22,.7,.22,1) .55s forwards}
+.vn-bird-wing{transform-box:fill-box;transform-origin:50% 80%;animation:vn-wing-flap .24s ease-in-out 0s 12 alternate}
+.vn-bird-wing.back{animation-delay:-.12s}
 .vn-splash-glow{display:none}
 .vn-splash-grain{display:none}
 @keyframes vn-wordmark-pop{0%{opacity:0;transform:translateY(8px) scale(.84)}70%{opacity:1;transform:translateY(-2px) scale(1.035)}100%{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes vn-tagline-in{to{opacity:.8}}
-@keyframes vn-bird-flight{0%{opacity:0;top:calc(100% + 70px);left:calc(50% + 24px);transform:translateY(0) rotate(0deg) scale(.82)}10%{opacity:1}48%{top:calc(50% - 170px);left:calc(50% + 24px);transform:translateY(0) rotate(0deg) scale(1)}72%{top:calc(50% - 81px);left:calc(50% + 24px);transform:translateY(0) rotate(0deg) scale(1)}82%{top:calc(50% - 76px);left:calc(50% + 24px);transform:translateY(0) rotate(0deg) scale(1)}90%,100%{opacity:1;top:calc(50% - 81px);left:calc(50% + 24px);transform:translateY(0) rotate(0deg) scale(1)}}
+@keyframes vn-bird-flight{0%{opacity:0;top:calc(100% + 60px);left:calc(50% + 22px);transform:translateY(0) rotate(-8deg) scale(.9)}10%{opacity:1}45%{top:calc(50% - 150px);left:calc(50% + 22px);transform:translateY(0) rotate(-3deg) scale(1)}70%{top:calc(50% - 78px);left:calc(50% + 22px);transform:translateY(0) rotate(2deg) scale(1)}84%{top:calc(50% - 70px);left:calc(50% + 22px);transform:translateY(0) rotate(-2deg) scale(1)}92%,100%{opacity:1;top:calc(50% - 70px);left:calc(50% + 22px);transform:translateY(0) rotate(0) scale(1)}}
 @keyframes vn-wing-flap{0%{transform:rotate(-27deg)}50%{transform:rotate(32deg)}100%{transform:rotate(-3deg)}}
 @keyframes vn-splash-breathe{0%,100%{opacity:.55;transform:translate(-50%,-50%) scale(.92)}50%{opacity:1;transform:translate(-50%,-50%) scale(1.08)}}
 @media(prefers-reduced-motion:reduce){.vn-splash-wordmark,.vn-splash-tagline,.vn-splash-bird,.vn-bird-wing,.vn-splash-glow{animation-duration:.01ms!important;animation-iteration-count:1!important}#vn-opening-splash{transition:none}}
@@ -328,38 +328,27 @@ body.direct-chat-open #chatWindow,
  <div class="vn-splash-stage"><div class="vn-splash-glow"></div><div class="vn-splash-grain"></div>
   <div class="vn-splash-wordmark">Vibe<span>Nest</span></div>
   <div class="vn-splash-tagline">where connections feel like home</div>
-  <svg class="vn-splash-bird" viewBox="0 0 120 100" role="img" aria-label="3D-style bird landing on the VibeNest logo">
+  <svg class="vn-splash-bird" viewBox="0 0 100 80" role="img" aria-label="Purple bird flying up and landing on Nest">
    <defs>
-    <linearGradient id="vnBirdBody" x1=".12" y1=".05" x2=".88" y2=".95"><stop offset="0" stop-color="#fff9ff"/><stop offset=".22" stop-color="#e5caff"/><stop offset=".56" stop-color="#b99af0"/><stop offset=".82" stop-color="#8165c4"/><stop offset="1" stop-color="#4b3a83"/></linearGradient>
-    <linearGradient id="vnBirdWing" x1=".1" y1="0" x2=".9" y2="1"><stop offset="0" stop-color="#fffaff"/><stop offset=".32" stop-color="#e3c7ff"/><stop offset=".7" stop-color="#a88be8"/><stop offset="1" stop-color="#6d57b0"/></linearGradient>
-    <linearGradient id="vnBirdFeather" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f9eaff"/><stop offset="1" stop-color="#9a7bd9"/></linearGradient>
-    <radialGradient id="vnBirdCheek" cx=".35" cy=".25" r=".8"><stop offset="0" stop-color="#fff" stop-opacity=".8"/><stop offset="1" stop-color="#c8a5f4" stop-opacity="0"/></radialGradient>
+    <linearGradient id="vnBirdBody" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c9a7ff"/><stop offset="1" stop-color="#8054c7"/></linearGradient>
+    <linearGradient id="vnBirdWing" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d9c1ff"/><stop offset="1" stop-color="#8b63d1"/></linearGradient>
    </defs>
-   <!-- rear tail and tail feathers -->
-   <path d="M37 57 C22 53 14 60 8 75 C23 72 34 69 45 64Z" fill="#7960b9"/>
-   <path d="M39 59 C25 59 20 68 17 79 C30 74 39 69 47 64Z" fill="url(#vnBirdFeather)"/>
-   <!-- rear wing gives the mascot visible depth -->
-   <path class="vn-bird-wing back" d="M48 47 C27 34 25 17 37 7 C51 12 65 27 68 42 C62 49 55 51 48 47Z" fill="#7760b8" stroke="#d9c2ff" stroke-opacity=".45" stroke-width="1.2"/>
-   <path d="M38 15 Q49 27 56 43 M32 24 Q45 33 52 46 M34 36 Q43 41 48 47" fill="none" stroke="#d8c0ff" stroke-width="2.3" stroke-linecap="round" opacity=".75"/>
-   <!-- rounded body, with highlight and shaded underside -->
-   <path d="M28 54 C28 39 42 29 60 31 C72 27 83 30 91 37 L108 40 L94 48 C90 62 75 71 57 69 C43 68 33 63 28 54Z" fill="url(#vnBirdBody)" stroke="#e7d3ff" stroke-opacity=".7" stroke-width="1.2"/>
-   <path d="M34 54 C46 62 70 65 87 51 C83 64 70 71 56 69 C45 68 37 63 34 54Z" fill="#4c397f" opacity=".32"/>
-   <ellipse cx="48" cy="43" rx="17" ry="12" fill="url(#vnBirdCheek)"/>
-   <!-- layered breast feathers -->
-   <path d="M45 51 Q48 59 57 63 M53 49 Q57 58 65 61 M61 47 Q66 55 73 57" fill="none" stroke="#f4e7ff" stroke-width="2" stroke-linecap="round" opacity=".65"/>
-   <!-- front wing with individual feather grooves -->
-   <path class="vn-bird-wing" d="M49 46 C42 30 51 12 66 8 C79 19 82 34 72 47 C65 53 56 52 49 46Z" fill="url(#vnBirdWing)" stroke="#fff0ff" stroke-opacity=".8" stroke-width="1.4"/>
-   <path d="M56 18 Q63 30 65 47 M64 14 Q71 28 69 46 M72 21 Q77 33 72 44" fill="none" stroke="#9d7dd6" stroke-width="2.1" stroke-linecap="round" opacity=".75"/>
-   <path d="M54 18 Q61 28 63 36 M62 14 Q68 26 68 34" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round" opacity=".75"/>
-   <!-- head, eye, beak -->
-   <path d="M73 35 C78 25 91 25 97 34 C102 42 96 51 85 52 C77 51 72 44 73 35Z" fill="url(#vnBirdBody)" stroke="#f0dcff" stroke-width="1.1"/>
-   <ellipse cx="81" cy="34" rx="5" ry="3" fill="#fff" opacity=".35"/>
-   <ellipse cx="91" cy="37" rx="3.4" ry="4.2" fill="#251d3a"/><circle cx="92" cy="35.7" r="1.25" fill="#fff"/>
-   <path d="M98 39 L113 43 L99 47Z" fill="#ffca86" stroke="#d98a65" stroke-width=".8"/>
-   <path d="M99 43 L109 43.4" stroke="#fff0cf" stroke-width="1" opacity=".8"/>
-   <!-- tiny feet reach down to touch the wordmark at the final position -->
-   <path d="M57 66 L56 76 M69 65 L70 75" stroke="#f3b77c" stroke-width="3" stroke-linecap="round"/>
-   <path d="M51 77 Q56 74 61 77 M65 76 Q70 73 75 76" fill="none" stroke="#ffd8a4" stroke-width="2.6" stroke-linecap="round"/>
+   <!-- tail -->
+   <path d="M30 43 Q17 39 10 49 Q23 49 34 48Z" fill="#8b63d1"/>
+   <!-- far wing -->
+   <path class="vn-bird-wing back" d="M42 39 Q23 19 34 7 Q53 13 57 36Z" fill="#8b63d1"/>
+   <!-- simple rounded body -->
+   <ellipse cx="49" cy="43" rx="25" ry="17" fill="url(#vnBirdBody)"/>
+   <!-- near wing: the bird has just two visible wings -->
+   <path class="vn-bird-wing" d="M43 39 Q38 17 57 8 Q75 22 64 41 Q54 48 43 39Z" fill="url(#vnBirdWing)"/>
+   <path d="M48 17 Q57 28 57 39 M57 14 Q66 27 62 38" fill="none" stroke="#eee3ff" stroke-width="1.8" stroke-linecap="round" opacity=".75"/>
+   <!-- head and beak -->
+   <circle cx="69" cy="34" r="13" fill="url(#vnBirdBody)"/>
+   <circle cx="73" cy="31" r="2.6" fill="#241833"/><circle cx="73.8" cy="30.2" r=".8" fill="#fff"/>
+   <path d="M80 35 L94 39 L80 42Z" fill="#e9b56e"/>
+   <!-- feet sit on the top edge of the Nest letters at the end of the flight -->
+   <path d="M44 55 L44 68 M58 56 L58 68" stroke="#d9b27a" stroke-width="2.5" stroke-linecap="round"/>
+   <path d="M39 69 L44 67 L49 69 M53 69 L58 67 L63 69" fill="none" stroke="#e8c58f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
  </div>
 </div>
@@ -375,7 +364,7 @@ body.direct-chat-open #chatWindow,
   window.setTimeout(function(){splash.remove();if(!window.currentUser){try{openAuth();}catch(e){}}},650);
  }
  document.body.style.overflow='hidden';
- window.setTimeout(finishSplash,7200);
+ window.setTimeout(finishSplash,7800);
 })();
 </script>
 
