@@ -897,7 +897,7 @@ async function searchPeople(){
  out.innerHTML='<p class="muted">Searching…</p>';
  const {data,error}=await supabaseClient.from('profiles').select('id,username,display_name,bio,avatar_url').ilike('username','%'+q+'%').neq('id',currentUser.id).limit(12);
  if(error){out.innerHTML='<p class="muted">Could not search people: '+safeText(error.message)+'</p>';return;}
- const rows=data||[];
+ const blockRows=await getBlockRowsForMe();const blockedIds=new Set(blockRows.flatMap(b=>b.blocker_id===currentUser.id?[b.blocked_id]:b.blocked_id===currentUser.id?[b.blocker_id]:[]));const rows=(data||[]).filter(p=>!blockedIds.has(p.id));
  out.innerHTML=rows.map(p=>`<div class="user-result"><button class="profile-tap" aria-label="Open profile" onclick="openPublicProfile('${p.id}')">${profileAvatarMarkup(p)}</button><button class="profile-name-tap profile-search-copy" onclick="openPublicProfile('${p.id}')"><b>${safeText(p.display_name||p.username||'VibeNest member')}</b><div class="muted">@${safeText(p.username||'member')}</div>${p.bio?`<div class="muted">${safeText(p.bio)}</div>`:''}</button><button class="join follow-button" onclick="toggleFollow('${p.id}')">${followingIds.has(p.id)?'✓ Following':'+ Follow'}</button></div>`).join('')||'<p class="muted">No members found. Try another username.</p>';
 }
 async function loadOnlinePosts(){
@@ -1046,13 +1046,45 @@ function chatSeenAt(id){try{return localStorage.getItem(chatSeenKey(id))||'1970-
 function markChatSeen(id,stamp){try{localStorage.setItem(chatSeenKey(id),stamp||new Date().toISOString());}catch(e){}}
 function shortChatTime(value){if(!value)return '';const d=new Date(value);if(Number.isNaN(d.getTime()))return '';const now=new Date();return d.toDateString()===now.toDateString()?d.toLocaleTimeString([], {hour:'numeric',minute:'2-digit'}):d.toLocaleDateString([], {month:'short',day:'numeric'});}
 function escapeInline(value){return String(value||'').replace(/\\/g,'\\\\').replace(/'/g,"\\'").replace(/\n/g,' ');}
+// User blocking: requires the public.user_blocks table and its RLS migration.
+async function getBlockRowsForMe(){
+ if(!currentUser||!supabaseClient)return [];
+ const {data,error}=await supabaseClient.from('user_blocks').select('blocker_id,blocked_id').or('blocker_id.eq.'+currentUser.id+',blocked_id.eq.'+currentUser.id);
+ if(error){console.warn('VibeNest block list is not configured yet:',error.message);return [];}
+ return data||[];
+}
+async function getBlockStatus(otherId){
+ if(!currentUser||!supabaseClient||!otherId)return {iBlocked:false,theyBlocked:false,blocked:false};
+ const {data,error}=await supabaseClient.from('user_blocks').select('blocker_id,blocked_id').or('and(blocker_id.eq.'+currentUser.id+',blocked_id.eq.'+otherId+'),and(blocker_id.eq.'+otherId+',blocked_id.eq.'+currentUser.id+')');
+ if(error){console.warn('Could not check block status:',error.message);return {iBlocked:false,theyBlocked:false,blocked:false,unavailable:true};}
+ const rows=data||[],iBlocked=rows.some(r=>r.blocker_id===currentUser.id&&r.blocked_id===otherId),theyBlocked=rows.some(r=>r.blocker_id===otherId&&r.blocked_id===currentUser.id);
+ return {iBlocked,theyBlocked,blocked:iBlocked||theyBlocked};
+}
+async function ensureNotBlocked(otherId){
+ const status=await getBlockStatus(otherId);
+ if(status.unavailable){showToast('Blocking is not configured yet. Apply the VibeNest block-system SQL migration first.');return false;}
+ if(status.blocked){showToast(status.iBlocked?'You blocked this member. Unblock them to message.':'You cannot message this member.');return false;}
+ return true;
+}
+async function toggleBlockUser(userId){
+ if(!currentUser||!supabaseClient){openAuth();showToast('Sign in to block members');return;}
+ if(!userId||userId===currentUser.id)return;
+ const status=await getBlockStatus(userId);
+ if(status.unavailable){showToast('Blocking is not configured yet. Apply the VibeNest block-system SQL migration first.');return;}
+ if(status.theyBlocked&&!status.iBlocked){showToast('This member has blocked you.');return;}
+ if(status.iBlocked){const {error}=await supabaseClient.from('user_blocks').delete().eq('blocker_id',currentUser.id).eq('blocked_id',userId);if(error){showToast('Could not unblock member: '+error.message);return;}showToast('Member unblocked');}
+ else{const {error}=await supabaseClient.from('user_blocks').insert({blocker_id:currentUser.id,blocked_id:userId});if(error){showToast('Could not block member: '+error.message);return;}showToast('Member blocked. They can no longer find your profile or message you.');if(activeChatUser===userId)closeChatWindow();}
+ await loadConversations(true);
+ if(document.getElementById('publicProfileModal')?.style.display==='block')await openPublicProfile(userId);
+}
 async function loadConversations(silent=false){
  const list=document.getElementById('conversationList');if(!list)return;
  if(!currentUser||!supabaseClient){list.innerHTML='<p class="muted">Sign in to use private messages.</p>';totalUnreadChatMessages=0;updateChatNavBadge(0);return;}
  if(!silent)list.innerHTML='<p class="muted">Loading conversations…</p>';
  const {data,error}=await supabaseClient.from('conversations').select('id,user_one,user_two,created_at').or('user_one.eq.'+currentUser.id+',user_two.eq.'+currentUser.id).order('created_at',{ascending:false});
  if(error){if(!silent)list.innerHTML='<p class="muted">Could not load conversations: '+safeText(error.message)+'</p>';return;}
- const rows=data||[];if(!rows.length){list.innerHTML='<p class="muted">No conversations yet. Search for a username above to start one.</p>';totalUnreadChatMessages=0;updateChatNavBadge(0);return;}
+ let rows=data||[];if(!rows.length){list.innerHTML='<p class="muted">No conversations yet. Search for a username above to start one.</p>';totalUnreadChatMessages=0;updateChatNavBadge(0);return;}
+ const blockRows=await getBlockRowsForMe();const blockedIds=new Set(blockRows.flatMap(b=>b.blocker_id===currentUser.id?[b.blocked_id]:b.blocked_id===currentUser.id?[b.blocker_id]:[]));rows=rows.filter(c=>!blockedIds.has(c.user_one===currentUser.id?c.user_two:c.user_one));if(!rows.length){list.innerHTML='<p class="muted">No available conversations. Blocked conversations are hidden.</p>';totalUnreadChatMessages=0;updateChatNavBadge(0);return;}
  const ids=[...new Set(rows.map(c=>c.user_one===currentUser.id?c.user_two:c.user_one))];
  const [{data:profiles,error:profileError},{data:messages,error:messageError}]=await Promise.all([
   supabaseClient.from('profiles').select('id,username,display_name,avatar_url').in('id',ids),
@@ -1081,12 +1113,13 @@ async function searchChatUsers(){
  out.innerHTML='<p class="muted">Searching…</p>';
  const {data,error}=await supabaseClient.from('profiles').select('id,username,display_name,avatar_url').ilike('username','%'+q.replace(/[%_,]/g,'')+'%').neq('id',currentUser.id).limit(10);
  if(error){out.innerHTML='<p class="muted">Could not search users: '+safeText(error.message)+'</p>';return;}
- const rows=data||[];if(!rows.length){out.innerHTML='<p class="muted">No users found. Search by their username.</p>';return;}
+ const blockRows=await getBlockRowsForMe();const blockedIds=new Set(blockRows.flatMap(b=>b.blocker_id===currentUser.id?[b.blocked_id]:b.blocked_id===currentUser.id?[b.blocker_id]:[]));const rows=(data||[]).filter(p=>!blockedIds.has(p.id));if(!rows.length){out.innerHTML='<p class="muted">No users found. Search by their username.</p>';return;}
  out.innerHTML=rows.map(p=>`<div class="user-result"><button class="profile-tap" aria-label="Open profile" onclick="openPublicProfile('${p.id}')"><div class="avatar">${p.avatar_url?`<img src="${safeText(p.avatar_url)}" alt="" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">`:'✦'}</div></button><button class="profile-name-tap profile-search-copy" onclick="openPublicProfile('${p.id}')"><b>${safeText(chatDisplayName(p))}</b><div class="muted">@${safeText(p.username||'member')}</div></button><button class="join" onclick="startConversation('${p.id}')">Message</button></div>`).join('');
 }
 async function startConversation(otherId){
  if(!currentUser||!supabaseClient){openAuth();showToast('Sign in to message members');return;}
  if(otherId===currentUser.id){showToast('Choose another member');return;}
+ if(!await ensureNotBlocked(otherId))return;
  const pair=[currentUser.id,otherId].sort();
  let {data,error}=await supabaseClient.from('conversations').select('id,user_one,user_two').eq('user_one',pair[0]).eq('user_two',pair[1]).maybeSingle();
  if(error){showToast('Could not check conversation: '+error.message);return;}
@@ -1097,7 +1130,8 @@ async function startConversation(otherId){
 async function openConversation(conversationId,otherId){
  if(activeConversationId!==conversationId){try{history.pushState({...history.state,vnPage:'chats',vnChatConversation:conversationId},'',location.href);}catch(e){}}
  activeConversationId=conversationId;activeChatUser=otherId;
- const profile=chatProfiles[otherId];document.getElementById('chatTitle').textContent=chatDisplayName(profile);
+ let profile=chatProfiles[otherId];if(!profile&&supabaseClient){const loaded=await supabaseClient.from('profiles').select('id,username,display_name,avatar_url').eq('id',otherId).maybeSingle();if(!loaded.error&&loaded.data){profile=loaded.data;chatProfiles[otherId]=profile;}}
+ const title=document.getElementById('chatTitle');if(title){const avatar=profile?.avatar_url?`<img src="${safeText(profile.avatar_url)}" alt="" loading="lazy">`:'✦';title.innerHTML=`<button type="button" class="chat-title-avatar" onclick="openPublicProfile('${otherId}')" aria-label="Open ${safeText(chatDisplayName(profile))} profile">${avatar}</button><button type="button" class="chat-title-name" onclick="openPublicProfile('${otherId}')">${safeText(chatDisplayName(profile))}</button>`;}
  document.body.classList.add('direct-chat-open');document.getElementById('chatWindow').style.display='block';document.getElementById('conversationList').style.display='none';document.getElementById('userSearchResults').style.display='none';document.getElementById('userSearch').style.display='none';const chatStart=document.querySelector('#chats .chat-start');if(chatStart)chatStart.style.display='none';const chatsHeading=document.getElementById('chatsHeading');if(chatsHeading)chatsHeading.style.display='none';
  await loadChatMessages();await loadConversations(true);
 }
@@ -1114,6 +1148,7 @@ async function loadChatMessages(){
 }
 async function sendChatMessage(){
  if(!currentUser||!activeConversationId){showToast('Open a conversation first');return;}
+ if(!await ensureNotBlocked(activeChatUser))return;
  const input=document.getElementById('chatMessageInput'),content=input?.value.trim();if(!content)return;
  input.disabled=true;
  const row={conversation_id:activeConversationId,sender_id:currentUser.id,content};if(replyToMessageId)row.reply_to_id=replyToMessageId;const {error}=await supabaseClient.from('messages').insert(row);
@@ -1121,7 +1156,7 @@ async function sendChatMessage(){
  if(error){showToast('Could not send message: '+error.message);return;}
  input.value='';replyToMessageId=null;const rp=document.getElementById('chatReplyPreview');if(rp)rp.style.display='none';await loadChatMessages();await loadConversations(true);
 }
-async function sendChatImage(event){const file=event.target.files?.[0];event.target.value='';if(!file)return;if(!currentUser||!activeConversationId){showToast('Open a conversation first');return;}if(!file.type.startsWith('image/')||file.size>8*1024*1024){showToast('Choose an image up to 8 MB');return;}showToast('Uploading image…');const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';const path=`${currentUser.id}/chat-${Date.now()}.${ext}`;const up=await supabaseClient.storage.from('chat-media').upload(path,file,{contentType:file.type,upsert:false});if(up.error){showToast('Image upload failed: '+up.error.message);return;}const media_url=supabaseClient.storage.from('chat-media').getPublicUrl(path).data.publicUrl;const row={conversation_id:activeConversationId,sender_id:currentUser.id,content:'',media_url};if(replyToMessageId)row.reply_to_id=replyToMessageId;const result=await supabaseClient.from('messages').insert(row);if(result.error){showToast('Could not send image: '+result.error.message);return;}replyToMessageId=null;const rp=document.getElementById('chatReplyPreview');if(rp)rp.style.display='none';await loadChatMessages();showToast('Image sent');}
+async function sendChatImage(event){const file=event.target.files?.[0];event.target.value='';if(!file)return;if(!currentUser||!activeConversationId){showToast('Open a conversation first');return;}if(!await ensureNotBlocked(activeChatUser))return;if(!file.type.startsWith('image/')||file.size>8*1024*1024){showToast('Choose an image up to 8 MB');return;}showToast('Uploading image…');const ext=(file.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';const path=`${currentUser.id}/chat-${Date.now()}.${ext}`;const up=await supabaseClient.storage.from('chat-media').upload(path,file,{contentType:file.type,upsert:false});if(up.error){showToast('Image upload failed: '+up.error.message);return;}const media_url=supabaseClient.storage.from('chat-media').getPublicUrl(path).data.publicUrl;const row={conversation_id:activeConversationId,sender_id:currentUser.id,content:'',media_url};if(replyToMessageId)row.reply_to_id=replyToMessageId;const result=await supabaseClient.from('messages').insert(row);if(result.error){showToast('Could not send image: '+result.error.message);return;}replyToMessageId=null;const rp=document.getElementById('chatReplyPreview');if(rp)rp.style.display='none';await loadChatMessages();showToast('Image sent');}
 async function replyToChatMessage(messageId){replyToMessageId=messageId;const bubble=document.querySelector(`[data-message-id="${CSS.escape(String(messageId))}"]`);const preview=document.getElementById('chatReplyPreview');if(preview){preview.textContent='Replying to: '+((bubble?.innerText||'message').split('↩ Reply')[0].slice(0,100));preview.style.display='block';}document.getElementById('chatMessageInput')?.focus();}
 async function reactToChatMessage(messageId,reaction){if(!currentUser||!supabaseClient)return;const existing=await supabaseClient.from('message_reactions').select('id').eq('message_id',messageId).eq('user_id',currentUser.id).eq('reaction',reaction).maybeSingle();if(existing.error){console.error('VibeNest reaction lookup failed:',existing.error);showToast('Reaction error: '+(existing.error.message||existing.error.code||'check console'));return;}let result;if(existing.data)result=await supabaseClient.from('message_reactions').delete().eq('id',existing.data.id);else result=await supabaseClient.from('message_reactions').insert({message_id:messageId,user_id:currentUser.id,reaction});if(result.error){showToast('Could not update reaction: '+result.error.message);return;}await loadChatMessages(true);}
 function setupChatRealtime(){
@@ -1750,11 +1785,12 @@ async function openPublicProfile(userId){
  try{
   const {data:profile,error}=await supabaseClient.from('profiles').select('id,username,display_name,bio,avatar_url,profile_theme,pinned_post_id').eq('id',userId).maybeSingle();
   if(error)throw error;if(!profile){out.innerHTML='<p class="muted">This profile is unavailable or you do not have permission to view it.</p>';return;}
-  const [followersResult,followingResult,postsResult,followResult]=await Promise.all([
+  const [followersResult,followingResult,postsResult,followResult,blockStatus]=await Promise.all([
    supabaseClient.from('follows').select('follower_id').eq('following_id',userId),
    supabaseClient.from('follows').select('following_id').eq('follower_id',userId),
    supabaseClient.from('posts').select('id,content,created_at,community_id,image_url').eq('author_id',userId).order('created_at',{ascending:false}).limit(10),
-   currentUser?supabaseClient.from('follows').select('following_id').eq('follower_id',currentUser.id).eq('following_id',userId).maybeSingle():Promise.resolve({data:null,error:null})
+   currentUser?supabaseClient.from('follows').select('following_id').eq('follower_id',currentUser.id).eq('following_id',userId).maybeSingle():Promise.resolve({data:null,error:null}),
+   currentUser?getBlockStatus(userId):Promise.resolve({iBlocked:false,theyBlocked:false,blocked:false})
   ]);
   const name=profile.display_name||profile.username||'VibeNest member';
   const avatar=profile.avatar_url?`<img src="${safeText(profile.avatar_url)}" alt="Profile picture">`:'✦';
@@ -1762,7 +1798,7 @@ async function openPublicProfile(userId){
   const posts=postsResult.error?[]:(postsResult.data||[]);if(profile.pinned_post_id)posts.sort((a,b)=>(b.id===profile.pinned_post_id?1:0)-(a.id===profile.pinned_post_id?1:0));
   const communityIds=[...new Set(posts.map(p=>p.community_id).filter(Boolean))];let communityNames={};
   if(communityIds.length){const c=await supabaseClient.from('communities').select('id,name').in('id',communityIds);if(!c.error)for(const item of c.data||[])communityNames[item.id]=item.name;}
-  out.innerHTML=`<div class="public-profile-hero" style="--public-accent:${profile.profile_theme==='rose'?'#ff8dc9':profile.profile_theme==='ocean'?'#7bdcff':profile.profile_theme==='emerald'?'#76e3b2':'#b18aff'}"><div class="public-profile-cover-art"></div><div class="public-profile-identity"><div class="profile-hero-avatar">${avatar}</div><div class="public-profile-identity-copy"><h2>${safeText(name)}</h2><div class="public-profile-handle">@${safeText(profile.username||'member')}</div></div></div><p class="public-profile-bio">${safeText(profile.bio||'This member hasn’t added a bio yet.')}</p><div class="public-profile-buttons">${currentUser?`<button class="join" id="publicProfileFollowButton" onclick="togglePublicProfileFollow('${userId}')">${isFollowing?'✓ Following':'＋ Follow'}</button>`:''}<button class="btn public-profile-message-button" onclick="if(!currentUser){openAuth();}else{closePublicProfile();startConversation('${userId}');}">✉ Message</button></div></div><div class="public-profile-stats"><button type="button" class="public-profile-stat" onclick="openPublicProfileConnections('${userId}','followers')"><b id="publicProfileFollowersCount">${followersResult.error?'—':(followersResult.data||[]).length}</b><span class="muted">Followers</span></button><button type="button" class="public-profile-stat" onclick="openPublicProfileConnections('${userId}','following')"><b id="publicProfileFollowingCount">${followingResult.error?'—':(followingResult.data||[]).length}</b><span class="muted">Following</span></button></div><div class="public-profile-posts-wrap"><div class="public-profile-posts-heading"><h3>Posts</h3><span class="muted">${posts.length} ${posts.length===1?'post':'posts'}</span></div><div>${posts.map(post=>`<div class="public-profile-post">${profile.pinned_post_id===post.id?'<span class="profile-badge">📌 Pinned</span>':''}<p style="margin:0 0 7px">${safeText(post.content||'')}</p>${post.image_url?`<img class="post-media" src="${safeText(post.image_url)}" alt="Post image">`:''}<div class="muted">${safeText(communityNames[post.community_id]||'Community')} · ${safeText(new Date(post.created_at).toLocaleString())}</div></div>`).join('')||'<p class="muted">No posts yet.</p>'}</div></div>`;
+  out.innerHTML=`<div class="public-profile-hero" style="--public-accent:${profile.profile_theme==='rose'?'#ff8dc9':profile.profile_theme==='ocean'?'#7bdcff':profile.profile_theme==='emerald'?'#76e3b2':'#b18aff'}"><div class="public-profile-cover-art"></div><div class="public-profile-identity"><div class="profile-hero-avatar">${avatar}</div><div class="public-profile-identity-copy"><h2>${safeText(name)}</h2><div class="public-profile-handle">@${safeText(profile.username||'member')}</div></div></div><p class="public-profile-bio">${safeText(profile.bio||'This member hasn’t added a bio yet.')}</p><div class="public-profile-buttons">${currentUser?`<button class="join" id="publicProfileFollowButton" onclick="togglePublicProfileFollow('${userId}')">${isFollowing?'✓ Following':'＋ Follow'}</button>`:''}<button class="btn public-profile-message-button" ${blockStatus.blocked?'disabled aria-disabled="true"':''} onclick="if(!currentUser){openAuth();}else{closePublicProfile();startConversation('${userId}');}">✉ Message</button>${currentUser?`<button class="join public-profile-block-button" id="publicProfileBlockButton" onclick="toggleBlockUser('${userId}')">${blockStatus.iBlocked?'Unblock member':'Block member'}</button>`:''}</div></div><div class="public-profile-stats"><button type="button" class="public-profile-stat" onclick="openPublicProfileConnections('${userId}','followers')"><b id="publicProfileFollowersCount">${followersResult.error?'—':(followersResult.data||[]).length}</b><span class="muted">Followers</span></button><button type="button" class="public-profile-stat" onclick="openPublicProfileConnections('${userId}','following')"><b id="publicProfileFollowingCount">${followingResult.error?'—':(followingResult.data||[]).length}</b><span class="muted">Following</span></button></div><div class="public-profile-posts-wrap"><div class="public-profile-posts-heading"><h3>Posts</h3><span class="muted">${posts.length} ${posts.length===1?'post':'posts'}</span></div><div>${posts.map(post=>`<div class="public-profile-post">${profile.pinned_post_id===post.id?'<span class="profile-badge">📌 Pinned</span>':''}<p style="margin:0 0 7px">${safeText(post.content||'')}</p>${post.image_url?`<img class="post-media" src="${safeText(post.image_url)}" alt="Post image">`:''}<div class="muted">${safeText(communityNames[post.community_id]||'Community')} · ${safeText(new Date(post.created_at).toLocaleString())}</div></div>`).join('')||'<p class="muted">No posts yet.</p>'}</div></div>`;
  }catch(error){console.error('Could not open public profile:',error);out.innerHTML=`<p class="muted">Could not load this profile: ${safeText(error.message||'Please try again.')}</p>`;}
 }
 async function openPublicProfileConnections(userId,kind){
@@ -2732,6 +2768,17 @@ body.direct-chat-open #chatWindow .chat-compose{position:relative!important;z-in
 body.direct-chat-open #chatWindow #chatMessageInput{min-width:0!important;max-width:100%!important;flex:1 1 0!important}
 @media(max-height:760px){body.direct-chat-open #chatWindow[style*="display: block"],body.direct-chat-open #chatWindow[style*="display:block"]{padding-bottom:calc(env(safe-area-inset-bottom,0px) + 34px)!important}}
 </style>
+
+<style id="vn-chat-profile-avatar-and-block-ui">
+body.direct-chat-open #chatWindow #chatTitle{display:flex!important;align-items:center!important;gap:11px!important;min-width:0!important;}
+body.direct-chat-open #chatWindow #chatTitle:before{content:none!important;display:none!important;}
+body.direct-chat-open #chatWindow #chatTitle .chat-title-avatar{display:grid!important;place-items:center!important;flex:0 0 44px!important;width:44px!important;min-width:44px!important;height:44px!important;padding:0!important;overflow:hidden!important;border:2px solid #d5baff!important;border-radius:50%!important;background:linear-gradient(145deg,#b18aff,#613a87)!important;color:#f4eaff!important;font-size:22px!important;cursor:pointer!important;}
+body.direct-chat-open #chatWindow #chatTitle .chat-title-avatar img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;border-radius:inherit!important;}
+body.direct-chat-open #chatWindow #chatTitle .chat-title-name{display:block!important;min-width:0!important;max-width:calc(100% - 58px)!important;padding:4px 0!important;border:0!important;background:transparent!important;color:inherit!important;font:inherit!important;font-weight:750!important;text-align:left!important;overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important;cursor:pointer!important;}
+.public-profile-block-button{border-color:rgba(255,125,150,.36)!important;color:#ffb9c6!important;background:rgba(140,45,65,.14)!important;}
+.public-profile-message-button:disabled{opacity:.45!important;cursor:not-allowed!important;filter:grayscale(.3)!important;}
+</style>
+
 </body></html>
 
 <style>
