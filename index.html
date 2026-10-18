@@ -2868,3 +2868,16 @@ body.direct-chat-open #chatWindow .chat-search-wrap.is-open .vn-normal-search-ic
 .profile-connections-tabs button.active{background:linear-gradient(110deg,#a879ef,#c59bff);color:#180f23;box-shadow:0 3px 12px rgba(177,138,255,.18)}
 .profile-page.connections-list-mode .profile-following-heading{margin-bottom:16px!important}
 </style>
+
+
+<style id="vn-integrated-edge-ui-fix">
+/* Blend the app chrome into the page so the top and bottom don't look like separate panels. */
+html,body{background-color:#100e14!important;}
+body{background-image:radial-gradient(ellipse at 12% 0%,rgba(115,75,154,.10),transparent 42%),linear-gradient(180deg,#100e14 0%,#100e14 100%)!important;background-attachment:scroll!important;padding-bottom:calc(76px + env(safe-area-inset-bottom,0px))!important;}
+.vn-home-topline,.top{background:transparent!important;border-bottom:1px solid rgba(190,170,215,.08)!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+.bottom{background:#100e14!important;border-top:1px solid rgba(190,170,215,.08)!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;padding:8px 8px calc(8px + env(safe-area-inset-bottom,0px))!important;}
+.bottom button{background:transparent!important;box-shadow:none!important;}
+.bottom button.active{background:transparent!important;}
+.bottom button.active:before{height:2px!important;top:0!important;box-shadow:none!important;}
+@media(min-width:600px){body{border-left:0!important;border-right:0!important}.bottom{border-left:0!important;border-right:0!important}}
+</style>
