@@ -306,64 +306,28 @@ body.direct-chat-open #chatWindow,
 </style>
 </head><body>
 <style id="vibenest-opening-splash-style">
-#vn-opening-splash{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;overflow:hidden;background:#100b18;opacity:1;visibility:visible;transition:opacity .28s ease,visibility .28s ease;color:#fff}
+#vn-opening-splash{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;overflow:hidden;background:#100b18;opacity:1;visibility:visible;transition:opacity .22s ease,visibility .22s ease;color:#fff}
 #vn-opening-splash.vn-splash-leaving{opacity:0;visibility:hidden;pointer-events:none}
 .vn-splash-stage{position:relative;width:min(100vw,560px);height:100dvh;min-height:440px;display:grid;place-items:center}
-.vn-splash-logo-wrap{position:relative;display:inline-block;isolation:isolate;transform:translateY(-5px)}
-.vn-splash-wordmark{position:relative;z-index:2;font-size:clamp(38px,10vw,58px);font-weight:900;letter-spacing:-2.8px;line-height:1;white-space:nowrap;color:#fff;opacity:0;animation:vn-wordmark-pop .35s ease-out .08s forwards}
+.vn-splash-logo-wrap{position:relative;display:inline-block;transform:none;text-align:center}
+.vn-splash-wordmark{position:relative;font-size:clamp(38px,10vw,58px);font-weight:900;letter-spacing:-2.8px;line-height:1;white-space:nowrap;color:#fff;opacity:0;animation:vn-wordmark-pop .3s ease-out .04s forwards}
 .vn-splash-wordmark span{background:linear-gradient(110deg,#c7a0ff 0%,#9a70ee 55%,#8058d4 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
-.vn-splash-tagline{position:absolute;top:calc(50% + 43px);left:0;right:0;text-align:center;color:#b9a9cb;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;opacity:0;animation:vn-tagline-in .25s ease .35s forwards}
-.vn-splash-bird{position:absolute;z-index:3;width:clamp(48px,12vw,58px);height:auto;left:68%;bottom:calc(100% - 11px);opacity:0;transform:translate(-50%,calc(100dvh + 100px));transform-origin:50% 85%;animation:vn-bird-rise 1.65s cubic-bezier(.22,.72,.2,1) .18s forwards}
-.vn-bird-wing{transform-box:fill-box;transform-origin:50% 80%;animation:vn-wing-flap .22s ease-in-out .18s 6 alternate}
-.vn-bird-wing.back{animation-delay:.08s}
-@keyframes vn-wordmark-pop{from{opacity:0;transform:translateY(5px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+.vn-splash-tagline{position:absolute;top:calc(100% + 22px);left:0;right:0;text-align:center;color:#b9a9cb;font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0;animation:vn-tagline-in .2s ease .2s forwards}
+@keyframes vn-wordmark-pop{from{opacity:0;transform:translateY(4px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
 @keyframes vn-tagline-in{to{opacity:.75}}
-@keyframes vn-bird-rise{0%{opacity:0;transform:translate(-50%,calc(100dvh + 100px)) rotate(-8deg)}10%{opacity:1}72%{opacity:1;transform:translate(-50%,0) rotate(3deg)}86%{transform:translate(-50%,-3px) rotate(-2deg)}100%{opacity:1;transform:translate(-50%,0) rotate(0)}}
-@keyframes vn-wing-flap{from{transform:rotate(-38deg)}to{transform:rotate(35deg)}}
-@media(prefers-reduced-motion:reduce){.vn-splash-wordmark,.vn-splash-tagline,.vn-splash-bird,.vn-bird-wing{animation-duration:.01ms!important;animation-iteration-count:1!important}#vn-opening-splash{transition:none}}
+@media(prefers-reduced-motion:reduce){.vn-splash-wordmark,.vn-splash-tagline{animation-duration:.01ms!important;animation-iteration-count:1!important}#vn-opening-splash{transition:none}}
 </style>
 <div id="vn-opening-splash" role="status" aria-label="VibeNest is opening">
- <div class="vn-splash-stage"><div class="vn-splash-glow"></div><div class="vn-splash-grain"></div>
-  <div class="vn-splash-logo-wrap"><div class="vn-splash-wordmark">Vibe<span>Nest</span></div>
-  <div class="vn-splash-tagline">where connections feel like home</div>
-  <svg class="vn-splash-bird" viewBox="0 0 100 80" role="img" aria-label="Purple bird flying up and landing on Nest">
-   <defs>
-    <linearGradient id="vnBirdBody" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c9a7ff"/><stop offset="1" stop-color="#8054c7"/></linearGradient>
-    <linearGradient id="vnBirdWing" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#d9c1ff"/><stop offset="1" stop-color="#8b63d1"/></linearGradient>
-   </defs>
-   <!-- tail -->
-   <path d="M30 43 Q17 39 10 49 Q23 49 34 48Z" fill="#8b63d1"/>
-   <!-- far wing -->
-   <path class="vn-bird-wing back" d="M42 39 Q23 19 34 7 Q53 13 57 36Z" fill="#8b63d1"/>
-   <!-- simple rounded body -->
-   <ellipse cx="49" cy="43" rx="25" ry="17" fill="url(#vnBirdBody)"/>
-   <!-- near wing: the bird has just two visible wings -->
-   <path class="vn-bird-wing" d="M43 39 Q38 17 57 8 Q75 22 64 41 Q54 48 43 39Z" fill="url(#vnBirdWing)"/>
-   <path d="M48 17 Q57 28 57 39 M57 14 Q66 27 62 38" fill="none" stroke="#eee3ff" stroke-width="1.8" stroke-linecap="round" opacity=".75"/>
-   <!-- head and beak -->
-   <circle cx="69" cy="34" r="13" fill="url(#vnBirdBody)"/>
-   <circle cx="73" cy="31" r="2.6" fill="#241833"/><circle cx="73.8" cy="30.2" r=".8" fill="#fff"/>
-   <path d="M80 35 L94 39 L80 42Z" fill="#e9b56e"/>
-   <!-- feet sit on the top edge of the Nest letters at the end of the flight -->
-   <path d="M44 55 L44 68 M58 56 L58 68" stroke="#d9b27a" stroke-width="2.5" stroke-linecap="round"/>
-   <path d="M39 69 L44 67 L49 69 M53 69 L58 67 L63 69" fill="none" stroke="#e8c58f" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-  </div>
- </div>
+ <div class="vn-splash-stage"><div class="vn-splash-logo-wrap"><div class="vn-splash-wordmark">Vibe<span>Nest</span></div><div class="vn-splash-tagline">where connections feel like home</div></div></div>
 </div>
 <script id="vibenest-opening-splash-script">
 (function(){
  const splash=document.getElementById('vn-opening-splash');
  if(!splash)return;
  let finished=false;
- function finishSplash(){
-  if(finished)return;finished=true;
-  splash.classList.add('vn-splash-leaving');
-  document.body.style.overflow='';
-  window.setTimeout(function(){splash.remove();if(typeof currentUser!=='undefined'&&!currentUser){try{openAuth();}catch(e){}}},300);
- }
+ function finishSplash(){if(finished)return;finished=true;splash.classList.add('vn-splash-leaving');document.body.style.overflow='';window.setTimeout(function(){splash.remove();if(typeof currentUser!=='undefined'&&!currentUser){try{openAuth();}catch(e){}}},230);}
  document.body.style.overflow='hidden';
- window.setTimeout(finishSplash,2450);
+ window.setTimeout(finishSplash,1150);
 })();
 </script>
 
