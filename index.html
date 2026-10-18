@@ -312,9 +312,10 @@ body.direct-chat-open #chatWindow,
 .vn-splash-logo-wrap{position:relative;display:inline-block;transform:none;text-align:center}
 .vn-splash-wordmark{position:relative;font-size:clamp(38px,10vw,58px);font-weight:900;letter-spacing:-2.8px;line-height:1;white-space:nowrap;color:#fff;opacity:0;animation:vn-wordmark-pop .3s ease-out .04s forwards}
 .vn-splash-wordmark span{background:linear-gradient(110deg,#c7a0ff 0%,#9a70ee 55%,#8058d4 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
-.vn-splash-tagline{position:absolute;top:calc(100% + 22px);left:0;right:0;text-align:center;color:#b9a9cb;font-size:11px;letter-spacing:2px;text-transform:uppercase;opacity:0;animation:vn-tagline-in .2s ease .2s forwards}
+.vn-splash-tagline{position:absolute;top:calc(100% + 20px);left:50%;right:auto;width:max-content;max-width:calc(100vw - 36px);transform:translateX(-50%);text-align:center;color:#b8a7cc;font-size:clamp(10px,2.7vw,12px);font-weight:650;letter-spacing:clamp(1.2px,.35vw,2px);line-height:1.5;text-transform:uppercase;white-space:nowrap;opacity:0;animation:vn-tagline-in .2s ease .2s forwards}
 @keyframes vn-wordmark-pop{from{opacity:0;transform:translateY(4px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes vn-tagline-in{to{opacity:.75}}
+.vn-splash-tagline:before{content:"";display:block;width:34px;height:2px;margin:0 auto 10px;border-radius:2px;background:linear-gradient(90deg,#c7a0ff,#8058d4);opacity:.9}
+@keyframes vn-tagline-in{to{opacity:.82}}
 @media(prefers-reduced-motion:reduce){.vn-splash-wordmark,.vn-splash-tagline{animation-duration:.01ms!important;animation-iteration-count:1!important}#vn-opening-splash{transition:none}}
 </style>
 <div id="vn-opening-splash" role="status" aria-label="VibeNest is opening">
