@@ -1658,12 +1658,12 @@ function ensurePublicProfileModal(){
  modal=document.createElement('div');modal.id='publicProfileModal';modal.className='public-profile-overlay';modal.innerHTML='<div class="public-profile-card"><div class="public-profile-top"><span class="profile-eyebrow">VIBENEST MEMBER</span><button class="join" onclick="closePublicProfile()">Close ✕</button></div><div id="publicProfileContent"><p class="muted">Loading profile…</p></div></div>';
  modal.addEventListener('click',e=>{if(e.target===modal)closePublicProfile()});document.body.appendChild(modal);return modal;
 }
-function closePublicProfile(){const modal=document.getElementById('publicProfileModal');if(modal)modal.style.display='none';document.body.style.overflow='';}
+function closePublicProfile(options={}){const modal=document.getElementById('publicProfileModal');if(modal)modal.style.display='none';document.body.style.overflow='';if(options.fromBack!==true){try{if(history.state&&history.state.vnPublicProfile){history.back();}}catch(e){}}}
 async function openPublicProfile(userId){
  if(!userId)return;
  if(currentUser&&supabaseClient)await loadFollowing();
  if(currentUser&&userId===currentUser.id){go('profile');return;}
- const modal=ensurePublicProfileModal(),out=document.getElementById('publicProfileContent');modal.style.display='block';document.body.style.overflow='hidden';out.innerHTML='<p class="muted">Loading profile…</p>';
+ const modal=ensurePublicProfileModal(),out=document.getElementById('publicProfileContent');modal.style.display='block';document.body.style.overflow='hidden';try{if(!history.state||!history.state.vnPublicProfile)history.pushState({...history.state,vnPublicProfile:true},'',location.href);}catch(e){}out.innerHTML='<p class="muted">Loading profile…</p>';
  if(!supabaseClient){out.innerHTML='<p class="muted">Profiles are unavailable while the app is offline.</p>';return;}
  try{
   const {data:profile,error}=await supabaseClient.from('profiles').select('id,username,display_name,bio,avatar_url,profile_theme,pinned_post_id').eq('id',userId).maybeSingle();
@@ -2352,6 +2352,14 @@ renderCommunityDetail=function(){initializeCommunitySections();vnOldRenderCommun
   };
 
   window.addEventListener('popstate', function(event){
+    // Public profiles are nested screens: Back closes the profile overlay before changing app tabs.
+    const publicProfileModal=document.getElementById('publicProfileModal');
+    if(publicProfileModal && getComputedStyle(publicProfileModal).display !== 'none') {
+      if(typeof window.closePublicProfile==='function') window.closePublicProfile({fromBack:true});
+      const active=document.querySelector('.page.active')?.id || currentPage || 'home';
+      try{history.pushState({...history.state,vnPage:active},'',location.href);}catch(e){}
+      return;
+    }
     // An open direct message is a nested screen: Android/browser Back returns to the chats inbox first.
     if (document.body.classList.contains('direct-chat-open') && typeof window.closeChatWindow === 'function') {
       window.closeChatWindow();
