@@ -3374,10 +3374,17 @@ window.addEventListener('load',vnUpdateHomeAvatar);
 @media(max-width:370px){.vn-community-tile{flex-basis:104px!important;width:104px!important;height:146px!important}.vn-tile-icon{width:34px!important;height:34px!important}}
 </style>
 
-<style id="vn-community-icon-flush-corner">
-/* Community avatar sits directly in the card's top-left corner: zero inset/gap. */
-.vn-community-tile .vn-tile-icon{top:0!important;left:0!important;margin:0!important;width:38px!important;height:38px!important;border-radius:8px 0 8px 0!important;border:0!important;box-shadow:none!important;outline:1px solid rgba(255,255,255,.18)!important;outline-offset:0!important;overflow:hidden!important;z-index:5!important;background:#241638!important;display:grid!important;place-items:center!important;}
-.vn-community-tile .vn-tile-icon img{width:100%!important;height:100%!important;object-fit:cover!important;border-radius:inherit!important;display:block!important}
-@media(max-width:370px){.vn-community-tile .vn-tile-icon{width:35px!important;height:35px!important}}
+<style id="vn-community-icon-overlap-fix">
+/* Keep the card intact while allowing its square community badge to overlap the top-left corner. */
+.vn-shelf{padding-top:11px!important;overflow-x:auto!important;overflow-y:hidden!important;}
+.vn-community-tile{position:relative!important;overflow:visible!important;isolation:isolate!important;margin-top:5px!important;}
+.vn-community-tile .vn-tile-image,
+.vn-community-tile .vn-tile-shade{border-radius:inherit!important;overflow:hidden!important;}
+.vn-community-tile .vn-tile-image{z-index:0!important;}
+.vn-community-tile .vn-tile-shade{z-index:1!important;}
+.vn-community-tile .vn-tile-name{z-index:2!important;}
+.vn-community-tile .vn-tile-icon{position:absolute!important;top:-7px!important;left:-7px!important;right:auto!important;bottom:auto!important;transform:none!important;width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;margin:0!important;padding:0!important;box-sizing:border-box!important;border-radius:10px!important;border:1px solid rgba(255,255,255,.55)!important;box-shadow:0 3px 9px rgba(0,0,0,.4)!important;outline:none!important;overflow:hidden!important;z-index:8!important;background:#241638!important;display:grid!important;place-items:center!important;font-size:20px!important;}
+.vn-community-tile .vn-tile-icon img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;border-radius:inherit!important;}
+@media(max-width:370px){.vn-shelf{padding-top:10px!important}.vn-community-tile .vn-tile-icon{top:-6px!important;left:-6px!important;width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important}}
 </style>
 </body></html>
