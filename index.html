@@ -391,6 +391,19 @@ body.direct-chat-open #chatWindow .chat-compose button.join{
 #home .vn-home-hero{margin-top:0!important;border-top:0!important;}
 @media(max-width:370px){.vn-shelf{gap:7px!important;padding-left:13px!important;padding-right:13px!important}.vn-community-tile{flex-basis:calc((100vw - 54px)/3)!important;width:calc((100vw - 54px)/3)!important;height:calc((100vw - 54px)/3 * 1.38)!important;}}
 </style>
+
+<style id="vn-final-card-size-and-seamless-header">
+/* Compact community shelves: three cards should fit comfortably across a phone. */
+.vn-shelf{gap:9px!important;padding-left:15px!important;padding-right:15px!important;overflow-x:auto!important;overflow-y:hidden!important;}
+.vn-community-tile{flex:0 0 clamp(108px,24vw,156px)!important;width:clamp(108px,24vw,156px)!important;height:clamp(149px,33.1vw,215px)!important;}
+.vn-community-tile .vn-tile-icon{top:-5px!important;left:-5px!important;width:33px!important;height:33px!important;min-width:33px!important;min-height:33px!important;}
+/* One continuous color field behind the profile/search controls and rotating feature banner. */
+.vn-discover-home{background:radial-gradient(ellipse at 88% 24%,rgba(83,35,164,.55),transparent 43%),radial-gradient(ellipse at 5% 78%,rgba(48,27,105,.45),transparent 48%),linear-gradient(180deg,#13092f 0%,#170b3b 52%,#100827 100%)!important;}
+.vn-discover-bar{background:transparent!important;border:0!important;border-bottom:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
+.vn-feature-carousel{margin-top:0!important;border-top:0!important;border-bottom:0!important;background:transparent!important;}
+.vn-feature-slide{background:radial-gradient(circle at 85% 62%,rgba(85,36,167,.72),transparent 42%),linear-gradient(135deg,rgba(16,8,43,.25),rgba(33,16,76,.35) 70%,rgba(23,11,55,.25))!important;}
+@media(max-width:370px){.vn-community-tile{flex-basis:clamp(100px,26vw,118px)!important;width:clamp(100px,26vw,118px)!important;height:clamp(138px,35.9vw,163px)!important;}.vn-shelf{gap:8px!important;padding-left:13px!important;padding-right:13px!important;}}
+</style>
 </head><body class="vn-auth-booting">
 <style id="vibenest-opening-splash-style">
 #vn-opening-splash{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;overflow:hidden;background:#100b18;opacity:1;visibility:visible;transition:opacity .22s ease,visibility .22s ease;color:#fff}
