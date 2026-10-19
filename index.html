@@ -409,6 +409,58 @@ body.direct-chat-open #chatWindow .chat-compose button.join{
 .vn-feature-slide{background:radial-gradient(circle at 85% 62%,rgba(85,36,167,.72),transparent 42%),linear-gradient(135deg,rgba(16,8,43,.25),rgba(33,16,76,.35) 70%,rgba(23,11,55,.25))!important;}
 @media(max-width:370px){.vn-community-tile{flex-basis:clamp(100px,26vw,118px)!important;width:clamp(100px,26vw,118px)!important;height:clamp(138px,35.9vw,163px)!important;}.vn-shelf{gap:8px!important;padding-left:13px!important;padding-right:13px!important;}}
 </style>
+
+<style id="vn-home-ad-upright-icons-and-3point5-cards-20261019">
+/* The original text glyphs looked visually rotated across fonts; use geometrically aligned SVG symbols. */
+#home #vnFeatureCarousel .vn-feature-art,
+#home .vn-feature-carousel .vn-feature-art{
+  width:92px!important;height:92px!important;min-width:92px!important;min-height:92px!important;
+  max-width:92px!important;max-height:92px!important;aspect-ratio:1/1!important;
+  right:18px!important;top:55px!important;
+  border-radius:50%!important;
+  transform:none!important;rotate:0deg!important;scale:1!important;skew:0deg!important;
+  clip-path:circle(50% at 50% 50%)!important;
+  animation:none!important;
+  display:grid!important;place-items:center!important;
+  padding:0!important;line-height:1!important;overflow:hidden!important;
+  box-sizing:border-box!important;
+}
+#home #vnFeatureCarousel .vn-feature-art.art-communities{
+  background:radial-gradient(circle at 32% 25%,#a975ff 0%,#854be0 47%,#5525aa 100%)!important;
+}
+#home #vnFeatureCarousel .vn-feature-art.art-chat{
+  background:radial-gradient(circle at 32% 25%,#e7a9e7 0%,#b278db 47%,#7650bf 100%)!important;
+}
+#home #vnFeatureCarousel .vn-feature-art.art-profile{
+  background:radial-gradient(circle at 32% 25%,#aa8ae9 0%,#8560d0 55%,#6643ac 100%)!important;
+}
+#home #vnFeatureCarousel .vn-feature-art::before,
+#home #vnFeatureCarousel .vn-feature-art::after,
+#home .vn-feature-carousel .vn-feature-art::before,
+#home .vn-feature-carousel .vn-feature-art::after{content:none!important;display:none!important;transform:none!important;rotate:0deg!important}
+#home #vnFeatureCarousel .vn-feature-art svg,
+#home .vn-feature-carousel .vn-feature-art svg{
+  display:block!important;position:static!important;width:43px!important;height:43px!important;
+  min-width:43px!important;min-height:43px!important;max-width:43px!important;max-height:43px!important;
+  margin:0!important;padding:0!important;transform:none!important;rotate:0deg!important;scale:1!important;
+  clip-path:none!important;overflow:visible!important;
+}
+#home #vnFeatureCarousel .vn-feature-art svg path,
+#home .vn-feature-carousel .vn-feature-art svg path{transform:none!important;transform-box:fill-box!important;transform-origin:center!important}
+/* Three full cards plus part of the next card, accounting for shelf padding and gaps. */
+#home .vn-shelf{gap:8px!important;padding-left:12px!important;padding-right:12px!important;scroll-padding-left:12px!important}
+#home .vn-shelf .vn-community-tile{
+  flex:0 0 calc((100vw - 48px)/3.5)!important;
+  width:calc((100vw - 48px)/3.5)!important;
+  max-width:calc((100vw - 48px)/3.5)!important;
+  height:calc((100vw - 48px)/3.5 * 1.30)!important;
+}
+@media(max-width:370px){
+ #home #vnFeatureCarousel .vn-feature-art,#home .vn-feature-carousel .vn-feature-art{width:76px!important;height:76px!important;min-width:76px!important;min-height:76px!important;max-width:76px!important;max-height:76px!important;right:12px!important;top:52px!important}
+ #home #vnFeatureCarousel .vn-feature-art svg,#home .vn-feature-carousel .vn-feature-art svg{width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important;max-width:36px!important;max-height:36px!important}
+ #home .vn-shelf .vn-community-tile{flex-basis:calc((100vw - 48px)/3.5)!important;width:calc((100vw - 48px)/3.5)!important;max-width:calc((100vw - 48px)/3.5)!important;height:calc((100vw - 48px)/3.5 * 1.30)!important}
+}
+</style>
 </head><body class="vn-auth-booting">
 <style id="vibenest-opening-splash-style">
 #vn-opening-splash{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;overflow:hidden;background:#100b18;opacity:1;visibility:visible;transition:opacity .22s ease,visibility .22s ease;color:#fff}
@@ -439,7 +491,7 @@ body.direct-chat-open #chatWindow .chat-compose button.join{
 
 <section id="home" class="page active vn-discover-home">
 <header class="vn-discover-bar"><button class="vn-home-user" id="vnHomeProfileButton" onclick="go('profile')" aria-label="My profile"><span id="vnHomeProfileFallback">◉</span><img id="vnHomeProfileImage" alt="" hidden></button><button class="vn-search-trigger" onclick="vnOpenSearch()" aria-label="Search VibeNest"><span>⌕</span><span>Search VibeNest</span><b>⌄</b></button><button class="vn-home-bell" onclick="go('notifications');loadNotifications()" aria-label="Notifications"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span id="homeNotificationBadge" class="nav-badge" style="display:none">0</span></button></header>
-<div class="vn-feature-carousel" id="vnFeatureCarousel" aria-label="VibeNest featured highlights" tabindex="0"><article class="vn-feature-slide is-active" data-feature="0" onclick="go('communities')"><span class="vn-feature-kicker">YOUR PEOPLE · YOUR SPACE</span><h1>Find your<br><em>kind of people.</em></h1><p>Discover communities made for every vibe.</p><div class="vn-feature-art art-communities" aria-hidden="true">✦</div></article><article class="vn-feature-slide" data-feature="1" onclick="go('chats')"><span class="vn-feature-kicker">GOOD VIBES, REAL CONNECTIONS</span><h1>Your next<br><em>conversation.</em></h1><p>Meet your people and keep the conversation going.</p><div class="vn-feature-art art-chat" aria-hidden="true">♡</div></article><article class="vn-feature-slide" data-feature="2" onclick="go('profile')"><span class="vn-feature-kicker">MAKE IT YOURS</span><h1>Your vibe.<br><em>Your profile.</em></h1><p>Show the community what makes you, you.</p><div class="vn-feature-art art-profile" aria-hidden="true">✧</div></article><div class="vn-feature-dots" aria-label="Choose featured card"><button class="is-active" aria-label="Feature 1" onclick="event.stopPropagation();vnSetFeature(0)"></button><button aria-label="Feature 2" onclick="event.stopPropagation();vnSetFeature(1)"></button><button aria-label="Feature 3" onclick="event.stopPropagation();vnSetFeature(2)"></button></div></div>
+<div class="vn-feature-carousel" id="vnFeatureCarousel" aria-label="VibeNest featured highlights" tabindex="0"><article class="vn-feature-slide is-active" data-feature="0" onclick="go('communities')"><span class="vn-feature-kicker">YOUR PEOPLE · YOUR SPACE</span><h1>Find your<br><em>kind of people.</em></h1><p>Discover communities made for every vibe.</p><div class="vn-feature-art art-communities" aria-hidden="true"><svg viewBox="0 0 100 100" focusable="false" aria-hidden="true"><path d="M50 4 C55 28 72 45 96 50 C72 55 55 72 50 96 C45 72 28 55 4 50 C28 45 45 28 50 4 Z"/></svg></div></article><article class="vn-feature-slide" data-feature="1" onclick="go('chats')"><span class="vn-feature-kicker">GOOD VIBES, REAL CONNECTIONS</span><h1>Your next<br><em>conversation.</em></h1><p>Meet your people and keep the conversation going.</p><div class="vn-feature-art art-chat" aria-hidden="true"><svg viewBox="0 0 100 100" focusable="false" aria-hidden="true"><path d="M50 86 C39 75 13 56 13 34 C13 20 23 12 35 12 C43 12 48 17 50 25 C52 17 57 12 65 12 C77 12 87 20 87 34 C87 56 61 75 50 86 Z" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></article><article class="vn-feature-slide" data-feature="2" onclick="go('profile')"><span class="vn-feature-kicker">MAKE IT YOURS</span><h1>Your vibe.<br><em>Your profile.</em></h1><p>Show the community what makes you, you.</p><div class="vn-feature-art art-profile" aria-hidden="true"><svg viewBox="0 0 100 100" focusable="false" aria-hidden="true"><path d="M50 6 L60 40 L94 50 L60 60 L50 94 L40 60 L6 50 L40 40 Z"/></svg></div></article><div class="vn-feature-dots" aria-label="Choose featured card"><button class="is-active" aria-label="Feature 1" onclick="event.stopPropagation();vnSetFeature(0)"></button><button aria-label="Feature 2" onclick="event.stopPropagation();vnSetFeature(1)"></button><button aria-label="Feature 3" onclick="event.stopPropagation();vnSetFeature(2)"></button></div></div>
 <section class="vn-shelf-section"><h2>🏆 Top Picks</h2><div id="vnTopPicks" class="vn-shelf" aria-label="Top communities"></div></section>
 <section class="vn-shelf-section"><h2>Most Members</h2><div id="vnMostMembers" class="vn-shelf" aria-label="Communities with most members"></div></section>
 <section class="vn-shelf-section"><h2>Recently Created</h2><div id="vnRecentlyCreated" class="vn-shelf" aria-label="Recently created communities"></div></section>
