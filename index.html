@@ -715,6 +715,7 @@ async function refreshSocialCounts(){
    }else console.warn('Community member counts unavailable (check memberships SELECT RLS policy):',members.error.message);
   }
  }catch(e){console.warn('Could not refresh VibeNest counts',e);}
+ if(typeof vnRenderHomeShelves==='function')vnRenderHomeShelves();
 }
 let onlineProfiles = {};
 let followingIds = new Set();
@@ -3291,7 +3292,28 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 
 <script id="vn-discover-home-logic">
 function vnHomeCover(c){const url=c.cover_url||c.image_url||'';return url?`<img src="${safeText(url)}" alt="" loading="lazy">`:''}
-function vnRenderHomeShelves(){if(typeof onlineCommunities==='undefined')return;const arr=onlineCommunities.filter(c=>c&&c.id);const counts=typeof communityMemberCounts!=='undefined'?communityMemberCounts:{};const shelves=[['vnTopPicks',[...arr].sort((a,b)=>(counts[b.id]||0)-(counts[a.id]||0))],['vnMostMembers',[...arr].sort((a,b)=>(counts[b.id]||0)-(counts[a.id]||0))],['vnRecentlyCreated',[...arr].sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0))]];for(const [id,items] of shelves){const el=document.getElementById(id);if(!el)continue;el.innerHTML=items.length?items.slice(0,16).map(c=>{const icon=c.icon_url||c.community_icon_url||c.icon||c.avatar_url||'';const iconHtml=typeof icon==='string'&&/^https:\/\//i.test(icon)?`<img src="${safeText(icon)}" alt="">`:safeText((typeof icon==='string'&&icon.length<8&&icon)?icon:(c.emoji||'✦'));return `<button class="vn-community-tile" data-vn-community="${safeText(c.id)}"><span class="vn-tile-image">${vnHomeCover(c)}</span><span class="vn-tile-icon">${iconHtml}</span><span class="vn-tile-shade"></span><span class="vn-tile-name">${safeText(c.name||'Community')}</span></button>`}).join(''):'<div class="vn-shelf-empty">Communities will appear here when members create them.</div>';}}
+function vnRenderHomeShelves(){
+ if(typeof onlineCommunities==='undefined')return;
+ const arr=onlineCommunities.filter(c=>c&&c.id);
+ const counts=typeof communityMemberCounts!=='undefined'?communityMemberCounts:{};
+ const posts=typeof onlinePosts!=='undefined'?onlinePosts:[];
+ const likes=typeof postLikeCounts!=='undefined'?postLikeCounts:{};
+ const comments=typeof postCommentCounts!=='undefined'?postCommentCounts:{};
+ const engagement=Object.create(null),activity=Object.create(null);
+ const now=Date.now();
+ for(const post of posts){
+  if(!post||!post.community_id)continue;
+  const cid=String(post.community_id),ageDays=Math.max(0,(now-new Date(post.created_at||now).getTime())/86400000);
+  const recency=Math.max(.15,1-ageDays/14);
+  engagement[cid]=(engagement[cid]||0)+((likes[post.id]||0)+2*(comments[post.id]||0)+1)*recency;
+  activity[cid]=(activity[cid]||0)+recency;
+ }
+ const topPicks=[...arr].sort((a,b)=>(engagement[b.id]||0)-(engagement[a.id]||0)||(activity[b.id]||0)-(activity[a.id]||0)||(counts[b.id]||0)-(counts[a.id]||0));
+ const mostMembers=[...arr].sort((a,b)=>(counts[b.id]||0)-(counts[a.id]||0)||new Date(b.created_at||0)-new Date(a.created_at||0));
+ const newest=[...arr].sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0));
+ const shelves=[['vnTopPicks',topPicks],['vnMostMembers',mostMembers],['vnRecentlyCreated',newest]];
+ for(const [id,items] of shelves){const el=document.getElementById(id);if(!el)continue;el.innerHTML=items.length?items.slice(0,16).map(c=>{const icon=c.icon_url||c.community_icon_url||c.icon||c.avatar_url||'';const iconHtml=typeof icon==='string'&&/^https:\/\//i.test(icon)?`<img src="${safeText(icon)}" alt="">`:safeText((typeof icon==='string'&&icon.length<8&&icon)?icon:(c.emoji||'✦'));return `<button class="vn-community-tile" data-vn-community="${safeText(c.id)}"><span class="vn-tile-image">${vnHomeCover(c)}</span><span class="vn-tile-icon">${iconHtml}</span><span class="vn-tile-shade"></span><span class="vn-tile-name">${safeText(c.name||'Community')}</span></button>`}).join(''):'<div class="vn-shelf-empty">Communities will appear here when members create them.</div>';}
+}
 let vnSearchMode='communities',vnSearchTimer=0,vnSearchSerial=0;
 function vnOpenSearch(){document.getElementById('vnSearchOverlay').hidden=false;document.body.style.overflow='hidden';vnSearchTab('communities');setTimeout(()=>document.getElementById('vnGlobalSearchInput')?.focus(),50)}
 function vnCloseSearch(){document.getElementById('vnSearchOverlay').hidden=true;document.body.style.overflow='';document.getElementById('vnGlobalSearchInput').value=''}
@@ -3388,3 +3410,10 @@ window.addEventListener('load',vnUpdateHomeAvatar);
 @media(max-width:370px){.vn-shelf{padding-top:10px!important}.vn-community-tile .vn-tile-icon{top:-6px!important;left:-6px!important;width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important}}
 </style>
 </body></html>
+<style id="vn-home-shelf-alignment-and-ranking-fix">
+/* Stable horizontal shelf alignment; reserve a top gutter for the overlapping square badge. */
+.vn-shelf{box-sizing:border-box!important;padding:17px 20px 12px!important;gap:12px!important;overflow-x:auto!important;overflow-y:hidden!important;scroll-padding-left:20px!important;}
+.vn-community-tile{flex-shrink:0!important;margin:0!important;overflow:visible!important;}
+.vn-community-tile .vn-tile-icon{top:-8px!important;left:-8px!important;width:38px!important;height:38px!important;min-width:38px!important;min-height:38px!important;border-radius:9px!important;}
+@media(max-width:370px){.vn-shelf{padding:16px 18px 11px!important;gap:10px!important}.vn-community-tile .vn-tile-icon{top:-7px!important;left:-7px!important;width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important}}
+</style>
