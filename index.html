@@ -3623,6 +3623,34 @@ async function vnDirectoryJoin(id){await toggleOnlineJoin(id);vnRenderCommunityD
 document.addEventListener('keydown',e=>{const panel=document.getElementById('vnCommunityDirectory');if(e.key==='Escape'&&panel&&!panel.hidden)vnCloseCommunityDirectory();});
 </script>
 
+
+<style id="vn-final-user-requested-fixes-20261019">
+/* Final override: keep all feature artwork upright and make the orb truly circular. */
+#home .vn-feature-art, #home .vn-feature-art.art-communities, #home .vn-feature-art.art-chat, #home .vn-feature-art.art-profile {
+  border-radius:50%!important; transform:none!important; rotate:0deg!important; scale:1!important; skew:0deg!important;
+  clip-path:none!important; aspect-ratio:1/1!important; overflow:hidden!important;
+  width:98px!important; height:98px!important; min-width:98px!important; min-height:98px!important;
+  max-width:98px!important; max-height:98px!important; display:grid!important; place-items:center!important;
+}
+#home .vn-feature-art svg, #home .vn-feature-art svg * {
+  transform:none!important; rotate:0deg!important; scale:1!important;
+  transform-origin:50% 50%!important;
+}
+#home .vn-feature-art svg {width:44px!important;height:44px!important;display:block!important;}
+/* Slightly larger than the previous sizing: 3 cards and a visible part of card 4. */
+#home .vn-shelf {gap:9px!important;padding-left:14px!important;padding-right:14px!important;}
+#home .vn-shelf .vn-community-tile {
+  flex:0 0 calc((100vw - 44px)/3.25)!important;
+  width:calc((100vw - 44px)/3.25)!important;
+  max-width:calc((100vw - 44px)/3.25)!important;
+  height:calc((100vw - 44px)/3.25 * 1.30)!important;
+}
+@media(max-width:370px){
+ #home .vn-feature-art,#home .vn-feature-art.art-communities,#home .vn-feature-art.art-chat,#home .vn-feature-art.art-profile {width:82px!important;height:82px!important;min-width:82px!important;min-height:82px!important;max-width:82px!important;max-height:82px!important;}
+ #home .vn-feature-art svg {width:38px!important;height:38px!important;}
+ #home .vn-shelf .vn-community-tile {flex-basis:calc((100vw - 42px)/3.25)!important;width:calc((100vw - 42px)/3.25)!important;max-width:calc((100vw - 42px)/3.25)!important;height:calc((100vw - 42px)/3.25 * 1.30)!important;}
+}
+</style>
 </body></html>
 <style id="vn-home-shelf-alignment-and-ranking-fix">
 /* Stable horizontal shelf alignment; reserve a top gutter for the overlapping square badge. */
