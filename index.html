@@ -3255,7 +3255,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 /* Search result polish: clear avatar, community icon and proper chat preview */
 .vn-search-result{position:relative;gap:12px;min-height:72px;padding:12px 6px}
 .vn-search-result .vn-result-thumb{width:54px;height:54px;border-radius:15px;flex:0 0 54px}
-.vn-search-community-icon{position:absolute;left:45px;top:42px;width:29px;height:29px;border:2px solid #160d2b;border-radius:9px;background:#35225a;display:grid;place-items:center;overflow:hidden;color:#fff;font-size:15px;box-shadow:0 3px 10px #0005}
+.vn-search-community-icon{display:none!important}
 .vn-search-community-icon img{width:100%;height:100%;object-fit:cover}
 .vn-search-result-copy{display:block;min-width:0;flex:1;text-align:left}
 .vn-search-result-copy b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -3267,6 +3267,13 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .vn-chat-search-arrow{color:#bda1f3;font-size:28px;padding:0 7px}
 .vn-search-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}
 
+
+.vn-search-header{padding:12px 16px 10px;gap:12px;min-height:70px;box-sizing:border-box}
+.vn-search-field{height:46px;min-width:0;box-sizing:border-box}
+.vn-search-header>button{flex:0 0 auto;white-space:nowrap;padding:8px 2px}
+.vn-search-tabs button{min-width:0;white-space:nowrap}
+.vn-community-search-thumb{border-radius:15px;background:#35265a;color:#fff;font-size:28px}
+.vn-community-search-thumb img{width:100%;height:100%;object-fit:cover;border-radius:inherit}
 </style>
 
 <script id="vn-discover-home-logic">
@@ -3281,7 +3288,7 @@ async function vnPerformSearch(serial){
  const out=document.getElementById('vnGlobalSearchResults'),q=(document.getElementById('vnGlobalSearchInput').value||'').trim();if(!out)return;
  if(vnSearchMode==='communities'){
   const matches=(typeof onlineCommunities!=='undefined'?onlineCommunities:[]).filter(c=>(String(c.name||'')+' '+String(c.category||'')+' '+String(c.description||'')).toLowerCase().includes(q.toLowerCase())).slice(0,30);
-  out.innerHTML=matches.map(c=>{const icon=c.icon_url||c.community_icon_url||c.icon||c.emoji||'';const iconHtml=typeof icon==='string'&&/^https:\/\//i.test(icon)?`<img src="${safeText(icon)}" alt="">`:safeText(icon||'✦');return `<button class="vn-search-result" data-vn-community="${safeText(c.id)}"><span class="vn-result-thumb">${vnHomeCover(c)}</span><span class="vn-search-community-icon">${iconHtml}</span><span class="vn-search-result-copy"><b>${safeText(c.name)}</b><small>${safeText(c.category||'Community')}</small></span></button>`}).join('')||'<p>No matching communities found.</p>';return;
+  out.innerHTML=matches.map(c=>{const icon=c.icon_url||c.community_icon_url||c.icon||c.emoji||'✦';const iconHtml=typeof icon==='string'&&/^https:\/\//i.test(icon)?`<img src="${safeText(icon)}" alt="">`:safeText(icon||'✦');return `<button class="vn-search-result" data-vn-community="${safeText(c.id)}"><span class="vn-result-thumb vn-community-search-thumb">${iconHtml}</span><span class="vn-search-result-copy"><b>${safeText(c.name)}</b><small>${safeText(c.category||'Community')}</small></span></button>`}).join('')||'<p>No matching communities found.</p>';return;
  }
  if(q.length<1){out.innerHTML='<p>Type a name or username to search.</p>';return}
  if(typeof currentUser==='undefined'||!currentUser||typeof supabaseClient==='undefined'||!supabaseClient){out.innerHTML='<p>Sign in to search VibeNest.</p>';return}
