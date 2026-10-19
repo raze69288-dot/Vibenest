@@ -373,11 +373,6 @@ body.direct-chat-open #chatWindow .chat-compose button.join{
 .vn-feature-carousel{height:235px;position:relative;overflow:hidden;margin:0 0 8px;background:#170b38;touch-action:pan-y;user-select:none}.vn-feature-slide{position:absolute;inset:0;padding:25px 21px 34px;opacity:0;pointer-events:none;transform:translateX(24px);transition:transform .32s cubic-bezier(.2,.7,.2,1),opacity .25s ease;background:radial-gradient(circle at 85% 62%,#5524a7,transparent 40%),linear-gradient(135deg,#10082b,#21104c 70%,#170b37);cursor:pointer}.vn-feature-slide.is-active{opacity:1;pointer-events:auto;transform:translateX(0)}.vn-feature-slide h1{position:relative;z-index:1;font-size:clamp(29px,7vw,38px);line-height:1.02;letter-spacing:-1.2px;margin:14px 0 8px;color:#fff}.vn-feature-slide h1 em{font-style:normal;color:#8de1ed}.vn-feature-slide p{position:relative;z-index:1;max-width:205px;font-size:12px;line-height:1.5;color:#d2c5ec;margin:0}.vn-feature-kicker{font-size:9px;font-weight:850;letter-spacing:1.3px;color:#c7afff}.vn-feature-art{position:absolute;right:17px;top:57px;width:105px;height:105px;border-radius:32% 50% 45% 50%;display:grid;place-items:center;font-size:54px;color:#f1e6ff;background:linear-gradient(145deg,#9c68ed,#4c209b);box-shadow:0 12px 32px #0004,0 0 35px #8e52f044;transform:rotate(-10deg)}.art-chat{border-radius:50%;background:linear-gradient(145deg,#e4a4e5,#6944c0)}.art-profile{border-radius:28px;background:linear-gradient(145deg,#7de4e5,#6441bb)}.vn-feature-dots{position:absolute;z-index:5;bottom:12px;left:0;right:0;display:flex;justify-content:center;gap:7px}.vn-feature-dots button{width:7px;height:7px;padding:0;border:0;border-radius:50%;background:#786996}.vn-feature-dots button.is-active{background:#fff;transform:scale(1.12)}.vn-shelf-section{padding:12px 0 13px!important}.vn-shelf-section>h2,.vn-shelf-title{font-size:20px!important;margin:0 18px 12px!important}.vn-shelf{gap:11px!important;padding:0 18px 7px!important}.vn-community-tile{flex-basis:116px!important;width:116px!important;height:164px!important;border-radius:13px!important}.vn-tile-name{font-size:14px!important;bottom:10px!important}.vn-tile-image{font-size:43px!important}.vn-tile-icon{position:absolute;z-index:3;top:8px;left:8px;width:32px;height:32px;border-radius:10px;border:1px solid #ffffff75;background:#20143acc;display:grid;place-items:center;overflow:hidden;font-size:18px;box-shadow:0 3px 9px #0005}.vn-tile-icon img{width:100%;height:100%;object-fit:cover}.vn-discover-home{padding-bottom:10px!important}
 @media(max-width:370px){.vn-feature-carousel{height:205px}.vn-feature-slide{padding:20px 16px 30px}.vn-feature-art{right:-5px;opacity:.8;width:82px;height:82px}.vn-community-tile{flex-basis:108px!important;width:108px!important;height:152px!important}}
 @media(prefers-reduced-motion:reduce){.vn-feature-slide{transition:none}}
-/* Keep the home hero illustration clean and contained; remove the awkward rotated blob silhouette. */
-.vn-feature-art{border-radius:50%!important;transform:none!important;right:20px!important;top:58px!important;width:104px!important;height:104px!important;overflow:hidden!important;box-shadow:0 12px 32px #0004,0 0 30px #8e52f033!important;}
-.vn-feature-art.art-chat{border-radius:50%!important;}
-.vn-feature-art.art-profile{border-radius:50%!important;}
-@media(max-width:370px){.vn-feature-art{right:12px!important;top:58px!important;width:82px!important;height:82px!important;font-size:44px!important;}}
 </style>
 <style id="vn-community-icon-corner-final">
 /* Reference-style community icon badge: square, anchored to the card's top-left corner. */
@@ -386,88 +381,6 @@ body.direct-chat-open #chatWindow .chat-compose button.join{
 .vn-community-tile .vn-tile-icon{position:absolute!important;top:0!important;left:0!important;right:auto!important;bottom:auto!important;transform:translate(-1px,-1px)!important;width:39px!important;height:39px!important;min-width:39px!important;min-height:39px!important;margin:0!important;padding:0!important;border-radius:9px!important;border:1px solid rgba(255,255,255,.45)!important;box-shadow:0 2px 7px #0005!important;outline:none!important;background:#241638!important;overflow:hidden!important;z-index:8!important;display:grid!important;place-items:center!important;box-sizing:border-box!important}
 .vn-community-tile .vn-tile-icon img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;border-radius:8px!important}
 @media(max-width:370px){.vn-community-tile .vn-tile-icon{width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important}}
-</style>
-<style id="vibenest-home-final-polish">
-/* Slightly smaller community cards while keeping three comfortably visible. */
-.vn-shelf{gap:8px!important;padding:14px 15px 10px!important;scroll-padding-left:15px!important;}
-.vn-community-tile{flex:0 0 calc((100vw - 66px)/3)!important;width:calc((100vw - 66px)/3)!important;height:calc((100vw - 66px)/3 * 1.38)!important;}
-/* Blend the profile/search header into the rotating hero advertisement. */
-#home .vn-home-topline{border-bottom:0!important;box-shadow:none!important;margin-bottom:0!important;}
-#home .vn-home-hero{margin-top:0!important;border-top:0!important;}
-@media(max-width:370px){.vn-shelf{gap:7px!important;padding-left:13px!important;padding-right:13px!important}.vn-community-tile{flex-basis:calc((100vw - 54px)/3)!important;width:calc((100vw - 54px)/3)!important;height:calc((100vw - 54px)/3 * 1.38)!important;}}
-</style>
-
-<style id="vn-final-card-size-and-seamless-header">
-/* Compact community shelves: three cards should fit comfortably across a phone. */
-.vn-shelf{gap:9px!important;padding-left:15px!important;padding-right:15px!important;overflow-x:auto!important;overflow-y:hidden!important;}
-.vn-community-tile{flex:0 0 clamp(108px,24vw,156px)!important;width:clamp(108px,24vw,156px)!important;height:clamp(149px,33.1vw,215px)!important;}
-.vn-community-tile .vn-tile-icon{top:-5px!important;left:-5px!important;width:33px!important;height:33px!important;min-width:33px!important;min-height:33px!important;}
-/* One continuous color field behind the profile/search controls and rotating feature banner. */
-.vn-discover-home{background:radial-gradient(ellipse at 88% 24%,rgba(83,35,164,.55),transparent 43%),radial-gradient(ellipse at 5% 78%,rgba(48,27,105,.45),transparent 48%),linear-gradient(180deg,#13092f 0%,#170b3b 52%,#100827 100%)!important;}
-.vn-discover-bar{background:transparent!important;border:0!important;border-bottom:0!important;box-shadow:none!important;backdrop-filter:none!important;-webkit-backdrop-filter:none!important;}
-.vn-feature-carousel{margin-top:0!important;border-top:0!important;border-bottom:0!important;background:transparent!important;}
-.vn-feature-slide{background:radial-gradient(circle at 85% 62%,rgba(85,36,167,.72),transparent 42%),linear-gradient(135deg,rgba(16,8,43,.25),rgba(33,16,76,.35) 70%,rgba(23,11,55,.25))!important;}
-@media(max-width:370px){.vn-community-tile{flex-basis:clamp(100px,26vw,118px)!important;width:clamp(100px,26vw,118px)!important;height:clamp(138px,35.9vw,163px)!important;}.vn-shelf{gap:8px!important;padding-left:13px!important;padding-right:13px!important;}}
-</style>
-
-<style id="vn-home-ad-upright-icons-and-3point5-cards-20261019">
-/* The original text glyphs looked visually rotated across fonts; use geometrically aligned SVG symbols. */
-#home #vnFeatureCarousel .vn-feature-art,
-#home .vn-feature-carousel .vn-feature-art{
-  width:92px!important;height:92px!important;min-width:92px!important;min-height:92px!important;
-  max-width:92px!important;max-height:92px!important;aspect-ratio:1/1!important;
-  right:18px!important;top:55px!important;
-  border-radius:50%!important;
-  transform:none!important;rotate:0deg!important;scale:1!important;skew:0deg!important;
-  clip-path:circle(50% at 50% 50%)!important;
-  animation:none!important;
-  display:grid!important;place-items:center!important;
-  padding:0!important;line-height:1!important;overflow:hidden!important;
-  box-sizing:border-box!important;
-}
-#home #vnFeatureCarousel .vn-feature-art.art-communities{
-  background:radial-gradient(circle at 32% 25%,#a975ff 0%,#854be0 47%,#5525aa 100%)!important;
-}
-#home #vnFeatureCarousel .vn-feature-art.art-chat{
-  background:radial-gradient(circle at 32% 25%,#e7a9e7 0%,#b278db 47%,#7650bf 100%)!important;
-}
-#home #vnFeatureCarousel .vn-feature-art.art-profile{
-  background:radial-gradient(circle at 32% 25%,#aa8ae9 0%,#8560d0 55%,#6643ac 100%)!important;
-}
-#home #vnFeatureCarousel .vn-feature-art::before,
-#home #vnFeatureCarousel .vn-feature-art::after,
-#home .vn-feature-carousel .vn-feature-art::before,
-#home .vn-feature-carousel .vn-feature-art::after{content:none!important;display:none!important;transform:none!important;rotate:0deg!important}
-#home #vnFeatureCarousel .vn-feature-art svg,
-#home .vn-feature-carousel .vn-feature-art svg{
-  display:block!important;position:static!important;width:43px!important;height:43px!important;
-  min-width:43px!important;min-height:43px!important;max-width:43px!important;max-height:43px!important;
-  margin:0!important;padding:0!important;transform:none!important;rotate:0deg!important;scale:1!important;
-  clip-path:none!important;overflow:visible!important;
-}
-#home #vnFeatureCarousel .vn-feature-art svg path,
-#home .vn-feature-carousel .vn-feature-art svg path{transform:none!important;transform-box:fill-box!important;transform-origin:center!important}
-/* Three full cards plus part of the next card, accounting for shelf padding and gaps. */
-#home .vn-shelf{gap:8px!important;padding-left:12px!important;padding-right:12px!important;scroll-padding-left:12px!important}
-#home .vn-shelf .vn-community-tile{
-  flex:0 0 calc((100vw - 40px)/3.25)!important;
-  width:calc((100vw - 40px)/3.25)!important;
-  max-width:calc((100vw - 40px)/3.25)!important;
-  height:calc((100vw - 40px)/3.25 * 1.36)!important;
-}
-@media(max-width:370px){
- #home #vnFeatureCarousel .vn-feature-art,#home .vn-feature-carousel .vn-feature-art{width:76px!important;height:76px!important;min-width:76px!important;min-height:76px!important;max-width:76px!important;max-height:76px!important;right:12px!important;top:52px!important}
- #home #vnFeatureCarousel .vn-feature-art svg,#home .vn-feature-carousel .vn-feature-art svg{width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important;max-width:36px!important;max-height:36px!important}
- #home .vn-shelf .vn-community-tile{flex-basis:calc((100vw - 40px)/3.25)!important;width:calc((100vw - 40px)/3.25)!important;max-width:calc((100vw - 40px)/3.25)!important;height:calc((100vw - 40px)/3.25 * 1.36)!important}
-}
-</style>
-
-<style id="vn-community-card-size-final">
-/* Final home shelf sizing: slightly larger in both directions, with three full cards and a peek of the fourth. */
-.vn-shelf{gap:10px!important;padding-left:16px!important;padding-right:16px!important;}
-.vn-community-tile{flex:0 0 calc((100vw - 48px)/2.85)!important;width:calc((100vw - 48px)/2.85)!important;height:calc((100vw - 48px)/2.85 * 1.38)!important;}
-@media(min-width:560px){.vn-community-tile{flex-basis:190px!important;width:190px!important;height:262px!important;}}
-@media(max-width:370px){.vn-shelf{gap:8px!important;padding-left:12px!important;padding-right:12px!important;}.vn-community-tile{flex-basis:calc((100vw - 40px)/2.85)!important;width:calc((100vw - 40px)/2.85)!important;height:calc((100vw - 40px)/2.85 * 1.38)!important;}}
 </style>
 </head><body class="vn-auth-booting">
 <style id="vibenest-opening-splash-style">
@@ -499,28 +412,14 @@ body.direct-chat-open #chatWindow .chat-compose button.join{
 
 <section id="home" class="page active vn-discover-home">
 <header class="vn-discover-bar"><button class="vn-home-user" id="vnHomeProfileButton" onclick="go('profile')" aria-label="My profile"><span id="vnHomeProfileFallback">◉</span><img id="vnHomeProfileImage" alt="" hidden></button><button class="vn-search-trigger" onclick="vnOpenSearch()" aria-label="Search VibeNest"><span>⌕</span><span>Search VibeNest</span><b>⌄</b></button><button class="vn-home-bell" onclick="go('notifications');loadNotifications()" aria-label="Notifications"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg><span id="homeNotificationBadge" class="nav-badge" style="display:none">0</span></button></header>
-<div class="vn-feature-carousel" id="vnFeatureCarousel" aria-label="VibeNest featured highlights" tabindex="0"><article class="vn-feature-slide is-active" data-feature="0" onclick="go('communities')"><span class="vn-feature-kicker">YOUR PEOPLE · YOUR SPACE</span><h1>Find your<br><em>kind of people.</em></h1><p>Discover communities made for every vibe.</p><div class="vn-feature-art art-communities" aria-hidden="true"><svg viewBox="0 0 100 100" focusable="false" aria-hidden="true"><path d="M50 4 C55 28 72 45 96 50 C72 55 55 72 50 96 C45 72 28 55 4 50 C28 45 45 28 50 4 Z"/></svg></div></article><article class="vn-feature-slide" data-feature="1" onclick="go('chats')"><span class="vn-feature-kicker">GOOD VIBES, REAL CONNECTIONS</span><h1>Your next<br><em>conversation.</em></h1><p>Meet your people and keep the conversation going.</p><div class="vn-feature-art art-chat" aria-hidden="true"><svg viewBox="0 0 100 100" focusable="false" aria-hidden="true"><path d="M50 86 C39 75 13 56 13 34 C13 20 23 12 35 12 C43 12 48 17 50 25 C52 17 57 12 65 12 C77 12 87 20 87 34 C87 56 61 75 50 86 Z" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div></article><article class="vn-feature-slide" data-feature="2" onclick="go('profile')"><span class="vn-feature-kicker">MAKE IT YOURS</span><h1>Your vibe.<br><em>Your profile.</em></h1><p>Show the community what makes you, you.</p><div class="vn-feature-art art-profile" aria-hidden="true"><svg viewBox="0 0 100 100" focusable="false" aria-hidden="true"><path d="M50 6 L60 40 L94 50 L60 60 L50 94 L40 60 L6 50 L40 40 Z"/></svg></div></article><div class="vn-feature-dots" aria-label="Choose featured card"><button class="is-active" aria-label="Feature 1" onclick="event.stopPropagation();vnSetFeature(0)"></button><button aria-label="Feature 2" onclick="event.stopPropagation();vnSetFeature(1)"></button><button aria-label="Feature 3" onclick="event.stopPropagation();vnSetFeature(2)"></button></div></div>
+<div class="vn-feature-carousel" id="vnFeatureCarousel" aria-label="VibeNest featured highlights" tabindex="0"><article class="vn-feature-slide is-active" data-feature="0" onclick="go('communities')"><span class="vn-feature-kicker">YOUR PEOPLE · YOUR SPACE</span><h1>Find your<br><em>kind of people.</em></h1><p>Discover communities made for every vibe.</p><div class="vn-feature-art art-communities" aria-hidden="true">✦</div></article><article class="vn-feature-slide" data-feature="1" onclick="go('chats')"><span class="vn-feature-kicker">GOOD VIBES, REAL CONNECTIONS</span><h1>Your next<br><em>conversation.</em></h1><p>Meet your people and keep the conversation going.</p><div class="vn-feature-art art-chat" aria-hidden="true">♡</div></article><article class="vn-feature-slide" data-feature="2" onclick="go('profile')"><span class="vn-feature-kicker">MAKE IT YOURS</span><h1>Your vibe.<br><em>Your profile.</em></h1><p>Show the community what makes you, you.</p><div class="vn-feature-art art-profile" aria-hidden="true">✧</div></article><div class="vn-feature-dots" aria-label="Choose featured card"><button class="is-active" aria-label="Feature 1" onclick="event.stopPropagation();vnSetFeature(0)"></button><button aria-label="Feature 2" onclick="event.stopPropagation();vnSetFeature(1)"></button><button aria-label="Feature 3" onclick="event.stopPropagation();vnSetFeature(2)"></button></div></div>
 <section class="vn-shelf-section"><h2>🏆 Top Picks</h2><div id="vnTopPicks" class="vn-shelf" aria-label="Top communities"></div></section>
 <section class="vn-shelf-section"><h2>Most Members</h2><div id="vnMostMembers" class="vn-shelf" aria-label="Communities with most members"></div></section>
 <section class="vn-shelf-section"><h2>Recently Created</h2><div id="vnRecentlyCreated" class="vn-shelf" aria-label="Recently created communities"></div></section>
 
 </section>
 <div id="vnSearchOverlay" class="vn-search-overlay" hidden><div class="vn-search-header"><label class="vn-search-field"><span>⌕</span><input id="vnGlobalSearchInput" placeholder="Search communities or people" autocomplete="off" oninput="vnSearchChanged()"></label><button onclick="vnCloseSearch()">Cancel</button></div><div class="vn-search-tabs" role="tablist"><button class="selected" data-vn-search-tab="communities" onclick="vnSearchTab('communities')">Communities</button><button data-vn-search-tab="users" onclick="vnSearchTab('users')">Users</button><button data-vn-search-tab="chats" onclick="vnSearchTab('chats')">Chats</button></div><div id="vnGlobalSearchResults" class="vn-search-results"><p>Search VibeNest to find your people.</p></div></div>
-<section id="communities" class="page vn-communities-page">
-<header class="vn-discover-bar vn-community-topbar"><button class="vn-home-user" id="vnCommunityProfileButton" onclick="go('profile')" aria-label="My profile"><span id="vnCommunityProfileFallback">◉</span><img id="vnCommunityProfileImage" alt="" hidden></button><button class="vn-search-trigger" onclick="vnOpenSearch()" aria-label="Search VibeNest"><span>⌕</span><span>Search VibeNest</span></button><button class="vn-home-bell" onclick="go('notifications');loadNotifications()" aria-label="Notifications"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg></button></header>
-<div class="vn-community-page-content">
-<section id="vnMyCommunitiesSection" class="vn-my-communities" hidden><h1>My Communities</h1><div id="vnJoinedCommunities" class="vn-joined-row"></div></section>
-<div id="vnNoJoinedCommunities" class="vn-no-joined" hidden><span class="vn-no-joined-mark">✦</span><b>You haven't joined any Communities yet.</b><p>Find your people and join a space that feels like you.</p></div>
-<button class="vn-create-community-cta" onclick="createCommunity()"><span aria-hidden="true">▣<b>＋</b></span>Create Your Own</button>
-<div class="vn-recommended-heading"><span></span><h2>Recommended</h2><span></span></div>
-<div id="vnRecommendedCommunities" class="vn-recommended-grid"></div>
-</div></section>
-<section id="vnCommunityDirectory" class="vn-community-directory" hidden aria-label="Explore all communities">
- <header class="vn-directory-header"><h1>Explore communities</h1></header>
- <div class="vn-directory-controls"><label class="vn-directory-search"><span aria-hidden="true">⌕</span><input id="vnDirectorySearch" type="search" placeholder="Search communities…" autocomplete="off" oninput="vnRenderCommunityDirectory()"><select id="vnDirectoryCategory" aria-label="Filter by category" onchange="vnRenderCommunityDirectory()"><option value="all">All</option></select></label></div>
- <div id="vnDirectoryCategoryChips" class="vn-directory-chips" aria-label="Community categories"></div>
- <p id="vnDirectoryCount" class="vn-directory-count"></p><div id="vnDirectoryGrid" class="vn-directory-grid"></div>
-</section>
+<section id="communities" class="page"><div class="community-hub"><div class="community-hub-hero"><div class="community-hub-kicker">YOUR PEOPLE · YOUR SPACE</div><h1>Find your <em>community.</em></h1><p>Join the conversation, share your interests, and create a room for your people.</p><div class="community-hub-stats"><div><b id="communityHubCount">—</b><span>communities</span></div><div><b id="communityPeopleCount">—</b><span>people joined</span></div></div><button class="btn community-create-cta" onclick="createCommunity()">＋ Create a community</button><div class="community-hero-orb">✳</div></div><div class="community-discover-head"><div><span class="community-hub-kicker">EXPLORE</span><h2>Spaces worth joining</h2></div></div><div class="community-search-wrap"><span>⌕</span><input id="search" placeholder="Search communities, topics..." oninput="renderCommunities()"></div><div class="community-filter-row"><select id="communityCategoryFilter" aria-label="Filter communities by category" onchange="renderCommunities()"><option value="">All categories</option><option>Anime</option><option>Gaming</option><option>Art</option><option>Music</option><option>Books</option><option>Movies &amp; TV</option><option>Technology</option><option>Sports</option><option>Study</option><option>Roleplay</option><option>Creators</option><option>General</option></select><select id="communitySort" aria-label="Sort communities" onchange="renderCommunities()"><option value="name-asc">Name A–Z</option><option value="newest">Newest first</option><option value="oldest">Oldest first</option></select></div><div id="discoverGrid" class="community-discover-grid"></div></div></section>
 <section id="create" class="page"><div class="simple"><h1>Create a post ✨</h1><p class="muted">Choose one of your joined communities first. You can write your post inside that community.</p><div id="createCommunityChoices"></div></div></section>
 <section id="community" class="page"><div class="community-detail"><button class="community-back" onclick="go('communities')">← All communities</button><div id="communityDetailContent"></div><section class="room-hub"><div class="room-hub-heading"><div><span class="community-hub-kicker">TALK TOGETHER</span><h2>Community chatrooms</h2><p>Small live conversations with up to 100 members in each room.</p></div><button class="btn" id="createRoomButton" onclick="createCommunityRoom()">＋ New room</button></div><div id="communityRooms" class="community-rooms"><div class="room-empty">Join this community to explore its chatrooms.</div></div></section><div class="room-chat-panel" id="communityRoomChatPanel" style="display:none"><div class="room-chat-head"><button class="join" onclick="closeCommunityRoom()">← Rooms</button><div><b id="communityRoomTitle">Room</b><div class="muted" id="communityRoomMeta">Community chat · max 100</div></div></div><div class="room-chat-messages" id="communityRoomMessages"></div><form class="room-chat-compose" onsubmit="sendCommunityRoomMessage(event)"><input id="communityRoomMessageInput" maxlength="1500" placeholder="Say something to the room…" autocomplete="off"><button class="btn" type="submit">Send</button></form></div><div class="community-posts-heading"><div><span class="community-hub-kicker">SHARE SOMETHING</span><h2>Community posts</h2></div><button class="btn" id="communityPostButton" onclick="toggleCommunityComposer()">＋ Create post</button></div><div id="communityComposer" class="card vn-post-composer" style="display:none;margin:12px 0" role="region" aria-label="Create community post">
  <div class="vn-composer-head"><div><span class="community-hub-kicker">CREATE SOMETHING</span><h3>Share with your community</h3><p class="muted">Choose one or more ways to post.</p></div><button type="button" class="vn-composer-close" onclick="closeCommunityComposer()" aria-label="Close post composer" title="Cancel posting">✕</button></div>
@@ -833,7 +732,7 @@ function communityCoverMarkup(c,detail=false){
 }
 async function ensureStarterCommunities(){
  if(!supabaseClient || !currentUser) return;
- const {data,error}=await supabaseClient.from('communities').select('*').order('created_at',{ascending:true});
+ const {data,error}=await supabaseClient.from('communities').select('id,name,description,category,created_by,created_at,cover_url').order('created_at',{ascending:true});
  if(error){console.error(error);showToast('Could not load communities');return;}
  onlineCommunities=(data||[]).filter(c=>!['anime haven','cozy gamers','art club','late night tunes'].includes(String(c.name||'').trim().toLowerCase()));
  await Promise.all([loadOnlineMemberships(),loadTotalCommunityPeople()]);
@@ -2657,14 +2556,6 @@ renderCommunityDetail=function(){initializeCommunitySections();vnOldRenderCommun
       try{history.pushState({...history.state,vnPage:active},'',location.href);}catch(e){}
       return;
     }
-    // Android/browser Back or swipe closes the community explorer and returns to Communities.
-    const communityDirectory=document.getElementById('vnCommunityDirectory');
-    if(communityDirectory && !communityDirectory.hidden){
-      if(typeof vnCloseCommunityDirectory==='function')vnCloseCommunityDirectory(true);
-      const active=document.querySelector('.page.active')?.id||currentPage||'communities';
-      try{history.pushState({...history.state,vnPage:active},'',location.href);}catch(e){}
-      return;
-    }
     // An open direct message is a nested screen: Android/browser Back returns to the chats inbox first.
     if (document.body.classList.contains('direct-chat-open') && typeof window.closeChatWindow === 'function') {
       window.closeChatWindow();
@@ -3485,7 +3376,7 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&!document.getElemen
 window.addEventListener('load',()=>vnRenderHomeShelves());
 </script><script id="vn-home-feature-and-avatar">
 function vnSetFeature(index){const slides=[...document.querySelectorAll('.vn-feature-slide')],dots=[...document.querySelectorAll('.vn-feature-dots button')];if(!slides.length)return;index=(index+slides.length)%slides.length;slides.forEach((el,i)=>el.classList.toggle('is-active',i===index));dots.forEach((el,i)=>el.classList.toggle('is-active',i===index));}
-(function(){const el=document.getElementById('vnFeatureCarousel');if(!el)return;let x=0,y=0,didSwipe=false,autoTimer=null;const current=()=>Number(document.querySelector('#vnFeatureCarousel .vn-feature-slide.is-active')?.dataset.feature)||0;const startAuto=()=>{if(autoTimer)clearInterval(autoTimer);autoTimer=setInterval(()=>{if(!document.hidden)vnSetFeature(current()+1)},4500)};const manualChange=(n)=>{vnSetFeature(n);startAuto()};el.addEventListener('touchstart',e=>{const t=e.changedTouches[0];x=t.clientX;y=t.clientY;didSwipe=false},{passive:true});el.addEventListener('touchend',e=>{const t=e.changedTouches[0],dx=t.clientX-x,dy=t.clientY-y;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)*1.15){didSwipe=true;manualChange(current()+(dx<0?1:-1));setTimeout(()=>{didSwipe=false},450)}},{passive:true});el.addEventListener('click',e=>{if(didSwipe){e.preventDefault();e.stopPropagation();didSwipe=false}},true);el.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){e.preventDefault();manualChange(current()+1)}if(e.key==='ArrowLeft'){e.preventDefault();manualChange(current()-1)}});el.querySelectorAll('.vn-feature-dots button').forEach((dot,i)=>dot.addEventListener('click',()=>manualChange(i)));el.addEventListener('mouseenter',()=>{if(autoTimer)clearInterval(autoTimer)});el.addEventListener('mouseleave',startAuto);document.addEventListener('visibilitychange',()=>{if(document.hidden){if(autoTimer)clearInterval(autoTimer)}else startAuto()});startAuto()})();
+(function(){const el=document.getElementById('vnFeatureCarousel');if(!el)return;let x=0,y=0,didSwipe=false;el.addEventListener('touchstart',e=>{const t=e.changedTouches[0];x=t.clientX;y=t.clientY;didSwipe=false},{passive:true});el.addEventListener('touchend',e=>{const t=e.changedTouches[0],dx=t.clientX-x,dy=t.clientY-y;if(Math.abs(dx)>40&&Math.abs(dx)>Math.abs(dy)*1.15){didSwipe=true;vnSetFeature((Number(document.querySelector('.vn-feature-slide.is-active')?.dataset.feature)||0)+(dx<0?1:-1));setTimeout(()=>{didSwipe=false},450)}},{passive:true});el.addEventListener('click',e=>{if(didSwipe){e.preventDefault();e.stopPropagation();didSwipe=false}},true);el.addEventListener('keydown',e=>{if(e.key==='ArrowRight'){e.preventDefault();vnSetFeature((Number(document.querySelector('.vn-feature-slide.is-active')?.dataset.feature)||0)+1)}if(e.key==='ArrowLeft'){e.preventDefault();vnSetFeature((Number(document.querySelector('.vn-feature-slide.is-active')?.dataset.feature)||0)-1)}})})();
 function vnUpdateHomeAvatar(){const img=document.getElementById('vnHomeProfileImage'),fallback=document.getElementById('vnHomeProfileFallback');if(!img)return;const url=myProfile?.avatar_url||currentUser?.user_metadata?.avatar_url||currentUser?.user_metadata?.picture||'';if(url){img.src=url;img.hidden=false;if(fallback)fallback.style.display='none'}else{img.removeAttribute('src');img.hidden=true;if(fallback)fallback.style.display=''} }
 const vnOriginalRenderMyProfile=renderMyProfile;renderMyProfile=function(...args){const result=vnOriginalRenderMyProfile.apply(this,args);vnUpdateHomeAvatar();return result};
 const vnOriginalLoadMyProfile=loadMyProfile;loadMyProfile=async function(...args){const result=await vnOriginalLoadMyProfile.apply(this,args);vnUpdateHomeAvatar();return result};
@@ -3554,111 +3445,6 @@ nav.bottom>button.nav-tap .nav-icon{filter:drop-shadow(0 0 8px rgba(195,158,255,
 (()=>{const nav=document.querySelector('nav.bottom');if(!nav)return;nav.querySelectorAll('button[data-tab]').forEach(btn=>{btn.addEventListener('click',()=>{nav.querySelectorAll('button[data-tab]').forEach(b=>b.classList.remove('nav-tap'));void btn.offsetWidth;btn.classList.add('nav-tap');setTimeout(()=>btn.classList.remove('nav-tap'),380)})});})();
 </script>
 
-
-<style id="vn-communities-tab-redesign">
-#communities.vn-communities-page{min-height:100%;padding:0 0 calc(94px + env(safe-area-inset-bottom));background:#100b18!important;background-image:radial-gradient(ellipse at 0 0,#201052 0,transparent 42%),radial-gradient(ellipse at 100% 100%,#1b0c42 0,transparent 40%)!important;color:#f8f2ff;overflow-x:hidden}
-.vn-community-topbar{position:relative!important;top:auto!important;background:transparent!important;border-bottom:0!important;backdrop-filter:none!important;padding:10px 14px!important;min-height:68px}
-.vn-community-topbar .vn-search-trigger{height:44px}
-.vn-community-topbar .vn-home-user{flex:0 0 43px}
-.vn-community-topbar .vn-home-bell{flex:0 0 36px}
-.vn-community-topbar .vn-home-bell svg{width:25px;height:25px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.vn-community-topbar .vn-home-user img{width:100%;height:100%;object-fit:cover;border-radius:50%}
-.vn-community-topbar .vn-home-user img[hidden]{display:none}
-.vn-community-topbar .vn-home-user:has(img:not([hidden])) #vnCommunityProfileFallback{display:none}
-.vn-community-page-content{padding:5px 15px 28px;max-width:900px;margin:0 auto;box-sizing:border-box}
-.vn-my-communities{margin:7px 0 23px}
-.vn-my-communities[hidden],.vn-no-joined[hidden]{display:none!important}
-.vn-my-communities h1{font-size:25px;line-height:1.2;letter-spacing:-.5px;margin:0 0 18px;font-weight:850}
-.vn-joined-row{display:flex;gap:14px;overflow-x:auto;padding:0 2px 7px;scrollbar-width:none;overscroll-behavior-x:contain}
-.vn-joined-row::-webkit-scrollbar{display:none}
-.vn-joined-card,.vn-join-community-card{position:relative;flex:0 0 200px;width:200px;height:296px;min-width:0;border-radius:15px;overflow:hidden;border:1px solid #ffffff20;background:#21172f;color:#fff;padding:0;text-align:center;box-sizing:border-box;box-shadow:0 8px 18px #0002;scroll-snap-align:start}
-.vn-joined-card .vn-comm-cover,.vn-recommended-card .vn-comm-cover{position:absolute;inset:0;background:linear-gradient(145deg,#38255f,#120c22);display:block}
-.vn-comm-cover img{width:100%;height:100%;object-fit:cover;display:block}
-.vn-comm-cover:after{content:"";position:absolute;inset:42% 0 0;background:linear-gradient(transparent,#080512df)}
-.vn-comm-icon{position:absolute;z-index:2;top:0;left:0;width:66px;height:66px;display:grid;place-items:center;box-sizing:border-box;border-radius:0 0 13px 0;background:#211437;border:1px solid #a68acb;color:#fff;font-size:31px;line-height:1;box-shadow:0 4px 10px #0004;overflow:hidden}
-.vn-comm-icon img{width:100%;height:100%;object-fit:cover;display:block}
-.vn-comm-card-name{position:absolute;z-index:2;left:7px;right:7px;bottom:12px;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;line-clamp:2;overflow:hidden;text-overflow:ellipsis;overflow-wrap:anywhere;word-break:normal;white-space:normal;text-align:center;font-size:15px;line-height:1.2;font-weight:850;text-shadow:0 2px 5px #000b;max-height:2.4em}
-.vn-join-community-card{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px;background:rgba(151,135,184,.45);border:1px solid #ffffff10;color:#fff;font-size:23px;font-weight:850;line-height:1.25;padding:18px;white-space:normal}
-.vn-join-community-card .vn-join-plus{position:absolute;top:0;left:0;width:75px;height:75px;border-radius:0 0 15px 0;background:#fff;color:#d5d2da;display:grid;place-items:center;font-size:42px;font-weight:600}
-.vn-no-joined{min-height:176px;padding:33px 10px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:8px;color:#bdb0d1}
-.vn-no-joined-mark{display:none}
-.vn-no-joined b{font-size:16px;line-height:1.4;color:#bdb0d1;font-weight:800}
-.vn-no-joined p{font-size:12px;line-height:1.45;margin:0;max-width:270px;color:#9485ac}
-.vn-create-community-cta{width:calc(100% - 56px);min-height:78px;margin:0 auto 34px;display:flex;align-items:center;justify-content:center;gap:10px;border:2px solid #18e0d2;border-radius:7px;background:transparent;color:#19e6d6;font:inherit;font-size:19px;font-weight:900;box-shadow:0 0 0 1px #14d7c522 inset;cursor:pointer}
-.vn-create-community-cta>span{position:relative;display:inline-block;font-size:28px;line-height:1}
-.vn-create-community-cta>span b{position:absolute;right:-7px;bottom:-4px;font-size:22px;line-height:1;background:#100b18}
-.vn-recommended-heading{display:flex;align-items:center;gap:15px;margin:0 0 20px;color:#bdb0d1}
-.vn-recommended-heading span{height:1px;background:#a89ab8;opacity:.8;flex:1;min-width:0}
-.vn-recommended-heading h2{font-size:17px;line-height:1.2;margin:0;font-weight:850;white-space:nowrap}
-.vn-recommended-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 13px;align-items:stretch}
-.vn-recommended-card{position:relative;display:block;width:100%;height:clamp(190px,44vw,300px);min-width:0;border:1px solid #ffffff16;border-radius:14px;overflow:hidden;padding:0;background:linear-gradient(145deg,#38255f,#120c22);color:#fff;text-align:center;box-shadow:0 7px 18px #0003;cursor:pointer}
-.vn-recommended-card .vn-comm-icon{width:68px;height:68px;border-radius:0 0 15px 0;font-size:30px}
-.vn-recommended-card .vn-comm-card-name{bottom:12px;font-size:clamp(12px,3.5vw,16px);left:5px;right:5px;line-height:1.18}
-.vn-communities-empty{grid-column:1/-1;padding:30px 15px;text-align:center;color:#a99abd;border:1px dashed #4c3867;border-radius:14px;font-size:13px;line-height:1.5}
-@media(max-width:380px){.vn-community-page-content{padding-left:12px;padding-right:12px}.vn-recommended-grid{gap:10px 9px}.vn-recommended-card{height:clamp(175px,47vw,235px);border-radius:12px}.vn-recommended-card .vn-comm-icon{width:55px;height:55px;font-size:25px}.vn-joined-card,.vn-join-community-card{flex-basis:184px;width:184px;height:270px}.vn-comm-icon{width:59px;height:59px}.vn-create-community-cta{width:calc(100% - 38px);min-height:68px;margin-bottom:29px}}
-@media(min-width:560px){.vn-recommended-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.vn-recommended-card{height:300px}}
-</style>
-<script id="vn-communities-tab-redesign-logic">
-function vnCommunityCategoryIcon(c){const raw=String(c.category||c.cat||'').toLowerCase();if(raw.includes('anime')||raw.includes('movie')||raw.includes('tv'))return '✦';if(raw.includes('gaming'))return '🎮';if(raw.includes('art')||raw.includes('creator'))return '🎨';if(raw.includes('music'))return '♫';if(raw.includes('book')||raw.includes('study'))return '📚';if(raw.includes('tech'))return '⌘';if(raw.includes('sport'))return '⚽';if(raw.includes('roleplay'))return '✧';return '✦'}
-function vnCommunityIconMarkup(c){const icon=c.community_icon_url||c.icon_url||c.iconUrl||c.icon_image_url||c.avatar_url||c.icon||'';if(typeof icon==='string'&&/^https?:\/\//i.test(icon))return `<img src="${safeText(icon)}" alt="${safeText(c.name||'Community')} icon" loading="lazy" onerror="this.parentElement.textContent='✦'">`;if(typeof icon==='string'&&icon.length>0&&icon.length<8&&/[\u{1F300}-\u{1FAFF}]/u.test(icon))return safeText(icon);return '✦'}
-function vnCommunityCoverMarkup(c){return `<span class="vn-comm-cover">${c.cover_url?`<img src="${safeText(c.cover_url)}" alt="" loading="lazy" onerror="this.style.display='none'">`:''}</span>`}
-function vnCommunityTileMarkup(c,joined=false){return `<button type="button" class="${joined?'vn-joined-card':'vn-recommended-card'}" data-vn-community="${safeText(c.id)}" aria-label="Open ${safeText(c.name||'community')}">${vnCommunityCoverMarkup(c)}<span class="vn-comm-icon">${vnCommunityIconMarkup(c)}</span><span class="vn-comm-card-name">${safeText(c.name||'Community')}</span></button>`}
-let vnShowAllJoinedCommunities=false;function vnToggleJoinedCommunities(){vnShowAllJoinedCommunities=!vnShowAllJoinedCommunities;vnRenderCommunitiesTab();}function vnRenderCommunitiesTab(){const all=(typeof onlineCommunities!=='undefined'?onlineCommunities:[]).filter(c=>c&&c.id&&!['anime haven','cozy gamers','art club','late night tunes'].includes(String(c.name||'').trim().toLowerCase()));const joined=all.filter(c=>c.joined);const joinedSection=document.getElementById('vnMyCommunitiesSection'),joinedOut=document.getElementById('vnJoinedCommunities'),empty=document.getElementById('vnNoJoinedCommunities'),recommended=document.getElementById('vnRecommendedCommunities');if(!joinedSection||!joinedOut||!empty||!recommended)return;joinedSection.hidden=joined.length===0;empty.hidden=joined.length>0;if(joined.length){const shown=vnShowAllJoinedCommunities?joined:joined.slice(0,9);joinedOut.innerHTML=shown.map(c=>vnCommunityTileMarkup(c,true)).join('')+`<button type="button" class="vn-join-community-card" onclick="vnOpenCommunityDirectory()" aria-label="Browse all communities"><span class="vn-join-plus">＋</span><span>Join a<br>community</span></button>`+(joined.length>9?`<button type="button" class="vn-see-more-joined" onclick="vnToggleJoinedCommunities()">${vnShowAllJoinedCommunities?'Show less':'See more'}</button>`:'');}else{joinedOut.innerHTML='';vnShowAllJoinedCommunities=false;}const sorted=[...all].sort((a,b)=>{const ac=communityMemberCounts[a.id]||0,bc=communityMemberCounts[b.id]||0;return bc-ac||new Date(b.created_at||0)-new Date(a.created_at||0)});recommended.innerHTML=sorted.length?sorted.map(c=>vnCommunityTileMarkup(c,false)).join(''):'<div class="vn-communities-empty">No communities yet. Be the first to create one and bring your people together.</div>';const count=document.getElementById('communityHubCount');if(count)count.textContent=all.length;}
-const vnOldRenderOnlineCommunities=renderOnlineCommunities;renderOnlineCommunities=function(){if(typeof vnOldRenderOnlineCommunities==='function')vnOldRenderOnlineCommunities();vnRenderCommunitiesTab()};
-function vnUpdateCommunityAvatar(){const img=document.getElementById('vnCommunityProfileImage'),fallback=document.getElementById('vnCommunityProfileFallback');if(!img)return;const url=myProfile?.avatar_url||currentUser?.user_metadata?.avatar_url||currentUser?.user_metadata?.picture||'';if(url){img.src=url;img.hidden=false;if(fallback)fallback.style.display='none'}else{img.removeAttribute('src');img.hidden=true;if(fallback)fallback.style.display=''}}
-const vnPriorUpdateHomeAvatar=typeof vnUpdateHomeAvatar==='function'?vnUpdateHomeAvatar:null;vnUpdateHomeAvatar=function(){if(vnPriorUpdateHomeAvatar)vnPriorUpdateHomeAvatar();vnUpdateCommunityAvatar()};
-const vnPriorRenderMyProfile=renderMyProfile;renderMyProfile=function(...args){const result=vnPriorRenderMyProfile.apply(this,args);vnUpdateCommunityAvatar();return result};
-const vnPriorLoadMyProfile=loadMyProfile;loadMyProfile=async function(...args){const result=await vnPriorLoadMyProfile.apply(this,args);vnUpdateCommunityAvatar();return result};
-document.addEventListener('DOMContentLoaded',()=>{vnRenderCommunitiesTab();vnUpdateCommunityAvatar()});window.addEventListener('load',()=>{vnRenderCommunitiesTab();vnUpdateCommunityAvatar()});
-</script>
-
-
-<style id="vn-community-directory-styles">
-.vn-join-community-card{position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;cursor:pointer!important;background:linear-gradient(145deg,#34234e,#20152f)!important;border:1px solid #8b70a6!important;color:#f8f2ff!important;box-shadow:0 5px 14px #0003!important}
-.vn-join-community-card .vn-join-plus{position:absolute!important;top:-4px!important;left:-4px!important;width:40px!important;height:40px!important;min-width:40px!important;border-radius:9px!important;background:#241638!important;border:1px solid #a68acb!important;color:#fff!important;display:grid!important;place-items:center!important;font-size:27px!important;line-height:1!important;box-shadow:0 3px 8px #0005!important}
-.vn-community-directory[hidden]{display:none!important}.vn-community-directory{position:fixed;z-index:10050;inset:0;overflow-y:auto;overscroll-behavior:contain;padding:calc(12px + env(safe-area-inset-top)) 16px calc(28px + env(safe-area-inset-bottom));box-sizing:border-box;background:#100b18;background-image:radial-gradient(ellipse at 0 0,#261354 0,transparent 45%),radial-gradient(ellipse at 100% 100%,#1c0d40 0,transparent 42%);color:#f8f2ff}
-.vn-directory-header{display:flex;align-items:center;margin:0 0 14px;padding-top:2px}.vn-directory-header h1{font-size:22px;line-height:1.2;margin:0;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.vn-directory-controls{display:block;margin-bottom:10px}.vn-directory-search{height:49px;display:flex;align-items:center;gap:9px;padding:0 10px 0 14px;border:1px solid #5e477b;border-radius:15px;background:#211832;box-sizing:border-box}.vn-directory-search>span{font-size:25px;color:#cbb2ef;flex:0 0 auto}.vn-directory-search input{flex:1;width:100%;min-width:0;background:transparent;border:0;outline:0;color:#fff;font:inherit;font-size:14px}.vn-directory-search input::placeholder{color:#9d8bb4}.vn-directory-search select{flex:0 0 auto;max-width:94px;background:#2b1b40;border:1px solid #594071;border-radius:10px;color:#f8f2ff;padding:8px 6px;font:inherit;font-size:11px;outline:none}.vn-directory-chips{display:flex;gap:8px;overflow-x:auto;padding:1px 0 9px;scrollbar-width:none}.vn-directory-chips::-webkit-scrollbar{display:none}.vn-directory-chip{flex:0 0 auto;border:1px solid #594071;border-radius:999px;padding:8px 13px;background:#21152f;color:#c8b5df;font:inherit;font-size:12px;font-weight:750}.vn-directory-chip.active{background:#d3b4ff;border-color:#d3b4ff;color:#21152f}.vn-directory-count{font-size:12px;color:#9e8caf;margin:8px 2px 12px}.vn-directory-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px 9px;align-items:stretch}.vn-directory-card{position:relative;min-width:0;height:clamp(165px,44vw,215px);padding:0;border:1px solid #ffffff20;border-radius:12px;overflow:visible;background:#20152f;color:#fff;text-align:center;box-shadow:0 4px 12px #0003}.vn-directory-card-main{position:absolute;inset:0;border:0;border-radius:inherit;overflow:hidden;background:linear-gradient(145deg,#38255f,#120c22);padding:0;color:inherit}.vn-directory-card-main img.vn-directory-cover{width:100%;height:100%;object-fit:cover;display:block}.vn-directory-card-main:after{content:"";position:absolute;inset:42% 0 0;background:linear-gradient(transparent,#080512e8);pointer-events:none}.vn-directory-card-icon{position:absolute;z-index:2;left:-4px;top:-4px;width:38px;height:38px;border:1px solid #a68acb;border-radius:9px;background:#241638;display:grid;place-items:center;overflow:hidden;font-size:20px;box-shadow:0 3px 8px #0005}.vn-directory-card-icon img{width:100%;height:100%;object-fit:cover}.vn-directory-card-name{position:absolute;z-index:2;left:4px;right:4px;bottom:34px;font-size:12px;font-weight:850;line-height:1.15;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere;text-shadow:0 2px 5px #000}.vn-directory-join{position:absolute;z-index:4;left:5px;right:5px;bottom:5px;min-height:25px;padding:4px 3px;border:0;border-radius:6px;background:#20d33b;color:#fff;font:inherit;font-size:10px;font-weight:900}.vn-directory-join.joined{background:#3a2b4d;border:1px solid #9574b6;color:#e7d7ff}.vn-directory-empty{grid-column:1/-1;text-align:center;padding:36px 18px;border:1px dashed #5a426f;border-radius:15px;color:#b7a4cb;font-size:13px;line-height:1.5}
-@media(min-width:560px){.vn-directory-card{height:230px}.vn-community-directory{padding-left:24px;padding-right:24px}}
-</style>
-<script id="vn-community-directory-logic">
-let vnDirectorySelectedCategory='all';let vnDirectoryHistoryPushed=false;
-function vnCommunityCategories(){const all=(typeof onlineCommunities!=='undefined'?onlineCommunities:[]).filter(c=>c&&c.id);return [...new Set(all.map(c=>String(c.category||c.cat||'Other').trim()).filter(Boolean))].sort((a,b)=>a.localeCompare(b));}
-function vnOpenCommunityDirectory(){const panel=document.getElementById('vnCommunityDirectory');if(!panel)return;panel.hidden=false;document.body.style.overflow='hidden';vnDirectorySelectedCategory='all';const input=document.getElementById('vnDirectorySearch');if(input)input.value='';const select=document.getElementById('vnDirectoryCategory');if(select){select.innerHTML='<option value="all">All</option>'+vnCommunityCategories().map(c=>`<option value="${safeText(c)}">${safeText(c)}</option>`).join('');select.value='all';}if(!vnDirectoryHistoryPushed){try{history.pushState({...history.state,vnCommunityDirectory:true,vnPage:document.querySelector('.page.active')?.id||'communities'},'',location.href);vnDirectoryHistoryPushed=true;}catch(e){}}vnRenderCommunityDirectory();setTimeout(()=>document.getElementById('vnDirectorySearch')?.focus({preventScroll:true}),80);}
-function vnCloseCommunityDirectory(fromBack=false){const panel=document.getElementById('vnCommunityDirectory');if(!panel||panel.hidden)return;if(!fromBack&&vnDirectoryHistoryPushed){try{history.back();return;}catch(e){}}panel.hidden=true;document.body.style.overflow='';vnDirectoryHistoryPushed=false;}
-function vnChooseDirectoryCategory(category){vnDirectorySelectedCategory=category;const select=document.getElementById('vnDirectoryCategory');if(select)select.value=category;vnRenderCommunityDirectory();}
-function vnRenderCommunityDirectory(){const out=document.getElementById('vnDirectoryGrid');if(!out)return;const all=(typeof onlineCommunities!=='undefined'?onlineCommunities:[]).filter(c=>c&&c.id);const q=(document.getElementById('vnDirectorySearch')?.value||'').trim().toLowerCase();const category=document.getElementById('vnDirectoryCategory')?.value||vnDirectorySelectedCategory||'all';vnDirectorySelectedCategory=category;const posts=typeof onlinePosts!=='undefined'?onlinePosts:[],likes=typeof postLikeCounts!=='undefined'?postLikeCounts:{},comments=typeof postCommentCounts!=='undefined'?postCommentCounts:{},counts=typeof communityMemberCounts!=='undefined'?communityMemberCounts:{};const engagement=Object.create(null),activity=Object.create(null),now=Date.now();for(const post of posts){if(!post||!post.community_id)continue;const cid=String(post.community_id),ageDays=Math.max(0,(now-new Date(post.created_at||now).getTime())/86400000),recency=Math.max(.15,1-ageDays/14);engagement[cid]=(engagement[cid]||0)+((likes[post.id]||0)+2*(comments[post.id]||0)+1)*recency;activity[cid]=(activity[cid]||0)+recency;}const filtered=all.filter(c=>{const name=String(c.name||'').toLowerCase(),cat=String(c.category||c.cat||'Other'),desc=String(c.description||c.desc||'').toLowerCase();return (!q||(name+' '+cat.toLowerCase()+' '+desc).includes(q))&&(category==='all'||cat.toLowerCase()===category.toLowerCase());}).sort((a,b)=>{if(q||category!=='all')return Number(!!b.joined)-Number(!!a.joined)||String(a.name||'').localeCompare(String(b.name||''));return (engagement[b.id]||0)-(engagement[a.id]||0)||(activity[b.id]||0)-(activity[a.id]||0)||(counts[b.id]||0)-(counts[a.id]||0);});const visible=(q||category!=='all')?filtered:filtered.slice(0,6);const chips=document.getElementById('vnDirectoryCategoryChips');if(chips){const categories=vnCommunityCategories();chips.innerHTML=[['all','All'],...categories.map(c=>[c,c])].map(([value,label])=>`<button type="button" class="vn-directory-chip ${category.toLowerCase()===String(value).toLowerCase()?'active':''}" onclick="vnChooseDirectoryCategory('${safeText(value).replace(/'/g,'&#39;')}')">${safeText(label)}</button>`).join('');}const count=document.getElementById('vnDirectoryCount');if(count)count.textContent=(q||category!=='all')?`${filtered.length} ${filtered.length===1?'community':'communities'}`:`Top 6 communities · engagement and members`;out.innerHTML=visible.map(c=>{const cover=c.cover_url||c.banner_url||'';const icon=vnCommunityIconMarkup(c);const name=safeText(c.name||'Community');const joined=!!c.joined;return `<article class="vn-directory-card"><button type="button" class="vn-directory-card-main" onclick="openCommunityById('${safeText(c.id)}')" aria-label="Open ${name}">${cover?`<img class="vn-directory-cover" src="${safeText(cover)}" alt="" loading="lazy" onerror="this.style.display='none'">`:''}<span class="vn-directory-card-name">${name}</span></button><span class="vn-directory-card-icon">${icon}</span><button type="button" class="vn-directory-join ${joined?'joined':''}" onclick="event.stopPropagation();vnDirectoryJoin('${safeText(c.id)}')">${joined?'✓ Joined':'+ Join'}</button></article>`;}).join('')||'<div class="vn-directory-empty">No communities match that search. Try another name or category.</div>';}
-async function vnDirectoryJoin(id){await toggleOnlineJoin(id);vnRenderCommunityDirectory();vnRenderCommunitiesTab();}
-document.addEventListener('keydown',e=>{const panel=document.getElementById('vnCommunityDirectory');if(e.key==='Escape'&&panel&&!panel.hidden)vnCloseCommunityDirectory();});
-</script>
-
-
-<style id="vn-final-user-requested-fixes-20261019">
-/* Final override: keep all feature artwork upright and make the orb truly circular. */
-#home .vn-feature-art, #home .vn-feature-art.art-communities, #home .vn-feature-art.art-chat, #home .vn-feature-art.art-profile {
-  border-radius:50%!important; transform:none!important; rotate:0deg!important; scale:1!important; skew:0deg!important;
-  clip-path:none!important; aspect-ratio:1/1!important; overflow:hidden!important;
-  width:98px!important; height:98px!important; min-width:98px!important; min-height:98px!important;
-  max-width:98px!important; max-height:98px!important; display:grid!important; place-items:center!important;
-}
-#home .vn-feature-art svg, #home .vn-feature-art svg * {
-  transform:none!important; rotate:0deg!important; scale:1!important;
-  transform-origin:50% 50%!important;
-}
-#home .vn-feature-art svg {width:44px!important;height:44px!important;display:block!important;}
-/* Slightly larger than the previous sizing: 3 cards and a visible part of card 4. */
-#home .vn-shelf {gap:9px!important;padding-left:14px!important;padding-right:14px!important;}
-#home .vn-shelf .vn-community-tile {
-  flex:0 0 calc((100vw - 44px)/3.25)!important;
-  width:calc((100vw - 44px)/3.25)!important;
-  max-width:calc((100vw - 44px)/3.25)!important;
-  height:calc((100vw - 44px)/3.25 * 1.30)!important;
-}
-@media(max-width:370px){
- #home .vn-feature-art,#home .vn-feature-art.art-communities,#home .vn-feature-art.art-chat,#home .vn-feature-art.art-profile {width:82px!important;height:82px!important;min-width:82px!important;min-height:82px!important;max-width:82px!important;max-height:82px!important;}
- #home .vn-feature-art svg {width:38px!important;height:38px!important;}
- #home .vn-shelf .vn-community-tile {flex-basis:calc((100vw - 42px)/3.25)!important;width:calc((100vw - 42px)/3.25)!important;max-width:calc((100vw - 42px)/3.25)!important;height:calc((100vw - 42px)/3.25 * 1.30)!important;}
-}
-</style>
 </body></html>
 <style id="vn-home-shelf-alignment-and-ranking-fix">
 /* Stable horizontal shelf alignment; reserve a top gutter for the overlapping square badge. */
@@ -3678,246 +3464,9 @@ document.addEventListener('keydown',e=>{const panel=document.getElementById('vnC
 @media(max-width:370px){.vn-shelf{gap:8px!important;padding-left:13px!important;padding-right:13px!important}.vn-community-tile{flex-basis:calc((100vw - 42px)/3)!important;width:calc((100vw - 42px)/3)!important;height:calc((100vw - 42px)/3 * 1.38)!important}.vn-community-tile .vn-tile-icon{top:-5px!important;left:-5px!important;width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important}}
 </style>
 
-
-<style id="vn-final-home-blend-and-compact-cards-20261019">
-/* Header and featured carousel share one canvas so they read as a single surface. */
-#home .vn-discover-bar,
-#home header.vn-discover-bar{
-  background:#0e0915!important;background-color:#0e0915!important;background-image:none!important;
-  border-bottom:0!important;box-shadow:none!important;
-}
-#home #vnFeatureCarousel,
-#home .vn-feature-carousel{
-  background:#0e0915!important;background-color:#0e0915!important;
-  margin-top:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;
-}
-#home #vnFeatureCarousel .vn-feature-slide{
-  background-color:#0e0915!important;
-  background-image:radial-gradient(ellipse at 88% 55%,rgba(102,48,163,.19),transparent 48%),
-    radial-gradient(ellipse at 8% 100%,rgba(75,37,119,.12),transparent 52%)!important;
-  border:0!important;border-radius:0!important;box-shadow:none!important;
-}
-#home .vn-discover-bar:after,#home .vn-discover-bar:before{display:none!important;content:none!important}
-/* Three compact cards fit on a phone; keep the square community badge overlapping the top-left corner. */
-#home .vn-shelf{
-  box-sizing:border-box!important;display:flex!important;gap:8px!important;
-  padding:14px 14px 12px!important;overflow-x:auto!important;overflow-y:visible!important;
-  scroll-padding-left:14px!important;
-}
-#home .vn-shelf .vn-community-tile{
-  box-sizing:border-box!important;flex:0 0 calc((100vw - 76px)/3.5)!important;
-  width:calc((100vw - 76px)/3.5)!important;min-width:0!important;max-width:calc((100vw - 76px)/3.5)!important;
-  height:calc((100vw - 76px)/3.5 * 1.30)!important;min-height:0!important;
-  margin:0!important;overflow:visible!important;border-radius:10px!important;
-}
-#home .vn-shelf .vn-community-tile .vn-tile-image,
-#home .vn-shelf .vn-community-tile .vn-tile-shade{border-radius:inherit!important}
-#home .vn-shelf .vn-community-tile .vn-tile-icon{
-  top:-5px!important;left:-5px!important;width:31px!important;height:31px!important;
-  min-width:31px!important;min-height:31px!important;border-radius:8px!important;
-}
-#home .vn-shelf .vn-community-tile .vn-tile-name{font-size:11px!important;line-height:1.15!important;padding:7px 4px!important}
-@media(max-width:370px){
-  #home .vn-shelf{gap:8px!important;padding-left:12px!important;padding-right:12px!important}
-  #home .vn-shelf .vn-community-tile{flex-basis:calc((100vw - 68px)/3.5)!important;width:calc((100vw - 68px)/3.5)!important;max-width:calc((100vw - 68px)/3.5)!important;height:calc((100vw - 68px)/3.5 * 1.30)!important}
-  #home .vn-shelf .vn-community-tile .vn-tile-icon{top:-4px!important;left:-4px!important;width:29px!important;height:29px!important;min-width:29px!important;min-height:29px!important}
-}
-</style>
-
-<style id="vn-community-name-wrap-fix">
-/* Keep every community title centered in the lower part of its card; long names wrap instead of running off the edge. */
-#home .vn-shelf .vn-community-tile .vn-tile-name{
-  position:absolute!important;
-  left:4px!important;right:4px!important;bottom:7px!important;
-  width:auto!important;max-width:none!important;
-  min-height:30px!important;max-height:42px!important;
-  display:flex!important;align-items:center!important;justify-content:center!important;
-  padding:3px 2px!important;margin:0!important;box-sizing:border-box!important;
-  white-space:normal!important;overflow:hidden!important;
-  overflow-wrap:anywhere!important;word-break:normal!important;
-  text-overflow:clip!important;text-align:center!important;
-  font-size:11px!important;line-height:1.15!important;font-weight:800!important;
-}
-</style>
-
-<style id="vn-community-name-two-line-ellipsis">
-/* Community names stay centered at the bottom and never exceed two lines. */
-#home .vn-shelf .vn-community-tile .vn-tile-name{
-  display:-webkit-box!important;
-  -webkit-box-orient:vertical!important;
-  -webkit-line-clamp:2!important;
-  line-clamp:2!important;
-  overflow:hidden!important;
-  text-overflow:ellipsis!important;
-  overflow-wrap:anywhere!important;
-  word-break:normal!important;
-  white-space:normal!important;
-  max-height:2.3em!important;
-  min-height:0!important;
-  line-height:1.15em!important;
-  padding:0 2px!important;
-}
-</style>
-
-<style id="vn-communities-tab-size-icon-header-final">
-/* Communities tab: compact cards, real community artwork in the badge, and one seamless header/background. */
-#communities.vn-communities-page{
-  background-color:#100b18!important;
-  background-image:radial-gradient(ellipse at 0 0,#201052 0,transparent 42%),radial-gradient(ellipse at 100% 100%,#1b0c42 0,transparent 40%)!important;
-}
-#communities .vn-community-topbar,
-#communities .vn-community-topbar.vn-discover-bar{
-  background:transparent!important;background-color:transparent!important;background-image:none!important;
-  border:0!important;border-bottom:0!important;box-shadow:none!important;backdrop-filter:none!important;
-  margin:0!important;
-}
-#communities .vn-community-page-content{padding-top:2px!important}
-#communities .vn-my-communities{margin-top:5px!important;margin-bottom:17px!important}
-#communities .vn-my-communities h1{font-size:22px!important;margin-bottom:12px!important}
-#communities .vn-joined-row{gap:10px!important;padding:9px 7px 8px!important;scroll-padding-left:7px!important}
-#communities .vn-joined-card,#communities .vn-join-community-card{
-  flex:0 0 148px!important;width:148px!important;height:220px!important;min-width:148px!important;
-  border-radius:13px!important;overflow:visible!important;margin:5px 0 0!important;
-  box-shadow:0 5px 14px #0002!important;
-}
-#communities .vn-joined-card .vn-comm-cover,
-#communities .vn-recommended-card .vn-comm-cover{
-  border-radius:inherit!important;overflow:hidden!important;clip-path:inset(0 round 13px)!important;
-}
-#communities .vn-comm-icon{
-  top:-6px!important;left:-6px!important;width:43px!important;height:43px!important;min-width:43px!important;min-height:43px!important;
-  border-radius:10px!important;border:1px solid rgba(255,255,255,.5)!important;
-  background:#241638!important;box-shadow:0 3px 8px #0005!important;overflow:hidden!important;font-size:22px!important;
-}
-#communities .vn-comm-icon img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important;border-radius:inherit!important}
-#communities .vn-comm-card-name{left:6px!important;right:6px!important;bottom:8px!important;font-size:13px!important;line-height:1.16!important;max-height:2.32em!important;-webkit-line-clamp:2!important;overflow-wrap:anywhere!important}
-#communities .vn-join-community-card{font-size:17px!important;line-height:1.2!important;padding:12px!important;gap:9px!important;background:rgba(151,135,184,.32)!important}
-#communities .vn-join-community-card .vn-join-plus{width:48px!important;height:48px!important;font-size:30px!important;border-radius:0 0 10px 0!important}
-#communities .vn-create-community-cta{min-height:60px!important;width:calc(100% - 42px)!important;margin-bottom:24px!important;font-size:16px!important;border-width:1.5px!important}
-#communities .vn-recommended-heading{margin-bottom:13px!important;gap:10px!important}
-#communities .vn-recommended-heading h2{font-size:15px!important}
-#communities .vn-recommended-grid{gap:10px 9px!important}
-#communities .vn-recommended-card{height:clamp(155px,34vw,205px)!important;border-radius:11px!important;overflow:visible!important;box-shadow:0 4px 12px #0002!important}
-#communities .vn-recommended-card .vn-comm-cover{border-radius:inherit!important;overflow:hidden!important;clip-path:inset(0 round 11px)!important}
-#communities .vn-recommended-card .vn-comm-icon{top:-5px!important;left:-5px!important;width:39px!important;height:39px!important;min-width:39px!important;min-height:39px!important;font-size:20px!important;border-radius:9px!important}
-#communities .vn-recommended-card .vn-comm-card-name{font-size:clamp(10px,3vw,13px)!important;bottom:8px!important;left:4px!important;right:4px!important;line-height:1.15!important;max-height:2.3em!important}
-@media(max-width:380px){
- #communities .vn-joined-card,#communities .vn-join-community-card{flex-basis:138px!important;width:138px!important;min-width:138px!important;height:205px!important}
- #communities .vn-recommended-card{height:clamp(145px,33vw,180px)!important}
- #communities .vn-comm-icon{width:39px!important;height:39px!important;min-width:39px!important;min-height:39px!important}
- #communities .vn-recommended-card .vn-comm-icon{width:35px!important;height:35px!important;min-width:35px!important;min-height:35px!important}
-}
-</style>
-
-
-<style id="vn-joined-community-grid-compact-final">
-/* Joined communities use the same compact three-column rhythm as Recommended. */
-#communities .vn-joined-row{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:10px 9px!important;overflow:visible!important;padding:5px 1px 8px!important;align-items:stretch!important;scroll-snap-type:none!important}
-#communities .vn-joined-card,#communities .vn-join-community-card{width:100%!important;min-width:0!important;max-width:none!important;flex:none!important;height:clamp(145px,39vw,190px)!important;margin:0!important;border-radius:11px!important;overflow:visible!important}
-#communities .vn-joined-card .vn-comm-cover,#communities .vn-join-community-card{border-radius:11px!important}
-#communities .vn-joined-card .vn-comm-cover{overflow:hidden!important;clip-path:inset(0 round 11px)!important}
-#communities .vn-comm-icon{top:-4px!important;left:-4px!important;width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important;font-size:19px!important;border-radius:8px!important}
-#communities .vn-comm-card-name{font-size:12px!important;left:4px!important;right:4px!important;bottom:7px!important;line-height:1.15!important}
-#communities .vn-join-community-card{font-size:14px!important;line-height:1.2!important;padding:8px!important;gap:6px!important}
-#communities .vn-join-community-card .vn-join-plus{width:36px!important;height:36px!important;font-size:25px!important}
-#communities .vn-see-more-joined{grid-column:1/-1!important;justify-self:center!important;background:#21152f!important;color:#d8baff!important;border:1px solid #8b6aa7!important;border-radius:999px!important;padding:9px 20px!important;font:inherit!important;font-size:13px!important;font-weight:800!important;margin:2px 0 3px!important}
-@media(min-width:560px){#communities .vn-joined-card,#communities .vn-join-community-card{height:190px!important}}
-</style>
-
-<style id="vn-join-community-plus-square-fix">
-/* Keep the Join a Community badge a true square, matching the other community icon badges. */
-#communities .vn-join-community-card{overflow:visible!important;position:relative!important}
-#communities .vn-join-community-card .vn-join-plus{
-  position:absolute!important;top:-4px!important;left:-4px!important;
-  width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;
-  aspect-ratio:1 / 1!important;box-sizing:border-box!important;padding:0!important;
-  display:grid!important;place-items:center!important;
-  border-radius:9px!important;border:1px solid #a68acb!important;
-  background:#241638!important;color:#fff!important;
-  font-size:27px!important;line-height:1!important;font-weight:600!important;
-  box-shadow:0 3px 8px #0005!important;z-index:5!important;
-}
-</style>
-
-<style id="vn-home-hero-art-clean-circle-20261019">
-/* Keep the home carousel illustration a true, stable circle: no rotated or lopsided silhouette. */
-#home #vnFeatureCarousel .vn-feature-art,
-#home .vn-feature-carousel .vn-feature-art{
-  width:88px!important;height:88px!important;min-width:88px!important;min-height:88px!important;
-  right:18px!important;top:56px!important;
-  border-radius:50%!important;transform:none!important;
-  display:grid!important;place-items:center!important;
-  box-sizing:border-box!important;overflow:hidden!important;
-  border:0!important;outline:0!important;
-}
-#home #vnFeatureCarousel .vn-feature-art.art-communities{
-  background:linear-gradient(145deg,#9860ed 0%,#6e36c5 58%,#4b2098 100%)!important;
-}
-#home #vnFeatureCarousel .vn-feature-art.art-chat{
-  background:linear-gradient(145deg,#dfa0e5 0%,#9b65d5 55%,#7045bb 100%)!important;
-}
-#home #vnFeatureCarousel .vn-feature-art.art-profile{
-  background:linear-gradient(145deg,#9a73df 0%,#7550c4 100%)!important;
-}
-@media(max-width:370px){
- #home #vnFeatureCarousel .vn-feature-art{width:74px!important;height:74px!important;min-width:74px!important;min-height:74px!important;right:12px!important;top:52px!important;font-size:38px!important}
-}
-</style>
-
-<style id="vn-home-art-and-card-final-correction-20261019">
-/* Final correction: slightly larger home cards, and perfectly upright hero artwork. */
-#home .vn-shelf .vn-community-tile{
-  flex:0 0 calc((100vw - 72px)/3.35)!important;
-  width:calc((100vw - 72px)/3.35)!important;
-  max-width:calc((100vw - 72px)/3.35)!important;
-  height:calc((100vw - 72px)/3.35 * 1.30)!important;
-}
-#home #vnFeatureCarousel .vn-feature-art,
-#home .vn-feature-carousel .vn-feature-art{
-  aspect-ratio:1/1!important;
-  width:88px!important;height:88px!important;min-width:88px!important;min-height:88px!important;
-  max-width:88px!important;max-height:88px!important;
-  border-radius:50%!important;
-  transform:none!important;rotate:0deg!important;scale:1!important;skew:0deg!important;
-  clip-path:circle(50% at 50% 50%)!important;
-  overflow:hidden!important;box-sizing:border-box!important;
-  display:flex!important;align-items:center!important;justify-content:center!important;
-  padding:0!important;line-height:1!important;
-}
-#home #vnFeatureCarousel .vn-feature-art::before,
-#home #vnFeatureCarousel .vn-feature-art::after,
-#home .vn-feature-carousel .vn-feature-art::before,
-#home .vn-feature-carousel .vn-feature-art::after{
-  border-radius:50%!important;transform:none!important;rotate:0deg!important;clip-path:none!important;
-}
-#home #vnFeatureCarousel .vn-feature-art > *,
-#home .vn-feature-carousel .vn-feature-art > *{
-  transform:none!important;rotate:0deg!important;skew:0deg!important;
-  flex-shrink:0!important;max-width:100%!important;max-height:100%!important;
-}
-#home #vnFeatureCarousel .vn-feature-art svg,
-#home .vn-feature-carousel .vn-feature-art svg{
-  display:block!important;transform:none!important;rotate:0deg!important;
-  width:42px!important;height:42px!important;object-fit:contain!important;
-}
-@media(max-width:370px){
- #home .vn-shelf .vn-community-tile{flex-basis:calc((100vw - 64px)/3.35)!important;width:calc((100vw - 64px)/3.35)!important;max-width:calc((100vw - 64px)/3.35)!important;height:calc((100vw - 64px)/3.35 * 1.30)!important}
- #home #vnFeatureCarousel .vn-feature-art,#home .vn-feature-carousel .vn-feature-art{width:74px!important;height:74px!important;min-width:74px!important;min-height:74px!important;max-width:74px!important;max-height:74px!important}
- #home #vnFeatureCarousel .vn-feature-art svg,#home .vn-feature-carousel .vn-feature-art svg{width:36px!important;height:36px!important}
-}
-</style>
-<style id="vn-home-community-cards-size-bump-20261019">
-/* Calibrated for three full home cards plus a visible portion of card four. */
-#home .vn-shelf .vn-community-tile{
-  flex:0 0 calc((100vw - 58px)/3.5)!important;
-  width:calc((100vw - 58px)/3.5)!important;
-  height:calc((100vw - 58px)/3.5 * 1.30)!important;
-  max-width:190px!important;
-  min-width:0!important;
-}
-#home .vn-shelf{gap:10px!important;padding-left:16px!important;padding-right:16px!important}
-@media(max-width:370px){
- #home .vn-shelf .vn-community-tile{flex-basis:calc((100vw - 48px)/3.5)!important;width:calc((100vw - 48px)/3.5)!important;height:calc((100vw - 48px)/3.5 * 1.30)!important}
- #home .vn-shelf{gap:8px!important;padding-left:12px!important;padding-right:12px!important}
-}
+<!-- VibeNest community card width adjustment only -->
+<style id="vn-community-card-width-only">
+.vn-shelf{box-sizing:border-box!important;gap:9px!important;padding-left:15px!important;padding-right:15px!important;}
+.vn-community-tile{flex:0 0 calc((100vw - 30px)/2.75)!important;width:calc((100vw - 30px)/2.75)!important;height:calc((100vw - 30px)/2.75 * 1.38)!important;min-width:0!important;flex-shrink:0!important;}
+@media(max-width:370px){.vn-shelf{gap:8px!important;padding-left:13px!important;padding-right:13px!important}.vn-community-tile{flex-basis:calc((100vw - 26px)/2.75)!important;width:calc((100vw - 26px)/2.75)!important;height:calc((100vw - 26px)/2.75 * 1.38)!important}}
 </style>
