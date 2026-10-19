@@ -3428,41 +3428,22 @@ window.addEventListener('load',vnUpdateHomeAvatar);
 </style>
 
 <style id="vibenest-moving-bubble-nav">
-/* One smooth rounded bubble travels between the four main tabs; no top underline. */
-nav.bottom{
-  --nav-index:0;
-  position:fixed!important;
-  display:grid!important;
-  grid-template-columns:repeat(4,minmax(0,1fr))!important;
-  align-items:stretch!important;
-  isolation:isolate;
-  overflow:hidden;
-}
-nav.bottom::before{
-  content:""!important;
-  position:absolute!important;
-  z-index:0!important;
-  top:8px!important;
-  bottom:calc(8px + env(safe-area-inset-bottom))!important;
-  left:calc(var(--nav-index) * 25% + 1.5%)!important;
-  width:22%!important;
-  border-radius:17px!important;
-  border:1px solid rgba(202,166,255,.34)!important;
-  background:linear-gradient(145deg,rgba(177,138,255,.25),rgba(255,139,207,.10))!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 5px 20px rgba(112,67,170,.13)!important;
-  transform:none!important;
-  transition:left .32s cubic-bezier(.2,.8,.2,1),background .25s ease!important;
-  pointer-events:none!important;
-}
-nav.bottom>button{z-index:1!important;position:relative!important;background:transparent!important;box-shadow:none!important;border-radius:15px!important;}
+/* No sliding bubble: the selected tab gets a brief glow and one gentle shake. */
+nav.bottom{display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;align-items:stretch!important;overflow:visible!important;}
+nav.bottom::before{content:none!important;display:none!important;}
+nav.bottom>button{position:relative!important;z-index:1!important;background:transparent!important;box-shadow:none!important;border-radius:15px!important;transform-origin:center center;}
 nav.bottom>button.active{background:transparent!important;color:#e1caff!important;}
-nav.bottom>button.active::before{content:none!important;display:none!important;}
-nav.bottom>button::after{content:none!important;display:none!important;}
-nav.bottom>button .nav-icon{filter:none!important;transition:filter .25s ease,transform .25s ease!important;}
-nav.bottom>button.active .nav-icon{filter:drop-shadow(0 0 5px rgba(177,138,255,.38))!important;transform:translateY(-1px)!important;}
-@media(max-width:380px){nav.bottom::before{left:calc(var(--nav-index) * 25% + 1.5%)!important;width:22%!important;}}
-@media(prefers-reduced-motion:reduce){nav.bottom::before{transition:none!important;}}
+nav.bottom>button.active::before,nav.bottom>button::after{content:none!important;display:none!important;}
+nav.bottom>button .nav-icon{filter:none!important;transform:none!important;transition:filter .18s ease!important;}
+nav.bottom>button.active .nav-icon{filter:drop-shadow(0 0 6px rgba(190,150,255,.75))!important;}
+nav.bottom>button.nav-tap{animation:vnTabGlowShake .34s ease-out both!important;}
+nav.bottom>button.nav-tap .nav-icon{filter:drop-shadow(0 0 8px rgba(195,158,255,.95))!important;}
+@keyframes vnTabGlowShake{0%{transform:translateX(0) scale(1)}22%{transform:translateX(-2px) scale(1.035)}44%{transform:translateX(2px) scale(1.035)}66%{transform:translateX(-1px) scale(1.015)}100%{transform:translateX(0) scale(1)}}
+@media(prefers-reduced-motion:reduce){nav.bottom>button.nav-tap{animation:none!important}}
 </style>
+<script id="vibenest-tab-tap-motion">
+(()=>{const nav=document.querySelector('nav.bottom');if(!nav)return;nav.querySelectorAll('button[data-tab]').forEach(btn=>{btn.addEventListener('click',()=>{nav.querySelectorAll('button[data-tab]').forEach(b=>b.classList.remove('nav-tap'));void btn.offsetWidth;btn.classList.add('nav-tap');setTimeout(()=>btn.classList.remove('nav-tap'),380)})});})();
+</script>
 
 </body></html>
 <style id="vn-home-shelf-alignment-and-ranking-fix">
