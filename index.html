@@ -3906,3 +3906,17 @@ document.addEventListener('keydown',e=>{const panel=document.getElementById('vnC
  #home #vnFeatureCarousel .vn-feature-art svg,#home .vn-feature-carousel .vn-feature-art svg{width:36px!important;height:36px!important}
 }
 </style>
+<style id="vn-home-community-cards-size-bump-20261019">
+/* Larger home community cards: increase width and height together, preserving the card ratio. */
+#home .vn-shelf .vn-community-tile{
+  flex:0 0 clamp(145px,27.5vw,190px)!important;
+  width:clamp(145px,27.5vw,190px)!important;
+  height:clamp(200px,38vw,262px)!important;
+  max-width:none!important;
+}
+#home .vn-shelf{gap:10px!important;padding-left:18px!important;padding-right:18px!important}
+@media(max-width:370px){
+ #home .vn-shelf .vn-community-tile{flex-basis:clamp(132px,29vw,150px)!important;width:clamp(132px,29vw,150px)!important;height:clamp(182px,40vw,207px)!important}
+ #home .vn-shelf{gap:8px!important;padding-left:14px!important;padding-right:14px!important}
+}
+</style>
