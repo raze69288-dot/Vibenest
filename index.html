@@ -3288,6 +3288,11 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 .vn-search-tabs button{min-width:0;white-space:nowrap}
 .vn-community-search-thumb{border-radius:15px;background:#35265a;color:#fff;font-size:28px}
 .vn-community-search-thumb img{width:100%;height:100%;object-fit:cover;border-radius:inherit}
+
+#vnSearchOverlay .vn-search-empty-state{min-height:210px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:9px;padding:22px;color:#b9a9d0}
+#vnSearchOverlay .vn-search-empty-icon{width:54px;height:54px;display:grid;place-items:center;border-radius:17px;background:#30234d;color:#d9c5ff;font-size:30px;margin-bottom:4px}
+#vnSearchOverlay .vn-search-empty-state b{color:#f3eaff;font-size:16px}
+#vnSearchOverlay .vn-search-empty-state small{font-size:13px;line-height:1.5;max-width:260px;color:#a99abd}
 </style>
 
 <script id="vn-discover-home-logic">
@@ -3322,6 +3327,7 @@ function vnSearchChanged(){clearTimeout(vnSearchTimer);const serial=++vnSearchSe
 async function vnPerformSearch(serial){
  const out=document.getElementById('vnGlobalSearchResults'),q=(document.getElementById('vnGlobalSearchInput').value||'').trim();if(!out)return;
  if(vnSearchMode==='communities'){
+  if(q.length<1){out.innerHTML='<div class="vn-search-empty-state"><span class="vn-search-empty-icon">⌕</span><b>Find your community</b><small>Search by community name, category, or description.</small></div>';return}
   const matches=(typeof onlineCommunities!=='undefined'?onlineCommunities:[]).filter(c=>(String(c.name||'')+' '+String(c.category||'')+' '+String(c.description||'')).toLowerCase().includes(q.toLowerCase())).slice(0,30);
   out.innerHTML=matches.map(c=>{const icon=c.icon_url||c.community_icon_url||c.icon||c.emoji||'✦';const iconHtml=typeof icon==='string'&&/^https:\/\//i.test(icon)?`<img src="${safeText(icon)}" alt="">`:safeText(icon||'✦');return `<button class="vn-search-result" data-vn-community="${safeText(c.id)}"><span class="vn-result-thumb vn-community-search-thumb">${iconHtml}</span><span class="vn-search-result-copy"><b>${safeText(c.name)}</b><small>${safeText(c.category||'Community')}</small></span></button>`}).join('')||'<p>No matching communities found.</p>';return;
  }
