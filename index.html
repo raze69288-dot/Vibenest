@@ -382,6 +382,15 @@ body.direct-chat-open #chatWindow .chat-compose button.join{
 .vn-community-tile .vn-tile-icon img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;border-radius:8px!important}
 @media(max-width:370px){.vn-community-tile .vn-tile-icon{width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important}}
 </style>
+<style id="vibenest-home-final-polish">
+/* Slightly smaller community cards while keeping three comfortably visible. */
+.vn-shelf{gap:8px!important;padding:14px 15px 10px!important;scroll-padding-left:15px!important;}
+.vn-community-tile{flex:0 0 calc((100vw - 66px)/3)!important;width:calc((100vw - 66px)/3)!important;height:calc((100vw - 66px)/3 * 1.38)!important;}
+/* Blend the profile/search header into the rotating hero advertisement. */
+#home .vn-home-topline{border-bottom:0!important;box-shadow:none!important;margin-bottom:0!important;}
+#home .vn-home-hero{margin-top:0!important;border-top:0!important;}
+@media(max-width:370px){.vn-shelf{gap:7px!important;padding-left:13px!important;padding-right:13px!important}.vn-community-tile{flex-basis:calc((100vw - 54px)/3)!important;width:calc((100vw - 54px)/3)!important;height:calc((100vw - 54px)/3 * 1.38)!important;}}
+</style>
 </head><body class="vn-auth-booting">
 <style id="vibenest-opening-splash-style">
 #vn-opening-splash{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;overflow:hidden;background:#100b18;opacity:1;visibility:visible;transition:opacity .22s ease,visibility .22s ease;color:#fff}
