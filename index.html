@@ -3364,4 +3364,11 @@ window.addEventListener('load',vnUpdateHomeAvatar);
 .vn-tile-name{z-index:2!important;bottom:9px!important;left:7px!important;right:7px!important;font-size:12px!important;line-height:1.2!important;font-weight:800!important;text-align:center!important}
 @media(max-width:370px){.vn-community-tile{flex-basis:104px!important;width:104px!important;height:146px!important}.vn-tile-icon{width:34px!important;height:34px!important}}
 </style>
+
+<style id="vn-community-icon-flush-corner">
+/* Community avatar sits directly in the card's top-left corner: zero inset/gap. */
+.vn-community-tile .vn-tile-icon{top:0!important;left:0!important;margin:0!important;width:38px!important;height:38px!important;border-radius:8px 0 8px 0!important;border:0!important;box-shadow:none!important;outline:1px solid rgba(255,255,255,.18)!important;outline-offset:0!important;overflow:hidden!important;z-index:5!important;background:#241638!important;display:grid!important;place-items:center!important;}
+.vn-community-tile .vn-tile-icon img{width:100%!important;height:100%!important;object-fit:cover!important;border-radius:inherit!important;display:block!important}
+@media(max-width:370px){.vn-community-tile .vn-tile-icon{width:35px!important;height:35px!important}}
+</style>
 </body></html>
