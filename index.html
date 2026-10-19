@@ -3485,3 +3485,49 @@ nav.bottom>button.nav-tap .nav-icon{filter:drop-shadow(0 0 8px rgba(195,158,255,
 .vn-community-tile .vn-tile-name{font-size:12px!important;line-height:1.15!important;padding:8px 5px!important;}
 @media(max-width:370px){.vn-shelf{gap:8px!important;padding-left:13px!important;padding-right:13px!important}.vn-community-tile{flex-basis:calc((100vw - 42px)/3)!important;width:calc((100vw - 42px)/3)!important;height:calc((100vw - 42px)/3 * 1.38)!important}.vn-community-tile .vn-tile-icon{top:-5px!important;left:-5px!important;width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important}}
 </style>
+
+
+<style id="vn-final-home-blend-and-compact-cards-20261019">
+/* Header and featured carousel share one canvas so they read as a single surface. */
+#home .vn-discover-bar,
+#home header.vn-discover-bar{
+  background:#0e0915!important;background-color:#0e0915!important;background-image:none!important;
+  border-bottom:0!important;box-shadow:none!important;
+}
+#home #vnFeatureCarousel,
+#home .vn-feature-carousel{
+  background:#0e0915!important;background-color:#0e0915!important;
+  margin-top:0!important;border:0!important;border-radius:0!important;box-shadow:none!important;
+}
+#home #vnFeatureCarousel .vn-feature-slide{
+  background-color:#0e0915!important;
+  background-image:radial-gradient(ellipse at 88% 55%,rgba(102,48,163,.19),transparent 48%),
+    radial-gradient(ellipse at 8% 100%,rgba(75,37,119,.12),transparent 52%)!important;
+  border:0!important;border-radius:0!important;box-shadow:none!important;
+}
+#home .vn-discover-bar:after,#home .vn-discover-bar:before{display:none!important;content:none!important}
+/* Three compact cards fit on a phone; keep the square community badge overlapping the top-left corner. */
+#home .vn-shelf{
+  box-sizing:border-box!important;display:flex!important;gap:8px!important;
+  padding:14px 14px 12px!important;overflow-x:auto!important;overflow-y:visible!important;
+  scroll-padding-left:14px!important;
+}
+#home .vn-shelf .vn-community-tile{
+  box-sizing:border-box!important;flex:0 0 calc((100vw - 76px)/3.5)!important;
+  width:calc((100vw - 76px)/3.5)!important;min-width:0!important;max-width:calc((100vw - 76px)/3.5)!important;
+  height:calc((100vw - 76px)/3.5 * 1.30)!important;min-height:0!important;
+  margin:0!important;overflow:visible!important;border-radius:10px!important;
+}
+#home .vn-shelf .vn-community-tile .vn-tile-image,
+#home .vn-shelf .vn-community-tile .vn-tile-shade{border-radius:inherit!important}
+#home .vn-shelf .vn-community-tile .vn-tile-icon{
+  top:-5px!important;left:-5px!important;width:31px!important;height:31px!important;
+  min-width:31px!important;min-height:31px!important;border-radius:8px!important;
+}
+#home .vn-shelf .vn-community-tile .vn-tile-name{font-size:11px!important;line-height:1.15!important;padding:7px 4px!important}
+@media(max-width:370px){
+  #home .vn-shelf{gap:8px!important;padding-left:12px!important;padding-right:12px!important}
+  #home .vn-shelf .vn-community-tile{flex-basis:calc((100vw - 68px)/3.5)!important;width:calc((100vw - 68px)/3.5)!important;max-width:calc((100vw - 68px)/3.5)!important;height:calc((100vw - 68px)/3.5 * 1.30)!important}
+  #home .vn-shelf .vn-community-tile .vn-tile-icon{top:-4px!important;left:-4px!important;width:29px!important;height:29px!important;min-width:29px!important;min-height:29px!important}
+}
+</style>
