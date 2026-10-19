@@ -2749,7 +2749,7 @@ body.direct-chat-open #chatWindow > .join:first-child{display:none!important}
 (()=>{
  if(window.__vnTouchSwipeNavigation)return;window.__vnTouchSwipeNavigation=true;
  const tabs=['home','communities','chats','profile'];let sx=0,sy=0,started=false,origin=null;
- const ignored=e=>!!e.target.closest('input,textarea,select,button,a,[contenteditable="true"],.chat-messages,.room-chat-messages,.community-rooms,.modal,.public-profile-overlay,[data-no-page-swipe]');
+ const ignored=e=>!!e.target.closest('input,textarea,select,button,a,[contenteditable="true"],#vnFeatureCarousel,.vn-feature-carousel,.chat-messages,.room-chat-messages,.community-rooms,.modal,.public-profile-overlay,[data-no-page-swipe]');
  document.addEventListener('touchstart',e=>{if(e.touches.length!==1){started=false;return}const t=e.touches[0];sx=t.clientX;sy=t.clientY;origin=document.querySelector('.page.active');started=!!origin&&!ignored(e)&&!document.body.classList.contains('direct-chat-open');},{passive:true});
  document.addEventListener('touchend',e=>{if(!started||!e.changedTouches?.[0])return;started=false;const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;if(Math.abs(dx)<76||Math.abs(dx)<Math.abs(dy)*1.35)return;
   const own=document.querySelector('#profile .profile-page');
@@ -3272,4 +3272,23 @@ function vnUpdateHomeAvatar(){const img=document.getElementById('vnHomeProfileIm
 const vnOriginalRenderMyProfile=renderMyProfile;renderMyProfile=function(...args){const result=vnOriginalRenderMyProfile.apply(this,args);vnUpdateHomeAvatar();return result};
 const vnOriginalLoadMyProfile=loadMyProfile;loadMyProfile=async function(...args){const result=await vnOriginalLoadMyProfile.apply(this,args);vnUpdateHomeAvatar();return result};
 window.addEventListener('load',vnUpdateHomeAvatar);
-</script></body></html>
+</script>
+<style id="vn-home-compact-swipe-fix">
+/* Featured-card gestures belong to the carousel, never the page-tab navigator. */
+#vnFeatureCarousel{height:190px!important;touch-action:pan-y!important;overscroll-behavior-x:contain;user-select:none;-webkit-user-select:none;-webkit-tap-highlight-color:transparent}
+#vnFeatureCarousel .vn-feature-slide{padding:19px 17px 29px!important;touch-action:pan-y!important}
+#vnFeatureCarousel .vn-feature-slide h1{font-size:clamp(25px,6.2vw,32px)!important;line-height:1.02!important;margin:10px 0 7px!important;max-width:72%}
+#vnFeatureCarousel .vn-feature-slide p{font-size:11px!important;max-width:60%!important;line-height:1.4!important}
+#vnFeatureCarousel .vn-feature-art{width:82px!important;height:82px!important;right:14px!important;top:53px!important;font-size:43px!important}
+#vnFeatureCarousel .vn-feature-dots{bottom:9px!important}
+.vn-shelf-section{padding:9px 0 10px!important}
+.vn-shelf-section>h2,.vn-shelf-title{font-size:18px!important;margin:0 15px 10px!important}
+.vn-shelf{gap:9px!important;padding:0 15px 6px!important}
+.vn-community-tile{flex:0 0 98px!important;width:98px!important;height:138px!important;border-radius:12px!important}
+.vn-tile-name{font-size:12px!important;line-height:1.2!important;bottom:8px!important;left:6px!important;right:6px!important}
+.vn-tile-image{font-size:36px!important}
+.vn-tile-icon{width:38px!important;height:38px!important;top:7px!important;left:7px!important;border-radius:11px!important;font-size:20px!important}
+@media(max-width:370px){#vnFeatureCarousel{height:176px!important}.vn-community-tile{flex-basis:92px!important;width:92px!important;height:130px!important}.vn-tile-icon{width:36px!important;height:36px!important}}
+@media(prefers-reduced-motion:reduce){#vnFeatureCarousel .vn-feature-slide{transition:none!important}}
+</style>
+</body></html>
