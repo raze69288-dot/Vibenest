@@ -3328,7 +3328,7 @@ function vnRenderHomeShelves(){
  const mostMembers=[...arr].sort((a,b)=>(counts[b.id]||0)-(counts[a.id]||0)||new Date(b.created_at||0)-new Date(a.created_at||0));
  const newest=[...arr].sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0));
  const shelves=[['vnTopPicks',topPicks],['vnMostMembers',mostMembers],['vnRecentlyCreated',newest]];
- for(const [id,items] of shelves){const el=document.getElementById(id);if(!el)continue;el.innerHTML=items.length?items.slice(0,16).map(c=>{const icon=c.icon_url||c.community_icon_url||c.icon||c.avatar_url||'';const iconHtml=typeof icon==='string'&&/^https:\/\//i.test(icon)?`<img src="${safeText(icon)}" alt="">`:safeText((typeof icon==='string'&&icon.length<8&&icon)?icon:(c.emoji||'✦'));return `<button class="vn-community-tile" data-vn-community="${safeText(c.id)}"><span class="vn-tile-image">${vnHomeCover(c)}</span><span class="vn-tile-icon">${iconHtml}</span><span class="vn-tile-shade"></span><span class="vn-tile-name">${safeText(c.name||'Community')}</span></button>`}).join(''):'<div class="vn-shelf-empty">Communities will appear here when members create them.</div>';}
+ for(const [id,items] of shelves){const el=document.getElementById(id);if(!el)continue;const visibleItems=id==='vnTopPicks'?items.slice(0,4):items.slice(0,16);el.innerHTML=visibleItems.length?visibleItems.map(c=>{const icon=c.icon_url||c.community_icon_url||c.icon||c.avatar_url||'';const iconHtml=typeof icon==='string'&&/^https:\/\//i.test(icon)?`<img src="${safeText(icon)}" alt="">`:safeText((typeof icon==='string'&&icon.length<8&&icon)?icon:(c.emoji||'✦'));return `<button class="vn-community-tile" data-vn-community="${safeText(c.id)}"><span class="vn-tile-image">${vnHomeCover(c)}</span><span class="vn-tile-icon">${iconHtml}</span><span class="vn-tile-shade"></span><span class="vn-tile-name">${safeText(c.name||'Community')}</span></button>`}).join(''):'<div class="vn-shelf-empty">Communities will appear here when members create them.</div>';}
 }
 let vnSearchMode='communities',vnSearchTimer=0,vnSearchSerial=0;
 function vnOpenSearch(){document.getElementById('vnSearchOverlay').hidden=false;document.body.style.overflow='hidden';vnSearchTab('communities');setTimeout(()=>document.getElementById('vnGlobalSearchInput')?.focus(),50)}
@@ -3471,4 +3471,14 @@ nav.bottom>button.active .nav-icon{filter:drop-shadow(0 0 5px rgba(177,138,255,.
 .vn-community-tile{flex:0 0 164px!important;width:164px!important;height:226px!important;flex-shrink:0!important;margin:0!important;overflow:visible!important;}
 .vn-community-tile .vn-tile-icon{top:-8px!important;left:-8px!important;width:38px!important;height:38px!important;min-width:38px!important;min-height:38px!important;border-radius:9px!important;}
 @media(max-width:370px){.vn-shelf{padding:16px 18px 11px!important;gap:8px!important}.vn-community-tile{flex-basis:150px!important;width:150px!important;height:210px!important}.vn-community-tile .vn-tile-icon{top:-7px!important;left:-7px!important;width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important}}
+</style>
+
+<style id="vn-home-shelf-sizing-final">
+/* Fit three community cards across the phone width without making them oversized. */
+.vn-shelf{box-sizing:border-box!important;display:flex!important;gap:9px!important;padding:14px 15px 10px!important;overflow-x:auto!important;overflow-y:visible!important;scroll-padding-left:15px!important;}
+.vn-community-tile{flex:0 0 calc((100vw - 48px)/3)!important;width:calc((100vw - 48px)/3)!important;height:calc((100vw - 48px)/3 * 1.38)!important;min-width:0!important;max-width:none!important;margin:0!important;overflow:visible!important;border-radius:10px!important;}
+.vn-community-tile .vn-tile-image,.vn-community-tile .vn-tile-shade{border-radius:inherit!important;}
+.vn-community-tile .vn-tile-icon{top:-6px!important;left:-6px!important;width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;border-radius:8px!important;}
+.vn-community-tile .vn-tile-name{font-size:12px!important;line-height:1.15!important;padding:8px 5px!important;}
+@media(max-width:370px){.vn-shelf{gap:8px!important;padding-left:13px!important;padding-right:13px!important}.vn-community-tile{flex-basis:calc((100vw - 42px)/3)!important;width:calc((100vw - 42px)/3)!important;height:calc((100vw - 42px)/3 * 1.38)!important}.vn-community-tile .vn-tile-icon{top:-5px!important;left:-5px!important;width:32px!important;height:32px!important;min-width:32px!important;min-height:32px!important}}
 </style>
