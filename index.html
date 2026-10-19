@@ -3730,3 +3730,18 @@ document.addEventListener('keydown',e=>{const panel=document.getElementById('vnC
 #communities .vn-see-more-joined{grid-column:1/-1!important;justify-self:center!important;background:#21152f!important;color:#d8baff!important;border:1px solid #8b6aa7!important;border-radius:999px!important;padding:9px 20px!important;font:inherit!important;font-size:13px!important;font-weight:800!important;margin:2px 0 3px!important}
 @media(min-width:560px){#communities .vn-joined-card,#communities .vn-join-community-card{height:190px!important}}
 </style>
+
+<style id="vn-join-community-plus-square-fix">
+/* Keep the Join a Community badge a true square, matching the other community icon badges. */
+#communities .vn-join-community-card{overflow:visible!important;position:relative!important}
+#communities .vn-join-community-card .vn-join-plus{
+  position:absolute!important;top:-4px!important;left:-4px!important;
+  width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;
+  aspect-ratio:1 / 1!important;box-sizing:border-box!important;padding:0!important;
+  display:grid!important;place-items:center!important;
+  border-radius:9px!important;border:1px solid #a68acb!important;
+  background:#241638!important;color:#fff!important;
+  font-size:27px!important;line-height:1!important;font-weight:600!important;
+  box-shadow:0 3px 8px #0005!important;z-index:5!important;
+}
+</style>
