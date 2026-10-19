@@ -3521,7 +3521,7 @@ nav.bottom>button.nav-tap .nav-icon{filter:drop-shadow(0 0 8px rgba(195,158,255,
 </style>
 <script id="vn-communities-tab-redesign-logic">
 function vnCommunityCategoryIcon(c){const raw=String(c.category||c.cat||'').toLowerCase();if(raw.includes('anime')||raw.includes('movie')||raw.includes('tv'))return '✦';if(raw.includes('gaming'))return '🎮';if(raw.includes('art')||raw.includes('creator'))return '🎨';if(raw.includes('music'))return '♫';if(raw.includes('book')||raw.includes('study'))return '📚';if(raw.includes('tech'))return '⌘';if(raw.includes('sport'))return '⚽';if(raw.includes('roleplay'))return '✧';return '✦'}
-function vnCommunityIconMarkup(c){const icon=c.icon_url||c.community_icon_url||c.icon||c.avatar_url||'';if(typeof icon==='string'&&/^https?:\/\//i.test(icon))return `<img src="${safeText(icon)}" alt="" loading="lazy">`;if(typeof icon==='string'&&icon.length>0&&icon.length<8)return safeText(icon);return vnCommunityCategoryIcon(c)}
+function vnCommunityIconMarkup(c){const icon=c.icon_url||c.community_icon_url||c.icon||c.avatar_url||'';if(typeof icon==='string'&&/^https?:\/\//i.test(icon))return `<img src="${safeText(icon)}" alt="" loading="lazy" onerror="this.remove()">`;/* The current communities table stores the actual artwork as cover_url; use that image as the badge instead of inventing a category emoji. */if(c.cover_url&&/^https?:\/\//i.test(String(c.cover_url)))return `<img src="${safeText(c.cover_url)}" alt="" loading="lazy" onerror="this.remove()">`;if(typeof icon==='string'&&icon.length>0&&icon.length<8&&/[\u{1F300}-\u{1FAFF}]/u.test(icon))return safeText(icon);return '✦'}
 function vnCommunityCoverMarkup(c){return `<span class="vn-comm-cover">${c.cover_url?`<img src="${safeText(c.cover_url)}" alt="" loading="lazy" onerror="this.style.display='none'">`:''}</span>`}
 function vnCommunityTileMarkup(c,joined=false){return `<button type="button" class="${joined?'vn-joined-card':'vn-recommended-card'}" data-vn-community="${safeText(c.id)}" aria-label="Open ${safeText(c.name||'community')}">${vnCommunityCoverMarkup(c)}<span class="vn-comm-icon">${vnCommunityIconMarkup(c)}</span><span class="vn-comm-card-name">${safeText(c.name||'Community')}</span></button>`}
 function vnRenderCommunitiesTab(){const all=(typeof onlineCommunities!=='undefined'?onlineCommunities:[]).filter(c=>c&&c.id&&!['anime haven','cozy gamers','art club','late night tunes'].includes(String(c.name||'').trim().toLowerCase()));const joined=all.filter(c=>c.joined);const joinedSection=document.getElementById('vnMyCommunitiesSection'),joinedOut=document.getElementById('vnJoinedCommunities'),empty=document.getElementById('vnNoJoinedCommunities'),recommended=document.getElementById('vnRecommendedCommunities');if(!joinedSection||!joinedOut||!empty||!recommended)return;joinedSection.hidden=joined.length===0;empty.hidden=joined.length>0;if(joined.length){joinedOut.innerHTML=joined.map(c=>vnCommunityTileMarkup(c,true)).join('')+`<button type="button" class="vn-join-community-card" onclick="document.getElementById('vnRecommendedCommunities')?.scrollIntoView({behavior:'smooth',block:'start'})"><span class="vn-join-plus">＋</span><span>Join a<br>community</span></button>`;}else joinedOut.innerHTML='';const sorted=[...all].sort((a,b)=>{const ac=communityMemberCounts[a.id]||0,bc=communityMemberCounts[b.id]||0;return bc-ac||new Date(b.created_at||0)-new Date(a.created_at||0)});recommended.innerHTML=sorted.length?sorted.map(c=>vnCommunityTileMarkup(c,false)).join(''):'<div class="vn-communities-empty">No communities yet. Be the first to create one and bring your people together.</div>';const count=document.getElementById('communityHubCount');if(count)count.textContent=all.length;}
@@ -3632,3 +3632,54 @@ document.addEventListener('DOMContentLoaded',()=>{vnRenderCommunitiesTab();vnUpd
   padding:0 2px!important;
 }
 </style>
+
+<style id="vn-communities-tab-size-icon-header-final">
+/* Communities tab: compact cards, real community artwork in the badge, and one seamless header/background. */
+#communities.vn-communities-page{
+  background-color:#100b18!important;
+  background-image:radial-gradient(ellipse at 0 0,#201052 0,transparent 42%),radial-gradient(ellipse at 100% 100%,#1b0c42 0,transparent 40%)!important;
+}
+#communities .vn-community-topbar,
+#communities .vn-community-topbar.vn-discover-bar{
+  background:transparent!important;background-color:transparent!important;background-image:none!important;
+  border:0!important;border-bottom:0!important;box-shadow:none!important;backdrop-filter:none!important;
+  margin:0!important;
+}
+#communities .vn-community-page-content{padding-top:2px!important}
+#communities .vn-my-communities{margin-top:5px!important;margin-bottom:17px!important}
+#communities .vn-my-communities h1{font-size:22px!important;margin-bottom:12px!important}
+#communities .vn-joined-row{gap:10px!important;padding:9px 7px 8px!important;scroll-padding-left:7px!important}
+#communities .vn-joined-card,#communities .vn-join-community-card{
+  flex:0 0 148px!important;width:148px!important;height:220px!important;min-width:148px!important;
+  border-radius:13px!important;overflow:visible!important;margin:5px 0 0!important;
+  box-shadow:0 5px 14px #0002!important;
+}
+#communities .vn-joined-card .vn-comm-cover,
+#communities .vn-recommended-card .vn-comm-cover{
+  border-radius:inherit!important;overflow:hidden!important;clip-path:inset(0 round 13px)!important;
+}
+#communities .vn-comm-icon{
+  top:-6px!important;left:-6px!important;width:43px!important;height:43px!important;min-width:43px!important;min-height:43px!important;
+  border-radius:10px!important;border:1px solid rgba(255,255,255,.5)!important;
+  background:#241638!important;box-shadow:0 3px 8px #0005!important;overflow:hidden!important;font-size:22px!important;
+}
+#communities .vn-comm-icon img{width:100%!important;height:100%!important;object-fit:cover!important;display:block!important;border-radius:inherit!important}
+#communities .vn-comm-card-name{left:6px!important;right:6px!important;bottom:8px!important;font-size:13px!important;line-height:1.16!important;max-height:2.32em!important;-webkit-line-clamp:2!important;overflow-wrap:anywhere!important}
+#communities .vn-join-community-card{font-size:17px!important;line-height:1.2!important;padding:12px!important;gap:9px!important;background:rgba(151,135,184,.32)!important}
+#communities .vn-join-community-card .vn-join-plus{width:48px!important;height:48px!important;font-size:30px!important;border-radius:0 0 10px 0!important}
+#communities .vn-create-community-cta{min-height:60px!important;width:calc(100% - 42px)!important;margin-bottom:24px!important;font-size:16px!important;border-width:1.5px!important}
+#communities .vn-recommended-heading{margin-bottom:13px!important;gap:10px!important}
+#communities .vn-recommended-heading h2{font-size:15px!important}
+#communities .vn-recommended-grid{gap:10px 9px!important}
+#communities .vn-recommended-card{height:clamp(155px,34vw,205px)!important;border-radius:11px!important;overflow:visible!important;box-shadow:0 4px 12px #0002!important}
+#communities .vn-recommended-card .vn-comm-cover{border-radius:inherit!important;overflow:hidden!important;clip-path:inset(0 round 11px)!important}
+#communities .vn-recommended-card .vn-comm-icon{top:-5px!important;left:-5px!important;width:39px!important;height:39px!important;min-width:39px!important;min-height:39px!important;font-size:20px!important;border-radius:9px!important}
+#communities .vn-recommended-card .vn-comm-card-name{font-size:clamp(10px,3vw,13px)!important;bottom:8px!important;left:4px!important;right:4px!important;line-height:1.15!important;max-height:2.3em!important}
+@media(max-width:380px){
+ #communities .vn-joined-card,#communities .vn-join-community-card{flex-basis:138px!important;width:138px!important;min-width:138px!important;height:205px!important}
+ #communities .vn-recommended-card{height:clamp(145px,33vw,180px)!important}
+ #communities .vn-comm-icon{width:39px!important;height:39px!important;min-width:39px!important;min-height:39px!important}
+ #communities .vn-recommended-card .vn-comm-icon{width:35px!important;height:35px!important;min-width:35px!important;min-height:35px!important}
+}
+</style>
+
