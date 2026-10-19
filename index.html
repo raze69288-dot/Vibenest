@@ -3281,7 +3281,7 @@ button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-vis
 </style>
 
 <script id="vn-discover-home-logic">
-function vnHomeCover(c){const url=c.cover_url||c.image_url||c.avatar_url||'';return url?`<img src="${safeText(url)}" alt="" loading="lazy">`:safeText(c.emoji||'✳')}
+function vnHomeCover(c){const url=c.cover_url||c.image_url||'';return url?`<img src="${safeText(url)}" alt="" loading="lazy">`:''}
 function vnRenderHomeShelves(){if(typeof onlineCommunities==='undefined')return;const arr=onlineCommunities.filter(c=>c&&c.id);const counts=typeof communityMemberCounts!=='undefined'?communityMemberCounts:{};const shelves=[['vnTopPicks',[...arr].sort((a,b)=>(counts[b.id]||0)-(counts[a.id]||0))],['vnMostMembers',[...arr].sort((a,b)=>(counts[b.id]||0)-(counts[a.id]||0))],['vnRecentlyCreated',[...arr].sort((a,b)=>new Date(b.created_at||0)-new Date(a.created_at||0))]];for(const [id,items] of shelves){const el=document.getElementById(id);if(!el)continue;el.innerHTML=items.length?items.slice(0,16).map(c=>{const icon=c.icon_url||c.community_icon_url||c.icon||c.avatar_url||'';const iconHtml=typeof icon==='string'&&/^https:\/\//i.test(icon)?`<img src="${safeText(icon)}" alt="">`:safeText((typeof icon==='string'&&icon.length<8&&icon)?icon:(c.emoji||'✦'));return `<button class="vn-community-tile" data-vn-community="${safeText(c.id)}"><span class="vn-tile-image">${vnHomeCover(c)}</span><span class="vn-tile-icon">${iconHtml}</span><span class="vn-tile-shade"></span><span class="vn-tile-name">${safeText(c.name||'Community')}</span></button>`}).join(''):'<div class="vn-shelf-empty">Communities will appear here when members create them.</div>';}}
 let vnSearchMode='communities',vnSearchTimer=0,vnSearchSerial=0;
 function vnOpenSearch(){document.getElementById('vnSearchOverlay').hidden=false;document.body.style.overflow='hidden';vnSearchTab('communities');setTimeout(()=>document.getElementById('vnGlobalSearchInput')?.focus(),50)}
@@ -3351,5 +3351,17 @@ window.addEventListener('load',vnUpdateHomeAvatar);
 .vn-tile-icon{width:38px!important;height:38px!important;top:7px!important;left:7px!important;border-radius:11px!important;font-size:20px!important}
 @media(max-width:370px){#vnFeatureCarousel{height:176px!important}.vn-community-tile{flex-basis:92px!important;width:92px!important;height:130px!important}.vn-tile-icon{width:36px!important;height:36px!important}}
 @media(prefers-reduced-motion:reduce){#vnFeatureCarousel .vn-feature-slide{transition:none!important}}
+</style>
+
+<style id="vn-community-tile-refinement">
+/* Cleaner, more mature community tiles; the icon is a single inset badge, never duplicated in the cover. */
+.vn-community-tile{flex:0 0 112px!important;width:112px!important;height:154px!important;border-radius:9px!important;border:1px solid rgba(190,160,238,.22)!important;box-shadow:0 5px 14px rgba(0,0,0,.22)!important;background:#211436!important;isolation:isolate}
+.vn-tile-image{inset:0!important;border-radius:inherit!important;background:linear-gradient(155deg,#49306e 0%,#2b1a49 55%,#130d24 100%)!important;font-size:0!important;overflow:hidden}
+.vn-tile-image img{display:block;width:100%;height:100%;object-fit:cover}
+.vn-tile-icon{top:7px!important;left:7px!important;width:36px!important;height:36px!important;border-radius:9px!important;border:1px solid rgba(255,255,255,.32)!important;background:#241638!important;box-shadow:0 2px 6px #0004!important;z-index:4!important;font-size:20px!important}
+.vn-tile-icon img{display:block;width:100%;height:100%;object-fit:cover}
+.vn-tile-shade{inset:45% 0 0!important;background:linear-gradient(180deg,transparent,rgba(8,5,17,.88))!important;z-index:1}
+.vn-tile-name{z-index:2!important;bottom:9px!important;left:7px!important;right:7px!important;font-size:12px!important;line-height:1.2!important;font-weight:800!important;text-align:center!important}
+@media(max-width:370px){.vn-community-tile{flex-basis:104px!important;width:104px!important;height:146px!important}.vn-tile-icon{width:34px!important;height:34px!important}}
 </style>
 </body></html>
