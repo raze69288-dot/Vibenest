@@ -3482,3 +3482,22 @@ nav.bottom>button.nav-tap .nav-icon{filter:drop-shadow(0 0 8px rgba(195,158,255,
 @media(max-width:340px){#vnFeatureCarousel{height:355px!important}#vnFeatureCarousel .vn-feature-slide{padding-top:126px!important}#vnFeatureCarousel .vn-feature-art{width:90px!important;height:90px!important;right:10px!important;top:200px!important;font-size:46px!important}}
 @media(prefers-reduced-motion:reduce){#vnFeatureCarousel .vn-feature-slide{transition:none!important}}
 </style>
+
+<style id="vn-feature-extend-upward-not-downward">
+/* Extend the hero artwork upward behind the system/header area while keeping the lower edge in place. */
+#home #vnFeatureCarousel{margin-top:-64px!important;height:459px!important;}
+#home #vnFeatureCarousel .vn-feature-slide{padding-top:200px!important;}
+#home #vnFeatureCarousel .vn-feature-art{top:254px!important;}
+#home #vnFeatureCarousel .vn-feature-dots{bottom:15px!important;}
+#home .vn-discover-bar{background:linear-gradient(180deg,rgba(16,8,43,.56),rgba(16,8,43,.12))!important;}
+@media(max-width:390px){
+ #home #vnFeatureCarousel{height:444px!important;}
+ #home #vnFeatureCarousel .vn-feature-slide{padding-top:196px!important;}
+ #home #vnFeatureCarousel .vn-feature-art{top:252px!important;}
+}
+@media(max-width:340px){
+ #home #vnFeatureCarousel{height:419px!important;}
+ #home #vnFeatureCarousel .vn-feature-slide{padding-top:190px!important;}
+ #home #vnFeatureCarousel .vn-feature-art{top:252px!important;}
+}
+</style>
