@@ -3775,3 +3775,46 @@ document.addEventListener('keydown',e=>{const panel=document.getElementById('vnC
  #home #vnFeatureCarousel .vn-feature-art{width:74px!important;height:74px!important;min-width:74px!important;min-height:74px!important;right:12px!important;top:52px!important;font-size:38px!important}
 }
 </style>
+
+<style id="vn-home-art-and-card-final-correction-20261019">
+/* Final correction: slightly larger home cards, and perfectly upright hero artwork. */
+#home .vn-shelf .vn-community-tile{
+  flex:0 0 calc((100vw - 72px)/3.35)!important;
+  width:calc((100vw - 72px)/3.35)!important;
+  max-width:calc((100vw - 72px)/3.35)!important;
+  height:calc((100vw - 72px)/3.35 * 1.30)!important;
+}
+#home #vnFeatureCarousel .vn-feature-art,
+#home .vn-feature-carousel .vn-feature-art{
+  aspect-ratio:1/1!important;
+  width:88px!important;height:88px!important;min-width:88px!important;min-height:88px!important;
+  max-width:88px!important;max-height:88px!important;
+  border-radius:50%!important;
+  transform:none!important;rotate:0deg!important;scale:1!important;skew:0deg!important;
+  clip-path:circle(50% at 50% 50%)!important;
+  overflow:hidden!important;box-sizing:border-box!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  padding:0!important;line-height:1!important;
+}
+#home #vnFeatureCarousel .vn-feature-art::before,
+#home #vnFeatureCarousel .vn-feature-art::after,
+#home .vn-feature-carousel .vn-feature-art::before,
+#home .vn-feature-carousel .vn-feature-art::after{
+  border-radius:50%!important;transform:none!important;rotate:0deg!important;clip-path:none!important;
+}
+#home #vnFeatureCarousel .vn-feature-art > *,
+#home .vn-feature-carousel .vn-feature-art > *{
+  transform:none!important;rotate:0deg!important;skew:0deg!important;
+  flex-shrink:0!important;max-width:100%!important;max-height:100%!important;
+}
+#home #vnFeatureCarousel .vn-feature-art svg,
+#home .vn-feature-carousel .vn-feature-art svg{
+  display:block!important;transform:none!important;rotate:0deg!important;
+  width:42px!important;height:42px!important;object-fit:contain!important;
+}
+@media(max-width:370px){
+ #home .vn-shelf .vn-community-tile{flex-basis:calc((100vw - 64px)/3.35)!important;width:calc((100vw - 64px)/3.35)!important;max-width:calc((100vw - 64px)/3.35)!important;height:calc((100vw - 64px)/3.35 * 1.30)!important}
+ #home #vnFeatureCarousel .vn-feature-art,#home .vn-feature-carousel .vn-feature-art{width:74px!important;height:74px!important;min-width:74px!important;min-height:74px!important;max-width:74px!important;max-height:74px!important}
+ #home #vnFeatureCarousel .vn-feature-art svg,#home .vn-feature-carousel .vn-feature-art svg{width:36px!important;height:36px!important}
+}
+</style>
