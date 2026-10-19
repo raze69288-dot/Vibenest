@@ -500,6 +500,8 @@ function card(c){return `<article class="card" onclick="openCommunityByName('${c
  }
  document.querySelectorAll('.page').forEach(x=>x.classList.toggle('active',x.id===id));
  document.querySelectorAll('[data-tab]').forEach(x=>x.classList.toggle('active',x.dataset.tab===id));
+ const navIndex={home:0,communities:1,chats:2,profile:3}[id]??0;
+ document.querySelector('.bottom')?.style.setProperty('--nav-index',navIndex);
  window.scrollTo({top:0,left:0,behavior:'auto'});
  requestAnimationFrame(()=>window.scrollTo({top:0,left:0,behavior:'auto'}));
 }function toggleJoin(name){let c=communities.find(x=>x.name===name);c.joined=!c.joined;renderCommunities();showToast(c.joined?'Joined '+name+'!':'Left '+name); }function likePost(i){posts[i].liked=!posts[i].liked;posts[i].likes+=posts[i].liked?1:-1;renderPosts()}function showToast(t){let el=document.getElementById('toast');el.textContent=t;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2200)}function createPost(){let text=prompt('What would you like to share with your communities?');if(text&&text.trim()){posts.unshift({user:document.getElementById('pname').textContent,avatar:'🌌',community:'Your profile',time:'Just now',text:text.trim(),likes:0,liked:false});renderPosts();showToast('Post added to this preview!')}}function editProfile(){let n=prompt('Choose your display name',document.getElementById('pname').textContent);if(n&&n.trim())document.getElementById('pname').textContent=n.trim();let b=prompt('Write a short bio',document.getElementById('pbio').textContent);if(b!==null)document.getElementById('pbio').textContent=b;showToast('Profile updated in this preview')}renderCommunities();renderPosts();
@@ -3424,6 +3426,44 @@ window.addEventListener('load',vnUpdateHomeAvatar);
 .vn-community-tile .vn-tile-icon img{display:block!important;width:100%!important;height:100%!important;object-fit:cover!important;border-radius:inherit!important;}
 @media(max-width:370px){.vn-shelf{padding-top:10px!important}.vn-community-tile .vn-tile-icon{top:-6px!important;left:-6px!important;width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important}}
 </style>
+
+<style id="vibenest-moving-bubble-nav">
+/* One smooth rounded bubble travels between the four main tabs; no top underline. */
+nav.bottom{
+  --nav-index:0;
+  position:fixed!important;
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  align-items:stretch!important;
+  isolation:isolate;
+  overflow:hidden;
+}
+nav.bottom::before{
+  content:""!important;
+  position:absolute!important;
+  z-index:0!important;
+  top:8px!important;
+  bottom:calc(8px + env(safe-area-inset-bottom))!important;
+  left:calc(var(--nav-index) * 25% + 4.25%)!important;
+  width:16.5%!important;
+  border-radius:17px!important;
+  border:1px solid rgba(202,166,255,.34)!important;
+  background:linear-gradient(145deg,rgba(177,138,255,.25),rgba(255,139,207,.10))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 5px 20px rgba(112,67,170,.13)!important;
+  transform:none!important;
+  transition:left .32s cubic-bezier(.2,.8,.2,1),background .25s ease!important;
+  pointer-events:none!important;
+}
+nav.bottom>button{z-index:1!important;position:relative!important;background:transparent!important;box-shadow:none!important;border-radius:15px!important;}
+nav.bottom>button.active{background:transparent!important;color:#e1caff!important;}
+nav.bottom>button.active::before{content:none!important;display:none!important;}
+nav.bottom>button::after{content:none!important;display:none!important;}
+nav.bottom>button .nav-icon{filter:none!important;transition:filter .25s ease,transform .25s ease!important;}
+nav.bottom>button.active .nav-icon{filter:drop-shadow(0 0 5px rgba(177,138,255,.38))!important;transform:translateY(-1px)!important;}
+@media(max-width:380px){nav.bottom::before{left:calc(var(--nav-index) * 25% + 3.75%)!important;width:17.5%!important;}}
+@media(prefers-reduced-motion:reduce){nav.bottom::before{transition:none!important;}}
+</style>
+
 </body></html>
 <style id="vn-home-shelf-alignment-and-ranking-fix">
 /* Stable horizontal shelf alignment; reserve a top gutter for the overlapping square badge. */
