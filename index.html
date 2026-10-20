@@ -561,7 +561,7 @@ body.vn-auth-locked,body.vn-auth-booting{overflow:hidden!important}body.vn-auth-
   <header class="vn-create-form-header"><div class="vn-create-eyebrow">✦ YOUR COMMUNITY</div><h1 id="vnCommunityFormTitle">Create your community</h1><p id="vnCommunityFormSubtitle">Add the essentials to bring your people together.</p></header>
   <div class="vn-community-form-body">
    <label for="communityNameInput">Community name</label><input id="communityNameInput" maxlength="50" minlength="2" placeholder="e.g. Anime Haven" autocomplete="off" aria-required="true" oninput="clearCommunityFieldError(this)">
-   <label for="communityCategoryPickerButton">Category</label><select id="communityCategoryInput" class="vn-category-native-value" aria-hidden="true" tabindex="-1"><option>Anime</option><option>Gaming</option><option>Art</option><option>Music</option><option>Books</option><option>Movies &amp; TV</option><option>Technology</option><option>Sports</option><option>Study</option><option>Roleplay</option><option>Creators</option><option>General</option></select><div class="vn-category-picker"><button type="button" id="communityCategoryPickerButton" class="vn-category-picker-button" aria-haspopup="listbox" aria-expanded="false" onclick="toggleCommunityCategoryPicker()"><span id="communityCategoryPickerValue">General</span><span class="vn-category-chevron">⌄</span></button><div id="communityCategoryPickerList" class="vn-category-picker-list" role="listbox" aria-label="Community category" hidden></div></div>
+   <label for="communityCategoryPickerButton">Category</label><select id="communityCategoryInput" class="vn-category-native-value" aria-hidden="true" tabindex="-1"><option>Anime</option><option>Gaming</option><option>Art</option><option>Music</option><option>Books</option><option>Movies &amp; TV</option><option>Technology</option><option>Sports</option><option>Study</option><option>Roleplay</option><option>Creators</option><option>General</option></select><div class="vn-category-picker"><button type="button" id="communityCategoryPickerButton" class="vn-category-picker-button" aria-haspopup="listbox" aria-expanded="false" onclick="toggleCommunityCategoryPicker()"><span id="communityCategoryPickerValue">General</span><span class="vn-category-chevron" aria-hidden="true"><svg viewBox="0 0 24 24" focusable="false"><path d="m6 9 6 6 6-6"/></svg></span></button><div id="communityCategoryPickerList" class="vn-category-picker-list" role="listbox" aria-label="Community category" hidden></div></div>
    <label for="communityDescriptionInput">Description</label><textarea id="communityDescriptionInput" maxlength="300" minlength="5" placeholder="What is your community about?" aria-required="true" oninput="clearCommunityFieldError(this)"></textarea>
    <div class="vn-upload-grid">
     <div class="vn-upload-field"><label for="communityIconInput">Community icon</label><button type="button" id="communityIconPreview" class="vn-community-icon-preview vn-upload-pick" onclick="document.getElementById('communityIconInput').click()" aria-label="Choose community icon"><span>✦</span><small>Add icon</small></button><input id="communityIconInput" class="vn-hidden-file-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif" aria-required="true" onchange="previewCommunityImage(event,'icon')"><small>Recommended: 512 × 512 px</small></div>
@@ -2734,6 +2734,16 @@ renderCommunityDetail=function(){initializeCommunitySections();vnOldRenderCommun
         try{history.pushState({...history.state,vnCommunityCreator:true,vnCommunityStep:'types'},'',location.href);}catch(e){}
       }else{
         closeCommunityCreator(true);
+        // Leaving the community-type chooser should return to the Communities tab,
+        // never let the browser/app back gesture fall through and exit the app.
+        const activeAfterClose=document.querySelector('.page.active')?.id||currentPage||'communities';
+        if(activeAfterClose!=='communities'){
+          handlingPop=true;
+          nativeGo('communities');
+          currentPage='communities';
+          handlingPop=false;
+        }
+        try{history.pushState({...history.state,vnPage:'communities',vnCommunityCreator:false,vnCommunityStep:undefined},'',location.href);}catch(e){}
       }
       return;
     }
@@ -4049,7 +4059,7 @@ document.addEventListener('keydown',e=>{const panel=document.getElementById('vnC
 #communityCreateModal .vn-category-native-value{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important;clip-path:inset(50%)!important}
 #communityCreateModal .vn-category-picker{position:relative;width:100%}
 #communityCreateModal .vn-category-picker-button{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:52px;padding:13px 14px;border:1px solid #40324f;border-radius:14px;background:#15111b;color:#f8f2ff;font:inherit;text-align:left;box-sizing:border-box}
-#communityCreateModal .vn-category-chevron{font-size:22px;color:#c9bad8;line-height:1}
+#communityCreateModal .vn-category-chevron{display:grid;place-items:center;width:20px;height:20px;color:#c9bad8;line-height:1;flex-shrink:0}#communityCreateModal .vn-category-chevron svg{display:block;width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transition:transform .18s ease}#communityCreateModal .vn-category-picker-button[aria-expanded="true"] .vn-category-chevron svg{transform:rotate(180deg)}
 #communityCreateModal .vn-category-picker-list{position:absolute;z-index:100;top:calc(100% + 6px);left:0;right:0;max-height:min(48dvh,390px);overflow-y:auto;overscroll-behavior:contain;border:1px solid #49365e;border-radius:15px;background:#21172f;box-shadow:0 16px 42px #0009;padding:5px}
 #communityCreateModal .vn-category-picker-list[hidden]{display:none!important}
 #communityCreateModal .vn-category-option{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:44px;padding:10px 12px;border:0;border-radius:10px;background:transparent;color:#f8f2ff;font:inherit;text-align:left}
