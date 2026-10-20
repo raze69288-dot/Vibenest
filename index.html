@@ -561,7 +561,7 @@ body.vn-auth-locked,body.vn-auth-booting{overflow:hidden!important}body.vn-auth-
   <header class="vn-create-form-header"><div class="vn-create-eyebrow">✦ YOUR COMMUNITY</div><h1 id="vnCommunityFormTitle">Create your community</h1><p id="vnCommunityFormSubtitle">Add the essentials to bring your people together.</p></header>
   <div class="vn-community-form-body">
    <label for="communityNameInput">Community name</label><input id="communityNameInput" maxlength="50" minlength="2" placeholder="e.g. Anime Haven" autocomplete="off" aria-required="true" oninput="clearCommunityFieldError(this)">
-   <label for="communityCategoryInput">Category</label><select id="communityCategoryInput"><option>Anime</option><option>Gaming</option><option>Art</option><option>Music</option><option>Books</option><option>Movies &amp; TV</option><option>Technology</option><option>Sports</option><option>Study</option><option>Roleplay</option><option>Creators</option><option>General</option></select>
+   <label for="communityCategoryPickerButton">Category</label><select id="communityCategoryInput" class="vn-category-native-value" aria-hidden="true" tabindex="-1"><option>Anime</option><option>Gaming</option><option>Art</option><option>Music</option><option>Books</option><option>Movies &amp; TV</option><option>Technology</option><option>Sports</option><option>Study</option><option>Roleplay</option><option>Creators</option><option>General</option></select><div class="vn-category-picker"><button type="button" id="communityCategoryPickerButton" class="vn-category-picker-button" aria-haspopup="listbox" aria-expanded="false" onclick="toggleCommunityCategoryPicker()"><span id="communityCategoryPickerValue">General</span><span class="vn-category-chevron">⌄</span></button><div id="communityCategoryPickerList" class="vn-category-picker-list" role="listbox" aria-label="Community category" hidden></div></div>
    <label for="communityDescriptionInput">Description</label><textarea id="communityDescriptionInput" maxlength="300" minlength="5" placeholder="What is your community about?" aria-required="true" oninput="clearCommunityFieldError(this)"></textarea>
    <div class="vn-upload-grid">
     <div class="vn-upload-field"><label for="communityIconInput">Community icon</label><button type="button" id="communityIconPreview" class="vn-community-icon-preview vn-upload-pick" onclick="document.getElementById('communityIconInput').click()" aria-label="Choose community icon"><span>✦</span><small>Add icon</small></button><input id="communityIconInput" class="vn-hidden-file-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif" aria-required="true" onchange="previewCommunityImage(event,'icon')"><small>Recommended: 512 × 512 px</small></div>
@@ -939,13 +939,32 @@ const vnCommunityTemplates={
 };
 window.vnSelectedCommunityType='custom';
 window.__vnCommunityCreatorHistoryPushed=false;
+const vnCommunityCategories=['Anime','Gaming','Art','Music','Books','Movies & TV','Technology','Sports','Study','Roleplay','Creators','General'];
+function renderCommunityCategoryPicker(){
+ const list=document.getElementById('communityCategoryPickerList');if(!list)return;
+ const selected=document.getElementById('communityCategoryInput')?.value||'General';
+ list.innerHTML=vnCommunityCategories.map(category=>`<button type="button" role="option" aria-selected="${category===selected?'true':'false'}" class="vn-category-option ${category===selected?'selected':''}" onclick="selectCommunityCategory(${JSON.stringify(category)})"><span>${category}</span><span class="vn-category-check">${category===selected?'✓':''}</span></button>`).join('');
+ const label=document.getElementById('communityCategoryPickerValue');if(label)label.textContent=selected;
+}
+function toggleCommunityCategoryPicker(force){
+ const list=document.getElementById('communityCategoryPickerList'),button=document.getElementById('communityCategoryPickerButton');if(!list||!button)return;
+ const open=typeof force==='boolean'?force:list.hidden;
+ list.hidden=!open;button.setAttribute('aria-expanded',String(open));
+ if(open)renderCommunityCategoryPicker();
+}
+function selectCommunityCategory(category){
+ if(!vnCommunityCategories.includes(category))return;
+ const select=document.getElementById('communityCategoryInput');if(select)select.value=category;
+ renderCommunityCategoryPicker();toggleCommunityCategoryPicker(false);
+}
+document.addEventListener('click',event=>{const picker=document.querySelector('.vn-category-picker');if(picker&&!picker.contains(event.target))toggleCommunityCategoryPicker(false);});
 function chooseCommunityType(type){
  const template=vnCommunityTemplates[type]||vnCommunityTemplates.custom;
  window.vnSelectedCommunityType=vnCommunityTemplates[type]?type:'custom';
  const category=document.getElementById('communityCategoryInput');
  const name=document.getElementById('communityNameInput');
  const description=document.getElementById('communityDescriptionInput');
- if(category)category.value=template.category;
+ if(category)category.value=template.category;renderCommunityCategoryPicker();
  if(name)name.value='';
  if(description)description.value=template.description;
  clearCommunityCreatorErrors();
@@ -968,7 +987,7 @@ function createCommunity(){
  const resetIds=['communityNameInput','communityDescriptionInput','communityCoverInput','communityIconInput'];
  resetIds.forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
  document.querySelector('input[name="communityPrivacy"][value="public"]')?.click();
- document.getElementById('communityCategoryInput').value='General';
+ document.getElementById('communityCategoryInput').value='General';renderCommunityCategoryPicker();
  document.getElementById('communityCreateMessage').textContent='';
  document.getElementById('communityCreateSubmit').disabled=false;
  document.getElementById('communityCreateSubmit').textContent='Create community';
@@ -4018,10 +4037,24 @@ document.addEventListener('keydown',e=>{const panel=document.getElementById('vnC
 
 #communityCreateModal .vn-field-invalid{border-color:#ff536b!important;box-shadow:0 0 0 2px #ff536b55,0 0 18px #ff365544!important;animation:vnCommunityFieldGlow 1.1s ease-in-out infinite alternate}
 #communityCreateModal .vn-upload-field.vn-field-invalid .vn-upload-pick{border-color:#ff536b!important;box-shadow:0 0 0 2px #ff536b55,0 0 18px #ff365544!important}
+#communityCreateModal .vn-upload-field.vn-field-invalid{outline:0!important;border:0!important;box-shadow:none!important;background:transparent!important}
 @keyframes vnCommunityFieldGlow{from{box-shadow:0 0 0 1px #ff536b44,0 0 8px #ff365522}to{box-shadow:0 0 0 3px #ff536b77,0 0 18px #ff365566}}
 @media(max-height:760px){#communityCreateModal .vn-create-step{padding-bottom:8px}.vn-create-header,.vn-create-form-header{padding-bottom:9px}.vn-privacy-option{padding:9px 8px}}
 @media(min-width:560px){#communityCreateModal .vn-community-type-list{grid-template-columns:repeat(2,minmax(0,1fr))}#communityCreateModal .vn-community-type{min-height:106px}.vn-upload-grid{grid-template-columns:minmax(130px,.8fr) minmax(0,1.5fr)}}
 @media(max-width:370px){#communityCreateModal .vn-create-step{padding-left:12px;padding-right:12px}.vn-community-type{gap:8px;padding:10px;min-height:80px}.vn-community-type .vn-type-art{flex-basis:53px;height:56px;font-size:36px}.vn-type-copy b{font-size:16px}.vn-type-copy small{font-size:11px}}
 </style>
 
+
+<style id="vn-community-category-in-app-picker-fix">
+#communityCreateModal .vn-category-native-value{position:absolute!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important;clip-path:inset(50%)!important}
+#communityCreateModal .vn-category-picker{position:relative;width:100%}
+#communityCreateModal .vn-category-picker-button{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:52px;padding:13px 14px;border:1px solid #40324f;border-radius:14px;background:#15111b;color:#f8f2ff;font:inherit;text-align:left;box-sizing:border-box}
+#communityCreateModal .vn-category-chevron{font-size:22px;color:#c9bad8;line-height:1}
+#communityCreateModal .vn-category-picker-list{position:absolute;z-index:100;top:calc(100% + 6px);left:0;right:0;max-height:min(48dvh,390px);overflow-y:auto;overscroll-behavior:contain;border:1px solid #49365e;border-radius:15px;background:#21172f;box-shadow:0 16px 42px #0009;padding:5px}
+#communityCreateModal .vn-category-picker-list[hidden]{display:none!important}
+#communityCreateModal .vn-category-option{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;min-height:44px;padding:10px 12px;border:0;border-radius:10px;background:transparent;color:#f8f2ff;font:inherit;text-align:left}
+#communityCreateModal .vn-category-option+.vn-category-option{border-top:1px solid #ffffff0c}
+#communityCreateModal .vn-category-option.selected{background:#b18aff20;color:#d9c2ff}
+#communityCreateModal .vn-category-check{width:20px;color:#c4a9f4;font-weight:900;text-align:center}
+</style>
 </body></html>
