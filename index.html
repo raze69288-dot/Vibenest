@@ -2688,6 +2688,9 @@ renderCommunityDetail=function(){initializeCommunitySections();vnOldRenderCommun
   if (typeof nativeGo !== 'function') return;
   let handlingPop = false;
   let currentPage = document.querySelector('.page.active')?.id || 'home';
+  // Used when the creator type-picker consumes Back: return to the already-existing
+  // Communities history entry instead of pushing another entry that can exit the app.
+  window.__vnCommunityCreatorReturnPending = false;
   try { history.replaceState({...history.state, vnPage: currentPage, vnRoot: true}, '', location.href); } catch(e) {}
 
   function closeTopLayer(){
@@ -2725,6 +2728,25 @@ renderCommunityDetail=function(){initializeCommunitySections();vnOldRenderCommun
   };
 
   window.addEventListener('popstate', function(event){
+    // Second Back from the type picker: travel to the existing Communities entry.
+    // This removes the creator's forward entries instead of leaving a stale creator
+    // entry behind the tab (which caused the following swipe to exit the WebView).
+    if(window.__vnCommunityCreatorReturnPending){
+      window.__vnCommunityCreatorReturnPending=false;
+      const pendingModal=document.getElementById('communityCreateModal');
+      if(pendingModal && getComputedStyle(pendingModal).display!=='none') closeCommunityCreator(true);
+      handlingPop=true;
+      nativeGo('communities');
+      currentPage='communities';
+      handlingPop=false;
+      try{
+        const cleanState={...(event.state||history.state||{}),vnPage:'communities',vnCommunityCreator:false};
+        delete cleanState.vnCommunityStep;
+        delete cleanState.vnCommunityBackGuard;
+        history.replaceState(cleanState,'',location.href);
+      }catch(e){}
+      return;
+    }
     // Android system Back and browser swipe navigate within community creation first.
     const communityCreator=document.getElementById('communityCreateModal');
     if(communityCreator && getComputedStyle(communityCreator).display!=='none'){
@@ -2733,21 +2755,19 @@ renderCommunityDetail=function(){initializeCommunitySections();vnOldRenderCommun
         document.getElementById('vnCommunityFormScreen').hidden=true;
         document.getElementById('vnCommunityTypeScreen').hidden=false;
         communityCreator.scrollTop=0;
-        try{history.pushState({...history.state,vnCommunityCreator:true,vnCommunityStep:'types'},'',location.href);}catch(e){}
+        // Keep a type-picker sentinel above the underlying Communities entry. On the
+        // next Back, the branch below can safely return to that exact entry.
+        try{history.pushState({...history.state,vnPage:'communities',vnCommunityCreator:true,vnCommunityStep:'types'},'',location.href);}catch(e){}
       }else{
-        closeCommunityCreator(true);
-        // Leaving the community-type chooser should return to the Communities tab,
-        // never let the browser/app back gesture fall through and exit the app.
-        // Always explicitly activate Communities, even if the DOM already reports
-        // that tab as active. Some Android WebViews otherwise consume the swipe
-        // but leave the underlying page/history in an exit-ready state.
-        handlingPop=true;
-        nativeGo('communities');
-        currentPage='communities';
-        handlingPop=false;
-        try{
-          history.pushState({...(history.state||{}),vnPage:'communities',vnCommunityCreator:false,vnCommunityStep:undefined,vnCommunityBackGuard:true},'',location.href);
-        }catch(e){}
+        // Do not push another state here: step back once more to the existing
+        // Communities entry, and handle that pop in the pending branch above.
+        window.__vnCommunityCreatorReturnPending=true;
+        try{history.back();}catch(e){
+          window.__vnCommunityCreatorReturnPending=false;
+          closeCommunityCreator(true);
+          handlingPop=true;nativeGo('communities');currentPage='communities';handlingPop=false;
+          try{history.replaceState({...history.state,vnPage:'communities',vnCommunityCreator:false},'',location.href);}catch(_e){}
+        }
       }
       return;
     }
