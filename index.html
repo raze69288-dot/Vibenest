@@ -541,21 +541,39 @@ body.vn-auth-locked,body.vn-auth-booting{overflow:hidden!important}body.vn-auth-
 @media(max-width:380px){#authModal .authbox{padding:24px 19px!important;border-radius:23px}}
 </style>
 <div id="authModal" style="display:none;position:fixed;inset:0;z-index:30;background:#100e17f7;overflow:auto;padding:20px 0 35px"><div class="authbox" style="max-width:520px;margin:25px auto"><div class="vn-auth-brand">Vibe<span>Nest</span></div><div style="font-size:12px;color:var(--purple);font-weight:800;letter-spacing:1.5px">YOUR CORNER OF THE INTERNET</div><h2 id="authTitle" style="margin-top:12px">Welcome back</h2><p id="authSubtitle">Sign in to your corner of the internet.</p><div id="signupNameWrap" style="display:none"><label>Username<input id="authUsername" autocomplete="username" placeholder="e.g. StarrySoul" maxlength="24"></label></div><label id="authEmailLabel">Email<input id="authEmail" type="email" autocomplete="email" placeholder="you@example.com"></label><label id="authPasswordLabel">Password<input id="authPassword" type="password" autocomplete="current-password" placeholder="At least 8 characters" minlength="8"></label><div class="authrow"><button class="btn" id="authSubmit" onclick="submitAuth()">Sign in</button><button class="join" id="authSwitch" onclick="switchAuthMode()">Create account</button></div><div id="authMessage" class="statusmsg"></div></div></div>
-<div id="roomCreateModal" class="community-create-modal" role="dialog" aria-modal="true" aria-labelledby="roomCreateTitle" onclick="if(event.target===this)closeRoomCreator()"><div class="community-create-card room-create-card"><button class="join" onclick="closeRoomCreator()" style="float:right">Close ✕</button><div style="font-size:12px;color:var(--purple);font-weight:850;letter-spacing:1px">✦ COMMUNITY CHAT</div><h2 id="roomCreateTitle">Create a chatroom</h2><p class="muted">Start a conversation for up to 100 community members.</p><label for="roomNameInput">Room name *</label><input id="roomNameInput" maxlength="40" minlength="2" placeholder="e.g. Late-night gaming" autocomplete="off"><div class="community-form-hint">Choose a clear name, 2–40 characters.</div><label for="roomDescriptionInput">What is this room for? <span class="muted">(optional)</span></label><textarea id="roomDescriptionInput" maxlength="140" placeholder="Chat, share ideas, or hang out…"></textarea><div id="roomCreateMessage" class="statusmsg" role="status"></div><div class="community-create-actions"><button class="btn" id="roomCreateSubmit" onclick="saveCommunityRoom()">Create room</button><button class="join" onclick="closeRoomCreator()">Cancel</button></div></div></div><div id="communityCreateModal" class="community-create-modal"><div class="community-create-card"><button class="join" onclick="closeCommunityCreator()" style="float:right">Close ✕</button><div style="font-size:12px;color:var(--purple);font-weight:850;letter-spacing:1px">✦ BUILD YOUR CORNER</div><h2>Create a community</h2><p class="muted">Bring your people together around something you love.</p>
-<div class="vn-template-picker" aria-label="Choose a VibeNest community template">
- <div class="vn-template-picker-heading"><div><b>Start with a vibe</b><small>Choose a template or build your own.</small></div><span class="vn-template-badge">VIBENEST</span></div>
- <div class="vn-template-grid">
-  <button type="button" class="vn-template-card" data-vn-template="friends" aria-pressed="false" onclick="selectCommunityTemplate('friends')"><span class="vn-template-icon">🫶</span><span class="vn-template-copy"><b>Close friends</b><small>Everyday chats & photos</small></span></button>
-  <button type="button" class="vn-template-card" data-vn-template="gaming" aria-pressed="false" onclick="selectCommunityTemplate('gaming')"><span class="vn-template-icon">🎮</span><span class="vn-template-copy"><b>Gaming squad</b><small>Teams, tips & polls</small></span></button>
-  <button type="button" class="vn-template-card" data-vn-template="fandom" aria-pressed="false" onclick="selectCommunityTemplate('fandom')"><span class="vn-template-icon">🌙</span><span class="vn-template-copy"><b>Fandom lounge</b><small>Fans, theories & edits</small></span></button>
-  <button type="button" class="vn-template-card" data-vn-template="art" aria-pressed="false" onclick="selectCommunityTemplate('art')"><span class="vn-template-icon">🎨</span><span class="vn-template-copy"><b>Creative studio</b><small>Showcase your work</small></span></button>
-  <button type="button" class="vn-template-card" data-vn-template="study" aria-pressed="false" onclick="selectCommunityTemplate('study')"><span class="vn-template-icon">📚</span><span class="vn-template-copy"><b>Study circle</b><small>Learn & stay motivated</small></span></button>
-  <button type="button" class="vn-template-card" data-vn-template="roleplay" aria-pressed="false" onclick="selectCommunityTemplate('roleplay')"><span class="vn-template-icon">🪄</span><span class="vn-template-copy"><b>Roleplay world</b><small>Characters & storylines</small></span></button>
-  <button type="button" class="vn-template-card" data-vn-template="creator" aria-pressed="false" onclick="selectCommunityTemplate('creator')"><span class="vn-template-icon">✨</span><span class="vn-template-copy"><b>Creator corner</b><small>Updates & fan community</small></span></button>
-  <button type="button" class="vn-template-card is-selected" data-vn-template="custom" aria-pressed="true" onclick="selectCommunityTemplate('custom')"><span class="vn-template-icon">✳</span><span class="vn-template-copy"><b>From scratch</b><small>Your rules, your vibe</small></span></button>
- </div>
-</div>
-<label for="communityNameInput">Community name *</label><input id="communityNameInput" maxlength="50" placeholder="e.g. Anime Haven" autocomplete="off"><label for="communityCategoryInput">Category *</label><select id="communityCategoryInput"><option>Anime</option><option>Gaming</option><option>Art</option><option>Music</option><option>Books</option><option>Movies & TV</option><option>Technology</option><option>Sports</option><option>Study</option><option>Roleplay</option><option>Creators</option><option>General</option></select><label for="communityDescriptionInput">Description</label><textarea id="communityDescriptionInput" maxlength="300" placeholder="What is your community about?"></textarea><label for="communityCoverInput">Cover image (optional)</label><div id="communityCoverPreview" class="community-cover-preview">✦</div><input id="communityCoverInput" type="file" accept="image/*" onchange="previewCommunityCover(event)"><div class="community-form-hint">Choose a JPG, PNG, or WebP image up to 5 MB. A cover makes your community stand out.</div><div id="communityCreateMessage" class="statusmsg" role="status"></div><div class="community-create-actions"><button class="btn" id="communityCreateSubmit" onclick="saveNewCommunity()">Create Community</button><button class="join" onclick="closeCommunityCreator()">Cancel</button></div></div></div><div id="profileEditModal" class="profile-edit-modal"><div class="profile-edit-card"><button class="join" onclick="closeProfileEditor()" style="float:right">Close ✕</button><h2 style="margin-top:8px">Customize your profile</h2><p class="muted">Update how other VibeNest members see you.</p><img id="profilePreview" class="profile-preview" alt="Profile picture preview" src="" style="display:none"><div id="profilePreviewFallback" class="profile-hero-avatar" style="width:90px;height:90px;border-radius:26px;font-size:38px">✦</div><label>Profile picture<input id="profileAvatarFile" type="file" accept="image/*" onchange="previewProfilePicture(event)"></label><div class="profile-hint">Choose an image up to 5 MB. JPG, PNG, WebP, and other browser-supported image formats work.</div><label>Username<input id="profileUsernameInput" maxlength="24" autocomplete="username" placeholder="e.g. daze"></label><label>Display name<input id="profileDisplayNameInput" maxlength="40" placeholder="How people see your name"></label><label>Bio<textarea id="profileBioInput" maxlength="240" placeholder="Tell people a little about yourself…"></textarea></label><label>Profile theme<select id="profileThemeInput" class="field"><option value="violet">Violet glow</option><option value="rose">Rose dusk</option><option value="ocean">Ocean night</option><option value="emerald">Emerald dusk</option></select></label><p class="profile-hint">Your theme changes the accent on your profile.</p><div id="profileEditMessage" class="statusmsg"></div><div class="profile-edit-actions"><button class="btn" id="saveProfileButton" onclick="saveProfileChanges()">Save profile</button><button class="join" onclick="closeProfileEditor()">Cancel</button></div></div></div>
+<div id="roomCreateModal" class="community-create-modal" role="dialog" aria-modal="true" aria-labelledby="roomCreateTitle" onclick="if(event.target===this)closeRoomCreator()"><div class="community-create-card room-create-card"><button class="join" onclick="closeRoomCreator()" style="float:right">Close ✕</button><div style="font-size:12px;color:var(--purple);font-weight:850;letter-spacing:1px">✦ COMMUNITY CHAT</div><h2 id="roomCreateTitle">Create a chatroom</h2><p class="muted">Start a conversation for up to 100 community members.</p><label for="roomNameInput">Room name *</label><input id="roomNameInput" maxlength="40" minlength="2" placeholder="e.g. Late-night gaming" autocomplete="off"><div class="community-form-hint">Choose a clear name, 2–40 characters.</div><label for="roomDescriptionInput">What is this room for? <span class="muted">(optional)</span></label><textarea id="roomDescriptionInput" maxlength="140" placeholder="Chat, share ideas, or hang out…"></textarea><div id="roomCreateMessage" class="statusmsg" role="status"></div><div class="community-create-actions"><button class="btn" id="roomCreateSubmit" onclick="saveCommunityRoom()">Create room</button><button class="join" onclick="closeRoomCreator()">Cancel</button></div></div></div><div id="communityCreateModal" class="community-create-modal vn-community-create-screen" role="dialog" aria-modal="true" aria-labelledby="communityCreateTitle">
+ <section id="vnCommunityTypeScreen" class="vn-create-step vn-create-type-step">
+  <header class="vn-create-header"><button type="button" class="vn-create-close" onclick="closeCommunityCreator()" aria-label="Close community creation">✕</button><div class="vn-create-eyebrow">✦ BUILD YOUR CORNER</div><h1 id="communityCreateTitle">Create a community</h1><p>What kind of corner are you building?</p></header>
+  <div class="vn-community-type-list" aria-label="Choose a community type">
+   <button type="button" class="vn-community-type type-internet" onclick="chooseCommunityType('friends')"><span class="vn-type-art">👥</span><span class="vn-type-copy"><b>Internet Friends</b><small>Online friends, chats, and shared interests</small></span><span class="vn-type-arrow">›</span></button>
+   <button type="button" class="vn-community-type type-irl" onclick="chooseCommunityType('irl')"><span class="vn-type-art">🫂</span><span class="vn-type-copy"><b>Real World Friends (IRL)</b><small>BFFs, classmates, roommates</small></span><span class="vn-type-arrow">›</span></button>
+   <button type="button" class="vn-community-type type-roleplay" onclick="chooseCommunityType('roleplay')"><span class="vn-type-art">💬</span><span class="vn-type-copy"><b>Roleplay</b><small>Story writers, characters, and worlds</small></span><span class="vn-type-arrow">›</span></button>
+   <button type="button" class="vn-community-type type-interest" onclick="chooseCommunityType('interest')"><span class="vn-type-art">❤️</span><span class="vn-type-copy"><b>Interest Community</b><small>Fandoms, hobbies, and passions</small></span><span class="vn-type-arrow">›</span></button>
+   <button type="button" class="vn-community-type type-gaming" onclick="chooseCommunityType('gaming')"><span class="vn-type-art">🎮</span><span class="vn-type-copy"><b>Gamer Group</b><small>Guilds, leagues, and game nights</small></span><span class="vn-type-arrow">›</span></button>
+   <button type="button" class="vn-community-type type-school" onclick="chooseCommunityType('study')"><span class="vn-type-art">🎒</span><span class="vn-type-copy"><b>School Group</b><small>Clubs, teams, and study groups</small></span><span class="vn-type-arrow">›</span></button>
+   <button type="button" class="vn-community-type type-art" onclick="chooseCommunityType('art')"><span class="vn-type-art">🎨</span><span class="vn-type-copy"><b>Art Community</b><small>Photography, design, and aesthetics</small></span><span class="vn-type-arrow">›</span></button>
+   <button type="button" class="vn-community-type type-organization" onclick="chooseCommunityType('organization')"><span class="vn-type-art">👥</span><span class="vn-type-copy"><b>Organization</b><small>Causes, groups, and events</small></span><span class="vn-type-arrow">›</span></button>
+   <button type="button" class="vn-community-type type-creator" onclick="chooseCommunityType('creator')"><span class="vn-type-art">📣</span><span class="vn-type-copy"><b>Influencer</b><small>Content creators and their communities</small></span><span class="vn-type-arrow">›</span></button>
+   <button type="button" class="vn-community-type type-custom" onclick="chooseCommunityType('custom')"><span class="vn-type-art">🛠️</span><span class="vn-type-copy"><b>Custom</b><small>Anything you want to build</small></span><span class="vn-type-arrow">›</span></button>
+  </div>
+ </section>
+ <section id="vnCommunityFormScreen" class="vn-create-step vn-create-form-step" hidden>
+  <header class="vn-create-form-header"><button type="button" class="vn-create-back" onclick="backToCommunityTypes()">← <span>All types</span></button><button type="button" class="vn-create-close" onclick="closeCommunityCreator()" aria-label="Close community creation">✕</button><div class="vn-create-eyebrow">✦ YOUR COMMUNITY</div><h1 id="vnCommunityFormTitle">Create your community</h1><p id="vnCommunityFormSubtitle">Add the essentials to bring your people together.</p></header>
+  <div class="vn-community-form-body">
+   <div class="vn-required-note">All fields marked * are required.</div>
+   <label for="communityNameInput">Community name *</label><input id="communityNameInput" maxlength="50" minlength="2" required placeholder="e.g. Anime Haven" autocomplete="off">
+   <label for="communityCategoryInput">Category *</label><select id="communityCategoryInput" required><option>Anime</option><option>Gaming</option><option>Art</option><option>Music</option><option>Books</option><option>Movies &amp; TV</option><option>Technology</option><option>Sports</option><option>Study</option><option>Roleplay</option><option>Creators</option><option>General</option></select>
+   <label for="communityDescriptionInput">Description *</label><textarea id="communityDescriptionInput" maxlength="300" minlength="5" required placeholder="What is your community about?"></textarea>
+   <div class="vn-upload-grid">
+    <div class="vn-upload-field"><label for="communityIconInput">Community icon *</label><div id="communityIconPreview" class="vn-community-icon-preview">✦</div><input id="communityIconInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif" required onchange="previewCommunityImage(event,'icon')"><small>Square image · up to 5 MB</small></div>
+    <div class="vn-upload-field"><label for="communityCoverInput">Banner image *</label><div id="communityCoverPreview" class="community-cover-preview vn-community-banner-preview">Choose a banner</div><input id="communityCoverInput" type="file" accept="image/png,image/jpeg,image/webp,image/gif" required onchange="previewCommunityImage(event,'cover')"><small>Wide image · up to 5 MB</small></div>
+   </div>
+   <fieldset class="vn-privacy-field"><legend>Who can see this community? *</legend><label class="vn-privacy-option"><input type="radio" name="communityPrivacy" value="public" checked><span class="vn-privacy-icon">🌐</span><span><b>Public</b><small>Anyone can discover this community.</small></span></label><label class="vn-privacy-option"><input type="radio" name="communityPrivacy" value="private"><span class="vn-privacy-icon">🔒</span><span><b>Private</b><small>Only its creator and members can see it.</small></span></label></fieldset>
+   <div id="communityCreateMessage" class="statusmsg" role="status" aria-live="polite"></div>
+   <div class="community-create-actions"><button class="btn" id="communityCreateSubmit" onclick="saveNewCommunity()">Create community</button></div>
+  </div>
+ </section>
+</div><div id="profileEditModal" class="profile-edit-modal"><div class="profile-edit-card"><button class="join" onclick="closeProfileEditor()" style="float:right">Close ✕</button><h2 style="margin-top:8px">Customize your profile</h2><p class="muted">Update how other VibeNest members see you.</p><img id="profilePreview" class="profile-preview" alt="Profile picture preview" src="" style="display:none"><div id="profilePreviewFallback" class="profile-hero-avatar" style="width:90px;height:90px;border-radius:26px;font-size:38px">✦</div><label>Profile picture<input id="profileAvatarFile" type="file" accept="image/*" onchange="previewProfilePicture(event)"></label><div class="profile-hint">Choose an image up to 5 MB. JPG, PNG, WebP, and other browser-supported image formats work.</div><label>Username<input id="profileUsernameInput" maxlength="24" autocomplete="username" placeholder="e.g. daze"></label><label>Display name<input id="profileDisplayNameInput" maxlength="40" placeholder="How people see your name"></label><label>Bio<textarea id="profileBioInput" maxlength="240" placeholder="Tell people a little about yourself…"></textarea></label><label>Profile theme<select id="profileThemeInput" class="field"><option value="violet">Violet glow</option><option value="rose">Rose dusk</option><option value="ocean">Ocean night</option><option value="emerald">Emerald dusk</option></select></label><p class="profile-hint">Your theme changes the accent on your profile.</p><div id="profileEditMessage" class="statusmsg"></div><div class="profile-edit-actions"><button class="btn" id="saveProfileButton" onclick="saveProfileChanges()">Save profile</button><button class="join" onclick="closeProfileEditor()">Cancel</button></div></div></div>
 <section id="notifications" class="page"><div class="simple"><div class="notification-page-top"><button type="button" class="notification-back" onclick="go('home')" aria-label="Back to Home">← <span>Back</span></button><button class="join" onclick="markAllNotificationsRead()">Mark all read</button></div><div class="heading" style="padding:0 0 12px"><h1 style="margin:0">Notifications 🔔</h1></div><p class="muted">Follows, likes, and comments from your VibeNest community.</p><div id="notificationsList"><p class="muted">Sign in to view notifications.</p></div></div></section>
 
 <nav class="bottom" aria-label="Main navigation"><button class="active" data-tab="home" onclick="go('home')"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3.5 10.5 8.5-7 8.5 7v9.2a1.3 1.3 0 0 1-1.3 1.3H4.8a1.3 1.3 0 0 1-1.3-1.3z"/><path d="M9 21v-7h6v7"/></svg><span>Home</span></button><button data-tab="communities" onclick="go('communities')"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M2.8 19c.4-3.3 2.7-5.2 6.2-5.2s5.8 1.9 6.2 5.2z"/><path d="M16 5.2a3.1 3.1 0 0 1 0 6.1M17 14c2.5.5 3.9 2.2 4.2 5"/></svg><span>Communities</span></button><button data-tab="chats" onclick="go('chats')"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v11.8H9l-5 3z"/><path d="M8 9h8M8 13h5"/></svg><span>Chats</span><span id="chatNavBadge" class="chat-nav-badge" hidden aria-label="Unread messages"></span></button><button data-tab="profile" onclick="go('profile')"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c.6-4 3.1-6 7.5-6s6.9 2 7.5 6z"/></svg><span>Profile</span></button></nav><div id="toast" class="toast"></div>
@@ -909,82 +927,108 @@ async function toggleOnlineJoin(id){
  await Promise.all([refreshSocialCounts(),loadTotalCommunityPeople()]);renderOnlineCommunities();if(activeCommunity&&String(activeCommunity.id)===String(c.id))renderCommunityDetail();
 }
 const vnCommunityTemplates={
- friends:{category:'General',description:'A welcoming place for your people to share life updates, photos, and conversations.'},
- gaming:{category:'Gaming',description:'Find teammates, share highlights, trade tips, and plan your next gaming session.'},
- fandom:{category:'Movies & TV',description:'A home for fans to discuss favorite characters, theories, new releases, and fan creations.'},
- art:{category:'Art',description:'Show your work, find inspiration, share creative prompts, and encourage one another.'},
- study:{category:'Study',description:'Learn together, swap resources, ask questions, and keep each other motivated.'},
- roleplay:{category:'Roleplay',description:'Build a shared world for characters, storylines, scenes, and collaborative imagination.'},
- creator:{category:'Creators',description:'Share new work, post updates, gather feedback, and connect with the people who follow your journey.'},
- custom:{category:'General',description:''}
+ friends:{category:'General',title:'Internet Friends',description:'A welcoming place for your online friends to share updates and conversations.'},
+ irl:{category:'General',title:'Real World Friends (IRL)',description:'A private corner for your friends, classmates, or roommates.'},
+ roleplay:{category:'Roleplay',title:'Roleplay',description:'Build shared worlds, characters, storylines, and collaborative scenes.'},
+ interest:{category:'General',title:'Interest Community',description:'Bring people together around a fandom, hobby, or passion.'},
+ gaming:{category:'Gaming',title:'Gamer Group',description:'Find teammates, share highlights, and plan your next gaming session.'},
+ study:{category:'Study',title:'School Group',description:'Learn together, share resources, and keep one another motivated.'},
+ art:{category:'Art',title:'Art Community',description:'Share art, photography, design, and creative inspiration.'},
+ organization:{category:'General',title:'Organization',description:'Coordinate a group, cause, club, or community event.'},
+ creator:{category:'Creators',title:'Influencer',description:'Share your work and connect with the people who follow your journey.'},
+ custom:{category:'General',title:'Custom Community',description:''}
 };
-function selectCommunityTemplate(templateId,fillDefaults=true){
- const template=vnCommunityTemplates[templateId]||vnCommunityTemplates.custom;
- window.vnSelectedCommunityTemplate=vnCommunityTemplates[templateId]?templateId:'custom';
- document.querySelectorAll('[data-vn-template]').forEach(button=>{
-  const selected=button.dataset.vnTemplate===window.vnSelectedCommunityTemplate;
-  button.classList.toggle('is-selected',selected);button.setAttribute('aria-pressed',String(selected));
- });
+window.vnSelectedCommunityType='custom';
+function chooseCommunityType(type){
+ const template=vnCommunityTemplates[type]||vnCommunityTemplates.custom;
+ window.vnSelectedCommunityType=vnCommunityTemplates[type]?type:'custom';
  const category=document.getElementById('communityCategoryInput');
+ const name=document.getElementById('communityNameInput');
  const description=document.getElementById('communityDescriptionInput');
- if(fillDefaults){if(category)category.value=template.category;if(description)description.value=template.description;}
+ if(category)category.value=template.category;
+ if(name)name.value='';
+ if(description)description.value=template.description;
+ const title=document.getElementById('vnCommunityFormTitle');
+ const subtitle=document.getElementById('vnCommunityFormSubtitle');
+ if(title)title.textContent='Create '+(type==='custom'?'your own community':template.title);
+ if(subtitle)subtitle.textContent='Set up your '+template.title.toLowerCase()+' with a name, description, icon, and banner.';
+ const typeScreen=document.getElementById('vnCommunityTypeScreen');
+ const formScreen=document.getElementById('vnCommunityFormScreen');
+ if(typeScreen)typeScreen.hidden=true;
+ if(formScreen)formScreen.hidden=false;
+ const msg=document.getElementById('communityCreateMessage');if(msg)msg.textContent='';
+ document.getElementById('communityNameInput')?.focus({preventScroll:true});
+ document.getElementById('communityCreateModal')?.scrollTo({top:0,behavior:'instant'});
 }
 function createCommunity(){
  if(!currentUser){openAuth();showToast('Sign in to create a community');return;}
- document.getElementById('communityNameInput').value='';
+ const resetIds=['communityNameInput','communityDescriptionInput','communityCoverInput','communityIconInput'];
+ resetIds.forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+ document.querySelector('input[name="communityPrivacy"][value="public"]')?.click();
  document.getElementById('communityCategoryInput').value='General';
- document.getElementById('communityDescriptionInput').value='';
- selectCommunityTemplate('custom',false);
- document.getElementById('communityCoverInput').value='';
  document.getElementById('communityCreateMessage').textContent='';
  document.getElementById('communityCreateSubmit').disabled=false;
- document.getElementById('communityCreateSubmit').textContent='Create Community';
- document.getElementById('communityCoverPreview').innerHTML='✦';
- document.getElementById('communityCreateModal').style.display='block';
+ document.getElementById('communityCreateSubmit').textContent='Create community';
+ document.getElementById('communityCoverPreview').innerHTML='Choose a banner';
+ document.getElementById('communityIconPreview').innerHTML='✦';
+ document.getElementById('vnCommunityTypeScreen').hidden=false;
+ document.getElementById('vnCommunityFormScreen').hidden=true;
+ window.vnSelectedCommunityType='custom';
+ const modal=document.getElementById('communityCreateModal');modal.style.display='flex';modal.scrollTop=0;
  document.body.style.overflow='hidden';
- setTimeout(()=>document.getElementById('communityNameInput').focus(),80);
+}
+function backToCommunityTypes(){
+ document.getElementById('vnCommunityFormScreen').hidden=true;
+ document.getElementById('vnCommunityTypeScreen').hidden=false;
+ document.getElementById('communityCreateModal').scrollTop=0;
 }
 function closeCommunityCreator(){document.getElementById('communityCreateModal').style.display='none';document.body.style.overflow='';}
-function previewCommunityCover(event){
+function previewCommunityImage(event,kind){
  const file=event.target.files?.[0],msg=document.getElementById('communityCreateMessage');
  if(!file)return;
  if(!file.type.startsWith('image/')){msg.textContent='Please choose an image file.';event.target.value='';return;}
  if(file.size>5*1024*1024){msg.textContent='That image is over 5 MB. Choose a smaller image.';event.target.value='';return;}
- document.getElementById('communityCoverPreview').innerHTML=`<img alt="Community cover preview" src="${URL.createObjectURL(file)}">`;msg.textContent='';
+ const target=document.getElementById(kind==='icon'?'communityIconPreview':'communityCoverPreview');
+ target.innerHTML=`<img alt="Community ${kind} preview" src="${URL.createObjectURL(file)}">`;
+ msg.textContent='';
 }
+function previewCommunityCover(event){previewCommunityImage(event,'cover');}
 async function saveNewCommunity(){
  if(!currentUser||!supabaseClient){closeCommunityCreator();openAuth();showToast('Please sign in to create a community');return;}
  const name=document.getElementById('communityNameInput').value.trim();
  const category=document.getElementById('communityCategoryInput').value;
  const description=document.getElementById('communityDescriptionInput').value.trim();
- const file=document.getElementById('communityCoverInput').files?.[0];
+ const coverFile=document.getElementById('communityCoverInput').files?.[0];
+ const iconFile=document.getElementById('communityIconInput').files?.[0];
+ const isPrivate=document.querySelector('input[name="communityPrivacy"]:checked')?.value==='private';
  const msg=document.getElementById('communityCreateMessage'),button=document.getElementById('communityCreateSubmit');
- if(name.length<2){msg.textContent='Enter a community name with at least 2 characters.';return;}
+ if(name.length<2){msg.textContent='Community name is required (at least 2 characters).';document.getElementById('communityNameInput').focus();return;}
+ if(!description||description.length<5){msg.textContent='Add a description of at least 5 characters.';document.getElementById('communityDescriptionInput').focus();return;}
+ if(!iconFile){msg.textContent='Please add a community icon.';document.getElementById('communityIconInput').focus();return;}
+ if(!coverFile){msg.textContent='Please add a banner image.';document.getElementById('communityCoverInput').focus();return;}
+ for(const [file,label] of [[iconFile,'icon'],[coverFile,'banner']])if(!file.type.startsWith('image/')||file.size>5*1024*1024){msg.textContent=`Choose a valid ${label} image up to 5 MB.`;return;}
  if(name.length>50||description.length>300){msg.textContent='Please shorten the name or description.';return;}
- if(file&&(!file.type.startsWith('image/')||file.size>5*1024*1024)){msg.textContent='Choose an image file up to 5 MB.';return;}
- button.disabled=true;button.textContent='Creating…';msg.textContent='Creating your community…';
+ button.disabled=true;button.textContent='Creating…';msg.textContent='Uploading your images and creating the community…';
  try{
-  let cover_url=null;
-  if(file){
-   const extFromName=file.name.includes('.')?file.name.split('.').pop().toLowerCase():'';
-   const ext=/^[a-z0-9]{2,5}$/.test(extFromName)?extFromName:(file.type.split('/')[1]||'jpg').replace('jpeg','jpg');
-   const path=`${currentUser.id}/community-cover-${Date.now()}.${ext}`;
+  async function uploadCommunityImage(file,kind){
+   const originalExt=file.name.includes('.')?file.name.split('.').pop().toLowerCase():'';
+   const ext=/^(jpg|jpeg|png|webp|gif)$/.test(originalExt)?originalExt:(file.type.split('/')[1]||'jpg').replace('jpeg','jpg');
+   const path=`${currentUser.id}/community-${kind}-${Date.now()}-${Math.random().toString(36).slice(2,8)}.${ext}`;
    const uploaded=await supabaseClient.storage.from('community-covers').upload(path,file,{contentType:file.type,upsert:false});
-   if(uploaded.error)throw new Error('Cover upload failed: '+uploaded.error.message+'. Make sure the community-covers bucket SQL setup has been run in Supabase.');
-   cover_url=supabaseClient.storage.from('community-covers').getPublicUrl(path).data.publicUrl;
+   if(uploaded.error)throw new Error(`${kind==='icon'?'Icon':'Banner'} upload failed: ${uploaded.error.message}. Check the community-covers storage bucket permissions.`);
+   return supabaseClient.storage.from('community-covers').getPublicUrl(path).data.publicUrl;
   }
-  const row={name,category,description,created_by:currentUser.id};
-  if(cover_url)row.cover_url=cover_url;
-  let result=await supabaseClient.from('communities').insert(row).select().single();
-  if(result.error&&cover_url&&/cover_url|column/i.test(result.error.message))throw new Error('Your database needs the cover_url column before covers can be saved. Run the SQL setup I provide with this update.');
-  if(result.error)throw result.error;
+  const [icon_url,cover_url]=await Promise.all([uploadCommunityImage(iconFile,'icon'),uploadCommunityImage(coverFile,'cover')]);
+  const row={name,category,description,created_by:currentUser.id,cover_url,icon_url,is_private:isPrivate};
+  const result=await supabaseClient.from('communities').insert(row).select().single();
+  if(result.error){if(/icon_url|is_private|column/i.test(result.error.message||''))throw new Error('Your communities table needs the new icon_url and is_private columns. Run the supplied VibeNest community-creation SQL migration in Supabase, then try again.');throw result.error;}
   const data=result.data;
   const joined=await supabaseClient.from('memberships').insert({community_id:data.id,user_id:currentUser.id});
   if(joined.error)showToast('Community created, but auto-join failed.');
   onlineCommunities.unshift({...data,joined:!joined.error});
   renderOnlineCommunities();closeCommunityCreator();openCommunityById(data.id);showToast('Community created!');
  }catch(e){console.error(e);msg.textContent=e.message||'Could not create the community.';}
- finally{button.disabled=false;button.textContent='Create Community';}
+ finally{button.disabled=false;button.textContent='Create community';}
 }
 async function loadFollowing(){
  followingIds=new Set();
@@ -3902,4 +3946,33 @@ document.addEventListener('keydown',e=>{const panel=document.getElementById('vnC
  #home #vnFeatureCarousel .vn-feature-art svg,#home .vn-feature-carousel .vn-feature-art svg{width:36px!important;height:36px!important}
 }
 </style>
+
+<style id="vn-community-creation-flow-redesign">
+#communityCreateModal.vn-community-create-screen{display:none;position:fixed;inset:0;z-index:70;width:100%;height:100dvh;max-width:none;margin:0;padding:calc(env(safe-area-inset-top,0px) + 14px) 0 calc(env(safe-area-inset-bottom,0px) + 20px);overflow-x:hidden;overflow-y:auto;box-sizing:border-box;background:radial-gradient(ellipse at 0 0,rgba(73,34,132,.28),transparent 42%),#100b18;backdrop-filter:none;align-items:stretch;justify-content:center}
+#communityCreateModal .vn-create-step{width:min(100%,720px);min-height:100%;margin:0 auto;padding:8px 16px 28px;box-sizing:border-box}
+#communityCreateModal [hidden]{display:none!important}
+.vn-create-header,.vn-create-form-header{position:relative;padding:12px 2px 20px}
+.vn-create-close{position:absolute;right:0;top:8px;width:44px;height:44px;border:1px solid var(--vn-border);border-radius:14px;background:#211a2b;color:#f8f2ff;font-size:21px}
+.vn-create-eyebrow{color:#c4a9f4;font-size:11px;font-weight:900;letter-spacing:1.5px;margin:8px 0 10px}
+.vn-create-header h1,.vn-create-form-header h1{font-size:clamp(27px,7vw,35px);letter-spacing:-.8px;line-height:1.12;margin:0 48px 9px 0}
+.vn-create-header p,.vn-create-form-header p{margin:0;color:#b5a8c2;font-size:14px;line-height:1.5}
+.vn-community-type-list{display:grid;gap:10px;padding:0 0 12px}
+.vn-community-type{display:flex;align-items:center;gap:13px;width:100%;min-height:91px;padding:12px 13px;border:1px solid #ffffff15;border-radius:14px;color:#fff;text-align:left;background:linear-gradient(110deg,#438edb,#1768ad)}
+.vn-community-type .vn-type-art{display:grid;place-items:center;flex:0 0 66px;height:66px;font-size:44px;filter:drop-shadow(0 3px 2px #0002)}
+.vn-type-copy{min-width:0;flex:1}.vn-type-copy b,.vn-type-copy small{display:block}.vn-type-copy b{font-size:clamp(17px,4.7vw,22px);font-weight:900;line-height:1.2;letter-spacing:-.3px}.vn-type-copy small{margin-top:4px;font-size:12px;line-height:1.35;color:#f1e9ff;opacity:.92}.vn-type-arrow{font-size:38px;font-weight:500;line-height:1;padding:0 2px}
+.vn-community-type.type-internet{background:linear-gradient(110deg,#4fa9ee,#176db4)}.vn-community-type.type-irl{background:linear-gradient(110deg,#8b7657,#51412f)}.vn-community-type.type-roleplay{background:linear-gradient(110deg,#ed40bc,#b70b87)}.vn-community-type.type-interest{background:linear-gradient(110deg,#8be52b,#49a900)}.vn-community-type.type-gaming{background:linear-gradient(110deg,#ffe45a,#c79d0b);color:#fff}.vn-community-type.type-school{background:linear-gradient(110deg,#7479ef,#2934b5)}.vn-community-type.type-art{background:linear-gradient(110deg,#ff9a59,#c75020)}.vn-community-type.type-organization{background:linear-gradient(110deg,#eb4c88,#a8174e)}.vn-community-type.type-creator{background:linear-gradient(110deg,#b55bf0,#7621c4)}.vn-community-type.type-custom{background:linear-gradient(110deg,#45d1a2,#0b9870)}
+.vn-create-back{display:inline-flex;align-items:center;gap:7px;padding:8px 12px;border:1px solid var(--vn-border);border-radius:12px;background:#211a2b;color:#eadcff;font:inherit;font-weight:800;margin-bottom:17px}
+.vn-required-note{padding:11px 13px;border-radius:12px;background:#c4a9f40b;border:1px solid var(--vn-border);color:#c7b9d7;font-size:12px;margin:0 0 16px}
+.vn-community-form-body>label{display:block;font-size:13px;font-weight:800;color:#c9bad8;margin:16px 0 7px}
+#communityCreateModal #communityNameInput,#communityCreateModal #communityCategoryInput,#communityCreateModal #communityDescriptionInput{display:block;width:100%;min-height:52px;padding:13px 14px;border:1px solid #40324f;border-radius:14px;background:#15111b;color:#f8f2ff;font:inherit;box-sizing:border-box}
+#communityCreateModal #communityDescriptionInput{min-height:105px;resize:vertical}
+.vn-upload-grid{display:grid;grid-template-columns:1fr;gap:15px;margin-top:18px}.vn-upload-field{min-width:0}.vn-upload-field>label{display:block;color:#c9bad8;font-size:13px;font-weight:800;margin-bottom:8px}.vn-upload-field input[type=file]{display:block;width:100%;max-width:100%;margin-top:9px;color:#d8cde6;font-size:12px}.vn-upload-field small{display:block;color:#a99ab9;font-size:11px;margin-top:6px}
+.vn-community-icon-preview{width:104px;height:104px;border-radius:27px;display:grid;place-items:center;overflow:hidden;background:#2a2037;border:1px dashed #8c70aa;color:#d7c3f7;font-size:32px}.vn-community-icon-preview img{width:100%;height:100%;object-fit:cover}.vn-community-banner-preview{height:145px;min-height:145px;display:grid;place-items:center;color:#b5a8c2;font-size:13px}.vn-community-banner-preview img{width:100%;height:100%;object-fit:cover}
+.vn-privacy-field{border:1px solid var(--vn-border);border-radius:16px;padding:13px;margin:22px 0 4px;min-width:0}.vn-privacy-field legend{padding:0 5px;color:#c9bad8;font-size:13px;font-weight:800}.vn-privacy-option{display:flex;align-items:center;gap:11px;padding:12px 8px;border-radius:12px;cursor:pointer}.vn-privacy-option+.vn-privacy-option{border-top:1px solid #ffffff0c}.vn-privacy-option input{accent-color:#c4a9f4;width:18px;height:18px;flex-shrink:0}.vn-privacy-icon{font-size:22px}.vn-privacy-option span:last-child{flex:1}.vn-privacy-option b,.vn-privacy-option small{display:block}.vn-privacy-option b{font-size:14px}.vn-privacy-option small{font-size:11px;color:#b5a8c2;margin-top:3px;line-height:1.4}
+#communityCreateModal .community-create-actions{position:sticky;bottom:0;padding:14px 0 calc(4px + env(safe-area-inset-bottom,0px));background:linear-gradient(180deg,transparent,#100b18 20%);margin-top:12px}
+#communityCreateModal .community-create-actions button{width:100%;min-height:52px;border:0;border-radius:15px;font-size:15px;font-weight:900;background:#c4a9f4;color:#201827}
+@media(min-width:560px){#communityCreateModal .vn-community-type-list{grid-template-columns:repeat(2,minmax(0,1fr))}#communityCreateModal .vn-community-type{min-height:106px}.vn-upload-grid{grid-template-columns:1fr 1.35fr}}
+@media(max-width:370px){#communityCreateModal .vn-create-step{padding-left:12px;padding-right:12px}.vn-community-type{gap:8px;padding:10px;min-height:80px}.vn-community-type .vn-type-art{flex-basis:53px;height:56px;font-size:36px}.vn-type-copy b{font-size:16px}.vn-type-copy small{font-size:11px}}
+</style>
+
 </body></html>
