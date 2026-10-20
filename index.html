@@ -978,7 +978,9 @@ function chooseCommunityType(type){
  if(formScreen)formScreen.hidden=false;
  const msg=document.getElementById('communityCreateMessage');if(msg)msg.textContent='';
  if(document.getElementById('communityCreateModal')?.style.display==='flex'){
-  try{history.pushState({...history.state,vnCommunityCreator:true,vnCommunityStep:'form'},'',location.href);}catch(e){}
+  // Keep every creator history entry anchored to the Communities tab so Android
+  // Back/swipe never falls through to the WebView/app exit from the type picker.
+  try{history.pushState({...history.state,vnPage:'communities',vnCommunityCreator:true,vnCommunityStep:'form'},'',location.href);}catch(e){}
  }
  document.getElementById('communityCreateModal')?.scrollTo({top:0,behavior:'instant'});
 }
@@ -1012,7 +1014,7 @@ function showCommunityTypeScreen(){
  document.getElementById('vnCommunityFormScreen').hidden=true;
  document.getElementById('vnCommunityTypeScreen').hidden=false;
  document.getElementById('communityCreateModal').scrollTop=0;
- try{history.pushState({...history.state,vnCommunityCreator:true,vnCommunityStep:'types'},'',location.href);}catch(e){}
+ try{history.pushState({...history.state,vnPage:'communities',vnCommunityCreator:true,vnCommunityStep:'types'},'',location.href);}catch(e){}
 }
 function closeCommunityCreator(fromBack=false){
  const modal=document.getElementById('communityCreateModal');
@@ -2736,14 +2738,16 @@ renderCommunityDetail=function(){initializeCommunitySections();vnOldRenderCommun
         closeCommunityCreator(true);
         // Leaving the community-type chooser should return to the Communities tab,
         // never let the browser/app back gesture fall through and exit the app.
-        const activeAfterClose=document.querySelector('.page.active')?.id||currentPage||'communities';
-        if(activeAfterClose!=='communities'){
-          handlingPop=true;
-          nativeGo('communities');
-          currentPage='communities';
-          handlingPop=false;
-        }
-        try{history.pushState({...history.state,vnPage:'communities',vnCommunityCreator:false,vnCommunityStep:undefined},'',location.href);}catch(e){}
+        // Always explicitly activate Communities, even if the DOM already reports
+        // that tab as active. Some Android WebViews otherwise consume the swipe
+        // but leave the underlying page/history in an exit-ready state.
+        handlingPop=true;
+        nativeGo('communities');
+        currentPage='communities';
+        handlingPop=false;
+        try{
+          history.pushState({...(history.state||{}),vnPage:'communities',vnCommunityCreator:false,vnCommunityStep:undefined,vnCommunityBackGuard:true},'',location.href);
+        }catch(e){}
       }
       return;
     }
