@@ -461,6 +461,67 @@ body.direct-chat-open #chatWindow .chat-compose button.join{
  #home .vn-shelf .vn-community-tile{flex-basis:calc((100vw - 40px)/3.25)!important;width:calc((100vw - 40px)/3.25)!important;max-width:calc((100vw - 40px)/3.25)!important;height:calc((100vw - 40px)/3.25 * 1.36)!important}
 }
 </style>
+<style id="vn-reference-community-redesign">
+/* Community experience redesign inspired by the supplied reference screens. */
+.bottom{display:none!important}
+body{padding-bottom:calc(112px + env(safe-area-inset-bottom))}
+.page.active{padding-bottom:calc(100px + env(safe-area-inset-bottom))}
+.vn-reference-nav{position:fixed;z-index:90;left:14px;right:14px;bottom:calc(10px + env(safe-area-inset-bottom));max-width:690px;margin:auto;min-height:72px;padding:8px 10px;display:grid;grid-template-columns:1fr 1fr 1.12fr 1fr 1fr;align-items:center;gap:4px;border:1px solid rgba(224,207,255,.17);border-radius:26px;background:rgba(24,20,36,.88);box-shadow:0 12px 38px rgba(0,0,0,.34),inset 0 1px rgba(255,255,255,.08);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px)}
+.vn-reference-nav button{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;min-width:0;border:0;background:transparent;color:#bdb3ce;font:inherit;font-size:11px;font-weight:750;padding:3px 1px;line-height:1.1}
+.vn-reference-nav button.active{color:#f8f1ff}
+.vn-ref-icon{height:28px;display:grid;place-items:center;font-size:25px;line-height:1;color:currentColor;font-weight:800}
+.vn-ref-create{width:58px;height:58px;justify-self:center;border-radius:20px!important;background:linear-gradient(150deg,#c5a0ff,#8f5af0)!important;color:#21142e!important;box-shadow:0 0 0 5px rgba(169,126,255,.17),0 8px 20px rgba(130,79,225,.32);font-size:37px!important;font-weight:500!important;padding:0!important}
+.vn-ref-create span{font-size:39px;line-height:1;margin-top:-3px}
+.vn-reference-nav #vnRefChatBadge{position:absolute;top:0;right:calc(50% - 25px);min-width:17px;height:17px;padding:0 4px;border-radius:99px;background:#ff547f;color:#fff;font-size:10px;display:inline-flex;align-items:center;justify-content:center}
+.vn-reference-nav #vnRefChatBadge[hidden]{display:none}
+.vn-overlay{position:fixed;inset:0;z-index:100;background:rgba(5,3,10,.68);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.vn-overlay[hidden]{display:none!important}
+.vn-side-drawer{position:absolute;inset:0 auto 0 0;width:min(88vw,390px);max-width:100%;display:flex;flex-direction:column;background:linear-gradient(180deg,#171027 0%,#0b1737 100%);border-right:1px solid #b18aff33;box-shadow:18px 0 50px #0007;animation:vnDrawerIn .2s ease-out}
+@keyframes vnDrawerIn{from{transform:translateX(-24px);opacity:.7}to{transform:translateX(0);opacity:1}}
+.vn-side-head{display:flex;align-items:center;gap:10px;padding:calc(18px + env(safe-area-inset-top)) 15px 15px;border-bottom:1px solid #ffffff12;background:linear-gradient(135deg,#2c1a47,#111a3c)}
+.vn-side-exit,.vn-side-search{flex-shrink:0;border:0;background:#ffffff10;color:#f7f0ff;border-radius:12px;width:36px;height:36px;font-size:25px;display:grid;place-items:center}
+.vn-side-avatar{width:48px;height:48px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(140deg,#8e5fe2,#30215a);font-size:26px;overflow:hidden;flex-shrink:0}
+.vn-side-avatar img{width:100%;height:100%;object-fit:cover}
+.vn-side-profile{min-width:0;flex:1}.vn-side-profile b,.vn-side-profile small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.vn-side-profile b{font-size:15px}.vn-side-profile small{font-size:11px;color:#b8aecf;margin-top:4px}
+.vn-side-scroll{overflow:auto;padding:9px 12px calc(100px + env(safe-area-inset-bottom));overscroll-behavior:contain}
+.vn-side-link{width:100%;display:flex;align-items:center;gap:13px;text-align:left;padding:12px 10px;margin:2px 0;border:0;border-bottom:1px solid rgba(255,255,255,.065);background:transparent;color:#f5efff;font:inherit;font-size:15px;font-weight:650;border-radius:10px}
+.vn-side-link:active{background:#a77bff22}.vn-side-link>span:first-child{width:35px;height:35px;flex-shrink:0;display:grid;place-items:center;border-radius:50%;background:#302070;color:#e3d3ff;font-size:21px}.vn-side-more{justify-content:space-between;color:#d2c3e8}.vn-side-more span{font-size:25px;background:none!important}.vn-side-section-label{margin:17px 9px 6px;font-size:10px;letter-spacing:1.7px;text-transform:uppercase;color:#a995cf;font-weight:850}
+.vn-online-overlay{z-index:80;overflow:auto;background:radial-gradient(ellipse at 10% 0%,#39205a 0,transparent 42%),linear-gradient(180deg,#0e0a19,#0a1635);padding:calc(12px + env(safe-area-inset-top)) 16px calc(112px + env(safe-area-inset-bottom));overscroll-behavior:contain}
+.vn-overlay-topbar{display:flex;align-items:center;gap:13px;min-height:52px}.vn-overlay-topbar button{border:0;background:#ffffff12;color:#f6f0ff;border-radius:13px;width:42px;height:42px;font-size:25px}.vn-overlay-topbar>div{flex:1;min-width:0}.vn-overlay-topbar b,.vn-overlay-topbar small{display:block}.vn-overlay-topbar b{font-size:21px}.vn-overlay-topbar small{font-size:11px;color:#b9accd;margin-top:3px}
+.vn-online-summary{display:flex;align-items:center;gap:14px;padding:17px;margin:17px 0;border-radius:20px;background:linear-gradient(120deg,#2ba79e,#287a96);color:#fff}.vn-online-summary>div:first-child{width:88px;min-height:85px;display:grid;align-content:center;justify-items:center;background:#ffffff18;border-radius:15px;flex-shrink:0}.vn-online-summary>div:first-child b{font-size:30px;line-height:1.1}.vn-online-summary>div:first-child span{font-size:11px;margin-top:6px}.vn-online-summary-copy b,.vn-online-summary-copy small{display:block}.vn-online-summary-copy b{font-size:15px}.vn-online-summary-copy small{font-size:11px;line-height:1.45;color:#e1ffff;margin-top:5px}
+.vn-online-search{display:flex;align-items:center;gap:9px;padding:0 13px;border:1px solid #b18aff35;border-radius:15px;background:#ffffff0a;color:#cbb8ed}.vn-online-search span{font-size:24px}.vn-online-search input{width:100%;padding:14px 0;background:transparent;border:0;outline:none;color:#fff;font:inherit}.vn-online-members-list{margin-top:13px}.vn-online-member{display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid #ffffff12}.vn-online-member-avatar{width:54px;height:54px;border-radius:50%;overflow:hidden;display:grid;place-items:center;background:#30224b;flex-shrink:0}.vn-online-member-avatar img{width:100%;height:100%;object-fit:cover}.vn-online-member-copy{flex:1;min-width:0}.vn-online-member-copy b,.vn-online-member-copy small{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.vn-online-member-copy b{font-size:14px}.vn-online-member-copy small{font-size:11px;color:#b8accd;margin-top:4px}.vn-online-member button{border:0;border-radius:10px;background:#3d73d9;color:#fff;font-weight:800;padding:9px 11px;font-size:12px}
+.vn-create-overlay{z-index:110;display:flex;align-items:flex-end;justify-content:center;padding:16px 14px calc(94px + env(safe-area-inset-bottom))}.vn-create-menu-card{width:min(100%,650px);padding:17px 14px 15px;border:1px solid #c7adff30;border-radius:25px;background:linear-gradient(145deg,rgba(47,39,61,.97),rgba(15,13,30,.98));box-shadow:0 20px 60px #0008;animation:vnCreateRise .2s ease-out}.vn-create-menu-card>header{display:flex;align-items:center;justify-content:space-between;margin:0 3px 15px}.vn-create-menu-card>header span{font-size:10px;letter-spacing:1.8px;color:#c6a5ff;font-weight:900}.vn-create-menu-card h2{font-size:21px;margin:4px 0 0}.vn-create-menu-card>header>button{width:36px;height:36px;border-radius:50%;border:0;background:#ffffff12;color:#fff;font-size:25px}.vn-create-primary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;padding-bottom:14px;border-bottom:1px solid #ffffff12}.vn-create-primary-grid button,.vn-create-secondary-grid button{min-width:0;border:0;background:transparent;color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;padding:8px 2px;font:inherit;font-size:11px;font-weight:750}.vn-create-primary-grid i{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font-size:25px;font-style:normal;color:#fff}.vn-action-image{background:#ed2d7e}.vn-action-link{background:#5c68f5}.vn-action-question{background:#f16e42}.vn-action-live{background:#c333e8}.vn-create-secondary-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;padding-top:12px}.vn-create-secondary-grid i{width:52px;height:52px;border-radius:16px;display:grid;place-items:center;font-style:normal;font-size:23px;background:#ffffff13;color:#e2d0ff}.vn-create-secondary-grid button:first-child i{background:#42bd42}.vn-create-secondary-grid button:nth-child(2) i{background:#edaa15}.vn-create-secondary-grid button:nth-child(3) i{background:#0eaaa8}.vn-create-secondary-grid button:nth-child(4) i{background:#48416c}.vn-create-primary-grid button:active,.vn-create-secondary-grid button:active{transform:scale(.97)}@keyframes vnCreateRise{from{transform:translateY(18px);opacity:.5}to{transform:translateY(0);opacity:1}}
+.vn-info-overlay{z-index:120;display:grid;place-items:center;padding:22px}.vn-info-card{position:relative;width:min(100%,430px);padding:27px 22px 22px;text-align:center;border:1px solid #b18aff40;border-radius:25px;background:linear-gradient(150deg,#241834,#120f20);box-shadow:0 20px 65px #0009}.vn-info-close{position:absolute;right:13px;top:12px;width:34px;height:34px;border:0;border-radius:50%;background:#ffffff12;color:#fff;font-size:23px}.vn-info-card h2{font-size:23px;margin:12px 0 7px}.vn-info-card p{color:#c5b6d9;line-height:1.55;font-size:13px}.vn-empty-art{width:58px;height:58px;border-radius:19px;display:grid;place-items:center;margin:0 auto 10px;background:#a77bff20;color:#d3b9ff;font-size:31px}
+/* Community page now follows the reference app's banner + horizontally scrolling sections. */
+#community.page.active{padding:0 0 calc(100px + env(safe-area-inset-bottom));background:linear-gradient(180deg,#071535 0,#0b0a17 44%)}
+#community .community-detail{padding:0 0 24px}
+#community .community-back{position:absolute;z-index:4;top:calc(10px + env(safe-area-inset-top));left:13px;border:0;background:#080b22a8;color:#fff;border-radius:13px;padding:9px 12px;font-weight:800;backdrop-filter:blur(12px)}
+#communityDetailContent{margin:0;padding:0}
+#communityDetailContent .community-detail-hero{position:relative;isolation:isolate;display:flex;flex-direction:column;justify-content:flex-end;min-height:340px;margin:0;padding:calc(72px + env(safe-area-inset-top)) 22px 24px;border:0;border-radius:0;background:radial-gradient(ellipse at 18% 30%,#3a2375 0,transparent 38%),linear-gradient(155deg,#070e38,#11154c 52%,#080b21);overflow:hidden}
+#communityDetailContent .community-detail-hero:before{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 12% 35%,#00d9ff5c 0 3px,transparent 5px),radial-gradient(circle at 68% 24%,#f83bb85c 0 5px,transparent 8px),radial-gradient(circle at 82% 64%,#00e7d85c 0 4px,transparent 7px),radial-gradient(ellipse at 50% 110%,#020b2c 0,transparent 55%)}
+#communityDetailContent .community-detail-cover{height:100%;position:absolute;inset:0;margin:0;border-radius:0;z-index:-2;opacity:.76;background:transparent}
+#communityDetailContent .community-detail-cover:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(5,7,29,.3),rgba(4,9,34,.9))}
+#communityDetailContent .community-detail-cover img{width:100%;height:100%;object-fit:cover}
+#communityDetailContent .community-detail-topline{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#e0d5ff;font-size:12px;font-weight:800;letter-spacing:.3px}
+#communityDetailContent .community-detail-hero h1{font-size:clamp(27px,7vw,38px);line-height:1.1;letter-spacing:-.6px;margin:10px 0!important;overflow-wrap:anywhere}
+#communityDetailContent .community-detail-actions{display:flex;gap:8px;align-items:center;margin-top:7px}
+#communityDetailContent .community-detail-actions .btn{background:#b18aff;color:#21132e;border-radius:12px;padding:11px 18px;min-width:135px}
+.vn-community-tabs{position:sticky;top:0;z-index:20;display:flex;gap:22px;overflow-x:auto;white-space:nowrap;padding:0 18px;background:rgba(5,17,54,.96);border-bottom:1px solid #ffffff14;scrollbar-width:none;backdrop-filter:blur(14px)}.vn-community-tabs::-webkit-scrollbar{display:none}.vn-community-tabs button{position:relative;flex-shrink:0;padding:15px 0 13px;border:0;background:transparent;color:#aab7d5;font:inherit;font-weight:800;font-size:14px}.vn-community-tabs button.active{color:#fff}.vn-community-tabs button.active:after{content:"";position:absolute;bottom:0;left:0;right:0;height:3px;border-radius:3px;background:#fff}
+#community .room-hub{margin:16px 14px;padding:16px;border-radius:19px;background:#101e45;border:1px solid #ffffff12}
+#community .room-hub-heading{align-items:flex-start;gap:10px}.community-hub-kicker{color:#9baee0;font-size:10px;letter-spacing:1.5px;font-weight:900}
+#community .room-hub h2,#community .community-posts-heading h2{font-size:20px;line-height:1.15;margin:4px 0}
+#community .room-hub p{color:#a9b7d5}
+#community .community-posts-heading{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:18px 15px 10px;padding:0}
+#community .community-posts-heading .btn{background:#b18aff;color:#20142e;border-radius:12px;white-space:nowrap}
+#community .detail-posts{display:grid;gap:11px;margin:10px 13px 20px}
+#community .detail-posts .post{border:1px solid #ffffff12;border-radius:17px;background:#111e43;padding:14px}
+#community .detail-posts .post p{line-height:1.55}
+#community .detail-posts .post-media{border-radius:12px;max-height:460px;object-fit:cover}
+#community .room-chat-panel{margin:14px;border-radius:18px;background:#0c1839;border:1px solid #ffffff12;overflow:hidden}
+.vn-community-quiz-panel{margin:20px 14px;padding:25px 20px;text-align:center;border:1px solid #ffffff16;border-radius:22px;background:linear-gradient(145deg,#18234b,#111020)}.vn-community-quiz-panel h2{margin:5px 0}.vn-community-quiz-panel p{color:#b4c0dc;font-size:13px;line-height:1.5}
+@media(max-width:390px){.vn-reference-nav{left:8px;right:8px;min-height:67px;border-radius:23px}.vn-ref-create{width:53px;height:53px}.vn-community-tabs{gap:17px;padding-left:14px;padding-right:14px}.vn-community-tabs button{font-size:13px}#communityDetailContent .community-detail-hero{min-height:320px}}
+@media(prefers-reduced-motion:reduce){.vn-side-drawer,.vn-create-menu-card{animation:none}}
+</style>
 </head><body class="vn-auth-booting">
 <style id="vibenest-opening-splash-style">
 #vn-opening-splash{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;overflow:hidden;background:#100b18;opacity:1;visibility:visible;transition:opacity .22s ease,visibility .22s ease;color:#fff}
@@ -514,7 +575,16 @@ body.direct-chat-open #chatWindow .chat-compose button.join{
  <p id="vnDirectoryCount" class="vn-directory-count"></p><div id="vnDirectoryGrid" class="vn-directory-grid"></div>
 </section>
 <section id="create" class="page"><div class="simple"><h1>Create a post ✨</h1><p class="muted">Choose one of your joined communities first. You can write your post inside that community.</p><div id="createCommunityChoices"></div></div></section>
-<section id="community" class="page"><div class="community-detail"><button class="community-back" onclick="go('communities')">← All communities</button><div id="communityDetailContent"></div><section class="room-hub"><div class="room-hub-heading"><div><span class="community-hub-kicker">TALK TOGETHER</span><h2>Community chatrooms</h2><p>Small live conversations with up to 100 members in each room.</p></div><button class="btn" id="createRoomButton" onclick="createCommunityRoom()">＋ New room</button></div><div id="communityRooms" class="community-rooms"><div class="room-empty">Join this community to explore its chatrooms.</div></div></section><div class="room-chat-panel" id="communityRoomChatPanel" style="display:none"><div class="room-chat-head"><button class="join" onclick="closeCommunityRoom()">← Rooms</button><div><b id="communityRoomTitle">Room</b><div class="muted" id="communityRoomMeta">Community chat · max 100</div></div></div><div class="room-chat-messages" id="communityRoomMessages"></div><form class="room-chat-compose" onsubmit="sendCommunityRoomMessage(event)"><input id="communityRoomMessageInput" maxlength="1500" placeholder="Say something to the room…" autocomplete="off"><button class="btn" type="submit">Send</button></form></div><div class="community-posts-heading"><div><span class="community-hub-kicker">SHARE SOMETHING</span><h2>Community posts</h2></div><button class="btn" id="communityPostButton" onclick="toggleCommunityComposer()">＋ Create post</button></div><div id="communityComposer" class="card vn-post-composer" style="display:none;margin:12px 0" role="region" aria-label="Create community post">
+<section id="community" class="page"><div class="community-detail"><button class="community-back" onclick="go('communities')">← All communities</button><div id="communityDetailContent"></div>
+<nav class="vn-community-tabs" aria-label="Community sections">
+ <button type="button" data-community-tab="featured" class="active" onclick="vnSetCommunityTab('featured')">Featured</button>
+ <button type="button" data-community-tab="rooms" onclick="vnSetCommunityTab('rooms')">Public Chatrooms</button>
+ <button type="button" data-community-tab="feed" onclick="vnSetCommunityTab('feed')">Latest Feed</button>
+ <button type="button" data-community-tab="polls" onclick="vnSetCommunityTab('polls')">Polls</button>
+ <button type="button" data-community-tab="quizzes" onclick="vnSetCommunityTab('quizzes')">Quizzes</button>
+</nav>
+<section id="vnCommunityQuizPanel" class="vn-community-quiz-panel" hidden><div class="vn-empty-art">✦</div><h2>Community quizzes</h2><p>Quiz activities will live here. You can keep sharing updates and polls with your community in the meantime.</p><button type="button" class="btn" onclick="vnSetCommunityTab('polls')">Explore polls</button></section>
+<section class="room-hub"><div class="room-hub-heading"><div><span class="community-hub-kicker">TALK TOGETHER</span><h2>Community chatrooms</h2><p>Small live conversations with up to 100 members in each room.</p></div><button class="btn" id="createRoomButton" onclick="createCommunityRoom()">＋ New room</button></div><div id="communityRooms" class="community-rooms"><div class="room-empty">Join this community to explore its chatrooms.</div></div></section><div class="room-chat-panel" id="communityRoomChatPanel" style="display:none"><div class="room-chat-head"><button class="join" onclick="closeCommunityRoom()">← Rooms</button><div><b id="communityRoomTitle">Room</b><div class="muted" id="communityRoomMeta">Community chat · max 100</div></div></div><div class="room-chat-messages" id="communityRoomMessages"></div><form class="room-chat-compose" onsubmit="sendCommunityRoomMessage(event)"><input id="communityRoomMessageInput" maxlength="1500" placeholder="Say something to the room…" autocomplete="off"><button class="btn" type="submit">Send</button></form></div><div class="community-posts-heading"><div><span class="community-hub-kicker">SHARE SOMETHING</span><h2>Community posts</h2></div><button class="btn" id="communityPostButton" onclick="toggleCommunityComposer()">＋ Create post</button></div><div id="communityComposer" class="card vn-post-composer" style="display:none;margin:12px 0" role="region" aria-label="Create community post">
  <div class="vn-composer-head"><div><span class="community-hub-kicker">CREATE SOMETHING</span><h3>Share with your community</h3><p class="muted">Choose one or more ways to post.</p></div><button type="button" class="vn-composer-close" onclick="closeCommunityComposer()" aria-label="Close post composer" title="Cancel posting">✕</button></div>
  <div class="vn-composer-columns">
   <section class="vn-composer-option"><div class="vn-composer-option-head"><span class="vn-composer-icon">✎</span><div><h4>Post</h4><p>Share your thoughts</p></div></div><textarea id="communityPostText" class="field" maxlength="5000" rows="4" placeholder="What would you like to say?" style="resize:vertical"></textarea><div class="vn-composer-mini-actions"><button type="button" onclick="document.getElementById('communityPostImage').click()">＋ Add image</button></div></section>
@@ -575,7 +645,61 @@ body.vn-auth-locked,body.vn-auth-booting{overflow:hidden!important}body.vn-auth-
 </div><div id="profileEditModal" class="profile-edit-modal"><div class="profile-edit-card"><button class="join" onclick="closeProfileEditor()" style="float:right">Close ✕</button><h2 style="margin-top:8px">Customize your profile</h2><p class="muted">Update how other VibeNest members see you.</p><img id="profilePreview" class="profile-preview" alt="Profile picture preview" src="" style="display:none"><div id="profilePreviewFallback" class="profile-hero-avatar" style="width:90px;height:90px;border-radius:26px;font-size:38px">✦</div><label>Profile picture<input id="profileAvatarFile" type="file" accept="image/*" onchange="previewProfilePicture(event)"></label><div class="profile-hint">Choose an image up to 5 MB. JPG, PNG, WebP, and other browser-supported image formats work.</div><label>Username<input id="profileUsernameInput" maxlength="24" autocomplete="username" placeholder="e.g. daze"></label><label>Display name<input id="profileDisplayNameInput" maxlength="40" placeholder="How people see your name"></label><label>Bio<textarea id="profileBioInput" maxlength="240" placeholder="Tell people a little about yourself…"></textarea></label><label>Profile theme<select id="profileThemeInput" class="field"><option value="violet">Violet glow</option><option value="rose">Rose dusk</option><option value="ocean">Ocean night</option><option value="emerald">Emerald dusk</option></select></label><p class="profile-hint">Your theme changes the accent on your profile.</p><div id="profileEditMessage" class="statusmsg"></div><div class="profile-edit-actions"><button class="btn" id="saveProfileButton" onclick="saveProfileChanges()">Save profile</button><button class="join" onclick="closeProfileEditor()">Cancel</button></div></div></div>
 <section id="notifications" class="page"><div class="simple"><div class="notification-page-top"><button type="button" class="notification-back" onclick="go('home')" aria-label="Back to Home">← <span>Back</span></button><button class="join" onclick="markAllNotificationsRead()">Mark all read</button></div><div class="heading" style="padding:0 0 12px"><h1 style="margin:0">Notifications 🔔</h1></div><p class="muted">Follows, likes, and comments from your VibeNest community.</p><div id="notificationsList"><p class="muted">Sign in to view notifications.</p></div></div></section>
 
-<nav class="bottom" aria-label="Main navigation"><button class="active" data-tab="home" onclick="go('home')"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3.5 10.5 8.5-7 8.5 7v9.2a1.3 1.3 0 0 1-1.3 1.3H4.8a1.3 1.3 0 0 1-1.3-1.3z"/><path d="M9 21v-7h6v7"/></svg><span>Home</span></button><button data-tab="communities" onclick="go('communities')"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M2.8 19c.4-3.3 2.7-5.2 6.2-5.2s5.8 1.9 6.2 5.2z"/><path d="M16 5.2a3.1 3.1 0 0 1 0 6.1M17 14c2.5.5 3.9 2.2 4.2 5"/></svg><span>Communities</span></button><button data-tab="chats" onclick="go('chats')"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v11.8H9l-5 3z"/><path d="M8 9h8M8 13h5"/></svg><span>Chats</span><span id="chatNavBadge" class="chat-nav-badge" hidden aria-label="Unread messages"></span></button><button data-tab="profile" onclick="go('profile')"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c.6-4 3.1-6 7.5-6s6.9 2 7.5 6z"/></svg><span>Profile</span></button></nav><div id="toast" class="toast"></div>
+
+<div id="vnSideMenuOverlay" class="vn-overlay" hidden onclick="if(event.target===this)vnToggleSideMenu(false)">
+ <aside class="vn-side-drawer" role="dialog" aria-modal="true" aria-label="Community menu">
+  <header class="vn-side-head"><button type="button" class="vn-side-exit" onclick="vnToggleSideMenu(false)" aria-label="Close menu">×</button><div id="vnSideAvatar" class="vn-side-avatar">✦</div><div class="vn-side-profile"><b id="vnSideDisplayName">Your VibeNest</b><small id="vnSideUsername">Your corner of the internet</small></div><button type="button" class="vn-side-search" onclick="vnToggleSideMenu(false);vnOpenSearch()" aria-label="Search">⌕</button></header>
+  <div class="vn-side-scroll">
+   <button class="vn-side-link" onclick="vnSideAction('home')"><span>⌂</span>Home</button>
+   <button class="vn-side-link" onclick="vnSideAction('chats')"><span>☻</span>My Chats</button>
+   <button class="vn-side-link" onclick="vnSideAction('guidelines')"><span>▤</span>Guidelines</button>
+   <button class="vn-side-link" onclick="vnSideAction('rooms')"><span>☏</span>Public Chatrooms</button>
+   <button class="vn-side-link" onclick="vnSideAction('wiki')"><span>▣</span>Wiki</button>
+   <button class="vn-side-link" onclick="vnSideAction('shared')"><span>▰</span>Shared Folder</button>
+   <button class="vn-side-link" onclick="vnSideAction('blogs')"><span>▤</span>Blogs</button>
+   <button class="vn-side-link" onclick="vnSideAction('leaderboards')"><span>♛</span>Leaderboards</button>
+   <button class="vn-side-link vn-side-more" onclick="vnSideAction('more')">See more <span>›</span></button>
+   <div class="vn-side-section-label">Community options</div>
+   <button class="vn-side-link" onclick="vnSideAction('members')"><span>♟</span>All Members</button>
+   <button class="vn-side-link" onclick="vnSideAction('saved')"><span>⇩</span>My Saved Posts</button>
+   <button class="vn-side-link" onclick="vnSideAction('invite')"><span>↗</span>Invite Members</button>
+   <button class="vn-side-link" onclick="vnSideAction('settings')"><span>⚙</span>Settings</button>
+   <button class="vn-side-link" onclick="vnSideAction('about')"><span>ⓘ</span>About This Community</button>
+  </div>
+ </aside>
+</div>
+<div id="vnOnlineMembersOverlay" class="vn-overlay vn-online-overlay" hidden>
+ <header class="vn-overlay-topbar"><button type="button" onclick="vnCloseOnlineMembers()" aria-label="Back">←</button><div><b>Online & members</b><small>Discover people in VibeNest</small></div><button type="button" onclick="vnLoadOnlineMembers(true)" aria-label="Refresh members">↻</button></header>
+ <div class="vn-online-summary"><div><b id="vnOnlineMemberCount">—</b><span>Members found</span></div><div class="vn-online-summary-copy"><b>Find your people</b><small>Browse member profiles and open a conversation.</small></div></div>
+ <label class="vn-online-search"><span>⌕</span><input id="vnOnlineSearchInput" type="search" placeholder="Search members…" oninput="vnFilterOnlineMembers()"></label>
+ <div id="vnOnlineMembersList" class="vn-online-members-list"><p class="muted">Loading members…</p></div>
+</div>
+<div id="vnCreateMenuOverlay" class="vn-overlay vn-create-overlay" hidden onclick="if(event.target===this)vnToggleCreateMenu(false)">
+ <section class="vn-create-menu-card" role="dialog" aria-modal="true" aria-label="Create something">
+  <header><div><span>✦ MAKE SOMETHING</span><h2>What's happening?</h2></div><button type="button" onclick="vnToggleCreateMenu(false)" aria-label="Close create menu">×</button></header>
+  <div class="vn-create-primary-grid">
+   <button type="button" onclick="vnCreateAction('image')"><i class="vn-action-image">▧</i><b>Image</b></button>
+   <button type="button" onclick="vnCreateAction('link')"><i class="vn-action-link">↗</i><b>Link</b></button>
+   <button type="button" onclick="vnCreateAction('question')"><i class="vn-action-question">?</i><b>Question</b></button>
+   <button type="button" onclick="vnCreateAction('live')"><i class="vn-action-live">◉</i><b>Go Live</b></button>
+  </div>
+  <div class="vn-create-secondary-grid">
+   <button type="button" onclick="vnCreateAction('room')"><i>☻</i><b>Public Chatroom</b></button>
+   <button type="button" onclick="vnCreateAction('wiki')"><i>★</i><b>Wiki Entry</b></button>
+   <button type="button" onclick="vnCreateAction('blog')"><i>▤</i><b>Blog</b></button>
+   <button type="button" onclick="vnCreateAction('drafts')"><i>▣</i><b>Drafts</b></button>
+  </div>
+ </section>
+</div>
+<div id="vnInfoOverlay" class="vn-overlay vn-info-overlay" hidden onclick="if(event.target===this)vnCloseInfo()"><section class="vn-info-card" role="dialog" aria-modal="true"><button type="button" class="vn-info-close" onclick="vnCloseInfo()">×</button><div class="vn-empty-art">✦</div><h2 id="vnInfoTitle">VibeNest</h2><p id="vnInfoBody"></p><button type="button" class="btn" onclick="vnCloseInfo()">Got it</button></section></div>
+<nav class="bottom" aria-label="Main navigation"><button class="active" data-tab="home" onclick="go('home')"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3.5 10.5 8.5-7 8.5 7v9.2a1.3 1.3 0 0 1-1.3 1.3H4.8a1.3 1.3 0 0 1-1.3-1.3z"/><path d="M9 21v-7h6v7"/></svg><span>Home</span></button><button data-tab="communities" onclick="go('communities')"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M2.8 19c.4-3.3 2.7-5.2 6.2-5.2s5.8 1.9 6.2 5.2z"/><path d="M16 5.2a3.1 3.1 0 0 1 0 6.1M17 14c2.5.5 3.9 2.2 4.2 5"/></svg><span>Communities</span></button><button data-tab="chats" onclick="go('chats')"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v11.8H9l-5 3z"/><path d="M8 9h8M8 13h5"/></svg><span>Chats</span><span id="chatNavBadge" class="chat-nav-badge" hidden aria-label="Unread messages"></span></button><button data-tab="profile" onclick="go('profile')"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c.6-4 3.1-6 7.5-6s6.9 2 7.5 6z"/></svg><span>Profile</span></button></nav>
+<nav class="vn-reference-nav" aria-label="VibeNest navigation">
+ <button type="button" onclick="vnToggleSideMenu(true)" aria-label="Open menu"><span class="vn-ref-icon">☰</span><span>Menu</span></button>
+ <button type="button" onclick="vnOpenOnlineMembers()" aria-label="Online members"><span class="vn-ref-icon">ϟ</span><span>Online</span></button>
+ <button type="button" class="vn-ref-create" onclick="vnToggleCreateMenu(true)" aria-label="Create"><span>＋</span></button>
+ <button type="button" data-tab="chats" onclick="go('chats')" aria-label="Chats"><span class="vn-ref-icon">▰</span><span>Chats</span><span id="vnRefChatBadge" hidden></span></button>
+ <button type="button" data-tab="profile" onclick="go('profile')" aria-label="My profile"><span class="vn-ref-icon">●</span><span>Me</span></button>
+</nav><div id="toast" class="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./config.js"></script>
 <script>
@@ -649,12 +773,13 @@ function renderCommunityPosts(){
   const commentState=captureOpenComments(el);
   if(c.id && onlineCommunities.some(x=>String(x.id)===String(c.id))){
    const matching=onlinePosts.filter(p=>String(p.community_id)===String(c.id));
-   el.innerHTML=matching.map(p=>{const profile=onlineProfiles[p.author_id];const name=p.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');const commentsId='comments-community-'+p.id;return `<article class="post" data-post-id="${p.id}"><div class="posthead"><button class="profile-tap" aria-label="Open profile" onclick="openPublicProfile('${p.author_id}')">${profileAvatarMarkup(profile)}</button><div style="min-width:0;flex:1"><button class="profile-name-tap" onclick="openPublicProfile('${p.author_id}')"><b>${safeText(name)}</b></button><div class="muted">${safeText(new Date(p.created_at).toLocaleString())}</div></div></div>${p.content?`<p>${safeText(p.content)}</p>`:''}${p.image_url?`<img class="post-media" src="${safeText(p.image_url)}" alt="Post image" loading="lazy">`:''}${p.poll_question&&Array.isArray(p.poll_options)?`<div class="poll-card"><b>${safeText(p.poll_question)}</b>${p.poll_options.map((o,i)=>`<button class="poll-option" onclick="voteInPoll('${p.id}',${i})">${safeText(o)}</button>`).join('')}<div id="poll-results-${p.id}"></div></div>`:''}<div class="actions"><button onclick="toggleOnlineLike('${p.id}','${p.author_id}')" style="color:${likedPostIds.has(p.id)?'#ff75bc':'var(--muted)'}">${likedPostIds.has(p.id)?'♥ Liked':'♡ Like'} · ${postLikeCounts[p.id]||0}</button><button onclick="toggleComments('${p.id}','${commentsId}',this)">▢ Comments · ${postCommentCounts[p.id]||0}</button></div><div id="${commentsId}" class="comments-box" style="display:none;margin-top:12px"></div></article>`}).join('')||'<p class="muted">No posts here yet. Be the first to start a conversation!</p>';
+   el.innerHTML=matching.map(p=>{const profile=onlineProfiles[p.author_id];const name=p.author_id===currentUser?.id?'You':(profile?.display_name||profile?.username||'VibeNest member');const commentsId='comments-community-'+p.id;return `<article class="post" data-post-id="${p.id}" data-post-kind="${p.poll_question&&Array.isArray(p.poll_options)?'poll':'post'}"><div class="posthead"><button class="profile-tap" aria-label="Open profile" onclick="openPublicProfile('${p.author_id}')">${profileAvatarMarkup(profile)}</button><div style="min-width:0;flex:1"><button class="profile-name-tap" onclick="openPublicProfile('${p.author_id}')"><b>${safeText(name)}</b></button><div class="muted">${safeText(new Date(p.created_at).toLocaleString())}</div></div></div>${p.content?`<p>${safeText(p.content)}</p>`:''}${p.image_url?`<img class="post-media" src="${safeText(p.image_url)}" alt="Post image" loading="lazy">`:''}${p.poll_question&&Array.isArray(p.poll_options)?`<div class="poll-card"><b>${safeText(p.poll_question)}</b>${p.poll_options.map((o,i)=>`<button class="poll-option" onclick="voteInPoll('${p.id}',${i})">${safeText(o)}</button>`).join('')}<div id="poll-results-${p.id}"></div></div>`:''}<div class="actions"><button onclick="toggleOnlineLike('${p.id}','${p.author_id}')" style="color:${likedPostIds.has(p.id)?'#ff75bc':'var(--muted)'}">${likedPostIds.has(p.id)?'♥ Liked':'♡ Like'} · ${postLikeCounts[p.id]||0}</button><button onclick="toggleComments('${p.id}','${commentsId}',this)">▢ Comments · ${postCommentCounts[p.id]||0}</button></div><div id="${commentsId}" class="comments-box" style="display:none;margin-top:12px"></div></article>`}).join('')||'<p class="muted">No posts here yet. Be the first to start a conversation!</p>';
   }else{
    const matching=posts.filter(p=>p.community===c.name);
-   el.innerHTML=matching.map(p=>`<article class="post"><div class="posthead"><div class="avatar">${safeText(p.avatar)}</div><div><b>${safeText(p.user)}</b><div class="muted">${safeText(p.time)}</div></div></div><p>${safeText(p.text)}</p></article>`).join('')||'<p class="muted">No posts here yet. Join in and start a conversation!</p>';
+   el.innerHTML=matching.map(p=>`<article class="post" data-post-kind="post"><div class="posthead"><div class="avatar">${safeText(p.avatar)}</div><div><b>${safeText(p.user)}</b><div class="muted">${safeText(p.time)}</div></div></div><p>${safeText(p.text)}</p></article>`).join('')||'<p class="muted">No posts here yet. Join in and start a conversation!</p>';
   }
   restoreOpenComments(el,commentState);
+  if(typeof window.vnSetCommunityTab==='function')window.vnSetCommunityTab(window.__vnCommunityTab||'featured');
 }
 
 // Community chatrooms use community_rooms + community_room_messages tables (SQL setup provided with this update).
@@ -4090,4 +4215,84 @@ document.addEventListener('keydown',e=>{const panel=document.getElementById('vnC
 #communityCreateModal .vn-category-option.selected{background:#b18aff20;color:#d9c2ff}
 #communityCreateModal .vn-category-check{width:20px;color:#c4a9f4;font-weight:900;text-align:center}
 </style>
+
+<script id="vn-reference-community-redesign-js">
+(function(){
+ 'use strict';
+ if(window.__vnReferenceCommunityRedesign)return;window.__vnReferenceCommunityRedesign=true;
+ const $=id=>document.getElementById(id);
+ let memberRows=[],memberLoadBusy=false,communityTab='featured';
+ const hidden=id=>{const el=$(id);if(el)el.hidden=true;};
+ const shown=id=>{const el=$(id);if(el)el.hidden=false;};
+ window.vnToggleSideMenu=function(open){const el=$('vnSideMenuOverlay');if(!el)return;el.hidden=!open;if(open){vnUpdateSideProfile();document.body.classList.add('vn-drawer-open');}else document.body.classList.remove('vn-drawer-open');};
+ window.vnToggleCreateMenu=function(open){const el=$('vnCreateMenuOverlay');if(el)el.hidden=!open;};
+ window.vnOpenOnlineMembers=async function(){const el=$('vnOnlineMembersOverlay');if(!el)return;el.hidden=false;const input=$('vnOnlineSearchInput');if(input)input.value='';await vnLoadOnlineMembers(false);};
+ window.vnCloseOnlineMembers=function(){hidden('vnOnlineMembersOverlay');};
+ window.vnUpdateSideProfile=function(){
+  const p=(typeof myProfile!=='undefined'&&myProfile)||{};const userObj=(typeof currentUser!=='undefined'&&currentUser)||null;const name=p.display_name||p.username||userObj?.user_metadata?.username||'Your VibeNest';const user=p.username?('@'+p.username):(userObj?.email||'Your corner of the internet');
+  const nameEl=$('vnSideDisplayName'),userEl=$('vnSideUsername'),av=$('vnSideAvatar');if(nameEl)nameEl.textContent=name;if(userEl)userEl.textContent=user;
+  if(av){if(p.avatar_url)av.innerHTML='<img alt="" src="'+String(p.avatar_url).replace(/["<>]/g,'')+'">';else av.textContent=(name||'✦').trim().slice(0,1).toUpperCase()||'✦';}
+ };
+ window.vnLoadOnlineMembers=async function(force){
+  const out=$('vnOnlineMembersList'),count=$('vnOnlineMemberCount');if(!out||memberLoadBusy)return;
+  if(memberRows.length&&!force){vnRenderOnlineMembers();return;}
+  const client=typeof supabaseClient!=='undefined'?supabaseClient:null;if(!client){out.innerHTML='<p class="muted">Sign in to browse members.</p>';return;}
+  memberLoadBusy=true;out.innerHTML='<p class="muted">Loading members…</p>';
+  try{
+   const {data,error}=await client.from('profiles').select('id,username,display_name,avatar_url,bio').limit(100);
+   if(error)throw error;
+   const userObj=(typeof currentUser!=='undefined'&&currentUser)||null;memberRows=(data||[]).filter(p=>!userObj||p.id!==userObj.id);
+   if(count)count.textContent=memberRows.length.toLocaleString();
+   vnRenderOnlineMembers();
+  }catch(error){out.innerHTML='<div class="vn-info-card"><h3>Members could not be loaded</h3><p>'+vnEscape(error.message||'Check your Supabase profiles read policy.')+'</p></div>';}
+  finally{memberLoadBusy=false;}
+ };
+ function vnEscape(v){return String(v==null?'':v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+ window.vnFilterOnlineMembers=function(){vnRenderOnlineMembers();};
+ function vnRenderOnlineMembers(){
+  const out=$('vnOnlineMembersList');if(!out)return;const q=($('vnOnlineSearchInput')?.value||'').trim().toLowerCase();const rows=memberRows.filter(p=>((p.display_name||'')+' '+(p.username||'')+' '+(p.bio||'')).toLowerCase().includes(q));
+  out.innerHTML=rows.map(p=>{const name=vnEscape(p.display_name||p.username||'VibeNest member');const avatar=p.avatar_url?'<img alt="" loading="lazy" src="'+vnEscape(p.avatar_url)+'">':vnEscape((p.display_name||p.username||'✦').slice(0,1).toUpperCase());return '<article class="vn-online-member"><div class="vn-online-member-avatar">'+avatar+'</div><div class="vn-online-member-copy"><b>'+name+'</b><small>@'+vnEscape(p.username||'member')+'</small></div><button type="button" onclick="vnOpenMemberProfile(\''+vnEscape(p.id)+'\')">View</button></article>';}).join('')||'<p class="muted">No members match that search.</p>';
+ }
+ window.vnOpenMemberProfile=function(id){vnCloseOnlineMembers();if(typeof window.openPublicProfile==='function')window.openPublicProfile(id);else showToast('Member profiles are unavailable right now.');};
+ window.vnSideAction=function(action){
+  vnToggleSideMenu(false);
+  if(action==='home'){go('home');return;}if(action==='chats'){go('chats');return;}if(action==='members'){vnOpenOnlineMembers();return;}if(action==='settings'){openAuth();return;}
+  if(action==='rooms'){if(typeof activeCommunity!=='undefined'&&activeCommunity){go('community');vnSetCommunityTab('rooms');}else{go('communities');showToast('Open a community to browse its chatrooms.');}return;}
+  if(action==='invite'){const url=location.href;if(navigator.share){navigator.share({title:'Join me on VibeNest',text:'Come find your people on VibeNest.',url}).catch(()=>{});}else if(navigator.clipboard){navigator.clipboard.writeText(url).then(()=>showToast('VibeNest link copied')).catch(()=>showToast(url));}else showToast(url);return;}
+  const info={guidelines:['Community guidelines','Be kind, respect privacy, share only content you have permission to post, and report harassment or unsafe behaviour.'],wiki:['Wiki','Community wiki entries are not connected to a publishing workflow yet.'],shared:['Shared folder','Shared files need a community storage area and access rules before they can be published here.'],blogs:['Blogs','Blog publishing is not connected to a backend workflow yet.'],leaderboards:['Leaderboards','Community leaderboards will appear here when activity rankings are available.'],saved:['My Saved Posts','Saved-posts view is not connected to this menu yet.'],about:['About this community',window.activeCommunity?((window.activeCommunity.description||'A place for people who share an interest.')+' Category: '+(window.activeCommunity.category||'General')):'Choose a community first to see its details.'],more:['More community options','Choose All Members to browse member profiles, Invite Members to share a link, or Settings to manage your account.']};
+  const entry=info[action]||['Coming soon','This section is not connected yet.'];vnShowInfo(entry[0],entry[1]);
+ };
+ window.vnCreateAction=function(action){
+  vnToggleCreateMenu(false);
+  if(action==='room'){
+   if(typeof activeCommunity!=='undefined'&&activeCommunity&&activeCommunity.id){go('community');if(activeCommunity.joined&&typeof window.createCommunityRoom==='function')createCommunityRoom();else showToast('Join this community before creating a chatroom.');}
+   else{go('communities');showToast('Open a community first to create a public chatroom.');}return;
+  }
+  if(action==='image'||action==='question'){
+   if(typeof activeCommunity!=='undefined'&&activeCommunity&&document.getElementById('communityComposer')){go('community');if(typeof window.toggleCommunityComposer==='function')toggleCommunityComposer();setTimeout(()=>{if(action==='image')document.getElementById('communityPostImage')?.click();else document.getElementById('communityPollQuestion')?.focus();},100);return;}
+   go('communities');showToast(action==='image'?'Open a community to share an image.':'Open a community to create a poll.');return;
+  }
+  const info={link:['Share a link','Link posts are not yet connected to the community publishing backend.'],live:['Go Live','Live video requires a streaming provider and permissions that are not configured in VibeNest yet.'],wiki:['Wiki entry','Wiki entry publishing is not connected yet.'],blog:['Create a blog','Blog publishing is not connected yet.'],drafts:['Drafts','There is no saved-drafts backend connected yet.']};const entry=info[action];if(entry)vnShowInfo(entry[0],entry[1]);
+ };
+ function vnShowInfo(title,body){const el=$('vnInfoOverlay');if(!el)return;$('vnInfoTitle').textContent=title;$('vnInfoBody').textContent=body;el.hidden=false;}
+ window.vnCloseInfo=function(){hidden('vnInfoOverlay');};
+ window.vnSetCommunityTab=function(tab){
+  communityTab=tab||'featured';window.__vnCommunityTab=communityTab;
+  document.querySelectorAll('[data-community-tab]').forEach(b=>{const active=b.dataset.communityTab===communityTab;b.classList.toggle('active',active);b.setAttribute('aria-selected',String(active));});
+  const rooms=document.querySelector('#community .room-hub'),roomChat=$('communityRoomChatPanel'),heading=document.querySelector('#community .community-posts-heading'),composer=$('communityComposer'),posts=$('communityPosts'),quiz=$('vnCommunityQuizPanel');
+  if(rooms)rooms.style.display=communityTab==='rooms'?'block':'none';if(roomChat&&communityTab!=='rooms'&&document.body.classList.contains('room-chat-open'))roomChat.style.display='none';
+  const showPosts=['featured','feed','polls'].includes(communityTab);if(heading)heading.style.display=showPosts?'flex':'none';if(composer&&communityTab!=='feed'&&communityTab!=='featured')composer.style.display='none';if(posts)posts.style.display=showPosts?'grid':'none';if(quiz)quiz.hidden=communityTab!=='quizzes';
+  if(posts){posts.querySelectorAll('[data-post-kind]').forEach(card=>{card.style.display=communityTab==='polls'?(card.dataset.postKind==='poll'?'block':'none'):'block';});let empty=posts.querySelector('.vn-polls-empty');const hasPoll=[...posts.querySelectorAll('[data-post-kind="poll"]')].length>0;if(communityTab==='polls'&&!hasPoll){if(!empty){empty=document.createElement('p');empty.className='muted vn-polls-empty';empty.textContent='No polls yet. Create a poll to get the conversation started.';posts.appendChild(empty);}}else if(empty)empty.remove();}
+ };
+ // Keep the new central nav's active state in sync with the existing go(page) router.
+ document.addEventListener('click',e=>{const button=e.target.closest('.vn-reference-nav [data-tab]');if(button){document.querySelectorAll('.vn-reference-nav [data-tab]').forEach(b=>b.classList.toggle('active',b===button));}});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(!$('vnCreateMenuOverlay').hidden)vnToggleCreateMenu(false);else if(!$('vnSideMenuOverlay').hidden)vnToggleSideMenu(false);else if(!$('vnOnlineMembersOverlay').hidden)vnCloseOnlineMembers();else if(!$('vnInfoOverlay').hidden)vnCloseInfo();}});
+ // Android/browser back closes these transient overlays instead of leaving the app.
+ window.addEventListener('popstate',()=>{if(!$('vnCreateMenuOverlay').hidden){vnToggleCreateMenu(false);history.pushState({vnTransient:true},'',location.href);}else if(!$('vnSideMenuOverlay').hidden){vnToggleSideMenu(false);history.pushState({vnTransient:true},'',location.href);}else if(!$('vnOnlineMembersOverlay').hidden){vnCloseOnlineMembers();history.pushState({vnTransient:true},'',location.href);}else if(!$('vnInfoOverlay').hidden){vnCloseInfo();history.pushState({vnTransient:true},'',location.href);}});
+ document.addEventListener('DOMContentLoaded',()=>{vnUpdateSideProfile();vnSetCommunityTab('featured');});
+ const oldGo=window.go;
+ if(typeof oldGo==='function'&&!oldGo.__vnReferenceWrapped){const wrapped=function(id){const r=oldGo.apply(this,arguments);document.querySelectorAll('.vn-reference-nav [data-tab]').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));if(id==='community')vnSetCommunityTab(window.__vnCommunityTab||'featured');if(id==='profile')vnUpdateSideProfile();return r;};wrapped.__vnReferenceWrapped=true;window.go=wrapped;}
+})();
+</script>
+
 </body></html>
