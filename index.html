@@ -4105,3 +4105,29 @@ document.addEventListener('keydown',e=>{const panel=document.getElementById('vnC
 #communityCreateModal .vn-category-check{width:20px;color:#c4a9f4;font-weight:900;text-align:center}
 </style>
 </body></html>
+
+<style id="vn-community-detail-overlay-refresh">
+/* Community detail is its own immersive screen; the main app shell stays unchanged. */
+#community.page.active{position:fixed!important;inset:0!important;z-index:1000!important;width:100%!important;max-width:none!important;height:100vh!important;height:100dvh!important;overflow-y:auto!important;overscroll-behavior:contain!important;background:#100b1a!important;padding:env(safe-area-inset-top) 0 calc(18px + env(safe-area-inset-bottom))!important;margin:0!important;isolation:isolate}
+#community.page.active .community-detail{width:100%;max-width:720px;min-height:100%;margin:0 auto;padding:14px 17px calc(28px + env(safe-area-inset-bottom))!important;background:radial-gradient(ellipse at 100% 0%,rgba(102,48,163,.14),transparent 42%),#100b1a!important}
+body:has(#community.page.active) .bottom{display:none!important}
+#community .community-back{display:inline-flex;align-items:center;gap:8px;margin:2px 0 14px!important;background:transparent!important;border:0!important;padding:8px 2px!important;color:#c7b4df!important;font-size:14px;font-weight:750}
+#community #communityDetailContent>.hero{padding:0 0 18px!important;margin:0!important;background:transparent!important;border:0!important;border-bottom:1px solid #30243b!important;border-radius:0!important;box-shadow:none!important}
+#community .community-detail-cover{height:clamp(150px,30vw,230px)!important;border-radius:19px!important;margin-bottom:17px!important;overflow:hidden}
+#community .community-detail-actions{display:flex!important;gap:10px!important;margin-top:16px!important}
+#community .community-detail-actions button{flex:1;min-height:48px;justify-content:center}
+#community .community-section-tabs{position:sticky!important;top:0!important;z-index:5!important;margin:16px 0 20px!important;padding:6px!important;display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:6px!important;border:1px solid #49345e!important;border-radius:17px!important;background:rgba(20,14,29,.96)!important;backdrop-filter:blur(18px)!important}
+#community .community-section-tabs button{min-height:46px!important;border-radius:12px!important}
+#community .community-tab-panel{display:block;margin:0 0 22px!important;min-width:0}
+#community .community-tab-panel[hidden]{display:none!important}
+#community [data-community-panel="description"] .community-description-card{margin:0!important;border-radius:22px!important;padding:20px!important}
+#community [data-community-panel="posts"] .community-posts-heading{border-top:0!important;padding:0 0 13px!important;margin:0!important}
+#community [data-community-panel="posts"] #communityComposer{margin:0 0 14px!important}
+#community [data-community-panel="posts"] .detail-posts{display:grid;gap:13px;margin:0!important}
+#community [data-community-panel="posts"] .detail-posts .post{border-radius:18px!important;padding:16px!important}
+#community [data-community-panel="chatrooms"] .room-hub{margin:0!important;padding:0!important;border:0!important;border-radius:0!important;background:transparent!important}
+#community [data-community-panel="chatrooms"] .room-hub-heading{padding:0 0 14px!important;border-bottom:1px solid #30243b!important}
+#community [data-community-panel="chatrooms"] .community-rooms{margin-top:8px!important;gap:9px!important}
+#community [data-community-panel="chatrooms"] .room-card{padding:13px!important;border:1px solid #382b45!important;border-radius:15px!important;background:#191321!important}
+@media(max-width:380px){#community.page.active .community-detail{padding-left:13px!important;padding-right:13px!important}#community .community-detail-cover{height:135px!important}#community [data-community-panel="description"] .community-description-card{padding:16px!important}}
+</style>
