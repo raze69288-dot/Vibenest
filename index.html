@@ -4142,7 +4142,7 @@ document.addEventListener('keydown',e=>{const panel=document.getElementById('vnC
  const oldGo=window.go;if(typeof oldGo==='function'&&!oldGo.__vnCommunitySpaceWrapped){const wrapped=function(){const r=oldGo.apply(this,arguments);setTimeout(update,0);return r};wrapped.__vnCommunitySpaceWrapped=true;window.go=wrapped}
  document.addEventListener('click',e=>{if(e.target.closest('#community .community-detail-actions button')||e.target.closest('[data-community-section]'))setTimeout(update,0)});
  document.addEventListener('keydown',e=>{if(e.key==='Escape')vnCommunityMenuClose()});
- if(typeof MutationObserver!=='undefined'){const ob=new MutationObserver(update);ob.observe(document.documentElement,{subtree:true,attributes:true,attributeFilter:['class']})}document.addEventListener('DOMContentLoaded',update);setTimeout(update,250);
+ if(typeof MutationObserver!=='undefined'){const communityPage=$('community');if(communityPage){let lastActive=null;const ob=new MutationObserver(()=>{const now=isCommunity();if(now!==lastActive){lastActive=now;update()}});ob.observe(communityPage,{attributes:true,attributeFilter:['class']});lastActive=isCommunity()}}document.addEventListener('DOMContentLoaded',update);setTimeout(update,250);
 })();
 </script>
 </body></html>
