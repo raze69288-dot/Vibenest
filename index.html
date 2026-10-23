@@ -4443,7 +4443,79 @@ document.addEventListener('keydown',e=>{const panel=document.getElementById('vnC
 </script>
 
 
-<script id="vn-community-dock-active-visual-state">(function(){var nav=document.getElementById('vnCommunityBottomNav');if(!nav||nav.dataset.vnLiquidActiveBound)return;nav.dataset.vnLiquidActiveBound='1';nav.addEventListener('click',function(event){var button=event.target.closest('button');if(!button||!nav.contains(button)||button.querySelector('.vncs-plus'))return;nav.querySelectorAll('button').forEach(function(item){item.classList.remove('is-active');item.removeAttribute('aria-current')});button.classList.add('is-active');button.setAttribute('aria-current','page')})})();</script></body></html>
+<script id="vn-community-dock-active-visual-state">(function(){var nav=document.getElementById('vnCommunityBottomNav');if(!nav||nav.dataset.vnLiquidActiveBound)return;nav.dataset.vnLiquidActiveBound='1';nav.addEventListener('click',function(event){var button=event.target.closest('button');if(!button||!nav.contains(button)||button.querySelector('.vncs-plus'))return;nav.querySelectorAll('button').forEach(function(item){item.classList.remove('is-active');item.removeAttribute('aria-current')});button.classList.add('is-active');button.setAttribute('aria-current','page')})})();</script></body>
+<style id="vn-critical-layout-fixes-20261024">
+/* 1. Only one dock at a time: community page uses the five-item dock. */
+body:has(#community.page.active) nav.bottom{display:none!important}
+body:not(:has(#community.page.active)) #vnCommunityBottomNav{display:none!important}
+
+/* 2. Seamless hero: transparent surface with a soft radial aura behind the star. */
+#home .vn-home-hero,#home .vibenest-hero-banner,.vibenest-hero-banner{
+ background:transparent!important;background-color:transparent!important;background-image:none!important;
+ border:0!important;border-radius:0!important;box-shadow:none!important;outline:0!important;
+}
+#home .vn-home-hero{position:relative!important;isolation:isolate!important}
+#home .vn-home-hero:before{
+ content:""!important;display:block!important;position:absolute!important;z-index:0!important;
+ width:min(82vw,460px)!important;height:min(74vw,360px)!important;right:-2%!important;top:50%!important;
+ transform:translateY(-50%)!important;pointer-events:none!important;border:0!important;border-radius:50%!important;
+ background:radial-gradient(circle at 80% 50%,rgba(139,92,246,.22) 0%,rgba(124,58,237,.10) 38%,rgba(11,8,19,0) 70%)!important;
+ box-shadow:none!important;filter:blur(2px)!important;
+}
+#home .vn-home-hero>*{position:relative;z-index:1}
+
+/* 3. Community menu: true left-side slide-over sheet with dimmed/blurred backdrop. */
+#vnCommunityMenuShade{
+ position:fixed!important;inset:0!important;z-index:10040!important;display:flex!important;
+ align-items:stretch!important;justify-content:flex-start!important;padding:0!important;margin:0!important;
+ background:rgba(0,0,0,.60)!important;-webkit-backdrop-filter:blur(12px)!important;backdrop-filter:blur(12px)!important;
+ opacity:0;visibility:hidden;pointer-events:none;transition:opacity .28s ease,visibility .28s ease!important;
+}
+#vnCommunityMenuShade[aria-hidden="false"],#vnCommunityMenuShade.is-open,#vnCommunityMenuShade.open{
+ opacity:1;visibility:visible;pointer-events:auto;
+}
+#vnCommunityMenuPanel{
+ position:fixed!important;top:0!important;left:0!important;right:auto!important;bottom:0!important;
+ width:85vw!important;max-width:360px!important;height:100vh!important;height:100dvh!important;
+ max-height:100vh!important;max-height:100dvh!important;margin:0!important;flex:none!important;
+ border:0!important;border-right:1px solid rgba(255,255,255,.20)!important;border-radius:0 32px 32px 0!important;
+ background:rgba(18,13,32,.88)!important;-webkit-backdrop-filter:blur(30px) saturate(190%)!important;
+ backdrop-filter:blur(30px) saturate(190%)!important;box-shadow:20px 0 50px rgba(0,0,0,.55),inset -1px 0 0 rgba(255,255,255,.06)!important;
+ transform:translateX(-102%)!important;transition:transform .32s cubic-bezier(.32,.72,0,1)!important;
+ z-index:10041!important;overflow:hidden!important;
+}
+#vnCommunityMenuShade[aria-hidden="false"] #vnCommunityMenuPanel,
+#vnCommunityMenuShade.is-open #vnCommunityMenuPanel,#vnCommunityMenuShade.open #vnCommunityMenuPanel{transform:translateX(0)!important}
+#vnCommunityMenuShade[aria-hidden="true"]{visibility:hidden!important;pointer-events:none!important}
+#vnCommunityMenuShade[aria-hidden="true"] #vnCommunityMenuPanel{transform:translateX(-102%)!important}
+@media(prefers-reduced-motion:reduce){#vnCommunityMenuShade,#vnCommunityMenuPanel{transition:none!important}}
+
+/* 4. Center rail controls; preserve existing actions and menu-row/card styling. */
+#vnCommunityMenuPanel .vncs-rail{align-items:center!important;justify-items:center!important}
+#vnCommunityMenuPanel .vncs-exit{
+ width:52px!important;height:52px!important;min-width:52px!important;min-height:52px!important;
+ padding:5px 0!important;box-sizing:border-box!important;border-radius:16px!important;display:flex!important;
+ flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:4px!important;
+ line-height:1!important;overflow:hidden!important;background:rgba(239,68,68,.12)!important;
+ border:1px solid rgba(248,113,113,.30)!important;color:#fca5a5!important;
+ box-shadow:inset 0 1px 1px rgba(255,255,255,.13)!important;
+}
+#vnCommunityMenuPanel .vncs-exit svg{display:none!important}
+#vnCommunityMenuPanel .vncs-exit:before{
+ content:""!important;display:block!important;width:18px!important;height:18px!important;flex:0 0 18px!important;
+ background:currentColor!important;
+ -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4'/%3E%3Cpolyline points='16 17 21 12 16 7'/%3E%3Cline x1='21' y1='12' x2='9' y2='12'/%3E%3C/svg%3E") center/contain no-repeat!important;
+ mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4'/%3E%3Cpolyline points='16 17 21 12 16 7'/%3E%3Cline x1='21' y1='12' x2='9' y2='12'/%3E%3C/svg%3E") center/contain no-repeat!important;
+}
+#vnCommunityMenuPanel .vncs-exit>*{font-size:10px!important;font-weight:700!important;line-height:1!important}
+#vnCommunityMenuPanel .vncs-rail .vncs-add,
+#vnCommunityMenuPanel .vncs-rail button[aria-label*="Add"],
+#vnCommunityMenuPanel .vncs-rail button[aria-label*="Create"]{
+ display:flex!important;align-items:center!important;justify-content:center!important;line-height:1!important;
+ padding:0!important;text-align:center!important;
+}
+</style>
+</html>
 
 <style id="vn-community-detail-overlay-refresh">
 /* Community detail is its own immersive screen; the main app shell stays unchanged. */
