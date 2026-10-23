@@ -887,8 +887,8 @@ body.vn-auth-locked,body.vn-auth-booting{overflow:hidden!important}body.vn-auth-
 </div><div id="profileEditModal" class="profile-edit-modal"><div class="profile-edit-card"><button class="join" onclick="closeProfileEditor()" style="float:right">Close ✕</button><h2 style="margin-top:8px">Customize your profile</h2><p class="muted">Update how other VibeNest members see you.</p><img id="profilePreview" class="profile-preview" alt="Profile picture preview" src="" style="display:none"><div id="profilePreviewFallback" class="profile-hero-avatar" style="width:90px;height:90px;border-radius:26px;font-size:38px">✦</div><label>Profile picture<input id="profileAvatarFile" type="file" accept="image/*" onchange="previewProfilePicture(event)"></label><div class="profile-hint">Choose an image up to 5 MB. JPG, PNG, WebP, and other browser-supported image formats work.</div><label>Username<input id="profileUsernameInput" maxlength="24" autocomplete="username" placeholder="e.g. daze"></label><label>Display name<input id="profileDisplayNameInput" maxlength="40" placeholder="How people see your name"></label><label>Bio<textarea id="profileBioInput" maxlength="240" placeholder="Tell people a little about yourself…"></textarea></label><label>Profile theme<select id="profileThemeInput" class="field"><option value="violet">Violet glow</option><option value="rose">Rose dusk</option><option value="ocean">Ocean night</option><option value="emerald">Emerald dusk</option></select></label><p class="profile-hint">Your theme changes the accent on your profile.</p><div id="profileEditMessage" class="statusmsg"></div><div class="profile-edit-actions"><button class="btn" id="saveProfileButton" onclick="saveProfileChanges()">Save profile</button><button class="join" onclick="closeProfileEditor()">Cancel</button></div></div></div>
 <section id="notifications" class="page"><div class="simple"><div class="notification-page-top"><button type="button" class="notification-back" onclick="go('home')" aria-label="Back to Home">← <span>Back</span></button><button class="join" onclick="markAllNotificationsRead()">Mark all read</button></div><div class="heading" style="padding:0 0 12px"><h1 style="margin:0">Notifications 🔔</h1></div><p class="muted">Follows, likes, and comments from your VibeNest community.</p><div id="notificationsList"><p class="muted">Sign in to view notifications.</p></div></div></section>
 
-<div id="vnCommunityBottomNav" aria-label="Community navigation"><button onclick="vnCommunityMenuOpen()"><span>☰</span><span>Menu</span></button><button onclick="vnCommunityPlaceholder('Online')"><svg class="vncbn-icon vncbn-bolt" viewBox="0 0 24 24" aria-hidden="true"><path d="M14.7 2.8 7.8 12.4h4.8l-1.3 8.8 6.9-10h-4.8l1.3-8.4"/></svg><span>Online</span></button><button onclick="vnCommunityPlaceholder('Create')"><span class="vncs-plus">＋</span></button><button onclick="vnCommunityPlaceholder('Chats')"><svg class="vncbn-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.3a7.8 7.8 0 0 1-8.2 7.7 9.4 9.4 0 0 1-3.5-.7L4 20l1.2-3.7A7.4 7.4 0 0 1 3.8 11c0-4.3 3.6-7.7 8.2-7.7s8 3.5 8 8z"/><path d="M8 10.8h.01M12 10.8h.01M16 10.8h.01"/></svg><span>Chats</span></button><button onclick="vnCommunityPlaceholder('Me')"><svg class="vncbn-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.6" r="3.4"/><path d="M5.1 20c.5-3.6 2.8-5.7 6.9-5.7s6.4 2.1 6.9 5.7z"/></svg><span>Me</span></button></div>
-<div id="vnCommunityMenuShade" aria-hidden="true" onclick="if(event.target===this)vnCommunityMenuClose()"><div id="vnCommunityMenuPanel" role="dialog" aria-modal="true" aria-label="Community menu"><aside class="vncs-rail"><button class="vncs-exit" onclick="vnCommunityExit()" aria-label="Exit community"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M28 7h11a2 2 0 0 1 2 2v30a2 2 0 0 1-2 2H28"/><path d="M23 15 14 24l9 9M14 24h23"/></svg><strong>Exit</strong></button><div style="height:1px;background:#ffffff44;width:80%"></div><div id="vncsRailCommunities" style="display:grid;gap:11px"></div><button class="vncs-add" onclick="vnCommunityMenuClose();go('communities')" aria-label="Open communities">＋</button></aside><div class="vncs-main"><header class="vncs-head vncs-members-head"><h2 id="vncsCommunityName">VibeNest Member</h2><button onclick="vnCommunityMenuClose()" aria-label="Close menu">×</button></header><div class="vncs-profile"><div id="vncsAvatar" class="vncs-avatar">✦</div><b id="vncsUsername">Your profile</b><span id="vncsUserCaption">Community member</span></div><div class="vncs-links"><button onclick="vnCommunityPlaceholder('Home')"><i>⌂</i>Home</button><button onclick="vnCommunityPlaceholder('My Chats')"><i>☻</i>My Chats</button><button onclick="vnCommunityPlaceholder('Guidelines')"><i>▤</i>Guidelines</button><button onclick="vnCommunityPlaceholder('Public Chatrooms')"><i>♧</i>Public Chatrooms</button><button onclick="vnCommunityPlaceholder('Wiki')"><i>▣</i>Wiki</button><button onclick="vnCommunityPlaceholder('Shared Folder')"><i>▰</i>Shared Folder</button><button onclick="vnCommunityPlaceholder('Blogs')"><i>▤</i>Blogs</button><button onclick="vnCommunityPlaceholder('Leaderboards')"><i>♛</i>Leaderboards</button><button onclick="vnCommunityPlaceholder('All Members')"><i>♧</i>All Members</button><button onclick="vnCommunityPlaceholder('My Saved Posts')"><i>⇩</i>My Saved Posts</button><button onclick="vnCommunityPlaceholder('Invite Members')"><i>↗</i>Invite Members</button><button class="vncs-settings" onclick="vnCommunitySettings()"><i>⚙</i>Community Settings</button><button onclick="vnCommunityPlaceholder('About This Community')"><i>ⓘ</i>About This Community</button></div></div></div></div>
+<div id="vnCommunityBottomNav" aria-label="Community navigation"><button type="button" aria-label="Menu" onclick="vnCommunityMenuOpen()"><svg class="vncbn-icon vncbn-menu" viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="3.5" width="7" height="7" rx="2"/><rect x="13.5" y="3.5" width="7" height="7" rx="2"/><rect x="3.5" y="13.5" width="7" height="7" rx="2"/><rect x="13.5" y="13.5" width="7" height="7" rx="2"/></svg><span>Menu</span></button><button type="button" aria-label="Online" onclick="vnCommunityPlaceholder('Online')"><svg class="vncbn-icon vncbn-bolt" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.7 2.8 5.9 13h6.2l-1.1 8.2 7.2-10.3h-6.1z"/></svg><span>Online</span></button><button type="button" aria-label="Create" onclick="vnCommunityPlaceholder('Create')"><span class="vncs-plus"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></span></button><button type="button" aria-label="Chats" onclick="vnCommunityPlaceholder('Chats')"><svg class="vncbn-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.3a7.8 7.8 0 0 1-8.2 7.7 9.4 9.4 0 0 1-3.5-.7L4 20l1.2-3.7A7.4 7.4 0 0 1 3.8 11c0-4.3 3.6-7.7 8.2-7.7s8 3.5 8 8z"/><path d="M8 10.8h.01M12 10.8h.01M16 10.8h.01"/></svg><span>Chats</span></button><button type="button" aria-label="Me" onclick="vnCommunityPlaceholder('Me')"><svg class="vncbn-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="7.6" r="3.4"/><path d="M5.1 20c.5-3.6 2.8-5.7 6.9-5.7s6.4 2.1 6.9 5.7z"/></svg><span>Me</span></button></div>
+<div id="vnCommunityMenuShade" aria-hidden="true" onclick="if(event.target===this)vnCommunityMenuClose()"><div id="vnCommunityMenuPanel" role="dialog" aria-modal="true" aria-label="Community menu"><aside class="vncs-rail"><button class="vncs-exit" onclick="vnCommunityExit()" aria-label="Exit community"><svg viewBox="0 0 48 48" aria-hidden="true"><path d="M28 7h11a2 2 0 0 1 2 2v30a2 2 0 0 1-2 2H28"/><path d="M23 15 14 24l9 9M14 24h23"/></svg><strong>Exit</strong></button><div style="height:1px;background:#ffffff44;width:80%"></div><div id="vncsRailCommunities" style="display:grid;gap:11px"></div><button class="vncs-add" onclick="vnCommunityMenuClose();go('communities')" aria-label="Open communities">＋</button></aside><div class="vncs-main"><header class="vncs-head vncs-members-head"><h2 id="vncsCommunityName">VibeNest Member</h2><button onclick="vnCommunityMenuClose()" aria-label="Close menu">×</button></header><div class="vncs-profile"><div id="vncsAvatar" class="vncs-avatar">✦</div><b id="vncsUsername">Your profile</b><span id="vncsUserCaption">Community member</span></div><div class="vncs-links"><button onclick="vnCommunityPlaceholder('Home')"><i class="vibenest-icon-orb" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3.5 10.5 8.5-7 8.5 7v8.3a1.2 1.2 0 0 1-1.2 1.2H4.7a1.2 1.2 0 0 1-1.2-1.2z"/><path d="M9 20v-6h6v6"/></svg></i>Home</button><button onclick="vnCommunityPlaceholder('My Chats')"><i class="vibenest-icon-orb" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 11.4a8 8 0 0 1-8.4 7.8 9 9 0 0 1-3.6-.7L4 20l1.2-3.7a7.5 7.5 0 0 1-1.4-4.4c0-4.4 3.6-7.9 8.3-7.9s8.4 3.2 8.4 7.4Z"/><path d="M8.4 11h.1M12 11h.1M15.6 11h.1M9 14.3c1.8 1.5 4.2 1.5 6 0"/></svg></i>My Chats</button><button onclick="vnCommunityPlaceholder('Guidelines')"><i class="vibenest-icon-orb" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2 19 6v5.2c0 4.1-2.7 7.5-7 9.7-4.3-2.2-7-5.6-7-9.7V6z"/><path d="m8.5 11.8 2.2 2.2 4.8-5"/></svg></i>Guidelines</button><button onclick="vnCommunityPlaceholder('Public Chatrooms')"><i class="vibenest-icon-orb" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="2.3"/><path d="M7.6 7.6a6.2 6.2 0 0 0 0 8.8M16.4 7.6a6.2 6.2 0 0 1 0 8.8M4.6 4.6a10.5 10.5 0 0 0 0 14.8M19.4 4.6a10.5 10.5 0 0 1 0 14.8"/></svg></i>Public Chatrooms</button><button onclick="vnCommunityPlaceholder('Wiki')"><i class="vibenest-icon-orb" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.2c3.2-.9 5.8-.3 8 1.2 2.2-1.5 4.8-2.1 8-1.2v14c-3.2-.9-5.8-.3-8 1.2-2.2-1.5-4.8-2.1-8-1.2z"/><path d="M12 6.5v13.2M6.8 9h2.5M14.8 9h2.5"/></svg></i>Wiki</button><button onclick="vnCommunityPlaceholder('Shared Folder')"><i class="vibenest-icon-orb" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7.2h6l2 2h10v9.4a1.4 1.4 0 0 1-1.4 1.4H4.4A1.4 1.4 0 0 1 3 18.6z"/><path d="M3 9.2V5.8a1 1 0 0 1 1-1h5l2 2h8a2 2 0 0 1 2 2v.4"/></svg></i>Shared Folder</button><button onclick="vnCommunityPlaceholder('Blogs')"><i class="vibenest-icon-orb" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5h15.5v14H5a2.5 2.5 0 0 1-2.5-2.5v-9A2.5 2.5 0 0 1 5 5Z"/><path d="M7.5 9h3.8v3.8H7.5zM14 9h4M14 12h4M7.5 16h10.5"/><path d="M2.5 8.5V17"/></svg></i>Blogs</button><button onclick="vnCommunityPlaceholder('Leaderboards')"><i class="vibenest-icon-orb" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 8 4 3.2L12 5l4 6.2L20 8l-1.7 10H5.7z"/><path d="M6 21h12M4 8l-1-3M20 8l1-3M12 5V3"/></svg></i>Leaderboards</button><button onclick="vnCommunityPlaceholder('All Members')"><i class="vibenest-icon-orb" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.1"/><path d="M3 19c.4-3.3 2.5-5 6-5s5.6 1.7 6 5zM16 5.2a3.1 3.1 0 0 1 0 6.1M17 14c2.5.5 3.9 2.2 4.2 5"/></svg></i>All Members</button><button onclick="vnCommunityPlaceholder('My Saved Posts')"><i class="vibenest-icon-orb" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4.5A1.5 1.5 0 0 1 7.5 3h9A1.5 1.5 0 0 1 18 4.5V21l-6-3.8L6 21z"/></svg></i>My Saved Posts</button><button onclick="vnCommunityPlaceholder('Invite Members')"><i class="vibenest-icon-orb" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 20v-1.5a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4V20"/><circle cx="9.5" cy="7" r="3.5"/><path d="M19 8v6M16 11h6"/></svg></i>Invite Members</button><button class="vncs-settings" onclick="vnCommunitySettings()"><i class="vibenest-icon-orb" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7Z"/><path d="m19.4 13.5 1.1.9-1.7 3-1.4-.5a8 8 0 0 1-1.7 1l-.2 1.5h-3.4l-.3-1.5a8 8 0 0 1-1.7-1l-1.4.5-1.7-3 1.1-.9a7 7 0 0 1 0-2l-1.1-.9 1.7-3 1.4.5a8 8 0 0 1 1.7-1l.3-1.5h3.4l.2 1.5a8 8 0 0 1 1.7 1l1.4-.5 1.7 3-1.1.9a7 7 0 0 1 0 2Z" transform="translate(-1 -1) scale(1.08)"/></svg></i>Community Settings</button><button onclick="vnCommunityPlaceholder('About This Community')"><i class="vibenest-icon-orb" aria-hidden="true"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8.8"/><path d="M12 10.8v5.3M12 7.7h.01"/></svg></i>About This Community</button></div></div></div></div>
 <nav class="bottom" aria-label="Main navigation"><button class="active" data-tab="home" onclick="go('home')"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m3.5 10.5 8.5-7 8.5 7v9.2a1.3 1.3 0 0 1-1.3 1.3H4.8a1.3 1.3 0 0 1-1.3-1.3z"/><path d="M9 21v-7h6v7"/></svg><span>Home</span></button><button data-tab="communities" onclick="go('communities')"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="9" cy="8" r="3.2"/><path d="M2.8 19c.4-3.3 2.7-5.2 6.2-5.2s5.8 1.9 6.2 5.2z"/><path d="M16 5.2a3.1 3.1 0 0 1 0 6.1M17 14c2.5.5 3.9 2.2 4.2 5"/></svg><span>Communities</span></button><button data-tab="chats" onclick="go('chats')"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v11.8H9l-5 3z"/><path d="M8 9h8M8 13h5"/></svg><span>Chats</span><span id="chatNavBadge" class="chat-nav-badge" hidden aria-label="Unread messages"></span></button><button data-tab="profile" onclick="go('profile')"><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20c.6-4 3.1-6 7.5-6s6.9 2 7.5 6z"/></svg><span>Profile</span></button></nav><div id="toast" class="toast"></div>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="./config.js"></script>
@@ -4428,7 +4428,7 @@ document.addEventListener('keydown',e=>{const panel=document.getElementById('vnC
  function setAvatar(el, url, fallback){if(!el)return;el.innerHTML='';if(url){const im=document.createElement('img');im.src=url;im.alt='';im.onerror=()=>{el.textContent=fallback};el.append(im)}else el.textContent=fallback;}
  function communityLabel(c){return c?.name||c?.title||'Community'}
  function communityCover(c){return c?.icon_url||c?.community_icon_url||c?.iconUrl||c?.icon_image_url||c?.community_icon||c?.image_url||c?.avatar_url||c?.icon||c?.emoji||''}
- function renderMenu(){ $('vncsCommunityName').textContent='VibeNest Member';$('vncsUsername').textContent=userName();$('vncsUserCaption').textContent=(typeof myProfile!=='undefined'&&myProfile?.username)?'@'+myProfile.username:'Community member';setAvatar($('vncsAvatar'),typeof myProfile!=='undefined'?myProfile?.avatar_url:null,'✦');const rail=$('vncsRailCommunities');rail.innerHTML='';const rows=typeof onlineCommunities!=='undefined'?onlineCommunities:[];rows.forEach(item=>{const label=communityLabel(item),cover=communityCover(item);const b=document.createElement('button');b.type='button';b.className='vncs-rail-app';b.title=label;b.setAttribute('aria-label',label);b.style.cssText='width:47px;height:47px;padding:0;border:1px solid #ffffff18;border-radius:13px;background:#37323f;color:white;overflow:hidden';const icon=document.createElement('img');icon.alt=label+' icon';icon.loading='lazy';icon.src=cover||'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 rx=%2218%22 fill=%22%232d1d48%22/%3E%3Cpath d=%22M50 17 58 40 82 40 63 55 70 79 50 65 30 79 37 55 18 40 42 40Z%22 fill=%22%23c5a4ff%22/%3E%3C/svg%3E';icon.style.cssText='width:100%;height:100%;object-fit:cover;border-radius:12px';icon.onerror=()=>{icon.onerror=null;icon.remove();const fallback=document.createElement('span');fallback.className='vncs-community-icon';fallback.textContent='✦';fallback.style.cssText='width:100%;height:100%;display:grid;place-items:center;background:linear-gradient(135deg,#7042a5,#29184a);color:#eadcff;font-size:25px';b.append(fallback)};b.append(icon);b.onclick=()=>{vnCommunityMenuClose();if(item.id&&typeof openCommunityById==='function')openCommunityById(item.id);else if(typeof openCommunityByName==='function')openCommunityByName(label)};rail.append(b)}); }
+ function renderMenu(){ $('vncsCommunityName').textContent='VibeNest Member';$('vncsUsername').textContent=userName();$('vncsUserCaption').textContent=(typeof myProfile!=='undefined'&&myProfile?.username)?'@'+myProfile.username:'Community member';setAvatar($('vncsAvatar'),typeof myProfile!=='undefined'?myProfile?.avatar_url:null,'✦');const rail=$('vncsRailCommunities');rail.innerHTML='';const rows=typeof onlineCommunities!=='undefined'?onlineCommunities:[];rows.forEach(item=>{const label=communityLabel(item),cover=communityCover(item);const b=document.createElement('button');b.type='button';b.className='vncs-rail-app';b.title=label;b.setAttribute('aria-label',label);if(typeof activeCommunity!=='undefined'&&activeCommunity&&String(activeCommunity.id)===String(item.id)){b.classList.add('is-active');b.setAttribute('aria-current','true')}b.style.cssText='width:47px;height:47px;padding:0;border:1px solid #ffffff18;border-radius:13px;background:#37323f;color:white;overflow:hidden';const icon=document.createElement('img');icon.alt=label+' icon';icon.loading='lazy';icon.src=cover||'data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 rx=%2218%22 fill=%22%232d1d48%22/%3E%3Cpath d=%22M50 17 58 40 82 40 63 55 70 79 50 65 30 79 37 55 18 40 42 40Z%22 fill=%22%23c5a4ff%22/%3E%3C/svg%3E';icon.style.cssText='width:100%;height:100%;object-fit:cover;border-radius:12px';icon.onerror=()=>{icon.onerror=null;icon.remove();const fallback=document.createElement('span');fallback.className='vncs-community-icon';fallback.textContent='✦';fallback.style.cssText='width:100%;height:100%;display:grid;place-items:center;background:linear-gradient(135deg,#7042a5,#29184a);color:#eadcff;font-size:25px';b.append(fallback)};b.append(icon);b.onclick=()=>{vnCommunityMenuClose();if(item.id&&typeof openCommunityById==='function')openCommunityById(item.id);else if(typeof openCommunityByName==='function')openCommunityByName(label)};rail.append(b)}); }
  window.vnCommunityMenuOpen=function(){renderMenu();$('vnCommunityMenuShade').classList.add('open');$('vnCommunityMenuShade').setAttribute('aria-hidden','false');document.body.style.overflow='hidden'};
  window.vnCommunityMenuClose=function(){$('vnCommunityMenuShade').classList.remove('open');$('vnCommunityMenuShade').setAttribute('aria-hidden','true');document.body.style.overflow=''};
  window.vnCommunityExit=function(){vnCommunityMenuClose();if(typeof closeCommunityRoom==='function'&&typeof activeCommunityRoom!=='undefined'&&activeCommunityRoom)closeCommunityRoom();document.body.classList.remove('vn-community-space');if(typeof go==='function')go('communities')};
@@ -4443,7 +4443,7 @@ document.addEventListener('keydown',e=>{const panel=document.getElementById('vnC
 </script>
 
 
-</body></html>
+<script id="vn-community-dock-active-visual-state">(function(){var nav=document.getElementById('vnCommunityBottomNav');if(!nav||nav.dataset.vnLiquidActiveBound)return;nav.dataset.vnLiquidActiveBound='1';nav.addEventListener('click',function(event){var button=event.target.closest('button');if(!button||!nav.contains(button)||button.querySelector('.vncs-plus'))return;nav.querySelectorAll('button').forEach(function(item){item.classList.remove('is-active');item.removeAttribute('aria-current')});button.classList.add('is-active');button.setAttribute('aria-current','page')})})();</script></body></html>
 
 <style id="vn-community-detail-overlay-refresh">
 /* Community detail is its own immersive screen; the main app shell stays unchanged. */
@@ -4640,4 +4640,202 @@ nav.bottom button.active .nav-icon{filter:drop-shadow(0 0 5px rgba(196,181,253,.
 #home .vn-home-user,#communities .vn-home-user,#home .vn-home-bell,#communities .vn-home-bell{border:1px solid rgba(255,255,255,.19)!important;border-radius:50%!important;background:linear-gradient(145deg,rgba(255,255,255,.12),rgba(124,58,237,.1))!important;box-shadow:inset 0 1px 2px rgba(255,255,255,.16),0 6px 14px rgba(0,0,0,.17)!important;-webkit-backdrop-filter:blur(16px)!important;backdrop-filter:blur(16px)!important}
 #home .vn-search-trigger,#communities .vn-search-trigger{border-radius:999px!important}
 @media(max-width:380px){nav.bottom{width:calc(100% - 18px)!important;padding-left:5px!important;padding-right:5px!important}nav.bottom button{height:46px!important;min-height:46px!important;font-size:10px!important}}
+</style>
+
+<style id="vibenest-liquid-bubble-community-dock-and-drawer">
+/* VibeNest community dock + side drawer: final scoped liquid-glass layer. */
+#vnCommunityBottomNav,
+#vnCommunityBottomNav *{box-sizing:border-box!important}
+#vnCommunityBottomNav{
+  position:fixed!important;z-index:80!important;
+  left:12px!important;right:12px!important;bottom:calc(8px + env(safe-area-inset-bottom))!important;
+  width:auto!important;max-width:520px!important;margin:0 auto!important;transform:none!important;
+  min-height:0!important;height:68px!important;padding:6px 8px!important;
+  display:none;align-items:center!important;justify-content:space-between!important;gap:4px!important;
+  overflow:visible!important;isolation:isolate!important;
+  border:1px solid rgba(255,255,255,.20)!important;border-radius:999px!important;
+  background:linear-gradient(145deg,rgba(42,29,62,.88),rgba(16,11,27,.91))!important;
+  -webkit-backdrop-filter:blur(30px) saturate(190%)!important;backdrop-filter:blur(30px) saturate(190%)!important;
+  box-shadow:inset 0 2px 4px rgba(255,255,255,.16),inset 0 -4px 9px rgba(0,0,0,.35),0 12px 30px rgba(0,0,0,.38),0 0 22px rgba(124,58,237,.10)!important;
+  animation:vnDockArrive .55s cubic-bezier(.2,.8,.2,1) both;
+}
+body.vn-community-space #vnCommunityBottomNav{display:flex!important}
+/* Prevent inherited/pseudo decoration from creating the stray speck on the dock rim. */
+#vnCommunityBottomNav::before,#vnCommunityBottomNav::after,
+#vnCommunityBottomNav button::before,#vnCommunityBottomNav button::after{content:none!important;display:none!important;box-shadow:none!important}
+#vnCommunityBottomNav button{
+  appearance:none!important;-webkit-appearance:none!important;position:relative!important;z-index:1!important;
+  min-width:0!important;max-width:none!important;min-height:48px!important;height:50px!important;
+  flex:1 1 0!important;margin:0!important;padding:5px 3px!important;
+  display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:3px!important;
+  border:1px solid transparent!important;border-radius:20px!important;background:transparent!important;
+  color:#b4a5c8!important;font-family:inherit!important;font-size:10px!important;font-weight:700!important;line-height:1.05!important;
+  box-shadow:none!important;text-shadow:none!important;transform:translateZ(0);overflow:visible!important;
+  transition:color .22s ease,background .22s ease,border-color .22s ease,transform .22s cubic-bezier(.2,.8,.2,1),box-shadow .22s ease!important;
+}
+#vnCommunityBottomNav .vncbn-icon{
+  display:block!important;width:22px!important;height:22px!important;flex:0 0 22px!important;
+  fill:none!important;stroke:currentColor!important;stroke-width:2!important;stroke-linecap:round!important;stroke-linejoin:round!important;
+  overflow:visible!important;filter:none!important;transition:transform .25s cubic-bezier(.2,.8,.2,1),color .22s ease,filter .22s ease!important;
+}
+#vnCommunityBottomNav .vncbn-menu rect{stroke-width:1.85!important}
+#vnCommunityBottomNav .vncbn-bolt{width:27px!important;height:27px!important;flex-basis:27px!important;stroke-width:2.15!important;filter:drop-shadow(0 0 8px rgba(6,182,212,.18))!important}
+#vnCommunityBottomNav button:active:not(:has(.vncs-plus)),
+#vnCommunityBottomNav button:focus-visible:not(:has(.vncs-plus)),
+#vnCommunityBottomNav button.is-active:not(:has(.vncs-plus)){
+  color:#f2eaff!important;background:linear-gradient(145deg,rgba(255,255,255,.13),rgba(196,181,253,.08))!important;
+  border-color:rgba(255,255,255,.12)!important;
+  box-shadow:inset 0 2px 4px rgba(255,255,255,.10),inset 0 -3px 6px rgba(0,0,0,.18),0 0 16px rgba(124,58,237,.10)!important;
+}
+#vnCommunityBottomNav button:active .vncbn-icon,
+#vnCommunityBottomNav button:focus-visible .vncbn-icon{transform:translateY(-1px) scale(1.06)!important}
+#vnCommunityBottomNav button.is-active .vncbn-bolt{color:#8deaff!important;filter:drop-shadow(0 0 5px rgba(6,182,212,.55)) drop-shadow(0 0 10px rgba(52,211,153,.25))!important}
+#vnCommunityBottomNav button:has(.vncs-plus){
+  flex:0 0 56px!important;width:56px!important;min-width:56px!important;max-width:56px!important;
+  height:60px!important;min-height:60px!important;margin:-17px 0 -6px!important;padding:0!important;
+  border:0!important;border-radius:50%!important;background:transparent!important;box-shadow:none!important;transform:none!important;overflow:visible!important;
+}
+#vnCommunityBottomNav .vncs-plus{
+  display:grid!important;place-items:center!important;position:relative!important;
+  width:52px!important;height:52px!important;min-width:52px!important;min-height:52px!important;
+  border-radius:19px!important;border:1px solid rgba(255,255,255,.68)!important;
+  background:radial-gradient(circle at 28% 16%,#fff4 0 9%,transparent 34%),linear-gradient(145deg,#e4d8ff 0%,#c4b5fd 45%,#a78bfa 100%)!important;
+  color:#24123d!important;font-size:0!important;font-weight:500!important;line-height:1!important;
+  box-shadow:inset 0 3px 6px rgba(255,255,255,.78),inset 0 -4px 7px rgba(109,40,217,.28),0 6px 17px rgba(124,58,237,.35),0 0 22px rgba(167,139,250,.25)!important;
+  transform:translateY(-5px)!important;overflow:hidden!important;
+  transition:transform .32s cubic-bezier(.2,.9,.25,1.3),box-shadow .28s ease,filter .28s ease!important;
+  animation:vnPlusFloat 4.2s ease-in-out infinite;
+}
+#vnCommunityBottomNav .vncs-plus::after{content:"";position:absolute;inset:2px 3px 53% 3px;border-radius:999px 999px 60% 60%;background:linear-gradient(180deg,rgba(255,255,255,.52),rgba(255,255,255,0));pointer-events:none}
+#vnCommunityBottomNav .vncs-plus svg{width:25px!important;height:25px!important;display:block!important;stroke:currentColor!important;stroke-width:2.2!important;stroke-linecap:round!important;fill:none!important}
+#vnCommunityBottomNav button:has(.vncs-plus):active .vncs-plus{transform:translateY(-3px) scale(.94)!important;box-shadow:inset 0 2px 5px rgba(255,255,255,.62),0 3px 9px rgba(124,58,237,.25)!important;animation:none!important}
+@keyframes vnDockArrive{from{opacity:0;translate:0 8px}to{opacity:1;translate:0 0}}
+@keyframes vnPlusFloat{0%,100%{translate:0 0}50%{translate:0 -2px}}
+@media(max-width:380px){
+ #vnCommunityBottomNav{left:8px!important;right:8px!important;height:64px!important;padding:5px 5px!important;gap:2px!important}
+ #vnCommunityBottomNav button{font-size:9px!important;min-height:46px!important;height:46px!important;padding:3px 1px!important;border-radius:16px!important}
+ #vnCommunityBottomNav .vncbn-icon{width:21px!important;height:21px!important;flex-basis:21px!important}
+ #vnCommunityBottomNav .vncbn-bolt{width:26px!important;height:26px!important;flex-basis:26px!important}
+ #vnCommunityBottomNav button:has(.vncs-plus){flex-basis:52px!important;width:52px!important;min-width:52px!important;height:56px!important;min-height:56px!important}
+ #vnCommunityBottomNav .vncs-plus{width:47px!important;height:47px!important;min-width:47px!important;min-height:47px!important;border-radius:17px!important}
+}
+@media(prefers-reduced-motion:reduce){#vnCommunityBottomNav,#vnCommunityBottomNav .vncs-plus{animation:none!important}#vnCommunityBottomNav button,#vnCommunityBottomNav .vncbn-icon,#vnCommunityBottomNav .vncs-plus{transition:none!important}}
+
+/* Full drawer shade and floating rounded visionOS glass sheet. */
+#vnCommunityMenuShade{
+  display:none!important;position:fixed!important;inset:0!important;z-index:10000!important;
+  box-sizing:border-box!important;padding:12px!important;align-items:center!important;justify-content:flex-start!important;
+  overflow:hidden!important;background:rgba(5,3,12,.52)!important;
+  -webkit-backdrop-filter:blur(14px) saturate(135%)!important;backdrop-filter:blur(14px) saturate(135%)!important;
+  opacity:0;transition:opacity .28s ease!important;
+}
+#vnCommunityMenuShade.open{display:flex!important;opacity:1!important}
+#vnCommunityMenuPanel{
+  position:relative!important;inset:auto!important;left:auto!important;right:auto!important;top:auto!important;bottom:auto!important;
+  flex:0 1 auto!important;width:min(520px,calc(100vw - 24px))!important;max-width:520px!important;
+  height:calc(100dvh - 24px)!important;min-height:0!important;max-height:calc(100dvh - 24px)!important;
+  margin:0!important;padding:8px!important;box-sizing:border-box!important;
+  display:grid!important;grid-template-columns:74px minmax(0,1fr)!important;gap:8px!important;
+  overflow:hidden!important;border:1px solid rgba(255,255,255,.20)!important;border-radius:30px!important;
+  border-left:1px solid rgba(255,255,255,.20)!important;
+  background:linear-gradient(145deg,rgba(28,19,44,.82),rgba(14,9,27,.80))!important;
+  -webkit-backdrop-filter:blur(30px) saturate(190%)!important;backdrop-filter:blur(30px) saturate(190%)!important;
+  box-shadow:inset 0 2px 4px rgba(255,255,255,.16),inset 0 -4px 8px rgba(0,0,0,.33),0 24px 80px rgba(0,0,0,.50),0 0 36px rgba(124,58,237,.12)!important;
+  transform:translateX(calc(-100% - 30px))!important;transition:transform .38s cubic-bezier(.2,.85,.2,1)!important;
+}
+#vnCommunityMenuShade.open #vnCommunityMenuPanel{transform:translateX(0)!important}
+.vncs-rail{
+  position:relative!important;min-width:0!important;margin:0!important;padding:10px 6px!important;
+  display:flex!important;flex-direction:column!important;align-items:center!important;gap:10px!important;
+  overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain!important;
+  border:1px solid rgba(255,255,255,.10)!important;border-radius:21px!important;
+  background:linear-gradient(180deg,rgba(0,0,0,.34),rgba(15,10,25,.28))!important;
+  -webkit-backdrop-filter:blur(22px) saturate(160%)!important;backdrop-filter:blur(22px) saturate(160%)!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.09),inset 0 -3px 7px rgba(0,0,0,.23)!important;
+}
+.vncs-rail>div[style*="height:1px"]{display:none!important}
+.vncs-rail button{flex-shrink:0!important;width:48px!important;height:48px!important;min-width:48px!important;min-height:48px!important;padding:0!important;border:1px solid rgba(255,255,255,.17)!important;border-radius:16px!important;background:linear-gradient(145deg,rgba(255,255,255,.10),rgba(255,255,255,.025))!important;color:#f7efff!important;box-shadow:inset 0 1px 1px rgba(255,255,255,.16),0 5px 12px rgba(0,0,0,.20)!important;transition:transform .2s ease,box-shadow .2s ease,background .2s ease!important}
+.vncs-rail button:active{transform:scale(.95)!important}
+.vncs-rail .vncs-exit{
+  width:54px!important;height:60px!important;min-width:54px!important;min-height:60px!important;margin:0 0 2px!important;padding:6px 2px!important;
+  display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;gap:3px!important;
+  border:1px solid rgba(248,113,113,.34)!important;border-radius:17px!important;
+  background:linear-gradient(145deg,rgba(248,113,113,.19),rgba(127,29,29,.10))!important;
+  color:#fecaca!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 5px 13px rgba(0,0,0,.18),0 0 14px rgba(248,113,113,.08)!important;
+}
+.vncs-rail .vncs-exit svg{width:25px!important;height:25px!important;stroke:currentColor!important;stroke-width:2!important;stroke-linecap:round!important;stroke-linejoin:round!important;fill:none!important}
+.vncs-rail .vncs-exit strong{font-size:12px!important;font-weight:800!important;color:inherit!important;letter-spacing:.1px!important}
+.vncs-rail .vncs-add{
+  margin-top:2px!important;border-radius:17px!important;font-size:0!important;
+  background:radial-gradient(circle at 28% 18%,rgba(255,255,255,.5),transparent 30%),linear-gradient(145deg,#d5baff,#a78bfa 65%,#8b5cf6)!important;
+  color:#211337!important;border:1px solid rgba(255,255,255,.52)!important;
+  box-shadow:inset 0 2px 4px rgba(255,255,255,.55),inset 0 -3px 5px rgba(76,29,149,.27),0 6px 16px rgba(124,58,237,.28)!important;
+}
+.vncs-rail .vncs-add::after{content:"+";font-size:30px;font-weight:400;line-height:1}
+.vncs-rail .vncs-rail-app{position:relative!important;overflow:hidden!important;border-radius:15px!important;background:#181226!important;border:1px solid rgba(255,255,255,.18)!important;box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 5px 12px rgba(0,0,0,.24)!important}
+.vncs-rail .vncs-rail-app img,.vncs-rail .vncs-rail-app .vncs-community-icon{position:relative!important;z-index:1!important;width:100%!important;height:100%!important;border-radius:inherit!important;object-fit:cover!important}
+.vncs-rail .vncs-rail-app.is-active{border-color:rgba(216,190,255,.85)!important;box-shadow:0 0 0 1px rgba(196,181,253,.33),0 0 18px rgba(167,139,250,.30)!important}
+.vncs-rail .vncs-rail-app.is-active::after{content:"";position:absolute;z-index:3;left:0;top:10px;bottom:10px;width:3px;border-radius:0 4px 4px 0;background:#e6d5ff;box-shadow:0 0 8px #c4b5fd,0 0 14px rgba(167,139,250,.9);pointer-events:none}
+.vncs-main{
+  min-width:0!important;min-height:0!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain!important;
+  margin:0!important;padding:12px 12px 22px!important;border-radius:22px!important;
+  background:radial-gradient(ellipse at 84% 3%,rgba(124,58,237,.25),transparent 42%),radial-gradient(ellipse at 30% 28%,rgba(6,182,212,.08),transparent 43%),rgba(12,8,23,.40)!important;
+  scrollbar-width:thin;scrollbar-color:rgba(196,181,253,.22) transparent;
+}
+.vncs-head.vncs-members-head{position:relative!important;display:flex!important;align-items:center!important;justify-content:center!important;gap:8px!important;min-height:46px!important;padding:2px 42px 2px 4px!important}
+.vncs-members-head h2{font-size:clamp(17px,4.7vw,22px)!important;font-weight:850!important;letter-spacing:-.55px!important;line-height:1.15!important;color:#f8f2ff!important;text-shadow:0 1px 16px rgba(196,181,253,.15)!important}
+.vncs-members-head button{position:absolute!important;right:0!important;top:3px!important;width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important;display:grid!important;place-items:center!important;border:1px solid rgba(255,255,255,.24)!important;border-radius:50%!important;background:radial-gradient(circle at 28% 18%,rgba(255,255,255,.23),transparent 38%),rgba(255,255,255,.09)!important;color:#fff!important;font-size:23px!important;font-weight:600!important;line-height:1!important;box-shadow:inset 0 1px 2px rgba(255,255,255,.20),0 4px 12px rgba(0,0,0,.24)!important;transition:transform .2s ease,background .2s ease!important}
+.vncs-members-head button:active{transform:scale(.92)!important}
+.vncs-profile{
+  position:relative!important;isolation:isolate!important;overflow:hidden!important;margin:14px 0 15px!important;padding:20px 12px 18px!important;
+  display:flex!important;flex-direction:column!important;align-items:center!important;gap:5px!important;text-align:center!important;
+  border:1px solid rgba(255,255,255,.17)!important;border-radius:24px!important;
+  background:radial-gradient(ellipse at 18% 0%,rgba(124,58,237,.20),transparent 48%),radial-gradient(ellipse at 86% 100%,rgba(6,182,212,.10),transparent 48%),linear-gradient(145deg,rgba(255,255,255,.09),rgba(255,255,255,.025))!important;
+  -webkit-backdrop-filter:blur(24px) saturate(170%)!important;backdrop-filter:blur(24px) saturate(170%)!important;
+  box-shadow:inset 0 2px 4px rgba(255,255,255,.15),inset 0 -3px 6px rgba(0,0,0,.27),0 12px 28px rgba(0,0,0,.20)!important;
+}
+.vncs-profile::before{content:"";position:absolute;z-index:-1;width:150px;height:120px;top:-58px;left:calc(50% - 75px);border-radius:50%;background:radial-gradient(circle,rgba(196,181,253,.22),rgba(124,58,237,.10) 42%,transparent 72%);filter:blur(9px);pointer-events:none}
+.vncs-avatar{width:70px!important;height:70px!important;min-width:70px!important;min-height:70px!important;margin:0 auto 5px!important;border:3px solid rgba(255,255,255,.92)!important;border-radius:23px!important;background:radial-gradient(circle at 25% 18%,#fff,#f3efff 46%,#c4b5fd 100%)!important;overflow:hidden!important;box-shadow:inset 0 2px 4px rgba(255,255,255,.85),inset 0 -3px 5px rgba(76,29,149,.15),0 6px 18px rgba(124,58,237,.21)!important}
+.vncs-avatar img{width:100%!important;height:100%!important;display:block!important;object-fit:cover!important;border-radius:18px!important}
+.vncs-profile>b{font-size:19px!important;font-weight:850!important;color:#fff!important}
+.vncs-profile>span{font-size:12px!important;color:#cfc1e7!important;font-weight:650!important}
+.vncs-links{display:grid!important;grid-template-columns:minmax(0,1fr)!important;gap:7px!important;padding:0!important;margin:0!important}
+.vncs-links button{
+  position:relative!important;display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:11px!important;
+  width:100%!important;min-width:0!important;min-height:53px!important;margin:0!important;padding:7px 10px!important;
+  border:1px solid rgba(255,255,255,.105)!important;border-radius:19px!important;border-top:1px solid rgba(255,255,255,.13)!important;border-bottom:1px solid rgba(255,255,255,.08)!important;
+  background:linear-gradient(135deg,rgba(255,255,255,.075),rgba(255,255,255,.025))!important;color:#f8f2ff!important;
+  font:750 14px/1.2 system-ui,-apple-system,sans-serif!important;text-align:left!important;letter-spacing:-.12px!important;
+  box-shadow:inset 0 1px 2px rgba(255,255,255,.12),inset 0 -2px 4px rgba(0,0,0,.18),0 4px 12px rgba(0,0,0,.09)!important;
+  transition:transform .18s cubic-bezier(.2,.8,.2,1),background .18s ease,border-color .18s ease,box-shadow .18s ease!important;
+}
+.vncs-links button::after{content:"›";display:block!important;margin-left:auto!important;padding-left:5px!important;flex:0 0 auto!important;color:rgba(218,198,255,.56)!important;font-size:25px!important;font-weight:400!important;line-height:1!important;transform:translateY(-1px)!important}
+.vncs-links button:active{transform:scale(.975)!important;background:linear-gradient(135deg,rgba(255,255,255,.15),rgba(196,181,253,.07))!important;border-color:rgba(255,255,255,.22)!important;box-shadow:inset 0 2px 5px rgba(255,255,255,.12),0 2px 7px rgba(0,0,0,.18)!important}
+.vncs-links button:focus-visible{outline:2px solid rgba(196,181,253,.8)!important;outline-offset:2px!important}
+.vncs-links i.vibenest-icon-orb{
+  font-style:normal!important;display:grid!important;place-items:center!important;flex:0 0 38px!important;
+  width:38px!important;height:38px!important;min-width:38px!important;min-height:38px!important;margin:0!important;padding:0!important;
+  border:1px solid rgba(255,255,255,.42)!important;border-radius:50%!important;
+  background:radial-gradient(circle at 30% 25%,#c084fc 0%,#7e22ce 55%,#3b0764 100%)!important;
+  color:#fff!important;box-shadow:inset 0 2px 4px rgba(255,255,255,.55),inset 0 -3px 5px rgba(0,0,0,.38),0 4px 12px rgba(126,34,206,.34)!important;
+}
+.vncs-links i.vibenest-icon-orb svg{display:block!important;width:20px!important;height:20px!important;fill:none!important;stroke:currentColor!important;stroke-width:1.85!important;stroke-linecap:round!important;stroke-linejoin:round!important;overflow:visible!important}
+.vncs-links .vncs-settings{margin-top:8px!important;border-top:1px solid rgba(255,255,255,.105)!important}
+.vncs-community-list{display:grid!important;gap:8px!important;margin-top:8px!important}
+.vncs-community-list button{border-radius:16px!important;border:1px solid rgba(255,255,255,.13)!important;background:linear-gradient(135deg,rgba(255,255,255,.075),rgba(255,255,255,.025))!important;box-shadow:inset 0 1px 2px rgba(255,255,255,.12),0 5px 12px rgba(0,0,0,.12)!important}
+.vncs-community-list img,.vncs-community-list .vncs-community-icon{border-radius:12px!important;border:1px solid rgba(255,255,255,.22)!important;box-shadow:inset 0 1px 2px rgba(255,255,255,.2),0 4px 9px rgba(0,0,0,.2)!important}
+@media(max-width:390px){
+ #vnCommunityMenuShade{padding:8px!important}
+ #vnCommunityMenuPanel{width:calc(100vw - 16px)!important;height:calc(100dvh - 16px)!important;max-height:calc(100dvh - 16px)!important;padding:6px!important;grid-template-columns:64px minmax(0,1fr)!important;gap:6px!important;border-radius:25px!important}
+ .vncs-rail{padding:8px 4px!important;border-radius:18px!important;gap:8px!important}
+ .vncs-rail button:not(.vncs-exit):not(.vncs-add){width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important}
+ .vncs-rail .vncs-exit{width:48px!important;min-width:48px!important;height:56px!important;min-height:56px!important}
+ .vncs-main{padding:8px 7px 16px!important;border-radius:19px!important}
+ .vncs-links{gap:6px!important}
+ .vncs-links button{min-height:49px!important;padding:6px 7px!important;gap:8px!important;font-size:12.5px!important;border-radius:16px!important}
+ .vncs-links i.vibenest-icon-orb{width:34px!important;height:34px!important;min-width:34px!important;min-height:34px!important;flex-basis:34px!important}
+ .vncs-links i.vibenest-icon-orb svg{width:18px!important;height:18px!important}
+ .vncs-members-head h2{font-size:17px!important}
+}
+@media(prefers-reduced-motion:reduce){#vnCommunityMenuShade,#vnCommunityMenuPanel,.vncs-links button,#vnCommunityBottomNav,#vnCommunityBottomNav .vncs-plus{transition:none!important;animation:none!important}}
 </style>
