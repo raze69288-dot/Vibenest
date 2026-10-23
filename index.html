@@ -486,7 +486,39 @@ body.vn-community-space #vnCommunityBottomNav{display:flex}
 @media(min-width:700px){#vnCommunityMenuPanel{width:min(80vw,560px);grid-template-columns:76px minmax(0,1fr)}.vncs-main{padding:20px 23px}.vncs-links button{font-size:16px}}
 @media(prefers-reduced-motion:reduce){#vnCommunityMenuPanel{transition:none}}
 </style>
-</head><body class="vn-auth-booting">
+<style id="vn-floating-nav-redesign">
+/* VibeNest: persistent floating navigation overlay */
+body{padding-bottom:calc(118px + env(safe-area-inset-bottom))!important}
+nav.bottom{
+  position:fixed!important;
+  left:14px!important;right:14px!important;bottom:calc(10px + env(safe-area-inset-bottom))!important;
+  width:auto!important;max-width:650px!important;margin:0 auto!important;
+  display:flex!important;align-items:center!important;justify-content:space-around!important;gap:5px!important;
+  padding:9px 10px calc(9px + env(safe-area-inset-bottom))!important;
+  border:1px solid rgba(205,174,255,.22)!important;border-radius:25px!important;
+  background:linear-gradient(135deg,rgba(36,24,55,.88),rgba(17,12,29,.84))!important;
+  box-shadow:0 12px 34px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.07),0 0 22px rgba(132,75,220,.09)!important;
+  -webkit-backdrop-filter:blur(24px) saturate(1.55)!important;backdrop-filter:blur(24px) saturate(1.55)!important;
+  z-index:999!important;isolation:isolate
+}
+nav.bottom:before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(110deg,rgba(177,138,255,.08),transparent 42%,rgba(255,120,197,.035));z-index:-1}
+nav.bottom button{
+  flex:1 1 0!important;min-width:0!important;min-height:50px!important;padding:5px 4px!important;
+  display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+  gap:4px!important;border:0!important;border-radius:17px!important;background:transparent!important;
+  color:#a99bbd!important;font-size:11px!important;font-weight:650!important;line-height:1.1!important;
+  text-shadow:none!important;box-shadow:none!important;transition:background .18s ease,color .18s ease,transform .18s ease!important
+}
+nav.bottom button:before{display:none!important}
+nav.bottom button.active{color:#f0e5ff!important;background:linear-gradient(145deg,rgba(177,138,255,.19),rgba(255,120,197,.07))!important}
+nav.bottom button.active:after{content:"";position:absolute;top:4px;width:18px;height:3px;border-radius:9px;background:linear-gradient(90deg,#b18aff,#ff9cdd);box-shadow:0 0 10px rgba(177,138,255,.5)}
+nav.bottom .nav-icon{width:22px!important;height:22px!important;margin:0!important;filter:none!important;stroke-width:1.9!important}
+nav.bottom button.active .nav-icon{filter:drop-shadow(0 0 5px rgba(177,138,255,.28))!important;animation:none!important}
+nav.bottom button:active{transform:scale(.95)!important}
+nav.bottom button span{line-height:1.1!important}
+@media(min-width:600px){nav.bottom{left:50%!important;right:auto!important;width:min(650px,calc(100% - 28px))!important;transform:translateX(-50%)!important}}
+@media(max-width:380px){nav.bottom{left:8px!important;right:8px!important;padding-left:6px!important;padding-right:6px!important;border-radius:22px!important}nav.bottom button{font-size:10px!important}}
+</style></head><body class="vn-auth-booting">
 <style id="vibenest-opening-splash-style">
 #vn-opening-splash{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;overflow:hidden;background:#100b18;opacity:1;visibility:visible;transition:opacity .22s ease,visibility .22s ease;color:#fff}
 #vn-opening-splash.vn-splash-leaving{opacity:0;visibility:hidden;pointer-events:none}
