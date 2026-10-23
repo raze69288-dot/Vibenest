@@ -518,7 +518,110 @@ nav.bottom button:active{transform:scale(.95)!important}
 nav.bottom button span{line-height:1.1!important}
 @media(min-width:600px){nav.bottom{left:50%!important;right:auto!important;width:min(650px,calc(100% - 28px))!important;transform:translateX(-50%)!important}}
 @media(max-width:380px){nav.bottom{left:8px!important;right:8px!important;padding-left:6px!important;padding-right:6px!important;border-radius:22px!important}nav.bottom button{font-size:10px!important}}
-</style></head><body class="vn-auth-booting">
+</style><style id="vn-community-floating-nav-redesign">
+/* Community-only floating overlay nav. Keep original labels, order and onclick handlers unchanged. */
+body.vn-community-space{
+  padding-bottom:calc(126px + env(safe-area-inset-bottom))!important;
+}
+body.vn-community-space #community.page.active{
+  padding-bottom:calc(138px + env(safe-area-inset-bottom))!important;
+}
+body.vn-community-space #vnCommunityBottomNav{
+  display:flex!important;
+  position:fixed!important;
+  z-index:31!important;
+  left:12px!important;
+  right:12px!important;
+  bottom:calc(9px + env(safe-area-inset-bottom))!important;
+  width:auto!important;
+  max-width:640px!important;
+  margin:0 auto!important;
+  padding:8px 9px!important;
+  box-sizing:border-box!important;
+  gap:5px!important;
+  align-items:center!important;
+  justify-content:space-around!important;
+  border:1px solid rgba(202,172,245,.20)!important;
+  border-radius:25px!important;
+  background:linear-gradient(135deg,rgba(39,27,57,.91),rgba(17,12,29,.89))!important;
+  box-shadow:0 12px 34px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.065),0 0 24px rgba(132,75,220,.075)!important;
+  -webkit-backdrop-filter:blur(24px) saturate(1.5)!important;
+  backdrop-filter:blur(24px) saturate(1.5)!important;
+  isolation:isolate;
+}
+body.vn-community-space #vnCommunityBottomNav:before{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:-1;
+  background:linear-gradient(110deg,rgba(177,138,255,.065),transparent 48%,rgba(255,120,197,.035));
+}
+body.vn-community-space #vnCommunityBottomNav button{
+  position:relative!important;
+  min-width:0!important;
+  min-height:51px!important;
+  flex:1 1 0!important;
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:4px!important;
+  padding:4px 2px!important;
+  border:0!important;
+  border-radius:16px!important;
+  background:transparent!important;
+  color:#a99bbd!important;
+  font:650 10.5px/1.1 system-ui,-apple-system,sans-serif!important;
+  text-shadow:none!important;
+  box-shadow:none!important;
+  transition:color .18s ease,background .18s ease,transform .18s ease!important;
+}
+body.vn-community-space #vnCommunityBottomNav button span:first-child:not(.vncs-plus){
+  display:block!important;
+  font-size:22px!important;
+  line-height:1!important;
+  color:inherit!important;
+}
+body.vn-community-space #vnCommunityBottomNav button:active{
+  transform:scale(.95)!important;
+  background:rgba(177,138,255,.10)!important;
+}
+body.vn-community-space #vnCommunityBottomNav button:focus-visible{
+  outline:2px solid rgba(207,177,255,.8)!important;
+  outline-offset:2px!important;
+}
+body.vn-community-space #vnCommunityBottomNav button:nth-child(3){
+  flex:0 0 59px!important;
+  min-height:51px!important;
+  overflow:visible!important;
+}
+body.vn-community-space #vnCommunityBottomNav .vncs-plus{
+  width:51px!important;
+  height:51px!important;
+  flex:0 0 51px!important;
+  display:grid!important;
+  place-items:center!important;
+  margin-top:-17px!important;
+  border:1px solid rgba(244,225,255,.46)!important;
+  border-radius:19px!important;
+  background:linear-gradient(140deg,#d0b1ff 0%,#b18aff 55%,#d8a2ef 100%)!important;
+  color:#20142c!important;
+  font-size:31px!important;
+  line-height:1!important;
+  font-weight:450!important;
+  box-shadow:0 8px 22px rgba(177,138,255,.28),inset 0 1px 0 rgba(255,255,255,.48)!important;
+}
+body.vn-community-space #vnCommunityBottomNav button:nth-child(3):active .vncs-plus{
+  transform:scale(.95)!important;
+}
+@media(min-width:600px){
+  body.vn-community-space #vnCommunityBottomNav{left:50%!important;right:auto!important;width:min(640px,calc(100% - 24px))!important;transform:translateX(-50%)!important}
+}
+@media(max-width:380px){
+  body.vn-community-space #vnCommunityBottomNav{left:8px!important;right:8px!important;padding:7px 6px!important;border-radius:22px!important}
+  body.vn-community-space #vnCommunityBottomNav button{font-size:10px!important;gap:4px!important}
+  body.vn-community-space #vnCommunityBottomNav button:nth-child(3){flex-basis:54px!important}
+  body.vn-community-space #vnCommunityBottomNav .vncs-plus{width:47px!important;height:47px!important;flex-basis:47px!important;border-radius:17px!important;margin-top:-15px!important}
+}
+</style>
+</head><body class="vn-auth-booting">
 <style id="vibenest-opening-splash-style">
 #vn-opening-splash{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;overflow:hidden;background:#100b18;opacity:1;visibility:visible;transition:opacity .22s ease,visibility .22s ease;color:#fff}
 #vn-opening-splash.vn-splash-leaving{opacity:0;visibility:hidden;pointer-events:none}
