@@ -775,15 +775,15 @@ body.vn-community-space #vnCommunityBottomNav button:active .vncs-plus{transform
 @media(prefers-reduced-motion:reduce){#vnCommunityBottomNav:before,#vnCommunityBottomNav:after{animation:none!important}#vnCommunityBottomNav button,#vnCommunityBottomNav .vncs-plus{transition:none!important}}
 </style></head><body class="vn-auth-booting">
 <style id="vibenest-opening-splash-style">
-#vn-opening-splash{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;overflow:hidden;background:linear-gradient(180deg,#CFEAD9 0%,#E6F5EC 42%,#FFFFFF 100%);opacity:1;visibility:visible;transition:opacity .22s ease,visibility .22s ease;color:#0F291E}
+#vn-opening-splash{position:fixed;inset:0;z-index:2147483647;display:grid;place-items:center;overflow:hidden;background:#100b18;opacity:1;visibility:visible;transition:opacity .22s ease,visibility .22s ease;color:#fff}
 #vn-opening-splash.vn-splash-leaving{opacity:0;visibility:hidden;pointer-events:none}
 .vn-splash-stage{position:relative;width:min(100vw,560px);height:100dvh;min-height:440px;display:grid;place-items:center}
 .vn-splash-logo-wrap{position:relative;display:inline-block;transform:none;text-align:center}
-.vn-splash-wordmark{position:relative;font-size:clamp(38px,10vw,58px);font-weight:900;letter-spacing:-2.8px;line-height:1;white-space:nowrap;color:#0F291E;opacity:0;animation:vn-wordmark-pop .3s ease-out .04s forwards}
-.vn-splash-wordmark span{background:linear-gradient(110deg,#059669 0%,#10B981 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
-.vn-splash-tagline{position:absolute;top:calc(100% + 20px);left:50%;right:auto;width:max-content;max-width:calc(100vw - 36px);transform:translateX(-50%);text-align:center;color:#3B5949;font-size:clamp(10px,2.7vw,12px);font-weight:650;letter-spacing:clamp(1.2px,.35vw,2px);line-height:1.5;text-transform:uppercase;white-space:nowrap;opacity:0;animation:vn-tagline-in .2s ease .2s forwards}
+.vn-splash-wordmark{position:relative;font-size:clamp(38px,10vw,58px);font-weight:900;letter-spacing:-2.8px;line-height:1;white-space:nowrap;color:#fff;opacity:0;animation:vn-wordmark-pop .3s ease-out .04s forwards}
+.vn-splash-wordmark span{background:linear-gradient(110deg,#c7a0ff 0%,#9a70ee 55%,#8058d4 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.vn-splash-tagline{position:absolute;top:calc(100% + 20px);left:50%;right:auto;width:max-content;max-width:calc(100vw - 36px);transform:translateX(-50%);text-align:center;color:#b8a7cc;font-size:clamp(10px,2.7vw,12px);font-weight:650;letter-spacing:clamp(1.2px,.35vw,2px);line-height:1.5;text-transform:uppercase;white-space:nowrap;opacity:0;animation:vn-tagline-in .2s ease .2s forwards}
 @keyframes vn-wordmark-pop{from{opacity:0;transform:translateY(4px) scale(.98)}to{opacity:1;transform:translateY(0) scale(1)}}
-.vn-splash-tagline:before{content:"";display:block;width:34px;height:2px;margin:0 auto 10px;border-radius:2px;background:linear-gradient(90deg,#059669,#10B981);opacity:.9}
+.vn-splash-tagline:before{content:"";display:block;width:34px;height:2px;margin:0 auto 10px;border-radius:2px;background:linear-gradient(90deg,#c7a0ff,#8058d4);opacity:.9}
 @keyframes vn-tagline-in{to{opacity:.82}}
 @media(prefers-reduced-motion:reduce){.vn-splash-wordmark,.vn-splash-tagline{animation-duration:.01ms!important;animation-iteration-count:1!important}#vn-opening-splash{transition:none}}
 </style>
@@ -5286,490 +5286,224 @@ html body .public-profile-buttons button {
   box-shadow: inset 0 3px 6px #FFFFFF, inset 0 -4px 6px rgba(45, 106, 79, 0.2), 0 8px 20px rgba(123, 196, 157, 0.35) !important;
 }
 </style>
-<style id="vn-splash-systembar-chat-mint-fix-20261024">
-/* VibeNest: splash, Android WebView canvas, and direct-message Mint/White final pass */
-:root {
-  color-scheme: light !important;
-  --vn-mint: #CFEAD9;
-  --vn-mint-light: #E8F6EE;
-  --vn-white: #FFFFFF;
-  --vn-forest: #0F291E;
-  --vn-muted: #4A6B5D;
-  --vn-emerald: #059669;
-  --vn-jelly: linear-gradient(180deg, #F4FBF7 0%, #CFEAD9 55%, #9ED6B5 100%);
-  --vn-chat-glass: rgba(255, 255, 255, 0.84);
-}
-
-html,
-html body,
-html body.vn-auth-booting,
-html body.vn-auth-locked,
-html body.direct-chat-open,
-html body.room-chat-open {
-  min-height: 100dvh !important;
-  background-color: #CFEAD9 !important;
-  background-image: linear-gradient(180deg, #CFEAD9 0%, #E8F6EE 42%, #FFFFFF 100%) !important;
+<style id="vn-deep-mint-layout-and-chat-fix-20261024">
+/* Root cause fixes: page-state backgrounds, WebView gaps, feature-slide overlap, and chat surfaces. */
+:root { color-scheme: light !important; }
+html, html body, html body.vn-auth-booting, html body.vn-auth-locked,
+html body.direct-chat-open, html body.room-chat-open {
+  background: #CFEAD9 !important;
+  background-image: linear-gradient(180deg,#CFEAD9 0%,#E6F5EC 42%,#FFFFFF 100%) !important;
   background-attachment: fixed !important;
   color: #0F291E !important;
-  color-scheme: light !important;
+  min-height: 100dvh !important;
 }
-
-/* Make the page canvas transparent so a dark page wrapper cannot form a strip. */
-html body #root,
-html body main,
-html body .page,
-html body .page.active,
-html body #home,
-html body #communities,
-html body #chats,
-html body #profile,
-html body #community,
-html body .simple,
-html body .vn-community-page-content,
-html body .profile-page {
+html body #root, html body main, html body .app, html body .app-shell,
+html body #home, html body #communities, html body #chats, html body #profile,
+html body #notifications, html body #create, html body #community,
+html body .page, html body .page.active, html body .simple,
+html body .vn-community-page-content, html body .community-detail,
+html body .community-detail-main, html body .community-content,
+html body .community-page-content, html body .profile-page,
+html body #chatWindow, html body.direct-chat-open #chatWindow,
+html body.room-chat-open #chatWindow {
+  background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
   color: #0F291E !important;
 }
-
-/* The HTML splash itself must paint mint, rather than expose the old dark splash. */
-html body #vn-opening-splash {
-  background: linear-gradient(180deg, #CFEAD9 0%, #E6F5EC 42%, #FFFFFF 100%) !important;
+/* Some older selectors paint a pseudo-element over the body gradient. */
+html body::before, html body::after,
+html body #root::before, html body #root::after {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+/* Keep only one hero slide visible; overlapping animated slides caused doubled text/orbs. */
+html body #home #vnFeatureCarousel {
+  display: block !important;
+  position: relative !important;
+  min-height: 300px !important;
+  overflow: hidden !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+html body #home #vnFeatureCarousel > .vn-feature-slide {
+  display: none !important;
+  position: relative !important;
+  inset: auto !important;
+  width: 100% !important;
+  min-height: 270px !important;
+  margin: 0 !important;
+  padding: 28px 0 26px !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+  transform: none !important;
+  animation: none !important;
+  transition: none !important;
+  background: transparent !important;
+  background-image: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+html body #home #vnFeatureCarousel > .vn-feature-slide.is-active { display: block !important; }
+html body #home #vnFeatureCarousel .vn-feature-kicker { color: #2D6A4F !important; }
+html body #home #vnFeatureCarousel h1 { color: #0F291E !important; text-shadow: none !important; }
+html body #home #vnFeatureCarousel h1 em { color: #059669 !important; }
+html body #home #vnFeatureCarousel p { color: #3B5949 !important; }
+html body #home #vnFeatureCarousel .vn-feature-art {
+  background: radial-gradient(circle at 30% 28%,#FFFFFF 0%,#CFEAD9 52%,#7BC49D 100%) !important;
+  border: 2px solid #FFFFFF !important;
+  box-shadow: inset 0 6px 12px #FFFFFF,inset 0 -6px 12px rgba(45,106,79,.25),0 12px 26px rgba(123,196,157,.38) !important;
   color: #0F291E !important;
 }
-html body #vn-opening-splash .vn-splash-wordmark {
+html body #home #vnFeatureCarousel .vn-feature-dots { position: relative !important; }
+html body #home #vnFeatureCarousel .vn-feature-dots button { background: #B6DCC5 !important; border-color: #FFFFFF !important; }
+html body #home #vnFeatureCarousel .vn-feature-dots button.is-active { background: #059669 !important; }
+/* Community view: remove the dark underlay while keeping the community artwork/card intact. */
+html body #community,
+html body #community.page.active,
+html body #community .community-detail,
+html body #community .community-detail > *,
+html body #community .community-detail-main,
+html body #community .community-detail-content,
+html body #community .community-tabs,
+html body #community .community-panel,
+html body #community .community-panel.active,
+html body #community [data-community-panel="description"],
+html body #community [data-community-panel="posts"],
+html body #community [data-community-panel="chatrooms"],
+html body #community .community-description-card,
+html body #community .community-posts,
+html body #community .community-posts-wrap {
+  background-color: transparent !important;
+  background-image: none !important;
   color: #0F291E !important;
-  text-shadow: none !important;
 }
-html body #vn-opening-splash .vn-splash-wordmark span {
-  background: linear-gradient(110deg, #059669 0%, #10B981 100%) !important;
-  -webkit-background-clip: text !important;
-  background-clip: text !important;
-  color: transparent !important;
-  -webkit-text-fill-color: transparent !important;
+html body #community .community-tabs {
+  border-color: rgba(45,106,79,.22) !important;
+  background: rgba(255,255,255,.72) !important;
+  border: 1.5px solid #FFFFFF !important;
+  border-radius: 22px !important;
 }
-html body #vn-opening-splash .vn-splash-tagline {
+html body #community .community-tabs button,
+html body #community .community-tab {
   color: #3B5949 !important;
 }
-html body #vn-opening-splash .vn-splash-tagline:before {
-  background: linear-gradient(90deg, #059669, #10B981) !important;
+html body #community .community-tabs button.active,
+html body #community .community-tab.active {
+  background: linear-gradient(180deg,#F4FBF7 0%,#CFEAD9 55%,#9ED6B5 100%) !important;
+  color: #0F291E !important;
+  border: 1.5px solid #FFFFFF !important;
+  border-radius: 18px !important;
 }
-
-/* Ensure the home hero orb is mint even when an old carousel rule remains. */
-html body #home #vnFeatureCarousel .vn-feature-slide,
-html body #home #vnFeatureCarousel .vn-feature-slide.is-active {
-  background: transparent !important;
-  background-image: none !important;
-  border: 0 !important;
-  box-shadow: none !important;
-}
-html body #home #vnFeatureCarousel .vn-feature-art {
-  background: radial-gradient(circle at 30% 28%, #FFFFFF 0%, #CFEAD9 52%, #7BC49D 100%) !important;
-  border: 2px solid #FFFFFF !important;
-  box-shadow: inset 0 6px 12px #FFFFFF, inset 0 -6px 12px rgba(45,106,79,.25), 0 12px 26px rgba(123,196,157,.42) !important;
+html body #community .community-description-card,
+html body #community .about-community,
+html body #community .about-card {
+  background: rgba(255,255,255,.78) !important;
+  border: 1.5px solid #FFFFFF !important;
+  border-radius: 26px !important;
+  box-shadow: inset 0 3px 6px #FFFFFF,0 10px 24px rgba(15,41,30,.08) !important;
   color: #0F291E !important;
 }
-
-/* Direct chat should use the same page gradient and no dark viewport/card. */
-html body.direct-chat-open {
-  background: linear-gradient(180deg, #CFEAD9 0%, #E8F6EE 42%, #FFFFFF 100%) fixed !important;
-  color: #0F291E !important;
-}
-html body.direct-chat-open #chats,
-html body.direct-chat-open #chats > .simple,
-html body.direct-chat-open #chatWindow {
+html body #community .community-description-card *,
+html body #community .about-community *,
+html body #community .about-card * { color: #0F291E !important; }
+html body #community .community-description-card p,
+html body #community .about-community p,
+html body #community .about-card p { color: #3B5949 !important; }
+/* Chat background: the dark panel was inside the page, not only on body. */
+html body.direct-chat-open #chatWindow,
+html body.direct-chat-open #chatMessages,
+html body.direct-chat-open #chatMessages .chat-messages-inner,
+html body.direct-chat-open #chatMessages .messages-list,
+html body.direct-chat-open .chat-body,
+html body.direct-chat-open .chat-content,
+html body.direct-chat-open .chat-thread,
+html body.direct-chat-open #chatHeader,
+html body.direct-chat-open .chat-header {
   background: transparent !important;
   background-color: transparent !important;
   background-image: none !important;
   color: #0F291E !important;
 }
-html body.direct-chat-open #chatWindow {
-  position: fixed !important;
-  inset: 0 !important;
-  z-index: 100 !important;
-  display: flex !important;
-  flex-direction: column !important;
-  gap: 0 !important;
-  width: 100% !important;
-  max-width: none !important;
-  min-height: 0 !important;
-  height: auto !important;
-  margin: 0 !important;
-  padding: calc(10px + env(safe-area-inset-top, 0px)) 16px calc(12px + env(safe-area-inset-bottom, 0px)) !important;
-  overflow: hidden !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-}
-html body.direct-chat-open nav.bottom,
-html body.direct-chat-open #vnCommunityBottomNav {
-  display: none !important;
-}
-
-/* Calm header: genuine avatar, dark name, a separate glass search button. */
-html body.direct-chat-open #chatWindow #chatTitle {
-  display: flex !important;
-  position: relative !important;
-  flex: 0 0 auto !important;
-  align-items: center !important;
-  gap: 11px !important;
-  width: 100% !important;
-  min-height: 58px !important;
-  height: auto !important;
-  margin: 2px 0 10px !important;
-  padding: 0 54px 0 0 !important;
-  overflow: visible !important;
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
+html body.direct-chat-open #chatTitle,
+html body.direct-chat-open .chat-title-name,
+html body.direct-chat-open .chat-header *,
+html body.direct-chat-open #chatWindow svg {
   color: #0F291E !important;
-  font-size: 20px !important;
-  line-height: 1.2 !important;
 }
-html body.direct-chat-open #chatWindow #chatTitle .chat-title-avatar {
-  display: grid !important;
-  place-items: center !important;
-  flex: 0 0 46px !important;
-  width: 46px !important;
-  min-width: 46px !important;
-  height: 46px !important;
-  padding: 0 !important;
-  overflow: hidden !important;
-  border: 2px solid #FFFFFF !important;
-  border-radius: 50% !important;
-  background: radial-gradient(circle at 30% 25%, #FFFFFF, #CFEAD9 58%, #9ED6B5) !important;
-  color: #0F291E !important;
-  box-shadow: 0 5px 14px rgba(15,41,30,.10) !important;
-}
-html body.direct-chat-open #chatWindow #chatTitle .chat-title-avatar img {
-  width: 100% !important;
-  height: 100% !important;
-  object-fit: cover !important;
-  border-radius: inherit !important;
-}
-html body.direct-chat-open #chatWindow #chatTitle .chat-title-name {
-  display: block !important;
-  flex: 1 1 auto !important;
-  min-width: 0 !important;
-  max-width: 100% !important;
-  padding: 7px 0 !important;
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  color: #0F291E !important;
-  font-size: 19px !important;
-  font-weight: 800 !important;
-  text-align: left !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-}
-html body.direct-chat-open #chatWindow #chatTitle:before {
-  content: none !important;
-  display: none !important;
-}
-html body.direct-chat-open #chatWindow .chat-search-wrap {
-  z-index: 12 !important;
-  background: rgba(255,255,255,.84) !important;
+html body #chatMessages .chat-bubble,
+html body.direct-chat-open #chatMessages .chat-bubble {
+  background: rgba(255,255,255,.94) !important;
   border: 1.5px solid #FFFFFF !important;
-  border-radius: 999px !important;
-  box-shadow: 0 6px 18px rgba(15,41,30,.08) !important;
-  backdrop-filter: blur(20px) saturate(160%) !important;
-  -webkit-backdrop-filter: blur(20px) saturate(160%) !important;
-}
-html body.direct-chat-open #chatWindow .chat-search-wrap span,
-html body.direct-chat-open #chatWindow .chat-search-wrap svg {
   color: #0F291E !important;
-  stroke: #0F291E !important;
+  border-radius: 22px 22px 22px 7px !important;
+  box-shadow: inset 0 2px 4px rgba(255,255,255,.95),0 8px 18px rgba(15,41,30,.07) !important;
 }
-html body.direct-chat-open #chatWindow #chatMessageSearch {
+html body #chatMessages .chat-bubble.mine,
+html body.direct-chat-open #chatMessages .chat-bubble.mine {
+  background: linear-gradient(145deg,#F8FCF9 0%,#DDF1E4 55%,#CFEAD9 100%) !important;
+  border-radius: 22px 22px 7px 22px !important;
   color: #0F291E !important;
-  background: rgba(255,255,255,.78) !important;
-  border: 1px solid rgba(255,255,255,.95) !important;
 }
-html body.direct-chat-open #chatWindow #chatMessageSearch::placeholder,
-html body.direct-chat-open #chatWindow #chatMessageInput::placeholder {
-  color: #6A8577 !important;
-  opacity: 1 !important;
-}
-html body.direct-chat-open #chatWindow > button.join {
-  align-self: flex-start !important;
-  flex: 0 0 auto !important;
-  margin: 0 0 7px !important;
-  padding: 7px 12px !important;
-  min-height: 34px !important;
-  border: 1px solid rgba(45,106,79,.12) !important;
-  border-radius: 999px !important;
-  background: rgba(255,255,255,.65) !important;
-  color: #2D6A4F !important;
-  box-shadow: none !important;
-}
-
-/* Message list remains transparent and scrolls independently of the composer. */
-html body.direct-chat-open #chatWindow #chatMessages {
-  display: flex !important;
-  flex: 1 1 auto !important;
-  flex-direction: column !important;
-  min-height: 0 !important;
-  height: auto !important;
-  max-height: none !important;
-  gap: 10px !important;
-  padding: 10px 2px 16px !important;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
-  overscroll-behavior: contain !important;
-  background: transparent !important;
-  scrollbar-color: rgba(45,106,79,.24) transparent !important;
-}
-html body.direct-chat-open #chatWindow #chatMessages .chat-bubble {
-  flex: 0 0 auto !important;
-  align-self: flex-start !important;
-  max-width: min(82%, 340px) !important;
-  padding: 12px 15px 9px !important;
-  border: 1.25px solid rgba(255,255,255,.98) !important;
-  border-radius: 21px 21px 21px 7px !important;
-  background: rgba(255,255,255,.91) !important;
-  color: #0F291E !important;
-  font-size: 15.5px !important;
-  font-weight: 550 !important;
-  line-height: 1.4 !important;
-  overflow-wrap: anywhere !important;
-  box-shadow: inset 0 2px 4px rgba(255,255,255,.95), 0 7px 18px rgba(15,41,30,.07) !important;
-}
-html body.direct-chat-open #chatWindow #chatMessages .chat-bubble.mine {
-  align-self: flex-end !important;
-  border-radius: 21px 21px 7px 21px !important;
-  border-color: rgba(255,255,255,.98) !important;
-  background: linear-gradient(145deg, #EAF8F0 0%, #CFEAD9 62%, #B5E1C6 100%) !important;
-  color: #0F291E !important;
-  box-shadow: inset 0 2px 5px rgba(255,255,255,.96), 0 7px 18px rgba(45,106,79,.12) !important;
-}
-html body.direct-chat-open #chatWindow #chatMessages .chat-bubble .muted,
-html body.direct-chat-open #chatWindow #chatMessages .chat-bubble .chat-message-time,
-html body.direct-chat-open #chatWindow #chatMessages .chat-bubble .receipt {
-  color: #587364 !important;
-  opacity: 1 !important;
-}
-html body.direct-chat-open #chatWindow #chatMessages .chat-bubble .chat-message-time {
-  display: block !important;
-  margin-top: 7px !important;
-  font-size: 10.5px !important;
-  line-height: 1.2 !important;
-  text-align: right !important;
-}
-html body.direct-chat-open #chatWindow #chatMessages .chat-bubble .post-media {
-  display: block !important;
-  max-width: 100% !important;
-  border-radius: 14px !important;
-  margin-top: 8px !important;
-}
-html body.direct-chat-open #chatWindow #chatMessages .chat-quoted {
-  display: -webkit-box !important;
-  -webkit-box-orient: vertical !important;
-  -webkit-line-clamp: 2 !important;
-  max-width: 100% !important;
-  margin: 0 0 8px !important;
-  padding: 8px 10px !important;
-  overflow: hidden !important;
-  overflow-wrap: anywhere !important;
-  border: 1px solid rgba(45,106,79,.12) !important;
+html body #chatMessages .chat-bubble .muted,
+html body #chatMessages .chat-bubble .receipt { color: #4A6B5D !important; opacity: 1 !important; }
+/* Reply previews are compact glass quote chips, not nested dark rectangles. */
+html body #chatMessages .chat-bubble .chat-quoted,
+html body #chatMessages .chat-bubble .reply-preview,
+html body #chatMessages .chat-bubble .quoted-message,
+html body #chatMessages .chat-bubble .vn-reply-preview,
+html body #chatReplyPreview,
+html body .chat-quoted,
+html body .vn-reply-banner {
+  background: rgba(255,255,255,.64) !important;
+  border: 1px solid rgba(255,255,255,.98) !important;
   border-left: 3px solid #059669 !important;
+  color: #3B5949 !important;
   border-radius: 12px !important;
-  background: rgba(255,255,255,.62) !important;
-  color: #355B47 !important;
-  font-size: 11.5px !important;
-  font-weight: 650 !important;
-  line-height: 1.35 !important;
   box-shadow: none !important;
 }
-html body.direct-chat-open #chatWindow #chatMessages .chat-bubble.mine .chat-quoted {
-  background: rgba(255,255,255,.55) !important;
-  color: #355B47 !important;
-}
-
-/* A tidy reply-preview strip: label, one-line snippet, and a clear close control. */
-html body.direct-chat-open #chatWindow #chatReplyPreview.vn-reply-banner,
-html body.direct-chat-open #chatWindow .vn-reply-banner {
-  display: grid !important;
-  grid-template-columns: minmax(0,1fr) 32px !important;
-  grid-template-rows: auto auto !important;
-  align-items: center !important;
-  gap: 2px 10px !important;
-  flex: 0 0 auto !important;
-  margin: 0 0 8px !important;
-  padding: 8px 10px !important;
-  border: 1px solid rgba(255,255,255,.96) !important;
-  border-left: 4px solid #059669 !important;
-  border-radius: 15px !important;
-  background: rgba(255,255,255,.82) !important;
-  color: #0F291E !important;
-  box-shadow: 0 5px 14px rgba(15,41,30,.05) !important;
-}
-html body.direct-chat-open #chatWindow .vn-reply-banner:before {
-  content: "REPLYING TO" !important;
-  grid-column: 1 !important;
-  grid-row: 1 !important;
-  color: #059669 !important;
-  font-size: 9px !important;
-  font-weight: 850 !important;
-  letter-spacing: .08em !important;
-  line-height: 1.2 !important;
-}
-html body.direct-chat-open #chatWindow .vn-reply-banner span {
-  grid-column: 1 !important;
-  grid-row: 2 !important;
-  min-width: 0 !important;
-  max-width: 100% !important;
-  overflow: hidden !important;
-  text-overflow: ellipsis !important;
-  white-space: nowrap !important;
-  color: #355B47 !important;
-  font-size: 12px !important;
-  font-weight: 650 !important;
-}
-html body.direct-chat-open #chatWindow .vn-reply-banner button {
-  grid-column: 2 !important;
-  grid-row: 1 / span 2 !important;
-  display: grid !important;
-  place-items: center !important;
-  width: 30px !important;
-  min-width: 30px !important;
-  height: 30px !important;
-  padding: 0 !important;
-  border: 1px solid rgba(45,106,79,.14) !important;
-  border-radius: 50% !important;
-  background: rgba(207,234,217,.65) !important;
-  color: #0F291E !important;
-  font-size: 19px !important;
-  box-shadow: none !important;
-}
-
-/* Composer: one compact white-glass pill, round mint attach/send controls. */
-html body.direct-chat-open #chatWindow .chat-compose {
-  display: flex !important;
-  flex: 0 0 auto !important;
-  align-items: center !important;
-  gap: 8px !important;
-  width: 100% !important;
-  min-width: 0 !important;
-  margin: 8px 0 0 !important;
-  padding: 6px 7px !important;
-  border: 1.5px solid #FFFFFF !important;
-  border-radius: 999px !important;
+html body.direct-chat-open .chat-compose {
   background: rgba(255,255,255,.86) !important;
-  background-image: none !important;
-  box-shadow: 0 8px 22px rgba(15,41,30,.09), inset 0 2px 4px #FFFFFF !important;
-  backdrop-filter: blur(22px) saturate(170%) !important;
-  -webkit-backdrop-filter: blur(22px) saturate(170%) !important;
-}
-html body.direct-chat-open #chatWindow .chat-compose > label.join {
-  display: grid !important;
-  place-items: center !important;
-  flex: 0 0 42px !important;
-  width: 42px !important;
-  min-width: 42px !important;
-  height: 42px !important;
-  min-height: 42px !important;
-  padding: 0 !important;
   border: 1.5px solid #FFFFFF !important;
-  border-radius: 50% !important;
-  background: var(--vn-jelly) !important;
-  color: #0F291E !important;
-  font-size: 23px !important;
-  line-height: 1 !important;
-  box-shadow: inset 0 2px 4px #FFFFFF, 0 4px 10px rgba(123,196,157,.22) !important;
-}
-html body.direct-chat-open #chatWindow .chat-compose #chatMessageInput {
-  flex: 1 1 0 !important;
-  width: 0 !important;
-  min-width: 0 !important;
-  height: 44px !important;
-  min-height: 44px !important;
-  margin: 0 !important;
-  padding: 0 10px !important;
-  border: 0 !important;
-  outline: 0 !important;
   border-radius: 999px !important;
+  box-shadow: 0 10px 28px rgba(15,41,30,.11) !important;
+  backdrop-filter: blur(24px) saturate(160%) !important;
+}
+html body.direct-chat-open .chat-compose .field,
+html body.direct-chat-open #chatMessageInput {
   background: transparent !important;
   color: #0F291E !important;
-  font-size: 15px !important;
+  border: 0 !important;
   box-shadow: none !important;
 }
-html body.direct-chat-open #chatWindow .chat-compose > button.join {
-  position: relative !important;
-  display: grid !important;
-  place-items: center !important;
-  flex: 0 0 44px !important;
-  width: 44px !important;
-  min-width: 44px !important;
-  height: 44px !important;
-  min-height: 44px !important;
-  margin: 0 !important;
-  padding: 0 !important;
+html body.direct-chat-open .chat-compose .field::placeholder,
+html body.direct-chat-open #chatMessageInput::placeholder { color: #688777 !important; opacity: 1 !important; }
+html body.direct-chat-open .chat-compose button.join,
+html body.direct-chat-open .chat-compose label.join {
+  background: linear-gradient(180deg,#F5FBF7 0%,#CFEAD9 55%,#9ED6B5 100%) !important;
   border: 1.5px solid #FFFFFF !important;
-  border-radius: 50% !important;
-  background: var(--vn-jelly) !important;
   color: #0F291E !important;
-  font-size: 0 !important;
-  box-shadow: inset 0 2px 4px #FFFFFF, 0 5px 12px rgba(123,196,157,.28) !important;
+  box-shadow: inset 0 3px 6px #FFFFFF,0 5px 14px rgba(123,196,157,.28) !important;
 }
-html body.direct-chat-open #chatWindow .chat-compose > button.join:after {
-  content: "➤" !important;
-  display: block !important;
-  color: #0F291E !important;
-  font-family: system-ui, sans-serif !important;
-  font-size: 20px !important;
-  line-height: 1 !important;
-  transform: translate(-1px,0) !important;
-}
-
-/* Message action sheet, including Reply/Copy/Search, now matches the mint theme. */
-html body .vn-message-action-backdrop {
-  background: rgba(15,41,30,.22) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-}
-html body .vn-message-action-sheet {
-  width: min(100%, 480px) !important;
-  padding: 12px !important;
+/* Keep dock surfaces light, with no purple tint bleeding through. */
+html body nav.bottom,
+html body #vnCommunityBottomNav {
+  background: rgba(255,255,255,.9) !important;
   border: 1.5px solid #FFFFFF !important;
-  border-radius: 26px 26px 20px 20px !important;
-  background: linear-gradient(180deg, #F8FCF9 0%, #CFEAD9 100%) !important;
-  box-shadow: 0 20px 55px rgba(15,41,30,.18) !important;
+  box-shadow: 0 12px 32px rgba(15,41,30,.1) !important;
+  backdrop-filter: blur(28px) saturate(180%) !important;
 }
-html body .vn-message-action-sheet .vn-sheet-grip {
-  background: #8FBA9F !important;
-}
-html body .vn-message-action-sheet button {
-  display: flex !important;
-  align-items: center !important;
-  gap: 12px !important;
-  width: 100% !important;
-  min-height: 48px !important;
-  padding: 12px 14px !important;
-  border: 1px solid rgba(255,255,255,.8) !important;
-  border-radius: 15px !important;
-  background: rgba(255,255,255,.7) !important;
+html body nav.bottom button,
+html body #vnCommunityBottomNav button { color: #0F291E !important; }
+html body nav.bottom button.active,
+html body #vnCommunityBottomNav button.active,
+html body #vnCommunityBottomNav button.is-active {
+  background: linear-gradient(180deg,#F4FBF7 0%,#CFEAD9 55%,#9ED6B5 100%) !important;
   color: #0F291E !important;
-  font-weight: 700 !important;
 }
-html body .vn-message-action-sheet button:active {
-  background: linear-gradient(180deg, #FFFFFF, #CFEAD9) !important;
-}
-html body .vn-message-action-sheet button.danger {
-  color: #A93648 !important;
-}
-
-/* Chat date separators are light pills instead of dark purple chips. */
-html body.direct-chat-open #chatWindow #chatMessages .chat-date-separator span {
-  border: 1px solid #FFFFFF !important;
-  border-radius: 999px !important;
-  background: rgba(255,255,255,.8) !important;
-  color: #4A6B5D !important;
-  padding: 6px 12px !important;
-  font-size: 11px !important;
-  font-weight: 750 !important;
-}
+/* Safe-area fill uses the same theme, never the WebView's former near-black. */
+html body { padding-bottom: calc(96px + env(safe-area-inset-bottom,0px)) !important; }
 </style>
 </body>
 </html>
