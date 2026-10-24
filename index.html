@@ -6040,3 +6040,578 @@ html body #publicProfileModal .public-profile-buttons #publicProfileBlockButton 
   obs.observe(document.body, { childList: true, subtree: true });
 })();
 </script>
+
+<style id="vn-community-space-complete-overhaul">
+/* ==========================================================================
+   SINGLE COMMUNITY SPACE: MINT & WHITE 3D BUBBLES + CREATION & DOCK OVERHAUL
+   ========================================================================== */
+
+/* 1. KILL BLACK BACKGROUND INSIDE COMMUNITY VIEW */
+html body.vn-community-space,
+html body.vn-community-space #community,
+html body.vn-community-space #community.page.active,
+html body #community.page.active,
+html body #community .community-detail,
+html body #community [data-community-panel] {
+  background-color: #CFEAD9 !important;
+  background-image: linear-gradient(180deg, #CFEAD9 0%, #E8F6EE 42%, #FFFFFF 100%) !important;
+  background-attachment: fixed !important;
+  color: #0F291E !important;
+}
+
+/* 2. FIX "ABOUT THIS COMMUNITY" CARD & "DESIGN YOUR DESCRIPTION" MODAL + SUBPARTS */
+html body #community .community-description-card,
+html body #community [data-community-panel="description"] .community-description-card {
+  background: linear-gradient(135deg, rgba(255,255,255,0.92), rgba(207,234,217,0.55)) !important;
+  border: 1.5px solid #FFFFFF !important;
+  border-radius: 28px !important;
+  box-shadow: inset 0 3px 6px #FFFFFF, 0 12px 28px rgba(15, 41, 30, 0.08) !important;
+  color: #0F291E !important;
+  padding: 20px !important;
+}
+/* Sub-theme variants for About card when user picks Glass, Rose, Ocean, or Minimal */
+html body #community .community-description-card[data-style="rose"],
+html body #community .community-description-card.style-rose {
+  background: linear-gradient(135deg, rgba(255,245,248,0.94), rgba(252,228,236,0.75)) !important;
+}
+html body #community .community-description-card[data-style="ocean"],
+html body #community .community-description-card.style-ocean {
+  background: linear-gradient(135deg, rgba(240,250,255,0.94), rgba(207,238,250,0.75)) !important;
+}
+html body #community .community-description-card[data-style="minimal"],
+html body #community .community-description-card.style-minimal {
+  background: rgba(255, 255, 255, 0.96) !important;
+}
+html body #community .community-description-card *,
+html body #community [data-community-panel="description"] * {
+  color: #0F291E !important;
+  opacity: 1 !important;
+}
+html body #community .community-description-card .community-hub-kicker {
+  color: #2D6A4F !important;
+}
+
+/* Design Your Description Modal & 4 Theme Sub-Options */
+html body [id*="Description" i][class*="modal" i],
+html body [id*="Design" i][class*="modal" i],
+html body .community-description-modal,
+html body #communityDescriptionModal,
+html body div[role="dialog"][aria-label*="description" i],
+html body div[role="dialog"]:has(textarea) {
+  background: rgba(15, 41, 30, 0.32) !important;
+  backdrop-filter: blur(16px) !important;
+}
+html body .community-description-modal > div,
+html body #communityDescriptionModal > div,
+html body div[role="dialog"]:has(textarea) > div {
+  background: linear-gradient(180deg, #E8F6EE 0%, #FFFFFF 100%) !important;
+  border: 2px solid #FFFFFF !important;
+  border-radius: 30px !important;
+  box-shadow: 0 20px 50px rgba(15, 41, 30, 0.18) !important;
+  color: #0F291E !important;
+}
+html body div[role="dialog"]:has(textarea) h2,
+html body div[role="dialog"]:has(textarea) h3,
+html body div[role="dialog"]:has(textarea) p,
+html body div[role="dialog"]:has(textarea) label,
+html body div[role="dialog"]:has(textarea) span,
+html body div[role="dialog"]:has(textarea) b {
+  color: #0F291E !important;
+}
+html body div[role="dialog"]:has(textarea) textarea {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1.5px solid #A7DFBE !important;
+  border-radius: 20px !important;
+  color: #0F291E !important;
+  box-shadow: inset 0 2px 6px rgba(15, 41, 30, 0.06) !important;
+}
+/* The 4 style radio cards (Glass, Rose dusk, Ocean night, Minimal) */
+html body div[role="dialog"]:has(textarea) label:has(input[type="radio"]) {
+  background: linear-gradient(135deg, #FFFFFF 0%, #E8F6EE 100%) !important;
+  border: 1.5px solid #CFEAD9 !important;
+  border-radius: 18px !important;
+  padding: 12px 14px !important;
+  color: #0F291E !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 12px rgba(15, 41, 30, 0.05) !important;
+}
+html body div[role="dialog"]:has(textarea) label:has(input[type="radio"]:checked) {
+  background: linear-gradient(180deg, #F4FBF7 0%, #CFEAD9 100%) !important;
+  border: 2px solid #059669 !important;
+  box-shadow: 0 6px 16px rgba(5, 150, 105, 0.18) !important;
+}
+
+/* 3. FIX BLACK POST CARDS IN COMMUNITY POSTS TAB */
+html body #community #communityPosts .post,
+html body #community .detail-posts .post,
+html body #community article.post {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(207, 234, 217, 0.55)) !important;
+  border: 1.5px solid #FFFFFF !important;
+  border-radius: 26px !important;
+  box-shadow: inset 0 3px 6px #FFFFFF, 0 10px 24px rgba(15, 41, 30, 0.08) !important;
+  color: #0F291E !important;
+}
+html body #community #communityPosts .post p,
+html body #community #communityPosts .post b {
+  color: #0F291E !important;
+}
+html body #community #communityPosts .post .muted {
+  color: #4A6B5D !important;
+}
+html body #community #communityPosts .post .actions {
+  border-top: 1px solid rgba(15, 41, 30, 0.08) !important;
+}
+html body #community #communityPosts .post .actions button {
+  background: linear-gradient(180deg, #FFFFFF 0%, #E8F6EE 100%) !important;
+  border: 1px solid #FFFFFF !important;
+  border-radius: 999px !important;
+  color: #0F291E !important;
+  padding: 8px 14px !important;
+  box-shadow: 0 4px 10px rgba(15, 41, 30, 0.06) !important;
+}
+
+/* 4. FIX CHATROOMS SECTION ("TALK TOGETHER" & ROOM CARDS) */
+html body #community .room-hub,
+html body #community [data-community-panel="chatrooms"] .room-hub {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(207, 234, 217, 0.5)) !important;
+  border: 1.5px solid #FFFFFF !important;
+  border-radius: 28px !important;
+  padding: 20px !important;
+  box-shadow: inset 0 3px 6px #FFFFFF, 0 12px 28px rgba(15, 41, 30, 0.08) !important;
+  color: #0F291E !important;
+}
+html body #community .room-hub-heading {
+  border-bottom: 1px solid rgba(15, 41, 30, 0.08) !important;
+  padding-bottom: 14px !important;
+}
+html body #community .room-hub-heading h2 { color: #0F291E !important; font-size: 20px !important; }
+html body #community .room-hub-heading p { color: #3B5949 !important; }
+html body #community .room-hub-heading .community-hub-kicker { color: #059669 !important; }
+html body #community .room-card {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1.5px solid #FFFFFF !important;
+  border-radius: 20px !important;
+  padding: 14px !important;
+  margin-top: 10px !important;
+  box-shadow: 0 6px 18px rgba(15, 41, 30, 0.06) !important;
+  color: #0F291E !important;
+}
+html body #community .room-card-icon {
+  background: linear-gradient(145deg, #FFFFFF, #CFEAD9) !important;
+  border: 1.5px solid #FFFFFF !important;
+  color: #0F291E !important;
+  border-radius: 16px !important;
+}
+html body #community .room-empty {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 1.5px dashed #84C7A3 !important;
+  border-radius: 22px !important;
+  color: #2D6A4F !important;
+  padding: 24px 16px !important;
+  font-weight: 600 !important;
+}
+
+/* 5. TABBED CREATION STUDIO (BLOG, WIKI, POLL, IMAGE) */
+html body #community #communityComposer.vn-post-composer {
+  background: linear-gradient(180deg, #F4FBF7 0%, #FFFFFF 100%) !important;
+  border: 2px solid #FFFFFF !important;
+  border-radius: 30px !important;
+  box-shadow: 0 18px 45px rgba(15, 41, 30, 0.14) !important;
+  padding: 20px !important;
+}
+html body #community #communityComposer .vn-composer-head {
+  background: transparent !important;
+}
+html body #community #communityComposer .vn-composer-icon {
+  background: radial-gradient(circle at 30% 25%, #FFFFFF 0%, #CFEAD9 60%, #84C7A3 100%) !important;
+  color: #0F291E !important;
+  border: 1.5px solid #FFFFFF !important;
+}
+.vn-creation-type-switcher {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  margin: 0 0 16px;
+  padding: 6px;
+  background: rgba(207, 234, 217, 0.45);
+  border-radius: 20px;
+  border: 1.5px solid #FFFFFF;
+}
+.vn-creation-type-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  padding: 10px 6px;
+  border: 0;
+  border-radius: 15px;
+  background: transparent;
+  color: #3B5949;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.vn-creation-type-btn span:first-child { font-size: 18px; }
+.vn-creation-type-btn.active {
+  background: linear-gradient(180deg, #FFFFFF 0%, #CFEAD9 100%);
+  color: #0F291E;
+  border: 1px solid #FFFFFF;
+  box-shadow: 0 4px 12px rgba(15, 41, 30, 0.1);
+}
+html body #community #communityComposer .vn-composer-columns {
+  display: block !important;
+}
+html body #community #communityComposer .vn-composer-option {
+  display: none !important;
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1.5px solid #CFEAD9 !important;
+  border-radius: 22px !important;
+  padding: 16px !important;
+}
+html body #community #communityComposer .vn-composer-option.active-tab {
+  display: flex !important;
+}
+
+/* 6. FLOATING "+" QUICK-CREATE POPUP MENU ABOVE COMMUNITY DOCK */
+#vnPlusQuickMenu {
+  position: fixed;
+  left: 50%;
+  bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%) scale(0.92) translateY(12px);
+  width: min(92vw, 350px);
+  padding: 14px;
+  border-radius: 28px;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 18px 45px rgba(15, 41, 30, 0.18), inset 0 2px 5px #FFFFFF;
+  z-index: 9999;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.2s ease, transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+#vnPlusQuickMenu.open {
+  display: block;
+  opacity: 1;
+  transform: translateX(-50%) scale(1) translateY(0);
+}
+.vn-quick-menu-title {
+  font-size: 11px;
+  font-weight: 850;
+  letter-spacing: 1.4px;
+  color: #2D6A4F;
+  text-align: center;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+.vn-quick-menu-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 9px;
+}
+.vn-quick-menu-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 20px;
+  border: 1.5px solid #FFFFFF;
+  background: linear-gradient(135deg, #F4FBF7 0%, #CFEAD9 100%);
+  color: #0F291E;
+  font-weight: 800;
+  font-size: 13px;
+  box-shadow: inset 0 2px 4px #FFFFFF, 0 6px 14px rgba(15, 41, 30, 0.08);
+  cursor: pointer;
+}
+.vn-quick-menu-btn i {
+  font-style: normal;
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  background: #FFFFFF;
+  display: grid;
+  place-items: center;
+  font-size: 17px;
+  box-shadow: 0 2px 6px rgba(15, 41, 30, 0.08);
+}
+
+/* 7. IN-COMMUNITY MEMBER PROFILE SHEET ("Me" Tab in Community) */
+#vnCommunityMeModal {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  background: rgba(15, 41, 30, 0.32);
+  backdrop-filter: blur(14px);
+  display: none;
+  align-items: flex-end;
+  justify-content: center;
+}
+#vnCommunityMeModal.open { display: flex; }
+.vn-comm-me-sheet {
+  width: min(100vw, 520px);
+  max-height: 86dvh;
+  overflow-y: auto;
+  background: linear-gradient(180deg, #CFEAD9 0%, #E8F6EE 40%, #FFFFFF 100%);
+  border-radius: 32px 32px 0 0;
+  border: 2px solid #FFFFFF;
+  padding: 22px 18px calc(28px + env(safe-area-inset-bottom, 0px));
+  box-shadow: 0 -16px 48px rgba(15, 41, 30, 0.18);
+  color: #0F291E;
+}
+.vn-comm-me-card {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1.5px solid #FFFFFF;
+  border-radius: 26px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: inset 0 2px 5px #FFFFFF, 0 10px 24px rgba(15, 41, 30, 0.07);
+  margin-bottom: 16px;
+}
+</style>
+
+<script id="vn-community-space-interactive-overhaul">
+(function(){
+  // 1. Upgrade Community Composer into a 4-Tab Creation Studio (Blog, Wiki, Poll, Image)
+  function setupTabbedComposer() {
+    const composer = document.getElementById('communityComposer');
+    if (!composer || composer.dataset.tabbedReady === '1') return;
+    const cols = composer.querySelector('.vn-composer-columns');
+    if (!cols) return;
+    composer.dataset.tabbedReady = '1';
+
+    const options = [...cols.querySelectorAll('.vn-composer-option')];
+    if (options[0]) options[0].dataset.tabKind = 'blog';
+    if (options[1]) options[1].dataset.tabKind = 'poll';
+    if (options[2]) options[2].dataset.tabKind = 'image';
+
+    // Create Wiki option panel
+    const wikiPanel = document.createElement('section');
+    wikiPanel.className = 'vn-composer-option';
+    wikiPanel.dataset.tabKind = 'wiki';
+    wikiPanel.innerHTML = `
+      <div class="vn-composer-option-head">
+        <span class="vn-composer-icon">📖</span>
+        <div><h4>Wiki Entry</h4><p>Create a structured guide or lore page for this community</p></div>
+      </div>
+      <input id="communityWikiTitle" class="field" maxlength="120" placeholder="Wiki entry title (e.g. Character Guide, Rules)" oninput="syncWikiToPost()">
+      <textarea id="communityWikiBody" class="field" maxlength="4500" rows="5" placeholder="Write your wiki content here..." oninput="syncWikiToPost()"></textarea>
+    `;
+    cols.appendChild(wikiPanel);
+
+    window.syncWikiToPost = function() {
+      const title = document.getElementById('communityWikiTitle')?.value.trim() || '';
+      const body = document.getElementById('communityWikiBody')?.value.trim() || '';
+      const postText = document.getElementById('communityPostText');
+      if (postText) {
+        postText.value = title ? `📖 [WIKI: ${title}]\n\n${body}` : body;
+      }
+    };
+
+    // Insert 4-button switcher bar
+    const switcher = document.createElement('div');
+    switcher.className = 'vn-creation-type-switcher';
+    switcher.innerHTML = `
+      <button type="button" class="vn-creation-type-btn active" data-target="blog"><span>📝</span><span>Blog</span></button>
+      <button type="button" class="vn-creation-type-btn" data-target="wiki"><span>📖</span><span>Wiki</span></button>
+      <button type="button" class="vn-creation-type-btn" data-target="poll"><span>📊</span><span>Poll</span></button>
+      <button type="button" class="vn-creation-type-btn" data-target="image"><span>🖼️</span><span>Image</span></button>
+    `;
+    cols.parentNode.insertBefore(switcher, cols);
+
+    window.vnSwitchCreationTab = function(kind) {
+      switcher.querySelectorAll('.vn-creation-type-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.target === kind);
+      });
+      cols.querySelectorAll('.vn-composer-option').forEach(opt => {
+        opt.classList.toggle('active-tab', opt.dataset.tabKind === kind);
+      });
+      const headTitle = composer.querySelector('.vn-composer-head h4, .vn-composer-option.active-tab h4');
+      if (kind === 'blog' && options[0]) {
+        const h4 = options[0].querySelector('h4');
+        if (h4) h4.textContent = 'Blog Post';
+      }
+    };
+
+    switcher.querySelectorAll('.vn-creation-type-btn').forEach(btn => {
+      btn.addEventListener('click', () => window.vnSwitchCreationTab(btn.dataset.target));
+    });
+
+    window.vnSwitchCreationTab('blog');
+  }
+
+  // 2. Create Floating '+' Quick-Create Popover Menu
+  function ensureQuickMenu() {
+    let menu = document.getElementById('vnPlusQuickMenu');
+    if (menu) return menu;
+    menu = document.createElement('div');
+    menu.id = 'vnPlusQuickMenu';
+    menu.innerHTML = `
+      <div class="vn-quick-menu-title">✦ Create in Community</div>
+      <div class="vn-quick-menu-grid">
+        <button type="button" class="vn-quick-menu-btn" data-create="blog"><i>📝</i><span>Blog</span></button>
+        <button type="button" class="vn-quick-menu-btn" data-create="poll"><i>📊</i><span>Poll</span></button>
+        <button type="button" class="vn-quick-menu-btn" data-create="image"><i>🖼️</i><span>Image</span></button>
+        <button type="button" class="vn-quick-menu-btn" data-create="chatroom"><i>💬</i><span>Chatroom</span></button>
+      </div>
+    `;
+    document.body.appendChild(menu);
+
+    menu.querySelectorAll('.vn-quick-menu-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const kind = btn.dataset.create;
+        menu.classList.remove('open');
+        if (kind === 'chatroom') {
+          window.vnSwitchCommunityTab('chatrooms');
+          if (typeof createCommunityRoom === 'function') createCommunityRoom();
+        } else {
+          window.vnSwitchCommunityTab('posts');
+          setupTabbedComposer();
+          const box = document.getElementById('communityComposer');
+          if (box && box.style.display !== 'block' && typeof toggleCommunityComposer === 'function') {
+            toggleCommunityComposer();
+          } else if (box) {
+            box.style.display = 'block';
+          }
+          if (typeof window.vnSwitchCreationTab === 'function') {
+            window.vnSwitchCreationTab(kind);
+          }
+          box?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!menu.contains(e.target) && !e.target.closest('#vnCommunityBottomNav')) {
+        menu.classList.remove('open');
+      }
+    });
+    return menu;
+  }
+
+  // Helper to switch between About / Posts / Chatrooms tabs inside Community
+  window.vnSwitchCommunityTab = function(tabName) {
+    const tabBtn = document.querySelector(`#community [data-community-tab="${tabName}"], #community button[onclick*="${tabName}"]`);
+    if (tabBtn) {
+      tabBtn.click();
+    } else {
+      const buttons = [...document.querySelectorAll('#community .community-section-tabs button, #community [role="tablist"] button')];
+      const match = buttons.find(b => b.textContent.trim().toLowerCase().includes(tabName));
+      if (match) match.click();
+    }
+  };
+
+  // 3. Dedicated In-Community Member Profile ("Me" Tab)
+  function openCommunityMemberProfile() {
+    let modal = document.getElementById('vnCommunityMeModal');
+    if (!modal) {
+      modal = document.createElement('div');
+      modal.id = 'vnCommunityMeModal';
+      modal.innerHTML = `<div class="vn-comm-me-sheet" id="vnCommMeSheetContent"></div>`;
+      modal.addEventListener('click', (e) => { if (e.target === modal) modal.classList.remove('open'); });
+      document.body.appendChild(modal);
+    }
+    const c = typeof activeCommunity !== 'undefined' ? activeCommunity : null;
+    const p = typeof myProfile !== 'undefined' && myProfile ? myProfile : {};
+    const name = p.display_name || p.username || 'Community Member';
+    const handle = p.username ? '@' + p.username : '@member';
+    const avatar = p.avatar_url ? `<img src="${p.avatar_url}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">` : '✦';
+    const commName = c?.name || 'Community';
+    const myCommPosts = (typeof onlinePosts !== 'undefined' && currentUser && c?.id)
+      ? onlinePosts.filter(post => String(post.community_id) === String(c.id) && post.author_id === currentUser.id)
+      : [];
+
+    document.getElementById('vnCommMeSheetContent').innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+        <span style="font-size:11px;font-weight:850;letter-spacing:1.5px;color:#059669">✦ COMMUNITY PROFILE</span>
+        <button type="button" class="join" onclick="document.getElementById('vnCommunityMeModal').classList.remove('open')" style="border-radius:999px;padding:6px 14px;background:#fff">Close ✕</button>
+      </div>
+      <div class="vn-comm-me-card">
+        <div style="width:84px;height:84px;border-radius:26px;margin:0 auto 10px;background:#CFEAD9;border:3px solid #fff;box-shadow:0 8px 20px rgba(15,41,30,0.12);display:grid;place-items:center;font-size:34px;overflow:hidden">${avatar}</div>
+        <h2 style="margin:4px 0 2px;font-size:22px">${name}</h2>
+        <div style="color:#4A6B5D;font-size:13px;margin-bottom:10px">${handle}</div>
+        <div style="display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;background:linear-gradient(180deg,#F4FBF7,#CFEAD9);border:1px solid #fff;font-size:12px;font-weight:800;color:#0F291E">
+          ✦ ${c?.joined ? 'Member of ' + commName : 'Viewing ' + commName}
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px">
+          <div style="background:#F4FBF7;border:1px solid #fff;border-radius:18px;padding:10px">
+            <b style="font-size:18px;display:block">${myCommPosts.length}</b>
+            <span style="font-size:11px;color:#4A6B5D">Community Posts</span>
+          </div>
+          <div style="background:#F4FBF7;border:1px solid #fff;border-radius:18px;padding:10px">
+            <b style="font-size:18px;display:block">${c?.created_by && currentUser && String(c.created_by) === String(currentUser.id) ? 'Creator' : 'Member'}</b>
+            <span style="font-size:11px;color:#4A6B5D">Community Role</span>
+          </div>
+        </div>
+      </div>
+      <h3 style="margin:6px 4px 10px;font-size:16px">Your Posts in ${commName}</h3>
+      <div style="display:grid;gap:10px">
+        ${myCommPosts.length ? myCommPosts.map(post => `
+          <div style="background:rgba(255,255,255,0.9);border:1.5px solid #fff;border-radius:20px;padding:14px;box-shadow:0 6px 16px rgba(15,41,30,0.06)">
+            <div style="font-size:11px;color:#4A6B5D;margin-bottom:6px">${new Date(post.created_at).toLocaleString()}</div>
+            <div style="font-size:14px;line-height:1.5">${post.content || '📊 Poll / Media Post'}</div>
+          </div>
+        `).join('') : `<div class="room-empty">You haven't posted in ${commName} yet. Tap the + button to share a Blog, Wiki, Poll, or Image!</div>`}
+      </div>
+    `;
+    modal.classList.add('open');
+  }
+
+  // 4. Override vnCommunityPlaceholder so Dock +, Chats, and Me stay inside the Community
+  window.vnCommunityPlaceholder = function(kind) {
+    const menu = ensureQuickMenu();
+    if (kind === 'Create') {
+      menu.classList.toggle('open');
+      return;
+    }
+    menu.classList.remove('open');
+    if (kind === 'Chats' || kind === 'Public Chatrooms' || kind === 'My Chats') {
+      if (typeof vnCommunityMenuClose === 'function') vnCommunityMenuClose();
+      window.vnSwitchCommunityTab('chatrooms');
+      document.querySelector('#community .room-hub')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      return;
+    }
+    if (kind === 'Me') {
+      if (typeof vnCommunityMenuClose === 'function') vnCommunityMenuClose();
+      openCommunityMemberProfile();
+      return;
+    }
+    if (kind === 'Wiki' || kind === 'Blogs') {
+      if (typeof vnCommunityMenuClose === 'function') vnCommunityMenuClose();
+      window.vnSwitchCommunityTab('posts');
+      setupTabbedComposer();
+      const box = document.getElementById('communityComposer');
+      if (box) box.style.display = 'block';
+      window.vnSwitchCreationTab(kind === 'Wiki' ? 'wiki' : 'blog');
+      box?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      return;
+    }
+    if (kind === 'Home' || kind === 'About This Community') {
+      if (typeof vnCommunityMenuClose === 'function') vnCommunityMenuClose();
+      window.vnSwitchCommunityTab('description');
+      return;
+    }
+    if (typeof showToast === 'function') showToast(kind + ' in ' + (activeCommunity?.name || 'Community'));
+  };
+
+  // Re-bind the 5 Community Bottom Dock buttons to guarantee they use our new in-community handlers
+  function bindCommunityDock() {
+    setupTabbedComposer();
+    const dock = document.getElementById('vnCommunityBottomNav');
+    if (!dock) return;
+    const btns = dock.querySelectorAll('button');
+    if (btns[2]) btns[2].onclick = (e) => { e.stopPropagation(); window.vnCommunityPlaceholder('Create'); };
+    if (btns[3]) btns[3].onclick = (e) => { e.stopPropagation(); window.vnCommunityPlaceholder('Chats'); };
+    if (btns[4]) btns[4].onclick = (e) => { e.stopPropagation(); window.vnCommunityPlaceholder('Me'); };
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', bindCommunityDock);
+  } else {
+    bindCommunityDock();
+  }
+  new MutationObserver(bindCommunityDock).observe(document.body, { childList: true, subtree: true });
+})();
+</script>
