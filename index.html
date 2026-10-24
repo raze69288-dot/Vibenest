@@ -6615,3 +6615,181 @@ html body #community #communityComposer .vn-composer-option.active-tab {
   new MutationObserver(bindCommunityDock).observe(document.body, { childList: true, subtree: true });
 })();
 </script>
+
+<style id="vn-six-fixes-master-patch">
+/* ========================================================================
+   MASTER PATCH FOR SEARCH, MY COMMUNITIES, CREATE BTN, CHAT SEARCH,
+   COMMUNITY BACKGROUND & FULL-SCREEN COMMUNITY PROFILE
+   ======================================================================== */
+html body #vnSearchOverlay {
+  background: linear-gradient(180deg, #CFEAD9 0%, #E8F6EE 40%, #FFFFFF 100%) !important;
+  padding: calc(env(safe-area-inset-top, 0px) + 12px) 16px 40px !important;
+}
+html body #vnSearchOverlay .vn-search-header { padding: 4px 0 14px !important; gap: 12px !important; }
+html body #vnSearchOverlay .vn-search-field {
+  background: rgba(255,255,255,.92) !important; border: 1.5px solid #FFFFFF !important;
+  border-radius: 999px !important; padding: 0 16px !important; height: 48px !important;
+  box-shadow: inset 0 2px 5px rgba(45,106,79,.08), 0 6px 18px rgba(15,41,30,.06) !important;
+}
+html body #vnSearchOverlay .vn-search-field input,
+html body #vnSearchOverlay #vnGlobalSearchInput {
+  background: transparent !important; border: 0 !important; box-shadow: none !important;
+  outline: none !important; padding: 0 6px !important; color: #0F291E !important; border-radius: 0 !important;
+}
+html body #vnSearchOverlay .vn-search-header > button {
+  background: transparent !important; border: 0 !important; box-shadow: none !important;
+  color: #0F291E !important; font-weight: 800 !important; padding: 8px 6px !important;
+}
+html body #vnSearchOverlay .vn-search-tabs {
+  display: grid !important; grid-template-columns: repeat(3,1fr) !important; gap: 6px !important;
+  padding: 5px !important; margin: 0 0 18px !important; background: rgba(207,234,217,.55) !important;
+  border: 1.5px solid #FFFFFF !important; border-radius: 20px !important;
+  box-shadow: inset 0 2px 5px rgba(45,106,79,.1) !important;
+}
+html body #vnSearchOverlay .vn-search-tabs button {
+  background: transparent !important; border: 0 !important; box-shadow: none !important;
+  border-radius: 15px !important; padding: 10px 8px !important; color: #3B5949 !important;
+  font-size: 13px !important; font-weight: 750 !important;
+}
+html body #vnSearchOverlay .vn-search-tabs button.selected {
+  background: linear-gradient(180deg,#FFFFFF 0%,#CFEAD9 100%) !important; color: #0F291E !important;
+  border: 1px solid #FFFFFF !important; box-shadow: 0 4px 12px rgba(15,41,30,.08) !important;
+}
+html body #vnSearchOverlay .vn-search-tabs button.selected::after { display: none !important; }
+html body #vnSearchOverlay #vnGlobalSearchResults div,
+html body #vnSearchOverlay #vnGlobalSearchResults span,
+html body #vnSearchOverlay #vnGlobalSearchResults i { color: #0F291E !important; }
+html body #vnSearchOverlay #vnGlobalSearchResults [style*="#"],
+html body #vnSearchOverlay .vn-search-results > div > div:first-child {
+  background: radial-gradient(circle at 30% 25%,#FFFFFF 0%,#CFEAD9 60%,#84C7A3 100%) !important;
+  border: 1.5px solid #FFFFFF !important; color: #0F291E !important;
+}
+html body #communities #vnMyCommunitiesSection,
+html body #communities .vn-my-communities {
+  margin: 10px 14px 18px !important; padding: 22px 18px 22px !important; border-radius: 30px !important;
+  background: linear-gradient(145deg,rgba(255,255,255,.9),rgba(207,234,217,.55)) !important;
+  border: 2px solid #FFFFFF !important; box-shadow: inset 0 3px 6px #FFFFFF,0 12px 28px rgba(15,41,30,.08) !important;
+  box-sizing: border-box !important; overflow: visible !important;
+}
+html body #communities #vnMyCommunitiesSection > h1,
+html body #communities .vn-my-communities > h1 {
+  margin: 0 0 16px 4px !important; padding: 0 !important; font-size: 23px !important;
+  line-height: 1.2 !important; color: #0F291E !important;
+}
+html body #communities #vnJoinedCommunities.vn-joined-row { padding: 6px 4px 4px !important; gap: 12px !important; }
+html body #communities #vnJoinedCommunities button span,
+html body #communities #vnJoinedCommunities [class*="plus" i],
+html body #communities #vnJoinedCommunities [class*="icon" i] {
+  background: linear-gradient(145deg,#FFFFFF,#CFEAD9) !important; color: #0F291E !important;
+  border: 1.5px solid #FFFFFF !important;
+}
+html body #communities .vn-create-community-cta {
+  display: flex !important; align-items: center !important; justify-content: center !important; gap: 10px !important;
+  margin: 6px 14px 20px !important; width: calc(100% - 28px) !important; height: 56px !important;
+  border-radius: 999px !important; background: linear-gradient(180deg,#F4FBF7 0%,#CFEAD9 55%,#9ED6B5 100%) !important;
+  border: 2px solid #FFFFFF !important;
+  box-shadow: inset 0 3px 6px #FFFFFF,inset 0 -4px 6px rgba(45,106,79,.18),0 10px 24px rgba(123,196,157,.4) !important;
+  font-size: 16px !important; font-weight: 800 !important; color: #0F291E !important;
+}
+html body #communities .vn-create-community-cta > span {
+  display: inline-flex !important; align-items: center !important; justify-content: center !important;
+  width: 28px !important; height: 28px !important; border-radius: 9px !important;
+  background: rgba(255,255,255,.9) !important; border: 1px solid #FFFFFF !important;
+  font-size: 0 !important; position: relative !important; box-shadow: 0 2px 6px rgba(15,41,30,.08) !important;
+}
+html body #communities .vn-create-community-cta > span b {
+  font-size: 20px !important; font-weight: 800 !important; line-height: 1 !important; color: #059669 !important;
+  background: transparent !important; position: static !important; margin: 0 !important; padding: 0 !important;
+}
+html body.direct-chat-open #chatWindow {
+  padding: calc(env(safe-area-inset-top,0px) + 10px) 14px calc(env(safe-area-inset-bottom,0px) + 12px) !important;
+}
+html body.direct-chat-open #chatWindow #chatTitle {
+  position: relative !important; display: flex !important; align-items: center !important; gap: 10px !important;
+  width: calc(100% - 56px) !important; min-height: 54px !important; height: 54px !important;
+  margin: 0 0 8px 0 !important; padding: 6px 14px 6px 8px !important;
+  background: rgba(255,255,255,.88) !important; border: 1.5px solid #FFFFFF !important; border-radius: 999px !important;
+  box-shadow: 0 6px 18px rgba(15,41,30,.08) !important; box-sizing: border-box !important;
+}
+html body.direct-chat-open #chatWindow #chatSearchWrap,
+html body.direct-chat-open #chatWindow .chat-search-wrap {
+  position: absolute !important; top: calc(env(safe-area-inset-top,0px) + 13px) !important; right: 16px !important;
+  width: 48px !important; height: 48px !important; min-width: 48px !important; max-width: 48px !important;
+  border-radius: 50% !important; background: rgba(255,255,255,.9) !important; border: 1.5px solid #FFFFFF !important;
+  box-shadow: 0 6px 18px rgba(15,41,30,.08) !important; display: flex !important; align-items: center !important;
+  justify-content: center !important; padding: 0 !important; overflow: hidden !important; z-index: 10 !important;
+  transition: width .25s ease,border-radius .25s ease !important;
+}
+html body.direct-chat-open #chatWindow #chatSearchWrap:focus-within {
+  width: calc(100% - 32px) !important; max-width: calc(100% - 32px) !important; border-radius: 999px !important;
+  padding: 0 14px !important; background: #FFFFFF !important; z-index: 25 !important;
+}
+html body.direct-chat-open #chatWindow #chatSearchWrap > span {
+  display: grid !important; place-items: center !important; width: 24px !important; height: 24px !important; flex: 0 0 24px !important;
+}
+html body.direct-chat-open #chatWindow #chatSearchWrap svg {
+  width: 20px !important; height: 20px !important; stroke: #0F291E !important; fill: none !important; stroke-width: 2.2 !important;
+}
+html body.direct-chat-open #chatWindow #chatSearchWrap #chatMessageSearch {
+  width: 0 !important; min-width: 0 !important; opacity: 0 !important; padding: 0 !important; margin: 0 !important;
+  border: 0 !important; background: transparent !important; box-shadow: none !important; pointer-events: none !important;
+}
+html body.direct-chat-open #chatWindow #chatSearchWrap:focus-within #chatMessageSearch {
+  width: 100% !important; flex: 1 !important; opacity: 1 !important; padding: 0 10px !important;
+  pointer-events: auto !important; color: #0F291E !important;
+}
+html body.vn-community-space,
+html body.vn-community-space #community,
+html body.vn-community-space #community.page,
+html body.vn-community-space #community.page.active,
+html body #community,
+html body #community.page.active,
+html body #community .community-detail {
+  background: linear-gradient(180deg,#CFEAD9 0%,#E8F6EE 42%,#FFFFFF 100%) !important;
+  background-color: #CFEAD9 !important; background-image: linear-gradient(180deg,#CFEAD9 0%,#E8F6EE 42%,#FFFFFF 100%) !important;
+  color: #0F291E !important;
+}
+html body #community::before, html body #community::after,
+html body #community .community-detail::before, html body #community .community-detail::after {
+  display: none !important; background: transparent !important;
+}
+html body #vnCommunityMeModal {
+  position: fixed !important; inset: 0 !important; z-index: 25 !important;
+  background: linear-gradient(180deg,#CFEAD9 0%,#E8F6EE 42%,#FFFFFF 100%) !important;
+  backdrop-filter: none !important; align-items: stretch !important; justify-content: flex-start !important; padding: 0 !important;
+}
+html body #vnCommunityMeModal .vn-comm-me-sheet {
+  width: 100vw !important; max-width: 100vw !important; height: 100dvh !important; max-height: 100dvh !important;
+  border-radius: 0 !important; border: 0 !important; box-shadow: none !important; background: transparent !important;
+  padding: calc(env(safe-area-inset-top,0px) + 16px) 18px calc(110px + env(safe-area-inset-bottom,0px)) !important;
+  overflow-y: auto !important; box-sizing: border-box !important;
+}
+</style>
+
+<script id="vn-six-fixes-master-script">
+(function(){
+  // 1. Make Chat Search Icon expand smoothly when clicked
+  document.addEventListener('click', (e) => {
+    const wrap = e.target.closest('#chatSearchWrap');
+    if (wrap) {
+      const input = document.getElementById('chatMessageSearch');
+      if (input) input.focus();
+    }
+  });
+
+  // 2. Force-clean any inline dark background on #community & fix Community Profile header
+  const fixObserver = new MutationObserver(() => {
+    const comm = document.getElementById('community');
+    if (comm && comm.style.background) {
+      comm.style.removeProperty('background');
+      comm.style.removeProperty('background-color');
+    }
+    // Upgrade the Community Profile top bar so it looks like a dedicated page, not a popup
+    const meSheet = document.getElementById('vnCommMeSheetContent');
+    if (meSheet && meSheet.innerHTML.includes('Close ✕')) {
+      meSheet.innerHTML = meSheet.innerHTML.replace('Close ✕', '← Back to Community');
+    }
+  });
+  fixObserver.observe(document.body, { childList: true, subtree: true, attributes: true });
+})();
+</script>
