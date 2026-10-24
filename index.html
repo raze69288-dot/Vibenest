@@ -5122,5 +5122,169 @@ html body .public-profile-buttons .public-profile-block-button {
   box-shadow: inset 0 3px 6px #FFFFFF, inset 0 -4px 6px rgba(45, 106, 79, 0.2), 0 8px 20px rgba(123, 196, 157, 0.45) !important;
 }
 </style>
+<style id="vn-final-boss-mint-override">
+/* ==========================================================================
+   FINAL MINT & WHITE OVERRIDE: CHAT, PROFILE, MENU & BLACK STRIP FIXES
+   ========================================================================== */
+
+/* 1. KILL ALL BLACK STRIPS (SPLASH, AUTH, DIRECT CHAT) */
+html, 
+html body, 
+html body.vn-auth-booting, 
+html body.vn-auth-locked, 
+html body.direct-chat-open, 
+html body.room-chat-open {
+  background-color: #CFEAD9 !important;
+  background-image: linear-gradient(180deg, #CFEAD9 0%, #E6F5EC 42%, #FFFFFF 100%) !important;
+  min-height: 100dvh !important;
+  color: #0F291E !important;
+}
+
+html body #vn-opening-splash {
+  background: transparent !important; /* Let the body gradient show through */
+}
+html body #vn-opening-splash .vn-splash-wordmark { color: #0F291E !important; }
+html body #vn-opening-splash .vn-splash-wordmark span {
+  background: linear-gradient(110deg, #059669 0%, #10B981 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+}
+html body #vn-opening-splash .vn-splash-tagline { color: #3B5949 !important; }
+html body #vn-opening-splash .vn-splash-tagline:before { background: linear-gradient(90deg, #059669, #10B981) !important; }
+
+/* 2. MODERNIZE CHAT UI (FLOATING BUBBLES) */
+html body.direct-chat-open #chatWindow {
+  background: transparent !important; 
+}
+html body.direct-chat-open #chatTitle, 
+html body.direct-chat-open .chat-title-name { color: #0F291E !important; }
+
+/* Clean, bright message bubbles */
+html body #chatMessages .chat-bubble {
+  background: rgba(255, 255, 255, 0.95) !important;
+  border: 1.5px solid #FFFFFF !important;
+  color: #0F291E !important;
+  border-radius: 22px 22px 22px 6px !important;
+  box-shadow: inset 0 2px 4px #FFFFFF, 0 8px 16px rgba(15, 41, 30, 0.08) !important;
+  font-weight: 500 !important;
+}
+html body #chatMessages .chat-bubble.mine {
+  background: linear-gradient(180deg, #F4FBF7 0%, #CFEAD9 100%) !important;
+  border-radius: 22px 22px 6px 22px !important;
+}
+html body #chatMessages .chat-bubble .muted, 
+html body #chatMessages .chat-bubble .receipt { color: #4A6B5D !important; opacity: 1 !important; }
+
+/* Chat Input / Composer */
+html body.direct-chat-open .chat-compose {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(24px) !important;
+  border: 1.5px solid #FFFFFF !important;
+  border-radius: 999px !important;
+  padding: 6px 8px !important;
+  margin-bottom: 12px !important;
+  box-shadow: 0 12px 32px rgba(15, 41, 30, 0.12) !important;
+}
+html body.direct-chat-open .chat-compose .field {
+  background: transparent !important;
+  border: 0 !important;
+  color: #0F291E !important;
+  box-shadow: none !important;
+}
+html body.direct-chat-open .chat-compose .field::placeholder { color: #4A6B5D !important; }
+html body.direct-chat-open .chat-compose button.join,
+html body.direct-chat-open .chat-compose label.join {
+  background: linear-gradient(180deg, #F4FBF7 0%, #CFEAD9 55%, #9ED6B5 100%) !important;
+  border: 1.5px solid #FFFFFF !important;
+  color: #0F291E !important;
+  box-shadow: inset 0 2px 4px #FFFFFF, 0 4px 12px rgba(123, 196, 157, 0.35) !important;
+}
+
+/* Reply preview styling */
+html body #chatReplyPreview, html body .chat-quoted, html body .vn-reply-banner {
+  background: rgba(255, 255, 255, 0.75) !important;
+  border: 1.5px solid #FFFFFF !important;
+  border-left: 4px solid #059669 !important;
+  color: #0F291E !important;
+  border-radius: 12px !important;
+}
+
+/* 3. FIX COMMUNITY LEFT-SLIDE MENU DRAWER */
+html body #vnCommunityMenuShade {
+  background: rgba(15, 41, 30, 0.35) !important;
+  backdrop-filter: blur(12px) !important;
+}
+html body #vnCommunityMenuPanel {
+  position: fixed !important;
+  top: 0 !important; left: 0 !important; bottom: 0 !important;
+  width: 85vw !important; max-width: 360px !important;
+  height: 100dvh !important;
+  margin: 0 !important;
+  border-radius: 0 32px 32px 0 !important;
+  background: linear-gradient(180deg, #CFEAD9 0%, #E8F6EE 45%, #FFFFFF 100%) !important;
+  border: 1.5px solid #FFFFFF !important;
+  border-left: 0 !important;
+  box-shadow: 20px 0 50px rgba(15, 41, 30, 0.2) !important;
+  transform: translateX(-100%) !important; /* Start off-screen */
+}
+html body #vnCommunityMenuShade.open #vnCommunityMenuPanel {
+  transform: translateX(0) !important; /* Slide in */
+}
+html body #vnCommunityMenuPanel .vncs-rail {
+  background: rgba(207, 234, 217, 0.5) !important;
+  border-right: 1.5px solid #FFFFFF !important;
+}
+html body #vnCommunityMenuPanel .vncs-main { background: transparent !important; color: #0F291E !important; }
+html body #vnCommunityMenuPanel .vncs-profile,
+html body #vnCommunityMenuPanel .vncs-links button {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 1.5px solid #FFFFFF !important;
+  color: #0F291E !important;
+  box-shadow: inset 0 2px 4px #FFFFFF, 0 4px 12px rgba(15, 41, 30, 0.05) !important;
+  border-radius: 16px !important;
+}
+html body #vnCommunityMenuPanel .vncs-links i.vibenest-icon-orb {
+  background: radial-gradient(circle at 30% 25%, #FFFFFF 0%, #CFEAD9 55%, #7BC49D 100%) !important;
+  border: 1.5px solid #FFFFFF !important;
+  color: #0F291E !important;
+}
+
+/* 4. FIX PUBLIC PROFILE BLACK STRIPS & POLISH */
+html body .public-profile-card {
+  background: linear-gradient(180deg, #CFEAD9 0%, #E8F6EE 45%, #FFFFFF 100%) !important;
+  border-radius: 36px 36px 0 0 !important;
+  border: 1.5px solid #FFFFFF !important;
+}
+html body .public-profile-top {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(20px) !important;
+  border-bottom: 1.5px solid #FFFFFF !important;
+  color: #0F291E !important;
+}
+/* Remove black backgrounds from profile sections */
+html body .public-profile-stats, 
+html body .public-profile-posts-wrap, 
+html body .public-profile-hero {
+  background: transparent !important;
+  border: 0 !important;
+}
+html body .public-profile-stat {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 1.5px solid #FFFFFF !important;
+  border-radius: 20px !important;
+  color: #0F291E !important;
+  box-shadow: inset 0 2px 4px #FFFFFF, 0 8px 20px rgba(15, 41, 30, 0.08) !important;
+}
+html body .public-profile-stat b, html body .public-profile-stat span { color: #0F291E !important; }
+html body .public-profile-buttons button {
+  background: linear-gradient(180deg, #F4FBF7 0%, #CFEAD9 55%, #9ED6B5 100%) !important;
+  border: 1.5px solid #FFFFFF !important;
+  border-radius: 999px !important;
+  color: #0F291E !important;
+  box-shadow: inset 0 3px 6px #FFFFFF, inset 0 -4px 6px rgba(45, 106, 79, 0.2), 0 8px 20px rgba(123, 196, 157, 0.35) !important;
+}
+</style>
 </body>
 </html>
