@@ -5773,3 +5773,270 @@ html body.direct-chat-open #chatWindow #chatMessages .chat-date-separator span {
 </style>
 </body>
 </html>
+
+<style id="vn-absolute-final-override-last-line">
+/* ==========================================================================
+   MUST BE PLACED AT THE VERY LAST LINE OF INDEX.HTML
+   ========================================================================== */
+
+/* 1. FIX OVERLAPPING HERO CAROUSEL SLIDES ON HOME SCREEN */
+html body #home #vnFeatureCarousel .vn-feature-slide:not(.is-active) {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+html body #home #vnFeatureCarousel .vn-feature-slide.is-active {
+  opacity: 1 !important;
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+/* Change the right heart/star circle from purple to 3D Mint Orb */
+html body #home #vnFeatureCarousel .vn-feature-art,
+html body #home #vnFeatureCarousel .vn-feature-art.art-communities,
+html body #home #vnFeatureCarousel .vn-feature-art.art-chat,
+html body #home #vnFeatureCarousel .vn-feature-art.art-profile {
+  background: radial-gradient(circle at 30% 28%, #FFFFFF 0%, #CFEAD9 55%, #7BC49D 100%) !important;
+  border: 2px solid #FFFFFF !important;
+  box-shadow: inset 0 6px 12px #FFFFFF, 0 10px 24px rgba(45, 106, 79, 0.22) !important;
+  color: #0F291E !important;
+}
+
+/* 2. KILL BLACK BACKGROUND ON COMMUNITIES PAGE ("My Communities") */
+html body #communities,
+html body #communities.page,
+html body #communities.vn-communities-page,
+html body #communities .vn-community-page-content,
+html body #communities .vn-my-communities {
+  background: linear-gradient(180deg, #CFEAD9 0%, #E8F6EE 42%, #FFFFFF 100%) !important;
+  background-attachment: fixed !important;
+  color: #0F291E !important;
+}
+html body #communities .vn-recommended-heading h2 {
+  color: #0F291E !important;
+}
+html body #communities .vn-recommended-heading span {
+  background: rgba(15, 41, 30, 0.15) !important;
+}
+/* Fix black square on Create Your Own button & purple + on Join a community */
+html body #communities .vn-create-community-cta > span,
+html body #communities .vn-create-community-cta > span b {
+  background: transparent !important;
+  color: #0F291E !important;
+  box-shadow: none !important;
+}
+html body #communities .vn-join-community-card,
+html body #communities [onclick*="vnOpenCommunityDirectory"] {
+  background: linear-gradient(145deg, rgba(255,255,255,0.92), rgba(207,234,217,0.6)) !important;
+  border: 1.5px solid #FFFFFF !important;
+  color: #0F291E !important;
+}
+
+/* 3. KILL BLACK BACKGROUND & REDESIGN DIRECT CHAT SCREEN */
+html body.direct-chat-open,
+html body.direct-chat-open #chatWindow,
+html body.direct-chat-open #chatWindow[style*="display: block"],
+html body #chatWindow[style*="display: block"],
+html body.direct-chat-open #chatWindow #chatMessages {
+  background: linear-gradient(180deg, #CFEAD9 0%, #E8F6EE 40%, #F8FCFA 100%) !important;
+  background-color: #CFEAD9 !important;
+  color: #0F291E !important;
+}
+/* Modern Floating Glass Top Header in Chat */
+html body.direct-chat-open #chatWindow #chatTitle {
+  background: rgba(255, 255, 255, 0.82) !important;
+  backdrop-filter: blur(20px) !important;
+  border: 1.5px solid #FFFFFF !important;
+  border-radius: 999px !important;
+  padding: 6px 14px 6px 8px !important;
+  box-shadow: 0 6px 18px rgba(15, 41, 30, 0.08) !important;
+  color: #0F291E !important;
+  height: 54px !important;
+}
+html body.direct-chat-open #chatWindow .chat-title-name {
+  color: #0F291E !important;
+  font-weight: 800 !important;
+}
+html body.direct-chat-open #chatWindow .chat-search-wrap {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 1.5px solid #FFFFFF !important;
+  border-radius: 50% !important;
+  color: #0F291E !important;
+  box-shadow: 0 6px 18px rgba(15, 41, 30, 0.08) !important;
+}
+/* Clean Modern Reply Box inside Chat Bubbles (No ugly bracket line) */
+html body.direct-chat-open #chatWindow .chat-bubble .chat-quoted,
+html body #chatMessages .chat-bubble .chat-quoted {
+  background: rgba(15, 41, 30, 0.06) !important;
+  border: 0 !important;
+  border-left: 3px solid #059669 !important;
+  border-radius: 10px !important;
+  padding: 6px 10px !important;
+  margin-bottom: 6px !important;
+  font-size: 12px !important;
+  color: #2D6A4F !important;
+  box-shadow: none !important;
+}
+html body.direct-chat-open #chatWindow .chat-date-separator span {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 1px solid #FFFFFF !important;
+  color: #2D6A4F !important;
+  border-radius: 999px !important;
+  padding: 5px 14px !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 12px rgba(15, 41, 30, 0.06) !important;
+}
+
+/* 4. KILL BLACK BACKGROUND ON SINGLE COMMUNITY VIEW ("Hehehe" / "Anime haven") */
+html body.vn-community-space,
+html body.vn-community-space #community.page.active,
+html body #community.page.active,
+html body #community .community-detail {
+  background: linear-gradient(180deg, #CFEAD9 0%, #E8F6EE 42%, #FFFFFF 100%) !important;
+  background-color: #CFEAD9 !important;
+  color: #0F291E !important;
+}
+html body #community #communityDetailContent > .hero {
+  background: rgba(255, 255, 255, 0.78) !important;
+  border: 1.5px solid #FFFFFF !important;
+  border-radius: 28px !important;
+  padding: 16px !important;
+  box-shadow: inset 0 2px 4px #FFFFFF, 0 10px 26px rgba(15, 41, 30, 0.08) !important;
+}
+html body #community #communityDetailContent h1,
+html body #community .community-detail-topline {
+  color: #0F291E !important;
+}
+/* Fix About / Posts / Chatrooms Segmented Bar */
+html body #community .community-section-tabs,
+html body #community [role="tablist"] {
+  background: rgba(255, 255, 255, 0.72) !important;
+  border: 1.5px solid #FFFFFF !important;
+  border-radius: 999px !important;
+  padding: 5px !important;
+  box-shadow: inset 0 2px 5px rgba(45, 106, 79, 0.1), 0 8px 20px rgba(15, 41, 30, 0.06) !important;
+}
+html body #community .community-section-tabs button,
+html body #community [role="tablist"] button {
+  background: transparent !important;
+  color: #3B5949 !important;
+  border-radius: 999px !important;
+  font-weight: 700 !important;
+  border: 0 !important;
+}
+html body #community .community-section-tabs button.active,
+html body #community .community-section-tabs button[aria-selected="true"],
+html body #community [role="tablist"] button.active,
+html body #community [role="tablist"] button[aria-selected="true"] {
+  background: linear-gradient(180deg, #F4FBF7 0%, #CFEAD9 55%, #9ED6B5 100%) !important;
+  color: #0F291E !important;
+  border: 1.5px solid #FFFFFF !important;
+  box-shadow: inset 0 3px 6px #FFFFFF, 0 4px 12px rgba(123, 196, 157, 0.45) !important;
+}
+/* Fix About This Community Card & Bottom Community Dock */
+html body #community .community-description-card,
+html body #community [data-community-panel="description"] > div {
+  background: rgba(255, 255, 255, 0.88) !important;
+  border: 1.5px solid #FFFFFF !important;
+  border-radius: 26px !important;
+  color: #0F291E !important;
+  box-shadow: inset 0 3px 6px #FFFFFF, 0 10px 24px rgba(15, 41, 30, 0.08) !important;
+}
+html body #community .community-description-card p,
+html body #community .community-description-card h2,
+html body #community .community-description-card span {
+  color: #0F291E !important;
+}
+html body.vn-community-space #vnCommunityBottomNav {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border: 1.5px solid #FFFFFF !important;
+  box-shadow: 0 12px 32px rgba(15, 41, 30, 0.14) !important;
+}
+html body.vn-community-space #vnCommunityBottomNav button {
+  color: #0F291E !important;
+}
+html body.vn-community-space #vnCommunityBottomNav .vncs-plus {
+  background: linear-gradient(180deg, #F4FBF7 0%, #CFEAD9 55%, #84C7A3 100%) !important;
+  color: #0F291E !important;
+  border: 2px solid #FFFFFF !important;
+}
+
+/* 5. MODERNIZE PUBLIC USER PROFILE ("daze") — FULL-SCREEN CENTERED BENTO CARD */
+html body #publicProfileModal.public-profile-overlay {
+  padding: 0 !important;
+  background: linear-gradient(180deg, #CFEAD9 0%, #E8F6EE 45%, #FFFFFF 100%) !important;
+}
+html body #publicProfileModal .public-profile-card {
+  border-radius: 0 !important;
+  border: 0 !important;
+  min-height: 100dvh !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+html body #publicProfileModal .public-profile-top {
+  background: transparent !important;
+  border: 0 !important;
+  padding: 16px 20px !important;
+}
+html body #publicProfileModal .public-profile-hero {
+  margin: 8px 16px 16px !important;
+  padding: 28px 20px 24px !important;
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(24px) !important;
+  border: 1.5px solid #FFFFFF !important;
+  border-radius: 32px !important;
+  box-shadow: inset 0 3px 6px #FFFFFF, 0 14px 34px rgba(15, 41, 30, 0.08) !important;
+  text-align: center !important;
+}
+html body #publicProfileModal .public-profile-cover-art {
+  display: none !important;
+}
+html body #publicProfileModal .public-profile-identity {
+  flex-direction: column !important;
+  align-items: center !important;
+  margin-top: 0 !important;
+  gap: 10px !important;
+}
+html body #publicProfileModal .public-profile-hero .profile-hero-avatar {
+  width: 96px !important;
+  height: 96px !important;
+  border-radius: 30px !important;
+  border: 3px solid #FFFFFF !important;
+  box-shadow: 0 10px 25px rgba(15, 41, 30, 0.14) !important;
+}
+html body #publicProfileModal .public-profile-bio {
+  text-align: center !important;
+  color: #3B5949 !important;
+  margin: 10px auto 18px !important;
+}
+html body #publicProfileModal .public-profile-buttons {
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  gap: 10px !important;
+}
+html body #publicProfileModal .public-profile-buttons #publicProfileBlockButton {
+  grid-column: 1 / -1 !important;
+  background: rgba(254, 226, 226, 0.7) !important;
+  color: #B91C1C !important;
+  border: 1.5px solid #FFFFFF !important;
+  min-height: 42px !important;
+  font-size: 13px !important;
+}
+</style>
+
+<script id="vn-clean-profile-buttons-and-bars">
+(function(){
+  // Clean up ugly unicode symbols (✉, ✓) on Public Profile buttons whenever opened
+  const obs = new MutationObserver(() => {
+    const msgBtn = document.querySelector('.public-profile-message-button');
+    if (msgBtn && msgBtn.textContent.includes('✉')) {
+      msgBtn.textContent = 'Message';
+    }
+    const followBtn = document.getElementById('publicProfileFollowButton');
+    if (followBtn) {
+      if (followBtn.textContent.includes('✓')) followBtn.textContent = 'Following';
+      if (followBtn.textContent.includes('＋')) followBtn.textContent = 'Follow';
+    }
+  });
+  obs.observe(document.body, { childList: true, subtree: true });
+})();
+</script>
