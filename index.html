@@ -5023,5 +5023,104 @@ html body #vnCommunityBottomNav button.is-active {
   border: 1px solid #FFFFFF !important;
 }
 </style>
+<style id="vn-final-splash-and-profile-fix">
+/* ==========================================================================
+   FINAL FIX: OPENING SPLASH SCREEN & PUBLIC USER PROFILE MODAL (MINT & WHITE)
+   ========================================================================== */
+
+/* 1. MINT & WHITE OPENING ANIMATION SPLASH SCREEN */
+#vn-opening-splash {
+  background: linear-gradient(180deg, #CFEAD9 0%, #E6F5EC 42%, #FFFFFF 100%) !important;
+  color: #0F291E !important;
+}
+
+#vn-opening-splash .vn-splash-wordmark {
+  color: #0F291E !important;
+}
+
+#vn-opening-splash .vn-splash-wordmark span {
+  background: linear-gradient(110deg, #059669 0%, #10B981 100%) !important;
+  -webkit-background-clip: text !important;
+  background-clip: text !important;
+  color: transparent !important;
+  -webkit-text-fill-color: transparent !important;
+}
+
+#vn-opening-splash .vn-splash-tagline {
+  color: #3B5949 !important;
+}
+
+#vn-opening-splash .vn-splash-tagline:before {
+  background: linear-gradient(90deg, #059669, #10B981) !important;
+}
+
+/* 2. PUBLIC USER PROFILE MODAL & CARDS */
+html body .public-profile-overlay {
+  background: rgba(15, 41, 30, 0.35) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+}
+
+html body .public-profile-card {
+  background: linear-gradient(180deg, #CFEAD9 0%, #E8F6EE 45%, #FFFFFF 100%) !important;
+  color: #0F291E !important;
+  border-radius: 32px 32px 0 0 !important;
+  border: 1.5px solid #FFFFFF !important;
+  box-shadow: 0 -10px 40px rgba(15, 41, 30, 0.15) !important;
+}
+
+html body .public-profile-top {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(20px) !important;
+  border-bottom: 1.5px solid #FFFFFF !important;
+  color: #0F291E !important;
+}
+
+html body .public-profile-top .profile-eyebrow {
+  color: #2D6A4F !important;
+}
+
+html body .public-profile-hero {
+  background: transparent !important;
+  color: #0F291E !important;
+}
+
+html body .public-profile-cover-art {
+  background: radial-gradient(circle at 80% 30%, rgba(255,255,255,0.9) 0%, rgba(132,199,163,0.5) 60%, transparent 100%) !important;
+}
+
+html body .public-profile-cover-art:after {
+  color: #059669 !important;
+}
+
+html body .public-profile-hero h2,
+html body .public-profile-handle,
+html body .public-profile-bio {
+  color: #0F291E !important;
+}
+
+html body .public-profile-stat,
+html body .public-profile-post {
+  background: linear-gradient(135deg, rgba(255,255,255,0.88), rgba(207,234,217,0.45)) !important;
+  border: 1.5px solid #FFFFFF !important;
+  border-radius: 20px !important;
+  color: #0F291E !important;
+  box-shadow: inset 0 2px 4px #FFFFFF, 0 8px 20px rgba(15, 41, 30, 0.06) !important;
+}
+
+html body .public-profile-stat b {
+  color: #0F291E !important;
+}
+
+html body .public-profile-buttons .public-profile-message-button,
+html body .public-profile-buttons .join,
+html body .public-profile-buttons .public-profile-block-button {
+  background: linear-gradient(180deg, #F4FBF7 0%, #CFEAD9 55%, #9ED6B5 100%) !important;
+  border: 1.5px solid #FFFFFF !important;
+  border-radius: 999px !important;
+  color: #0F291E !important;
+  box-shadow: inset 0 3px 6px #FFFFFF, inset 0 -4px 6px rgba(45, 106, 79, 0.2), 0 8px 20px rgba(123, 196, 157, 0.45) !important;
+}
+</style>
 </body>
 </html>
