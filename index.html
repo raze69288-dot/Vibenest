@@ -888,6 +888,7 @@ body.vn-auth-locked,body.vn-auth-booting{overflow:hidden!important}body.vn-auth-
 
 <section id="marketplace" class="page vn-marketplace-page" aria-label="VibeNest Marketplace">
   <header class="vn-market-topbar">
+    <button type="button" class="vn-market-back" onclick="go('home')" aria-label="Back to Home">←</button>
     <div class="vn-market-brand"><span>VibeNest</span><strong>Marketplace</strong></div>
     <button type="button" class="vn-coin-balance-pill vn-market-balance" onclick="openVibeCoinWallet()" aria-label="Open VibeCoins wallet"><span class="vn-coin-pill-icon"><svg class="vn-coin-pill-svg" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><defs><linearGradient id="vnCoinPillMarket" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#70e0ad"/><stop offset="1" stop-color="#20a875"/></linearGradient></defs><circle cx="24" cy="24" r="21.5" fill="url(#vnCoinPillMarket)" stroke="#fff" stroke-width="2"/><circle cx="24" cy="24" r="17.8" fill="none" stroke="#c8f8dd" stroke-width="1.2" opacity=".9"/><path d="M24 12.2 27.4 20.6 35.8 24 27.4 27.4 24 35.8 20.6 27.4 12.2 24 20.6 20.6Z" fill="#fff" stroke="#e9fff2" stroke-width=".7" stroke-linejoin="round"/><circle cx="32.6" cy="15.7" r="1.5" fill="#ffe58c"/></svg></span><span id="vnCoinMarketplaceBalance">—</span><span class="vn-coin-pill-plus" aria-hidden="true">+</span></button>
   </header>
@@ -903,9 +904,9 @@ body.vn-auth-locked,body.vn-auth-booting{overflow:hidden!important}body.vn-auth-
       <div class="vn-market-hero-orb vn-market-orb-one" aria-hidden="true"></div><div class="vn-market-hero-orb vn-market-orb-two" aria-hidden="true"></div>
     </section>
     <div class="vn-market-shortcuts" aria-label="Marketplace categories">
-      <button type="button" onclick="document.getElementById('vnMarketProfile').scrollIntoView({behavior:'smooth',block:'start'})"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.3"/><path d="M5 20c.5-3.5 2.8-5.5 7-5.5s6.5 2 7 5.5"/><path d="m18.4 3.5.8 2.1 2.1.8-2.1.8-.8 2.1-.8-2.1-2.1-.8 2.1-.8z"/></svg><span>Profile</span></button>
-      <button type="button" onclick="document.getElementById('vnMarketGifts').scrollIntoView({behavior:'smooth',block:'start'})"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.5 10h17v10h-17zM2.5 7h19v3h-19zM12 7v13"/><path d="M12 7H8.7a2.2 2.2 0 1 1 2.1-2.8L12 7Zm0 0h3.3a2.2 2.2 0 1 0-2.1-2.8L12 7Z"/></svg><span>Gifts</span></button>
-      <button type="button" onclick="document.getElementById('vnMarketChat').scrollIntoView({behavior:'smooth',block:'start'})"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4.5h16v12H9l-5 3z"/><path d="M8 8.5h8M8 12h5"/><path d="m18 2 .7 1.8 1.8.7-1.8.7L18 7l-.7-1.8-1.8-.7 1.8-.7z"/></svg><span>Chat effects</span></button>
+      <button type="button" onclick="document.getElementById('vnMarketProfile').scrollIntoView({behavior:'smooth',block:'start'})"><span>✦</span> Profile</button>
+      <button type="button" onclick="document.getElementById('vnMarketGifts').scrollIntoView({behavior:'smooth',block:'start'})"><span>♡</span> Gifts</button>
+      <button type="button" onclick="document.getElementById('vnMarketChat').scrollIntoView({behavior:'smooth',block:'start'})"><span>✧</span> Chat effects</button>
     </div>
     <section id="vnMarketProfile" class="vn-market-section">
       <div class="vn-market-section-heading"><div><span>MAKE IT YOURS</span><h2>Profile style</h2></div><span class="vn-market-section-symbol">✦</span></div>
@@ -8278,102 +8279,6 @@ if(auth()){setTimeout(()=>{if(el('vnCoinProfileBalance'))load().catch(()=>{})},9
  .vn-market-product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}
  .vn-market-product-art{height:125px}
 }
-</style>
-
-
-<style id="vn-marketplace-mobile-layout-refinement">
-/* Final mobile layout pass: give the profile and balance priority in the header, with less wasted vertical space. */
-#home .vn-discover-bar,#communities .vn-community-topbar{
-  display:flex!important;align-items:center!important;gap:6px!important;
-  padding:8px 11px!important;min-height:62px!important;box-sizing:border-box!important;
-}
-#home .vn-home-user,#communities .vn-home-user{
-  flex:0 0 48px!important;width:48px!important;height:48px!important;min-width:48px!important;
-  border-width:2px!important;font-size:26px!important;
-}
-#home .vn-search-trigger,#communities .vn-search-trigger{
-  flex:1 1 105px!important;width:auto!important;min-width:72px!important;max-width:150px!important;
-  height:40px!important;min-height:40px!important;padding:0 10px!important;gap:6px!important;
-  font-size:12px!important;overflow:hidden!important;white-space:nowrap!important;
-}
-#home .vn-search-trigger>span:first-child,#communities .vn-search-trigger>span:first-child{font-size:23px!important;flex:0 0 auto!important}
-#home .vn-search-trigger>span:nth-child(2),#communities .vn-search-trigger>span:nth-child(2){overflow:hidden!important;text-overflow:ellipsis!important;white-space:nowrap!important}
-#home .vn-coin-balance-pill,#communities .vn-coin-balance-pill{
-  flex:0 0 auto!important;min-width:106px!important;max-width:116px!important;height:40px!important;
-  padding:4px 8px 4px 6px!important;gap:5px!important;font-size:14px!important;
-}
-#home .vn-coin-pill-icon,#communities .vn-coin-pill-icon,#home .vn-coin-pill-svg,#communities .vn-coin-pill-svg{width:25px!important;height:25px!important}
-#home .vn-coin-pill-icon,#communities .vn-coin-pill-icon{flex-basis:25px!important}
-#home .vn-coin-pill-plus,#communities .vn-coin-pill-plus{width:21px!important;height:21px!important;font-size:17px!important}
-#home .vn-home-bell,#communities .vn-home-bell{width:28px!important;min-width:28px!important;height:38px!important;flex:0 0 28px!important;padding:0!important}
-#home .vn-home-bell svg,#communities .vn-home-bell svg{width:21px!important;height:21px!important}
-@media(max-width:375px){
-  #home .vn-discover-bar,#communities .vn-community-topbar{gap:5px!important;padding-left:9px!important;padding-right:9px!important}
-  #home .vn-home-user,#communities .vn-home-user{flex-basis:46px!important;width:46px!important;height:46px!important;min-width:46px!important}
-  #home .vn-search-trigger,#communities .vn-search-trigger{flex-basis:75px!important;max-width:125px!important;min-width:66px!important;padding:0 8px!important;font-size:11px!important}
-  #home .vn-coin-balance-pill,#communities .vn-coin-balance-pill{min-width:99px!important;padding-right:6px!important;gap:4px!important}
-}
-
-/* A compact marketplace header: no duplicate back control; the app's Android Back history handler navigates pages. */
-.vn-market-topbar{gap:12px!important;min-height:64px!important;padding:9px 16px!important}
-.vn-market-brand{gap:0!important}
-.vn-market-brand span{font-size:9px!important;letter-spacing:1.65px!important;line-height:1.25!important}
-.vn-market-brand strong{font-size:20px!important;line-height:1.2!important;letter-spacing:-.55px!important}
-.vn-market-balance{height:38px!important;min-width:104px!important;max-width:116px!important}
-
-/* Streamlined market: aligned headings, tighter rhythms, and product cards that use their width intentionally. */
-.vn-market-content{padding:13px 15px 30px!important}
-.vn-market-hero{min-height:190px!important;padding:20px 18px!important;border-radius:22px!important}
-.vn-market-hero-copy{max-width:75%!important}
-.vn-market-kicker{font-size:9px!important;letter-spacing:1.45px!important;margin-bottom:8px!important}
-.vn-market-hero h1{font-size:clamp(25px,6.1vw,32px)!important;line-height:1.06!important;letter-spacing:-.9px!important}
-.vn-market-hero p{font-size:12px!important;line-height:1.42!important;margin:8px 0 11px!important;max-width:260px!important}
-.vn-market-primary{padding:10px 12px!important;font-size:11px!important;border-radius:11px!important}
-.vn-market-hero-coin{right:12px!important;width:clamp(68px,20vw,108px)!important;height:clamp(68px,20vw,108px)!important;box-shadow:0 0 0 8px rgba(255,255,255,.24)!important}
-.vn-market-shortcuts{gap:8px!important;margin:12px 0 19px!important}
-.vn-market-shortcuts button{min-height:44px!important;gap:6px!important;padding:8px 6px!important;border-radius:13px!important;font-size:12px!important;box-shadow:0 2px 7px rgba(44,116,78,.035)!important}
-.vn-market-shortcuts button svg{width:19px!important;height:19px!important;flex:0 0 19px!important;fill:none!important;stroke:currentColor!important;stroke-width:1.8!important;stroke-linecap:round!important;stroke-linejoin:round!important;color:#238c60!important}
-.vn-market-shortcuts button span{font-size:12px!important;color:#315c47!important;white-space:nowrap!important}
-.vn-market-section{margin-top:19px!important;scroll-margin-top:72px!important}
-.vn-market-section-heading{margin:0 1px 10px!important;align-items:center!important}
-.vn-market-section-heading>div>span{font-size:9px!important;letter-spacing:1.45px!important;line-height:1.3!important}
-.vn-market-section-heading h2{font-size:20px!important;line-height:1.18!important;margin-top:2px!important;letter-spacing:-.45px!important}
-.vn-market-section-symbol{width:33px!important;height:33px!important;border-radius:11px!important;font-size:20px!important;flex:0 0 33px!important}
-.vn-market-product-grid{gap:10px!important}
-.vn-market-product{border-radius:16px!important;box-shadow:0 3px 11px rgba(38,103,68,.045)!important}
-.vn-market-product-art{height:78px!important;font-size:37px!important}
-.vn-market-product-copy{padding:10px!important}
-.vn-market-product h3{font-size:13px!important;line-height:1.32!important;letter-spacing:-.1px!important;margin-bottom:4px!important}
-.vn-market-product p{font-size:10.5px!important;line-height:1.38!important;min-height:29px!important;margin-bottom:10px!important}
-.vn-market-product-buy{gap:5px!important;flex-wrap:nowrap!important}
-.vn-market-product-buy>span{font-size:11px!important;gap:3px!important}
-.vn-market-product-buy button{min-width:52px!important;padding:8px 10px!important;border-radius:9px!important;font-size:11px!important}
-.vn-market-reward-strip{margin-top:19px!important;padding:11px!important;gap:9px!important}
-.vn-market-reward-mark{flex-basis:39px!important;height:39px!important;border-radius:12px!important}
-.vn-market-reward-svg{width:32px!important;height:32px!important}
-.vn-market-reward-strip strong{font-size:12px!important}
-.vn-market-reward-strip p{font-size:10px!important;line-height:1.4!important}
-.vn-market-reward-strip button{padding:8px 10px!important;font-size:11px!important}
-.vn-market-footnote{font-size:10px!important;line-height:1.45!important;margin-top:10px!important}
-@media(max-width:390px){
-  .vn-market-content{padding:11px 12px 26px!important}
-  .vn-market-hero{min-height:182px!important;padding:17px 15px!important}
-  .vn-market-hero-copy{max-width:68%!important}
-  .vn-market-hero h1{font-size:25px!important}
-  .vn-market-hero p{font-size:11px!important;max-width:230px!important}
-  .vn-market-hero-coin{right:8px!important;width:69px!important;height:69px!important;opacity:.95}
-  .vn-market-shortcuts{gap:6px!important}
-  .vn-market-shortcuts button{gap:5px!important;padding:7px 4px!important;font-size:11px!important}
-  .vn-market-shortcuts button svg{width:17px!important;height:17px!important;flex-basis:17px!important}
-  .vn-market-shortcuts button span{font-size:11px!important}
-  .vn-market-product-grid{gap:8px!important}
-  .vn-market-product-copy{padding:9px!important}
-  .vn-market-product h3{font-size:12px!important}
-  .vn-market-product p{font-size:10px!important;min-height:28px!important}
-  .vn-market-product-buy>span{font-size:10px!important}
-  .vn-market-product-buy button{padding:8px 8px!important;min-width:48px!important}
-}
-@media(min-width:600px){.vn-market-content{padding:19px 22px 40px!important}.vn-market-hero{min-height:215px!important}.vn-market-product-art{height:98px!important}}
 </style>
 
 </html>
