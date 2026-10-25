@@ -6994,103 +6994,194 @@ body.vn-community-space #community.page.active:before,body.vn-community-space #c
 body{background-color:#CFEAD9!important}
 </style>
 
-<style id="vn-my-communities-match-recommended-startup-fix">
-/* Make the joined-community shelf use the same card proportions as Recommended. */
-html body #communities #vnJoinedCommunities.vn-joined-row{
-  display:grid!important;
-  grid-template-columns:repeat(3,minmax(0,1fr))!important;
-  gap:12px!important;
-  align-items:stretch!important;
-  width:100%!important;
-  padding:0!important;
-}
-html body #communities #vnJoinedCommunities .vn-joined-card,
-html body #communities #vnJoinedCommunities .vn-join-community-card{
-  position:relative!important;
-  display:block!important;
-  width:100%!important;
-  min-width:0!important;
-  max-width:none!important;
-  height:auto!important;
-  min-height:0!important;
-  max-height:none!important;
-  aspect-ratio: .78 / 1 !important;
-  flex:none!important;
-  margin:0!important;
-  padding:0!important;
-  overflow:hidden!important;
-  border:1.5px solid #fff!important;
-  outline:0!important;
-  border-radius:19px!important;
-  box-shadow:0 7px 18px rgba(15,41,30,.10)!important;
-  box-sizing:border-box!important;
-}
-html body #communities #vnJoinedCommunities .vn-joined-card .vn-comm-cover,
-html body #communities #vnJoinedCommunities .vn-join-community-card .vn-comm-cover{
-  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
-  margin:0!important;border-radius:inherit!important;
-}
-html body #communities #vnJoinedCommunities .vn-comm-card-name{
-  left:5px!important;right:5px!important;bottom:7px!important;
-  max-height:2.3em!important;overflow:hidden!important;
-  padding:2px 4px!important;border:0!important;outline:0!important;
-  border-radius:0!important;box-shadow:none!important;
-  background:rgba(207,234,217,.94)!important;color:#0F291E!important;
-  font-size:clamp(10px,3vw,13px)!important;line-height:1.15!important;
-  text-align:center!important;overflow-wrap:anywhere!important;
-}
-html body #communities #vnJoinedCommunities .vn-comm-icon{
-  width:42px!important;height:42px!important;min-width:42px!important;min-height:42px!important;
-  left:0!important;top:0!important;border-radius:0 0 12px 0!important;
-}
-html body #communities #vnJoinedCommunities .vn-join-community-card{
-  display:flex!important;align-items:center!important;justify-content:center!important;
-  flex-direction:column!important;gap:10px!important;
-  background:linear-gradient(145deg,#FFFFFF,#DDF2E5)!important;
-  color:#0F291E!important;text-align:center!important;font-size:clamp(11px,3vw,14px)!important;
-  line-height:1.2!important;
-}
-html body #communities #vnJoinedCommunities .vn-join-community-card *{
-  border-color:transparent!important;outline:0!important;box-shadow:none!important;
-}
-html body #communities #vnJoinedCommunities .vn-join-community-card b,
-html body #communities #vnJoinedCommunities .vn-join-community-card span{
-  background:transparent!important;padding:0!important;border-radius:0!important;
-}
-@media(max-width:380px){
- html body #communities #vnJoinedCommunities.vn-joined-row{gap:9px!important}
- html body #communities #vnJoinedCommunities .vn-comm-icon{width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important}
+<style id="vn-exact-card-match-and-black-box-kill">
+/* ==========================================================================
+   1. MAKE "MY COMMUNITIES" CARDS 100% IDENTICAL IN SIZE & DESIGN TO "RECOMMENDED"
+   ========================================================================== */
+
+/* Remove the shrinking outer bubble box so both sections share the exact same width */
+html body #communities #vnMyCommunitiesSection,
+html body #communities .vn-my-communities {
+  margin: 8px 0 18px 0 !important;
+  padding: 0 14px !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
 }
 
-/* Prevent the old plum page background from flashing while the document paints. */
-:root{color-scheme:light!important;--bg:#CFEAD9!important;--panel:#FFFFFF!important;--line:#FFFFFF!important;--text:#0F291E!important;--muted:#426653!important}
-html,body,body::before,body::after{
-  background:#CFEAD9!important;background-color:#CFEAD9!important;
-  background-image:linear-gradient(180deg,#CFEAD9 0%,#E8F6EE 42%,#FFFFFF 100%)!important;
-  color:#0F291E!important;
+html body #communities #vnMyCommunitiesSection > h1,
+html body #communities .vn-my-communities > h1 {
+  margin: 6px 2px 14px !important;
+  font-size: 24px !important;
+  font-weight: 850 !important;
+  color: #0F291E !important;
 }
-body{background-attachment:scroll!important}
-html body #communities.page,
-html body #communities.page.active,
-html body #home.page,
-html body #home.page.active,
-html body #chats.page,
-html body #profile.page{
-  background:transparent!important;background-color:transparent!important;background-image:none!important;
+
+/* Force both My Communities row and Recommended grid to use the EXACT same 3-card-per-row dimensions */
+html body #communities #vnJoinedCommunities,
+html body #communities .vn-joined-row {
+  display: grid !important;
+  grid-template-columns: repeat(3, calc((100vw - 48px) / 3)) !important;
+  gap: 10px !important;
+  padding: 6px 0 4px !important;
+  margin: 0 !important;
+  overflow: visible !important;
 }
-html body #community,
-html body #community.page,
-html body #community.page.active,
-html body.vn-community-space,
+
+html body #communities #vnRecommendedCommunities,
+html body #communities .vn-recommended-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3, calc((100vw - 48px) / 3)) !important;
+  gap: 10px !important;
+  padding: 6px 14px 14px !important;
+  margin: 0 !important;
+}
+
+/* Identical Card Size & Design for My Communities, Join a Community, and Recommended */
+html body #communities #vnJoinedCommunities > *,
+html body #communities #vnRecommendedCommunities > *,
+html body #communities .vn-joined-card,
+html body #communities .vn-recommended-card,
+html body #communities .vn-join-community-card {
+  position: relative !important;
+  width: calc((100vw - 48px) / 3) !important;
+  min-width: calc((100vw - 48px) / 3) !important;
+  max-width: calc((100vw - 48px) / 3) !important;
+  height: calc((100vw - 48px) / 3 * 1.38) !important;
+  min-height: calc((100vw - 48px) / 3 * 1.38) !important;
+  max-height: calc((100vw - 48px) / 3 * 1.38) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 18px !important;
+  background: #FFFFFF !important;
+  border: 1.5px solid #FFFFFF !important;
+  box-shadow: 0 8px 20px rgba(15, 41, 30, 0.08) !important;
+  overflow: visible !important;
+  box-sizing: border-box !important;
+}
+
+/* Inner cover image clips cleanly to card corners */
+html body #communities #vnJoinedCommunities > * > div:first-child,
+html body #communities #vnRecommendedCommunities > * > div:first-child,
+html body #communities .vn-comm-cover {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  border-radius: 17px !important;
+  overflow: hidden !important;
+}
+
+/* Top-left overlapping mini icon badge — identical on both My Communities & Recommended */
+html body #communities #vnJoinedCommunities .vn-tile-icon,
+html body #communities #vnJoinedCommunities .vn-comm-icon,
+html body #communities #vnRecommendedCommunities .vn-tile-icon,
+html body #communities #vnRecommendedCommunities .vn-comm-icon {
+  position: absolute !important;
+  top: -5px !important;
+  left: -5px !important;
+  width: 34px !important;
+  height: 34px !important;
+  border-radius: 10px !important;
+  border: 1.5px solid #FFFFFF !important;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18) !important;
+  z-index: 5 !important;
+  overflow: hidden !important;
+}
+
+/* Remove the green pill box behind My Communities card titles so it matches Recommended's clean text */
+html body #communities #vnJoinedCommunities .vn-tile-name,
+html body #communities #vnJoinedCommunities .vn-comm-card-name,
+html body #communities #vnJoinedCommunities span:last-child,
+html body #communities #vnRecommendedCommunities .vn-tile-name,
+html body #communities #vnRecommendedCommunities .vn-comm-card-name {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: #0F291E !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  text-align: center !important;
+  text-shadow: 0 1px 4px rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Style the 3rd card ("Join a community") to match the exact size and 3D Mint-White vibe */
+html body #communities .vn-join-community-card,
+html body #communities #vnJoinedCommunities > button:last-child {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(207, 234, 217, 0.65)) !important;
+  border: 2px solid #FFFFFF !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* ========================================================================== 
+   2. KILL THE INNER BLACK RECTANGLE IN SINGLE COMMUNITY VIEW ("Anime haven")
+   ========================================================================== */
+
+/* Strip dark background from .community-detail and all inner wrappers */
 html body.vn-community-space #community,
 html body.vn-community-space #community.page.active,
-html body.vn-community-space #communityDetailContent,
-html body.vn-community-space .community-detail{
-  background:#CFEAD9!important;
-  background-color:#CFEAD9!important;
-  background-image:linear-gradient(180deg,#CFEAD9 0%,#E8F6EE 42%,#FFFFFF 100%)!important;
-  background-attachment:scroll!important;
-  border:0!important;outline:0!important;box-shadow:none!important;
+html body #community .community-detail,
+html body.vn-community-space #community .community-detail,
+html body #community #communityDetailContent,
+html body #community .community-space-shell,
+html body #community .community-space-body,
+html body #community [data-community-panel] {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  border: 0 !important;
 }
-meta[name="theme-color"]{color:#CFEAD9!important}
+
+/* Keep the outer #community page as a clean full-screen Mint-to-White gradient */
+html body.vn-community-space #community.page.active,
+html body #community.page.active {
+  background: linear-gradient(180deg, #CFEAD9 0%, #E8F6EE 42%, #FFFFFF 100%) !important;
+}
+
+/* Fix the black "About | Posts | Chatrooms" segmented bar */
+html body #community .community-section-tabs,
+html body #community .vn-community-tabs,
+html body #community [role="tablist"],
+html body #community div:has(> button[data-community-tab]) {
+  background: rgba(255, 255, 255, 0.85) !important;
+  border: 1.5px solid #FFFFFF !important;
+  border-radius: 999px !important;
+  padding: 5px !important;
+  box-shadow: inset 0 2px 5px rgba(45, 106, 79, 0.08), 0 8px 20px rgba(15, 41, 30, 0.06) !important;
+}
 </style>
+
+<script id="vn-kill-inner-black-box-script">
+(function(){
+  // Automatically strip any dark background on .community-detail or its children inside #community
+  function stripInnerCommunityDarkBg() {
+    const comm = document.getElementById('community');
+    if (!comm) return;
+    comm.querySelectorAll('div, section, main, article').forEach(el => {
+      const bg = window.getComputedStyle(el).backgroundColor;
+      // Detect dark/black rgb values like rgb(16, 11, 26), rgb(14, 9, 21), etc.
+      const m = bg && bg.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)/);
+      if (m && Number(m[1]) < 50 && Number(m[2]) < 50 && Number(m[3]) < 65) {
+        if (!el.classList.contains('vn-tile-icon') && !el.classList.contains('community-cover-icon')) {
+          el.style.setProperty('background', 'rgba(255, 255, 255, 0.88)', 'important');
+          el.style.setProperty('background-color', 'rgba(255, 255, 255, 0.88)', 'important');
+          el.style.setProperty('color', '#0F291E', 'important');
+        }
+      }
+    });
+    const detail = comm.querySelector('.community-detail');
+    if (detail) {
+      detail.style.setProperty('background', 'transparent', 'important');
+      detail.style.setProperty('background-color', 'transparent', 'important');
+    }
+  }
+  document.addEventListener('click', () => setTimeout(stripInnerCommunityDarkBg, 30));
+  new MutationObserver(stripInnerCommunityDarkBg).observe(document.body, { childList: true, subtree: true });
+  stripInnerCommunityDarkBg();
+})();
+</script>
