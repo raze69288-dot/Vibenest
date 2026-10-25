@@ -1,9 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="AppTheme" parent="@android:style/Theme.Material.Light.NoActionBar">
+
         <item name="android:fontFamily">sans</item>
         <item name="android:colorAccent">#B18AFF</item>
-        <item name="android:statusBarColor">#100B1A</item>
-        <item name="android:navigationBarColor">#100B1A</item>
-        <item name="android:windowLightStatusBar">false</item>
+
+        <!-- Mint status bar with dark icons -->
+        <item name="android:statusBarColor">#CFEAD9</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+        <!-- White navigation bar with dark icons -->
+        <item name="android:navigationBarColor">#FFFFFF</item>
+        <item name="android:windowLightNavigationBar">true</item>
+
+        <item name="android:windowActionModeOverlay">true</item>
+
     </style>
 </resources>
