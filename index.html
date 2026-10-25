@@ -7784,4 +7784,181 @@ html body #communities #vnJoinedCommunities > button:last-child > span:first-chi
  #communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-icon,#communities #vnJoinedCommunities>.vn-join-community-card>.vn-join-plus{width:39px!important;height:39px!important;min-width:39px!important;min-height:39px!important;max-width:39px!important;max-height:39px!important}
 }
 </style>
+
+<style id="vn-community-layout-repair-20261025">
+/* Keep the joined section hidden until the app has joined communities to show. */
+#communities #vnMyCommunitiesSection[hidden] { display:none!important; }
+/* Rounded mint bubble wraps only My Communities; Create Your Own remains its sibling. */
+#communities #vnMyCommunitiesSection:not([hidden]) {
+  display:block!important;
+  width:auto!important;
+  margin:14px 14px 20px!important;
+  padding:16px 12px 14px!important;
+  border:1px solid rgba(255,255,255,.82)!important;
+  border-radius:28px!important;
+  background:linear-gradient(145deg,#d8f3e2,#c8ead5)!important;
+  box-shadow:0 10px 26px rgba(8,35,22,.18),inset 0 1px 0 rgba(255,255,255,.85)!important;
+  box-sizing:border-box!important;
+  overflow:visible!important;
+}
+#communities #vnMyCommunitiesSection>h1 {
+  margin:0 3px 12px!important;
+  color:#173426!important;
+  font-size:22px!important;
+  line-height:1.2!important;
+  letter-spacing:-.45px!important;
+}
+/* Three equal cards across the available width, including the Join card. */
+#communities #vnJoinedCommunities {
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:9px!important;
+  width:100%!important;
+  min-width:0!important;
+  margin:0!important;
+  padding:5px 0 3px!important;
+  box-sizing:border-box!important;
+  overflow:visible!important;
+  align-items:stretch!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card,
+#communities #vnJoinedCommunities>.vn-join-community-card {
+  position:relative!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  height:auto!important;
+  min-height:0!important;
+  max-height:none!important;
+  aspect-ratio:.72!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+  border-radius:18px!important;
+  box-shadow:0 5px 14px rgba(12,30,21,.17)!important;
+}
+/* Clip the cover/banner to the card. Keep the icon badge above the banner. */
+#communities #vnJoinedCommunities>.vn-joined-card {
+  overflow:hidden!important;
+  isolation:isolate!important;
+  background:#d8eee0!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-cover {
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  overflow:hidden!important;
+  border-radius:inherit!important;
+  clip-path:inset(0 round 18px)!important;
+  z-index:0!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-cover img {
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center!important;
+  border-radius:inherit!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-cover:after {
+  z-index:1!important;
+  pointer-events:none!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-icon {
+  position:absolute!important;
+  top:8px!important;
+  left:8px!important;
+  right:auto!important;
+  bottom:auto!important;
+  width:42px!important;
+  height:42px!important;
+  min-width:42px!important;
+  min-height:42px!important;
+  max-width:42px!important;
+  max-height:42px!important;
+  padding:0!important;
+  margin:0!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:hidden!important;
+  box-sizing:border-box!important;
+  border:2px solid #fff!important;
+  border-radius:13px!important;
+  background:#fff!important;
+  box-shadow:0 3px 11px rgba(0,0,0,.28)!important;
+  z-index:5!important;
+  isolation:isolate!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-icon img {
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  min-width:0!important;
+  min-height:0!important;
+  max-width:100%!important;
+  max-height:100%!important;
+  object-fit:cover!important;
+  border-radius:9px!important;
+  z-index:1!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-card-name {
+  position:absolute!important;
+  left:5px!important;
+  right:5px!important;
+  bottom:5px!important;
+  z-index:4!important;
+  padding:7px 4px!important;
+  border-radius:11px!important;
+  background:rgba(255,255,255,.94)!important;
+  color:#173426!important;
+  text-shadow:none!important;
+  font-size:clamp(10px,3.2vw,14px)!important;
+  line-height:1.2!important;
+  overflow-wrap:anywhere!important;
+}
+/* The Join tile matches the row without affecting the Recommended cards. */
+#communities #vnJoinedCommunities>.vn-join-community-card {
+  display:flex!important;
+  flex-direction:column!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:9px!important;
+  padding:10px 5px!important;
+  overflow:hidden!important;
+  background:linear-gradient(145deg,#f7fff9,#d7f0e0)!important;
+  border:1px solid #b8ddc5!important;
+  color:#173426!important;
+  font-size:clamp(11px,3.2vw,14px)!important;
+  line-height:1.25!important;
+  white-space:normal!important;
+}
+#communities #vnJoinedCommunities>.vn-join-community-card>.vn-join-plus {
+  position:static!important;
+  flex:0 0 auto!important;
+  width:43px!important;
+  height:43px!important;
+  min-width:43px!important;
+  min-height:43px!important;
+  display:grid!important;
+  place-items:center!important;
+  border-radius:14px!important;
+  background:#bde6cb!important;
+  color:#173426!important;
+  box-shadow:none!important;
+}
+#communities #vnJoinedCommunities>.vn-join-community-card>span:last-child {
+  font-size:clamp(11px,3.2vw,14px)!important;
+  line-height:1.25!important;
+  overflow-wrap:anywhere!important;
+}
+@media(max-width:380px) {
+  #communities #vnMyCommunitiesSection:not([hidden]) {margin-left:10px!important;margin-right:10px!important;padding:13px 9px 12px!important;border-radius:24px!important}
+  #communities #vnJoinedCommunities {gap:7px!important}
+  #communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-icon {top:7px!important;left:7px!important;width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important;max-width:36px!important;max-height:36px!important}
+}
+</style>
+
 </html>
