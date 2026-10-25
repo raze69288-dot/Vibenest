@@ -6831,33 +6831,45 @@ body.vn-community-space #community {
 </style>
 <script id="vn-community-black-background-final-fix-script">
 (function () {
-  const paintCommunity = () => {
+  // Avoid an observer feedback loop: this observer deliberately does NOT watch style attributes.
+  let scheduled = false;
+  function paintCommunity() {
+    scheduled = false;
     const community = document.getElementById('community');
     if (!community) return;
-    const active = community.classList.contains('active') ||
-      (community.classList.contains('page') && community.classList.contains('active')) ||
-      document.body.classList.contains('vn-community-space');
+    const active = community.classList.contains('active') || document.body.classList.contains('vn-community-space');
     if (!active) return;
     const gradient = 'linear-gradient(180deg, #CFEAD9 0%, #E8F6EE 42%, #FFFFFF 100%)';
-    document.documentElement.style.setProperty('background', gradient, 'important');
-    document.body.style.setProperty('background', gradient, 'important');
-    document.body.style.setProperty('background-color', '#CFEAD9', 'important');
-    community.style.setProperty('background', 'transparent', 'important');
-    community.style.setProperty('background-color', 'transparent', 'important');
-    community.style.setProperty('background-image', 'none', 'important');
+    const setIfDifferent = (el, prop, value) => {
+      if (el && el.style.getPropertyValue(prop) !== value) el.style.setProperty(prop, value, 'important');
+    };
+    setIfDifferent(document.documentElement, 'background', gradient);
+    setIfDifferent(document.body, 'background', gradient);
+    setIfDifferent(document.body, 'background-color', '#CFEAD9');
+    setIfDifferent(community, 'background', 'transparent');
+    setIfDifferent(community, 'background-color', 'transparent');
+    setIfDifferent(community, 'background-image', 'none');
+    // The black fill in the screenshot is on the app/page shell surrounding #community.
     let parent = community.parentElement;
-    for (let i = 0; parent && i < 4; i++, parent = parent.parentElement) {
+    for (let i = 0; parent && i < 5; i++, parent = parent.parentElement) {
       if (parent === document.body || parent === document.documentElement) continue;
       const bg = getComputedStyle(parent).backgroundColor;
-      if (bg === 'rgb(16, 11, 26)' || bg === 'rgb(16, 11, 26, 1)') {
-        parent.style.setProperty('background', 'transparent', 'important');
-        parent.style.setProperty('background-color', 'transparent', 'important');
+      if (bg === 'rgb(16, 11, 26)' || bg === 'rgba(16, 11, 26, 1)') {
+        setIfDifferent(parent, 'background', 'transparent');
+        setIfDifferent(parent, 'background-color', 'transparent');
       }
     }
-  };
-  paintCommunity();
-  new MutationObserver(paintCommunity).observe(document.documentElement, {
-    subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'style']
+  }
+  function schedulePaint() {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(paintCommunity);
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', schedulePaint, { once: true });
+  else schedulePaint();
+  // Only observe navigation/class changes and DOM replacement, never style mutations.
+  new MutationObserver(schedulePaint).observe(document.documentElement, {
+    subtree: true, childList: true, attributes: true, attributeFilter: ['class']
   });
 })();
 </script>
