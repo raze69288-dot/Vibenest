@@ -7353,3 +7353,72 @@ html body #communities #vnJoinedCommunities > button:last-child > span:first-chi
   fixCommunityWrappersAndCards();
 })();
 </script>
+
+
+<!-- VibeNest login screen contrast fix -->
+<style id="vn-login-mint-contrast-fix">
+html body #authModal.vn-auth-screen,
+html body #authModal[style*="display: block"],
+html body #authModal[style*="display:block"] {
+  background: linear-gradient(180deg,#CFEAD9 0%,#E8F6EE 45%,#FFFFFF 100%) !important;
+  color: #0F291E !important;
+  padding: max(18px,env(safe-area-inset-top)) 16px max(22px,env(safe-area-inset-bottom)) !important;
+}
+html body #authModal .authbox {
+  width: min(100%,440px) !important;
+  margin: auto !important;
+  padding: 26px 22px 24px !important;
+  background: linear-gradient(155deg,rgba(255,255,255,.98),rgba(232,246,238,.98)) !important;
+  border: 1.5px solid #FFFFFF !important;
+  border-radius: 26px !important;
+  color: #0F291E !important;
+  box-shadow: 0 18px 45px rgba(15,41,30,.13), inset 0 1px 0 #FFFFFF !important;
+}
+html body #authModal .authbox:before {
+  background: linear-gradient(90deg,#8CCFA8,#CFEAD9) !important;
+  box-shadow: none !important;
+}
+html body #authModal .vn-auth-brand { color:#0F291E !important; }
+html body #authModal .vn-auth-brand span { color:#7950C7 !important; }
+html body #authModal .authbox>div[style*="letter-spacing"] { color:#25805A !important; }
+html body #authModal #authTitle { color:#0F291E !important; text-shadow:none !important; }
+html body #authModal #authSubtitle { color:#496B59 !important; }
+html body #authModal label,
+html body #authModal #authEmailLabel,
+html body #authModal #authPasswordLabel { color:#234A35 !important; }
+html body #authModal input,
+html body #authModal input[type="email"],
+html body #authModal input[type="password"],
+html body #authModal input[type="text"] {
+  background:#FFFFFF !important;
+  color:#0F291E !important;
+  -webkit-text-fill-color:#0F291E !important;
+  border:1.5px solid #C5E3D0 !important;
+  box-shadow:inset 0 2px 4px rgba(15,41,30,.04) !important;
+  caret-color:#0F291E !important;
+}
+html body #authModal input::placeholder { color:#789383 !important; opacity:1 !important; }
+html body #authModal input:focus {
+  border-color:#75B995 !important;
+  box-shadow:0 0 0 3px rgba(117,185,149,.18) !important;
+  outline:none !important;
+}
+html body #authModal #authSubmit {
+  background:linear-gradient(180deg,#FFFFFF 0%,#CFEAD9 100%) !important;
+  color:#0F291E !important;
+  border:1.5px solid #FFFFFF !important;
+  box-shadow:inset 0 2px 3px #FFFFFF,0 6px 14px rgba(45,106,79,.12) !important;
+}
+html body #authModal #authSwitch {
+  background:rgba(207,234,217,.38) !important;
+  color:#24553A !important;
+  border:1.5px solid #C5E3D0 !important;
+  box-shadow:none !important;
+}
+html body #authModal #authMessage { color:#24553A !important; }
+html body #authModal .auth-security-note { color:#496B59 !important; }
+@media(max-width:380px) {
+  html body #authModal .authbox { padding:23px 18px 21px !important; }
+}
+</style>
+
