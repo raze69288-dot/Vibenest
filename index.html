@@ -7712,4 +7712,76 @@ html body #communities #vnJoinedCommunities > button:last-child > span:first-chi
 }
 </style>
 
+
+<style id="vn-my-communities-bubble-and-card-final-20261025">
+/* One rounded bubble for the My Communities heading and its three-card row only. */
+#communities #vnMyCommunitiesSection{
+  display:block!important; width:auto!important; margin:12px 18px 18px!important;
+  padding:14px 12px 15px!important; box-sizing:border-box!important;
+  border-radius:30px!important; background:linear-gradient(145deg,rgba(201,245,218,.88),rgba(226,249,235,.76))!important;
+  border:1px solid rgba(255,255,255,.86)!important;
+  box-shadow:0 12px 28px rgba(28,100,66,.09),inset 0 1px rgba(255,255,255,.8)!important;
+  overflow:visible!important;
+}
+#communities #vnMyCommunitiesSection>h1{margin:0 4px 13px!important;padding:0!important;background:transparent!important;border:0!important;box-shadow:none!important;color:#10291f!important}
+/* Three equal tiles fill the entire available line; the third is the Join card. */
+#communities #vnJoinedCommunities{
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  width:100%!important;min-width:0!important;max-width:none!important;
+  gap:10px!important;padding:7px 2px 5px!important;margin:0!important;
+  box-sizing:border-box!important;align-items:stretch!important;overflow:visible!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card,
+#communities #vnJoinedCommunities>.vn-join-community-card{
+  width:100%!important;min-width:0!important;max-width:none!important;
+  height:auto!important;min-height:0!important;max-height:none!important;aspect-ratio:.72!important;
+  margin:0!important;box-sizing:border-box!important;position:relative!important;
+  border-radius:22px!important;
+}
+/* Banner stays inside the card silhouette and cannot spill into the icon badge. */
+#communities #vnJoinedCommunities>.vn-joined-card{overflow:visible!important}
+#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-cover{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+  overflow:hidden!important;clip-path:inset(0 round 21px)!important;border-radius:21px!important;z-index:0!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-cover img{
+  position:absolute!important;inset:0!important;display:block!important;width:100%!important;height:100%!important;
+  object-fit:cover!important;object-position:center!important;border-radius:inherit!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-icon{
+  position:absolute!important;top:-7px!important;left:-7px!important;right:auto!important;bottom:auto!important;
+  width:44px!important;height:44px!important;min-width:44px!important;min-height:44px!important;
+  max-width:44px!important;max-height:44px!important;padding:0!important;margin:0!important;
+  display:grid!important;place-items:center!important;overflow:hidden!important;box-sizing:border-box!important;
+  background:#fff!important;border:2px solid #fff!important;border-radius:14px!important;
+  box-shadow:0 5px 13px rgba(15,41,30,.22)!important;z-index:12!important;isolation:isolate!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-icon img{
+  position:relative!important;inset:auto!important;display:block!important;width:100%!important;height:100%!important;
+  min-width:0!important;min-height:0!important;max-width:100%!important;max-height:100%!important;
+  object-fit:cover!important;object-position:center!important;border-radius:10px!important;z-index:1!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-card-name{
+  left:5px!important;right:5px!important;bottom:5px!important;z-index:4!important;
+  padding:6px 3px!important;border-radius:12px!important;background:rgba(255,255,255,.92)!important;
+  color:#10291f!important;text-shadow:none!important;font-size:clamp(11px,3.4vw,15px)!important;
+}
+#communities #vnJoinedCommunities>.vn-join-community-card{
+  display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+  gap:10px!important;padding:14px 5px!important;overflow:visible!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.94),rgba(207,234,217,.76))!important;
+}
+#communities #vnJoinedCommunities>.vn-join-community-card>.vn-join-plus{
+  top:-7px!important;left:-7px!important;width:44px!important;height:44px!important;
+  border-radius:14px!important;z-index:12!important;
+}
+#communities #vnJoinedCommunities>.vn-join-community-card>span:last-child{
+  font-size:clamp(11px,3.3vw,15px)!important;line-height:1.25!important;
+}
+@media(max-width:380px){
+ #communities #vnMyCommunitiesSection{margin-left:12px!important;margin-right:12px!important;padding:13px 9px!important;border-radius:26px!important}
+ #communities #vnJoinedCommunities{gap:8px!important;padding-left:1px!important;padding-right:1px!important}
+ #communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-icon,#communities #vnJoinedCommunities>.vn-join-community-card>.vn-join-plus{width:39px!important;height:39px!important;min-width:39px!important;min-height:39px!important;max-width:39px!important;max-height:39px!important}
+}
+</style>
 </html>
