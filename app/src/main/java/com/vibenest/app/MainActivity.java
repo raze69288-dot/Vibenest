@@ -27,11 +27,21 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle state) {
         super.onCreate(state);
         Window window = getWindow();
-        window.setStatusBarColor(Color.rgb(16, 11, 26));
-        window.setNavigationBarColor(Color.rgb(16, 11, 26));
-
+                Window window = getWindow();
+        window.setStatusBarColor(Color.rgb(207, 234, 217));
+        window.setNavigationBarColor(Color.rgb(255, 255, 255));
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            int flags = window.getDecorView().getSystemUiVisibility();
+            flags |= android.view.View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+                flags |= android.view.View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR;
+            }
+            window.getDecorView().setSystemUiVisibility(flags);
+        }
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         webView = new WebView(this);
-        webView.setBackgroundColor(Color.rgb(16, 11, 26));
+        webView.setBackgroundColor(Color.rgb(207, 234, 217));
+
         WebSettings s = webView.getSettings();
         s.setJavaScriptEnabled(true);
         s.setDomStorageEnabled(true);
