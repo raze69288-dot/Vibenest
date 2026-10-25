@@ -3396,7 +3396,7 @@ body.direct-chat-open #chatWindow > .join:first-child{display:none!important}
 <script id="vn-touch-swipe-navigation">
 (()=>{
  if(window.__vnTouchSwipeNavigation)return;window.__vnTouchSwipeNavigation=true;
- const tabs=['home','communities','chats','profile'];let sx=0,sy=0,started=false,origin=null;
+ const tabs=['home','communities','chats','marketplace'];let sx=0,sy=0,started=false,origin=null;
  const ignored=e=>!!e.target.closest('input,textarea,select,button,a,[contenteditable="true"],#vnFeatureCarousel,.vn-feature-carousel,.chat-messages,.room-chat-messages,.community-rooms,.modal,.public-profile-overlay,[data-no-page-swipe]');
  document.addEventListener('touchstart',e=>{if(e.touches.length!==1){started=false;return}const t=e.touches[0];sx=t.clientX;sy=t.clientY;origin=document.querySelector('.page.active');started=!!origin&&!ignored(e)&&!document.body.classList.contains('direct-chat-open');},{passive:true});
  document.addEventListener('touchend',e=>{if(!started||!e.changedTouches?.[0])return;started=false;const t=e.changedTouches[0],dx=t.clientX-sx,dy=t.clientY-sy;if(Math.abs(dx)<76||Math.abs(dx)<Math.abs(dy)*1.35)return;
