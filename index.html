@@ -4037,7 +4037,7 @@ nav.bottom>button.nav-tap .nav-icon{filter:drop-shadow(0 0 8px rgba(195,158,255,
 </style>
 <script id="vn-communities-tab-redesign-logic">
 function vnCommunityCategoryIcon(c){const raw=String(c.category||c.cat||'').toLowerCase();if(raw.includes('anime')||raw.includes('movie')||raw.includes('tv'))return '✦';if(raw.includes('gaming'))return '🎮';if(raw.includes('art')||raw.includes('creator'))return '🎨';if(raw.includes('music'))return '♫';if(raw.includes('book')||raw.includes('study'))return '📚';if(raw.includes('tech'))return '⌘';if(raw.includes('sport'))return '⚽';if(raw.includes('roleplay'))return '✧';return '✦'}
-function vnCommunityIconMarkup(c){const raw=c?.icon_url||c?.community_icon_url||c?.iconUrl||c?.icon_image_url||c?.community_icon||c?.image_url||c?.avatar_url||c?.icon||c?.emoji||'';const icon=typeof raw==='string'?raw.trim():'';if(icon&&(/^(https?:|data:image\/|blob:)/i.test(icon)))return `<img src="${safeText(icon)}" alt="${safeText(c?.name||'Community')} icon" loading="lazy" onerror="this.onerror=null;this.parentElement.textContent='✦'">`;if(icon&&icon.length<16&&!/[\s]/.test(icon))return safeText(icon);return '✦'}
+function vnCommunityIconMarkup(c){const raw=c?.icon_url||c?.community_icon_url||c?.iconUrl||c?.icon_image_url||c?.community_icon||c?.avatar_url||c?.icon||c?.emoji||'';const icon=typeof raw==='string'?raw.trim():'';if(icon&&(/^(https?:|data:image\/|blob:)/i.test(icon)))return `<img src="${safeText(icon)}" alt="${safeText(c?.name||'Community')} icon" loading="lazy" onerror="this.onerror=null;this.parentElement.textContent='✦'">`;if(icon&&icon.length<16&&!/[\s]/.test(icon))return safeText(icon);return '✦'}
 function vnCommunityCoverMarkup(c){return `<span class="vn-comm-cover">${c.cover_url?`<img src="${safeText(c.cover_url)}" alt="" loading="lazy" onerror="this.style.display='none'">`:''}</span>`}
 function vnCommunityTileMarkup(c,joined=false){return `<button type="button" class="${joined?'vn-joined-card':'vn-recommended-card'}" data-vn-community="${safeText(c.id)}" aria-label="Open ${safeText(c.name||'community')}">${vnCommunityCoverMarkup(c)}<span class="vn-comm-icon">${vnCommunityIconMarkup(c)}</span><span class="vn-comm-card-name">${safeText(c.name||'Community')}</span></button>`}
 let vnShowAllJoinedCommunities=false;function vnToggleJoinedCommunities(){vnShowAllJoinedCommunities=!vnShowAllJoinedCommunities;vnRenderCommunitiesTab();}function vnRenderCommunitiesTab(){const all=(typeof onlineCommunities!=='undefined'?onlineCommunities:[]).filter(c=>c&&c.id&&!vnIsDemoCommunity(c));const joined=all.filter(c=>c.joined);const joinedSection=document.getElementById('vnMyCommunitiesSection'),joinedOut=document.getElementById('vnJoinedCommunities'),empty=document.getElementById('vnNoJoinedCommunities'),recommended=document.getElementById('vnRecommendedCommunities');if(!joinedSection||!joinedOut||!empty||!recommended)return;joinedSection.hidden=joined.length===0;empty.hidden=joined.length>0;if(joined.length){const shown=joined.slice(0,2);vnShowAllJoinedCommunities=false;joinedOut.innerHTML=shown.map(c=>vnCommunityTileMarkup(c,true)).join('')+`<button type="button" class="vn-join-community-card" onclick="vnOpenCommunityDirectory()" aria-label="Browse all communities"><span class="vn-join-plus">＋</span><span>Join a<br>community</span></button>`;}else{joinedOut.innerHTML='';vnShowAllJoinedCommunities=false;}const sorted=[...all].sort((a,b)=>{const ac=communityMemberCounts[a.id]||0,bc=communityMemberCounts[b.id]||0;return bc-ac||new Date(b.created_at||0)-new Date(a.created_at||0)});recommended.innerHTML=sorted.length?sorted.map(c=>vnCommunityTileMarkup(c,false)).join(''):'<div class="vn-communities-empty">No communities yet. Be the first to create one and bring your people together.</div>';const count=document.getElementById('communityHubCount');if(count)count.textContent=all.length;}
@@ -7958,6 +7958,116 @@ html body #communities #vnJoinedCommunities > button:last-child > span:first-chi
   #communities #vnMyCommunitiesSection:not([hidden]) {margin-left:10px!important;margin-right:10px!important;padding:13px 9px 12px!important;border-radius:24px!important}
   #communities #vnJoinedCommunities {gap:7px!important}
   #communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-icon {top:7px!important;left:7px!important;width:36px!important;height:36px!important;min-width:36px!important;min-height:36px!important;max-width:36px!important;max-height:36px!important}
+}
+</style>
+
+
+<style id="vn-community-root-cause-fix">
+/* Root-cause repair: one final layout authority after legacy community overrides. */
+#communities #vnMyCommunitiesSection[hidden]{display:none!important}
+#communities #vnMyCommunitiesSection:not([hidden]){
+  display:block!important; width:auto!important; min-width:0!important;
+  margin:14px 14px 20px!important; padding:16px 13px 14px!important;
+  box-sizing:border-box!important; border:1px solid rgba(255,255,255,.9)!important;
+  border-radius:30px!important;
+  background:linear-gradient(145deg,rgba(211,243,223,.98),rgba(194,231,207,.96))!important;
+  box-shadow:0 12px 26px rgba(30,85,55,.12),inset 0 1px 0 #ffffff!important;
+  overflow:visible!important;
+}
+#communities #vnMyCommunitiesSection>h1{
+  margin:0 4px 14px!important;padding:0!important;color:#153629!important;
+  font-size:clamp(23px,5.7vw,30px)!important;line-height:1.15!important;
+}
+/* Three equal-width tiles exactly; the join tile is the third tile. */
+#communities #vnJoinedCommunities{
+  display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  align-items:stretch!important;gap:10px!important;width:100%!important;
+  min-width:0!important;margin:0!important;padding:7px 0 3px!important;
+  box-sizing:border-box!important;overflow:visible!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card,
+#communities #vnJoinedCommunities>.vn-join-community-card{
+  position:relative!important;display:block!important;float:none!important;
+  flex:none!important;width:100%!important;min-width:0!important;max-width:none!important;
+  height:auto!important;min-height:0!important;max-height:none!important;
+  aspect-ratio:.70!important;margin:0!important;padding:0!important;
+  box-sizing:border-box!important;border:1.5px solid #fff!important;
+  border-radius:22px!important;overflow:hidden!important;isolation:isolate!important;
+  background:#d8eee0!important;box-shadow:0 7px 16px rgba(20,55,37,.12)!important;
+  color:#153629!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-cover{
+  position:absolute!important;inset:0!important;display:block!important;
+  width:100%!important;height:100%!important;margin:0!important;padding:0!important;
+  border-radius:inherit!important;overflow:hidden!important;
+  clip-path:inset(0 round 21px)!important;z-index:0!important;pointer-events:none!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-cover img{
+  position:absolute!important;inset:0!important;display:block!important;
+  width:100%!important;height:100%!important;max-width:none!important;max-height:none!important;
+  object-fit:cover!important;object-position:center!important;border-radius:inherit!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-cover:after{
+  position:absolute!important;inset:35% 0 0!important;content:""!important;
+  background:linear-gradient(180deg,transparent 15%,rgba(211,243,223,.16) 55%,rgba(255,255,255,.96) 100%)!important;
+  z-index:1!important;pointer-events:none!important;
+}
+/* Icon is a separate sibling above the cover. Do not let cover image populate the icon. */
+#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-icon{
+  position:absolute!important;top:8px!important;left:8px!important;right:auto!important;bottom:auto!important;
+  display:grid!important;place-items:center!important;flex:none!important;
+  width:clamp(38px,11vw,48px)!important;height:clamp(38px,11vw,48px)!important;
+  min-width:0!important;min-height:0!important;max-width:48px!important;max-height:48px!important;
+  margin:0!important;padding:0!important;box-sizing:border-box!important;overflow:hidden!important;
+  border:2px solid #fff!important;border-radius:13px!important;background:#fff!important;
+  color:#153629!important;font-size:22px!important;line-height:1!important;
+  box-shadow:0 4px 12px rgba(0,0,0,.22)!important;z-index:4!important;isolation:isolate!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-icon img{
+  position:relative!important;inset:auto!important;display:block!important;
+  width:100%!important;height:100%!important;min-width:0!important;min-height:0!important;
+  max-width:100%!important;max-height:100%!important;object-fit:cover!important;
+  object-position:center!important;border-radius:9px!important;z-index:1!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-card-name{
+  position:absolute!important;left:5px!important;right:5px!important;bottom:5px!important;
+  z-index:3!important;display:block!important;margin:0!important;padding:7px 4px!important;
+  border:0!important;border-radius:12px!important;background:rgba(255,255,255,.94)!important;
+  color:#153629!important;font-size:clamp(10px,3.2vw,15px)!important;
+  font-weight:850!important;line-height:1.2!important;text-align:center!important;
+  white-space:normal!important;overflow-wrap:anywhere!important;text-shadow:none!important;
+}
+/* Join card keeps the same footprint, with its plus badge pinned independently. */
+#communities #vnJoinedCommunities>.vn-join-community-card{
+  display:flex!important;flex-direction:column!important;align-items:center!important;justify-content:center!important;
+  gap:10px!important;padding:12px 5px!important;
+  background:linear-gradient(145deg,rgba(255,255,255,.96),rgba(218,243,226,.96))!important;
+}
+#communities #vnJoinedCommunities>.vn-join-community-card>.vn-join-plus{
+  position:absolute!important;top:8px!important;left:8px!important;display:grid!important;
+  place-items:center!important;width:clamp(38px,11vw,48px)!important;height:clamp(38px,11vw,48px)!important;
+  min-width:0!important;min-height:0!important;max-width:48px!important;max-height:48px!important;
+  margin:0!important;padding:0!important;box-sizing:border-box!important;border:2px solid #fff!important;
+  border-radius:13px!important;background:#fff!important;color:#16855f!important;
+  font-size:27px!important;line-height:1!important;box-shadow:0 4px 12px rgba(0,0,0,.12)!important;z-index:4!important;
+}
+#communities #vnJoinedCommunities>.vn-join-community-card>span:last-child{
+  position:static!important;display:block!important;width:100%!important;margin:0!important;padding:0!important;
+  border:0!important;background:transparent!important;color:#153629!important;
+  font-size:clamp(11px,3.2vw,15px)!important;font-weight:850!important;line-height:1.25!important;
+  text-align:center!important;overflow-wrap:anywhere!important;box-shadow:none!important;
+}
+/* Keep Create Your Own and Recommended as siblings/outside the My Communities bubble. */
+#communities #vnCreateCommunityCTA,
+#communities .vn-create-community-cta{margin-top:0!important}
+#communities #vnRecommendedCommunities{
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+}
+@media(max-width:380px){
+  #communities #vnMyCommunitiesSection:not([hidden]){margin-left:10px!important;margin-right:10px!important;padding:13px 9px 12px!important;border-radius:25px!important}
+  #communities #vnJoinedCommunities{gap:7px!important}
+  #communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-icon,
+  #communities #vnJoinedCommunities>.vn-join-community-card>.vn-join-plus{top:7px!important;left:7px!important}
 }
 </style>
 
