@@ -6873,3 +6873,104 @@ body.vn-community-space #community {
   });
 })();
 </script>
+
+<!-- VibeNest follow-up: community shell background + community content sizing -->
+<style id="vn-community-shell-and-card-sizing-fix">
+:root.vn-community-view-active,
+html.vn-community-view-active,
+html.vn-community-view-active body,
+html.vn-community-view-active #app,
+html.vn-community-view-active main,
+html.vn-community-view-active .app-shell,
+html.vn-community-view-active .main-content,
+html.vn-community-view-active .page-container,
+html.vn-community-view-active #community,
+html.vn-community-view-active #community.page,
+html.vn-community-view-active #community.page.active {
+  background: linear-gradient(180deg,#CFEAD9 0%,#E8F6EE 42%,#FFFFFF 100%) !important;
+  background-color: #CFEAD9 !important;
+  background-image: linear-gradient(180deg,#CFEAD9 0%,#E8F6EE 42%,#FFFFFF 100%) !important;
+  color: #0F291E !important;
+}
+html.vn-community-view-active body,
+html.vn-community-view-active #app,
+html.vn-community-view-active main,
+html.vn-community-view-active .app-shell,
+html.vn-community-view-active .main-content,
+html.vn-community-view-active .page-container {
+  min-height: 100dvh !important;
+}
+html.vn-community-view-active #community,
+html.vn-community-view-active #community.page,
+html.vn-community-view-active #community.page.active {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 100dvh !important;
+  margin-inline: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+/* Let the About panel use the available screen width instead of looking pinched. */
+html.vn-community-view-active #community .community-detail,
+html.vn-community-view-active #community .community-about,
+html.vn-community-view-active #community [class*="about-card"],
+html.vn-community-view-active #community [class*="community-about"],
+html.vn-community-view-active #community [class*="description-card"] {
+  box-sizing: border-box !important;
+  width: calc(100% - 28px) !important;
+  max-width: none !important;
+  margin-left: 14px !important;
+  margin-right: 14px !important;
+}
+/* Any community content grid may show at most three cards across; on phones keep cards readable. */
+html.vn-community-view-active #community .vn-community-post-grid,
+html.vn-community-view-active #community .vn-community-room-grid,
+html.vn-community-view-active #community .community-posts-grid,
+html.vn-community-view-active #community .community-rooms-grid {
+  display: grid !important;
+  grid-template-columns: repeat(3,minmax(0,1fr)) !important;
+  gap: 12px !important;
+  width: calc(100% - 28px) !important;
+  margin-inline: 14px !important;
+}
+@media (max-width: 520px) {
+  html.vn-community-view-active #community .vn-community-post-grid,
+  html.vn-community-view-active #community .vn-community-room-grid,
+  html.vn-community-view-active #community .community-posts-grid,
+  html.vn-community-view-active #community .community-rooms-grid {
+    grid-template-columns: minmax(0,1fr) !important;
+    gap: 14px !important;
+  }
+}
+</style>
+<script id="vn-community-shell-and-card-sizing-fix-script">
+(function(){
+  function communityIsVisible(){
+    const el = document.getElementById('community');
+    if (!el) return false;
+    const s = getComputedStyle(el);
+    return s.display !== 'none' && s.visibility !== 'hidden' && el.getClientRects().length > 0 &&
+      (el.classList.contains('active') || el.classList.contains('page') || document.body.classList.contains('vn-community-space'));
+  }
+  function syncCommunityClass(){
+    const active = communityIsVisible();
+    document.documentElement.classList.toggle('vn-community-view-active', active);
+  }
+  let queued = false;
+  function queueSync(){
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(function(){ queued = false; syncCommunityClass(); });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', queueSync, {once:true});
+  else queueSync();
+  // Deliberately watch class/DOM changes only; styling changes cannot retrigger this observer.
+  new MutationObserver(queueSync).observe(document.documentElement, {
+    subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'hidden']
+  });
+  document.addEventListener('click', function(){ queueSync(); }, true);
+})();
+</script>
