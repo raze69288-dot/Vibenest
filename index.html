@@ -6793,3 +6793,71 @@ html body #vnCommunityMeModal .vn-comm-me-sheet {
   fixObserver.observe(document.body, { childList: true, subtree: true, attributes: true });
 })();
 </script>
+
+<style id="vn-community-black-background-final-fix">
+/* Final override: keep the entire Single Community screen mint-to-white. */
+html:has(body #community.active),
+html:has(body #community.page.active),
+html:has(body.vn-community-space),
+html:has(body #community.active) body,
+html:has(body #community.page.active) body,
+body.vn-community-space,
+body.vn-community-space #app,
+body.vn-community-space main,
+body.vn-community-space #community,
+body.vn-community-space #community.page,
+body.vn-community-space #community.page.active,
+body:has(#community.active),
+body:has(#community.page.active) {
+  background: linear-gradient(180deg, #CFEAD9 0%, #E8F6EE 42%, #FFFFFF 100%) !important;
+  background-color: #CFEAD9 !important;
+  background-image: linear-gradient(180deg, #CFEAD9 0%, #E8F6EE 42%, #FFFFFF 100%) !important;
+  color: #0F291E !important;
+}
+html:has(body #community.active),
+html:has(body #community.page.active),
+html:has(body.vn-community-space) {
+  min-height: 100% !important;
+  background-attachment: fixed !important;
+}
+body:has(#community.active) #community,
+body:has(#community.page.active) #community,
+body.vn-community-space #community {
+  min-height: 100dvh !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+}
+</style>
+<script id="vn-community-black-background-final-fix-script">
+(function () {
+  const paintCommunity = () => {
+    const community = document.getElementById('community');
+    if (!community) return;
+    const active = community.classList.contains('active') ||
+      (community.classList.contains('page') && community.classList.contains('active')) ||
+      document.body.classList.contains('vn-community-space');
+    if (!active) return;
+    const gradient = 'linear-gradient(180deg, #CFEAD9 0%, #E8F6EE 42%, #FFFFFF 100%)';
+    document.documentElement.style.setProperty('background', gradient, 'important');
+    document.body.style.setProperty('background', gradient, 'important');
+    document.body.style.setProperty('background-color', '#CFEAD9', 'important');
+    community.style.setProperty('background', 'transparent', 'important');
+    community.style.setProperty('background-color', 'transparent', 'important');
+    community.style.setProperty('background-image', 'none', 'important');
+    let parent = community.parentElement;
+    for (let i = 0; parent && i < 4; i++, parent = parent.parentElement) {
+      if (parent === document.body || parent === document.documentElement) continue;
+      const bg = getComputedStyle(parent).backgroundColor;
+      if (bg === 'rgb(16, 11, 26)' || bg === 'rgb(16, 11, 26, 1)') {
+        parent.style.setProperty('background', 'transparent', 'important');
+        parent.style.setProperty('background-color', 'transparent', 'important');
+      }
+    }
+  };
+  paintCommunity();
+  new MutationObserver(paintCommunity).observe(document.documentElement, {
+    subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'style']
+  });
+})();
+</script>
