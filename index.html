@@ -6974,3 +6974,22 @@ html.vn-community-view-active #community .community-rooms-grid {
   document.addEventListener('click', function(){ queueSync(); }, true);
 })();
 </script>
+
+<style id="vn-final-community-layout-root-fix">
+:root{--bg:#CFEAD9;--panel:#FFFFFF;--line:rgba(15,41,30,.12);--text:#0F291E;--muted:#3B5949}
+html,body{background:#CFEAD9!important;background-image:linear-gradient(180deg,#CFEAD9 0%,#E8F6EE 42%,#FFFFFF 100%)!important;background-attachment:scroll!important}
+body.vn-community-space,body.vn-community-space #community,body.vn-community-space #community.page,body.vn-community-space #community.page.active,body.vn-community-space #community .community-detail,body.vn-community-space #community .community-detail>*,body.vn-community-space #community .page-content,body.vn-community-space #community .community-space-content{background-color:transparent!important;background-image:none!important;color:#0F291E!important}
+body.vn-community-space #community.page.active{background:linear-gradient(180deg,#CFEAD9 0%,#E8F6EE 42%,#FFFFFF 100%)!important;border:0!important;outline:0!important;box-shadow:none!important;width:100%!important;max-width:none!important;margin:0!important}
+body.vn-community-space #community.page.active:before,body.vn-community-space #community.page.active:after,body.vn-community-space #community .community-detail:before,body.vn-community-space #community .community-detail:after{content:none!important;display:none!important;background:transparent!important;border:0!important}
+#communities #vnMyCommunitiesSection{padding:22px 18px 22px!important;overflow:visible!important}
+#communities #vnJoinedCommunities.vn-joined-row{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important;width:100%!important;padding:8px 0 6px!important;overflow:visible!important;box-sizing:border-box!important}
+#communities #vnJoinedCommunities .vn-joined-card,#communities #vnJoinedCommunities .vn-join-community-card{width:100%!important;min-width:0!important;max-width:none!important;flex:none!important;height:clamp(210px,42vw,290px)!important;margin:0!important;border:0!important;outline:0!important;border-radius:16px!important;overflow:hidden!important;box-shadow:0 8px 20px rgba(15,41,30,.10)!important}
+#communities #vnJoinedCommunities .vn-comm-name,#communities #vnJoinedCommunities .vn-join-community-card b,#communities #vnJoinedCommunities .vn-join-community-card span{border:0!important;outline:0!important;box-shadow:none!important}
+#communities #vnJoinedCommunities .vn-comm-name{left:0!important;right:0!important;bottom:0!important;display:block!important;margin:0!important;padding:8px 5px!important;background:rgba(207,234,217,.96)!important;color:#0F291E!important;border-radius:0!important;white-space:normal!important;overflow-wrap:anywhere!important}
+#communities #vnJoinedCommunities .vn-join-community-card{background:linear-gradient(145deg,#FFFFFF,#DDF2E5)!important;color:#0F291E!important}
+#communities #vnJoinedCommunities .vn-join-community-card *{border-color:transparent!important;outline:0!important;box-shadow:none!important}
+#communities #vnJoinedCommunities .vn-join-community-card .vn-comm-icon{border:0!important;background:linear-gradient(145deg,#FFFFFF,#CFEAD9)!important}
+#communities #vnJoinedCommunities .vn-comm-name *,#communities #vnJoinedCommunities .vn-join-community-card b,#communities #vnJoinedCommunities .vn-join-community-card span{text-decoration:none!important}
+#communities #vnJoinedCommunities .vn-join-community-card b{background:transparent!important;padding:0!important}
+body{background-color:#CFEAD9!important}
+</style>
