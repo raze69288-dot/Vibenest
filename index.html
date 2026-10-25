@@ -888,7 +888,6 @@ body.vn-auth-locked,body.vn-auth-booting{overflow:hidden!important}body.vn-auth-
 
 <section id="marketplace" class="page vn-marketplace-page" aria-label="VibeNest Marketplace">
   <header class="vn-market-topbar">
-    <button type="button" class="vn-market-back" onclick="go('home')" aria-label="Back to Home">←</button>
     <div class="vn-market-brand"><span>VibeNest</span><strong>Marketplace</strong></div>
     <button type="button" class="vn-coin-balance-pill vn-market-balance" onclick="openVibeCoinWallet()" aria-label="Open VibeCoins wallet"><span class="vn-coin-pill-icon"><svg class="vn-coin-pill-svg" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><defs><linearGradient id="vnCoinPillMarket" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#70e0ad"/><stop offset="1" stop-color="#20a875"/></linearGradient></defs><circle cx="24" cy="24" r="21.5" fill="url(#vnCoinPillMarket)" stroke="#fff" stroke-width="2"/><circle cx="24" cy="24" r="17.8" fill="none" stroke="#c8f8dd" stroke-width="1.2" opacity=".9"/><path d="M24 12.2 27.4 20.6 35.8 24 27.4 27.4 24 35.8 20.6 27.4 12.2 24 20.6 20.6Z" fill="#fff" stroke="#e9fff2" stroke-width=".7" stroke-linejoin="round"/><circle cx="32.6" cy="15.7" r="1.5" fill="#ffe58c"/></svg></span><span id="vnCoinMarketplaceBalance">—</span><span class="vn-coin-pill-plus" aria-hidden="true">+</span></button>
   </header>
@@ -904,9 +903,9 @@ body.vn-auth-locked,body.vn-auth-booting{overflow:hidden!important}body.vn-auth-
       <div class="vn-market-hero-orb vn-market-orb-one" aria-hidden="true"></div><div class="vn-market-hero-orb vn-market-orb-two" aria-hidden="true"></div>
     </section>
     <div class="vn-market-shortcuts" aria-label="Marketplace categories">
-      <button type="button" onclick="document.getElementById('vnMarketProfile').scrollIntoView({behavior:'smooth',block:'start'})"><span>✦</span> Profile</button>
-      <button type="button" onclick="document.getElementById('vnMarketGifts').scrollIntoView({behavior:'smooth',block:'start'})"><span>♡</span> Gifts</button>
-      <button type="button" onclick="document.getElementById('vnMarketChat').scrollIntoView({behavior:'smooth',block:'start'})"><span>✧</span> Chat effects</button>
+      <button type="button" onclick="document.getElementById('vnMarketProfile').scrollIntoView({behavior:'smooth',block:'start'})"><span class="vn-market-shortcut-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.5 14.2 9.8 20.5 12 14.2 14.2 12 20.5 9.8 14.2 3.5 12 9.8 9.8Z"/><circle cx="18.5" cy="5.5" r="1.2"/></svg></span> Profile</button>
+      <button type="button" onclick="document.getElementById('vnMarketGifts').scrollIntoView({behavior:'smooth',block:'start'})"><span class="vn-market-shortcut-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8.5h16v12H4zM2.8 5.5h18.4v3H2.8zM12 5.5v15M12 5.5H8.8a2.1 2.1 0 1 1 2.1-2.1V5.5ZM12 5.5h3.2a2.1 2.1 0 1 0-2.1-2.1V5.5Z"/></svg></span> Gifts</button>
+      <button type="button" onclick="document.getElementById('vnMarketChat').scrollIntoView({behavior:'smooth',block:'start'})"><span class="vn-market-shortcut-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5h16v11H9l-5 3v-14Z"/><path d="M8 9h8M8 12.5h5"/><path d="m18.5 2 .8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8Z"/></svg></span> Chat effects</button>
     </div>
     <section id="vnMarketProfile" class="vn-market-section">
       <div class="vn-market-section-heading"><div><span>MAKE IT YOURS</span><h2>Profile style</h2></div><span class="vn-market-section-symbol">✦</span></div>
@@ -8152,14 +8151,15 @@ function renderShop(owned=[]){el('vnCoinShop').innerHTML=items.map(i=>{const has
 function renderLedger(rows=[]){el('vnCoinLedger').innerHTML=rows.length?rows.map(r=>{const amount=Number(r.amount||0);return `<div class="vn-coin-ledger-row"><div><b>${esc((r.reason||'Coin activity').replaceAll('_',' '))}</b><small>${esc(new Date(r.created_at).toLocaleString())}</small></div><strong class="${amount>=0?'vn-coin-positive':'vn-coin-negative'}">${amount>0?'+':''}${amount} VC</strong></div>`}).join(''):'<p class="vn-coin-note">No transactions yet. Claim your daily reward to get started.</p>'}
 async function rpc(name,args={}){const c=client();if(!c)throw new Error('Supabase is not configured. Wallet data cannot be saved.');const {data,error}=await c.rpc(name,args);if(error)throw error;return data}
 async function load(){lastWallet=null;if(!auth()){setBalance(0);el('vnCoinLedger').innerHTML='<p class="vn-coin-note">Sign in to view your wallet.</p>';el('vnCoinShop').innerHTML='';el('vnCoinClaimButton').disabled=true;status('Sign in to use VibeCoins.',true);return}el('vnCoinClaimButton').disabled=true;status('Loading secure wallet…');try{const data=await rpc('vn_coin_get_wallet');lastWallet=data;setBalance(data?.balance||0);el('vnCoinClaimButton').disabled=!!data?.claimed_today;el('vnCoinClaimButton').textContent=data?.claimed_today?'✓ Daily reward already claimed':'✦ Claim daily 10 coins';renderShop(data?.owned_items||[]);renderLedger(data?.recent_transactions||[]);status('Wallet synced with Supabase.')}catch(e){setBalance('—');el('vnCoinProfileBalance').textContent='Setup required';el('vnCoinLedger').innerHTML='<p class="vn-coin-note">Secure wallet is not available yet. Run <b>vibenest-coins-setup.sql</b> in the Supabase SQL Editor, then reload this page. No browser-only balance is being used.</p>';renderShop([]);status(e.message||'Could not load wallet.',true)}finally{if(!lastWallet)el('vnCoinClaimButton').disabled=true}}
-window.openVibeCoinWallet=function(){if(!auth()){if(typeof openAuth==='function')openAuth();return}el('vnCoinModal').classList.add('open');document.body.style.overflow='hidden';load()};
-window.closeVibeCoinWallet=function(){el('vnCoinModal').classList.remove('open');document.body.style.overflow=''};
+window.openVibeCoinWallet=function(){if(!auth()){if(typeof openAuth==='function')openAuth();return}const modal=el('vnCoinModal');if(!modal.classList.contains('open')){history.pushState({vnCoinsWallet:true},'','#vibecoins');window.__vnCoinWalletHistory=true;}modal.classList.add('open');document.body.classList.add('vn-coins-open');document.body.style.overflow='hidden';load()};
+window.closeVibeCoinWallet=function(fromPop){const modal=el('vnCoinModal');if(!modal.classList.contains('open'))return;modal.classList.remove('open');document.body.classList.remove('vn-coins-open');document.body.style.overflow='';if(!fromPop&&window.__vnCoinWalletHistory){window.__vnCoinWalletHistory=false;if(location.hash==='#vibecoins')history.back();}};
 window.claimVibeCoins=async function(){if(busy)return;busy=true;el('vnCoinClaimButton').disabled=true;status('Claiming daily reward…');try{await rpc('vn_coin_claim_daily');lastWallet=null;await load();status('Daily reward claimed: +10 VibeCoins!')}catch(e){status(e.message||'Daily claim failed.',true);el('vnCoinClaimButton').disabled=false}finally{busy=false}};
 window.sendVibeCoins=async function(){if(busy)return;const username=el('vnCoinRecipient').value.trim().replace(/^@/,'');const amount=Number(el('vnCoinAmount').value);if(!username||!Number.isSafeInteger(amount)||amount<1){status('Enter a username and a whole-number amount greater than zero.',true);return}busy=true;status('Sending coins…');try{await rpc('vn_coin_transfer',{p_recipient_username:username,p_amount:amount});el('vnCoinRecipient').value='';el('vnCoinAmount').value='';lastWallet=null;await load();status('VibeCoins sent successfully.')}catch(e){status(e.message||'Transfer failed.',true)}finally{busy=false}};
 window.buyVibeCoinItem=async function(itemId){if(busy)return;const item=items.find(x=>x.id===itemId);if(!item)return;busy=true;status('Processing purchase…');try{await rpc('vn_coin_purchase',{p_item_id:itemId});lastWallet=null;await load();status(item.name+' purchased and added to your inventory.')}catch(e){status(e.message||'Purchase failed.',true)}finally{busy=false}};
 window.vnMarketBuyItem=async function(itemId){if(!auth()){if(typeof openAuth==='function')openAuth();return;}el('vnCoinModal').classList.add('open');document.body.style.overflow='hidden';await load();await window.buyVibeCoinItem(itemId)};
 window.syncVibeCoinBalance=function(){return load().catch(()=>{})};
 window.addEventListener('keydown',e=>{if(e.key==='Escape'&&el('vnCoinModal').classList.contains('open'))closeVibeCoinWallet()});
+window.addEventListener('popstate',()=>{if(el('vnCoinModal')?.classList.contains('open')){window.__vnCoinWalletHistory=false;closeVibeCoinWallet(true)}});
 if(auth()){setTimeout(()=>{if(el('vnCoinProfileBalance'))load().catch(()=>{})},900)}
 })();
 </script>
@@ -8282,3 +8282,48 @@ if(auth()){setTimeout(()=>{if(el('vnCoinProfileBalance'))load().catch(()=>{})},9
 </style>
 
 </html>
+
+
+<style id="vn-coins-dedicated-page-polish">
+.vn-market-back{display:none!important}.vn-market-topbar{padding-left:22px!important}
+.vn-market-shortcuts button{min-height:58px;gap:9px;font-size:12px;border-radius:17px;box-shadow:0 5px 16px rgba(44,116,78,.06)}
+.vn-market-shortcut-icon{display:grid;place-items:center;width:27px;height:27px;border-radius:9px;background:#e7f8ee;flex:0 0 27px}
+.vn-market-shortcut-icon svg{width:20px;height:20px;fill:none;stroke:#238b5a;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#vnCoinModal{background:#f6fcf8!important;backdrop-filter:none!important;padding:0!important;overflow-x:hidden!important;overflow-y:auto!important;overscroll-behavior:contain}
+#vnCoinModal.open{display:block!important}
+#vnCoinModal .vn-coin-sheet{width:100%!important;max-width:760px!important;min-height:100vh;min-height:100dvh;margin:0 auto!important;padding:calc(env(safe-area-inset-top,0px) + 20px) 22px calc(env(safe-area-inset-bottom,0px) + 34px)!important;border:0!important;border-radius:0!important;background:#f7fcf8!important;box-shadow:none!important;color:#20372d!important}
+#vnCoinModal .vn-coin-top{padding:8px 0 18px;border-bottom:1px solid #e1f0e6;align-items:flex-start}
+#vnCoinModal .vn-coin-top>div:first-child>div{font-size:10px!important;letter-spacing:2px!important;color:#43815f!important}
+#vnCoinModal h2{font-size:clamp(29px,7vw,36px)!important;line-height:1.08;letter-spacing:-1px!important;color:#173e2d!important;margin-top:6px!important}
+#vnCoinModal .vn-coin-close{width:46px;height:46px;flex:0 0 46px;border-radius:16px!important;border:1px solid #d7eadf!important;background:#fff!important;color:#2b6848!important;font-size:25px!important}
+#vnCoinModal .vn-coin-hero{position:relative;overflow:hidden;display:flex;align-items:center;gap:19px;margin:22px 0 26px!important;padding:24px 22px!important;min-height:178px;border:1px solid #c5e8d1!important;border-radius:27px!important;background:radial-gradient(circle at 100% 0,#fff 0,transparent 42%),linear-gradient(135deg,#effcf4,#d9f5e4)!important;box-shadow:0 12px 30px rgba(42,126,78,.08)!important}
+#vnCoinModal .vn-coin-big{flex:0 0 82px!important;height:82px!important;border:0!important;background:transparent!important;box-shadow:0 0 0 9px #ffffff8c!important}
+#vnCoinModal .vn-coin-wallet-icon{width:82px;height:82px}
+#vnCoinModal .vn-coin-balance-label{font-size:13px!important;color:#60816e!important;font-weight:700}
+#vnCoinModal .vn-coin-balance{font-size:clamp(38px,10vw,48px)!important;color:#173e2d!important;letter-spacing:-1px;line-height:1.12!important;margin:4px 0}
+#vnCoinModal .vn-coin-note{font-size:13px!important;color:#688373!important;line-height:1.65!important}
+#vnCoinModal .vn-coin-section{margin-top:22px!important;padding:20px!important;border:1px solid #e0eee5;border-radius:22px;background:#fff;box-shadow:0 6px 20px rgba(38,103,68,.035)}
+#vnCoinModal .vn-coin-section h3{font-size:18px!important;letter-spacing:-.35px;color:#204a34!important;margin:0 0 8px!important}
+#vnCoinModal .vn-coin-section p{margin:0 0 14px!important}
+#vnCoinModal .vn-coin-daily{min-height:52px;padding:15px!important;border-radius:15px!important;background:linear-gradient(110deg,#c9f2d7,#8fdfb1)!important;color:#174c31!important;font-size:14px!important;box-shadow:0 6px 14px #40ad7220}
+#vnCoinModal .vn-coin-daily:disabled{opacity:.75}
+#vnCoinModal .vn-coin-form{grid-template-columns:minmax(0,1fr) minmax(100px,130px)!important;gap:10px!important}
+#vnCoinModal input,#vnCoinModal select{min-height:52px!important;padding:14px!important;border:1px solid #d1e7d8!important;border-radius:15px!important;background:#fbfefc!important;color:#244a36!important;font-size:14px!important}
+#vnCoinModal input::placeholder{color:#8aa092!important}
+#vnCoinModal .vn-coin-action{min-height:51px;border:1px solid #bce5c9!important;border-radius:15px!important;background:#e8f8ee!important;color:#21794d!important;font-size:14px!important}
+#vnCoinModal .vn-coin-shop{grid-template-columns:repeat(2,minmax(0,1fr))!important;gap:13px!important;margin-top:15px}
+#vnCoinModal .vn-coin-item{padding:16px!important;border:1px solid #dceee3!important;border-radius:19px!important;background:linear-gradient(180deg,#fff,#fbfefc)!important;box-shadow:0 5px 16px rgba(38,103,68,.045)!important}
+#vnCoinModal .vn-coin-item .vn-coin-item-icon{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:#eaf9ef;font-size:26px!important;margin-bottom:10px}
+#vnCoinModal .vn-coin-item b{font-size:14px!important;line-height:1.35;color:#244b36!important;margin:4px 0 7px!important}
+#vnCoinModal .vn-coin-item small{font-size:12px!important;line-height:1.5;min-height:42px;color:#718879!important}
+#vnCoinModal .vn-coin-item button{min-height:42px;margin-top:13px!important;border-radius:12px!important;background:linear-gradient(110deg,#c8f1d6,#91dfb1)!important;color:#174b30!important;font-size:12px!important}
+#vnCoinModal .vn-coin-ledger{gap:9px!important}
+#vnCoinModal .vn-coin-ledger-row{padding:14px!important;border:1px solid #e0eee5!important;border-radius:15px!important;background:#fbfefc!important;font-size:13px!important;align-items:center}
+#vnCoinModal .vn-coin-ledger-row small{font-size:11px!important;color:#819889!important}
+#vnCoinModal .vn-coin-positive{color:#218653!important}.vn-coin-negative{color:#c45168!important}
+#vnCoinModal .vn-coin-status{font-size:13px!important;padding:5px 2px;color:#287d50!important}
+#vnCoinModal .vn-coin-sheet>.vn-coin-note{display:block;margin-top:20px!important;padding:14px 16px;border-radius:15px;background:#eaf7ef}
+body.vn-coins-open{overflow:hidden!important}
+@media(min-width:600px){#vnCoinModal .vn-coin-sheet{padding-left:32px!important;padding-right:32px!important}#vnCoinModal .vn-coin-shop{grid-template-columns:repeat(3,minmax(0,1fr))!important}#vnCoinModal .vn-coin-hero{padding:30px!important}}
+@media(max-width:390px){#vnCoinModal .vn-coin-sheet{padding-left:16px!important;padding-right:16px!important}#vnCoinModal .vn-coin-section{padding:16px!important}#vnCoinModal .vn-coin-form{grid-template-columns:minmax(0,1fr) 95px!important;gap:7px!important}#vnCoinModal .vn-coin-shop{gap:9px!important}#vnCoinModal .vn-coin-item{padding:12px!important}}
+</style>
