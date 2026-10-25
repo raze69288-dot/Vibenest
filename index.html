@@ -7662,4 +7662,54 @@ html body #communities #vnJoinedCommunities > button:last-child > span:first-chi
 @media(max-width:360px){#communities #vnJoinedCommunities{gap:8px!important;padding-left:5px!important;padding-right:5px!important}#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-icon,#communities #vnJoinedCommunities>.vn-join-community-card>.vn-join-plus{width:38px!important;height:38px!important;min-width:38px!important;min-height:38px!important;font-size:21px!important}}
 </style>
 </body>
+
+<style id="vn-my-communities-icon-and-full-row-fix-20261025">
+/* Final correction: three equal, spacious tiles across the available row. */
+#communities #vnJoinedCommunities{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:12px!important;
+  width:100%!important;
+  padding:8px 0 12px!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+  overflow:visible!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card,
+#communities #vnJoinedCommunities>.vn-join-community-card{
+  width:100%!important;min-width:0!important;max-width:none!important;
+  aspect-ratio:.66!important;height:auto!important;min-height:0!important;max-height:none!important;
+  position:relative!important;box-sizing:border-box!important;
+}
+/* Keep banner art confined to the card body; never let it become the icon badge. */
+#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-cover{
+  inset:0!important;width:100%!important;height:100%!important;overflow:hidden!important;
+  border-radius:19px!important;z-index:0!important;pointer-events:none!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-cover img{
+  position:absolute!important;inset:0!important;width:100%!important;height:100%!important;
+  object-fit:cover!important;object-position:center!important;border-radius:inherit!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-icon{
+  position:absolute!important;top:-7px!important;left:-7px!important;right:auto!important;bottom:auto!important;
+  width:46px!important;height:46px!important;min-width:46px!important;min-height:46px!important;
+  max-width:46px!important;max-height:46px!important;padding:0!important;margin:0!important;
+  display:grid!important;place-items:center!important;overflow:hidden!important;box-sizing:border-box!important;
+  border:2px solid #fff!important;border-radius:14px!important;
+  background:#fff!important;z-index:10!important;isolation:isolate!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-icon img{
+  position:relative!important;inset:auto!important;display:block!important;width:100%!important;height:100%!important;
+  min-width:0!important;min-height:0!important;max-width:100%!important;max-height:100%!important;
+  object-fit:cover!important;object-position:center!important;border-radius:11px!important;z-index:1!important;
+}
+#communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-card-name{
+  left:4px!important;right:4px!important;bottom:5px!important;z-index:4!important;
+}
+@media(max-width:380px){
+ #communities #vnJoinedCommunities{gap:8px!important}
+ #communities #vnJoinedCommunities>.vn-joined-card>.vn-comm-icon{width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;max-width:40px!important;max-height:40px!important}
+}
+</style>
+
 </html>
