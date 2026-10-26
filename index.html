@@ -3619,16 +3619,26 @@ async function refreshUserProgress(){
  const u=progressUser(),c=progressClient();
  if(!u||!c){host.innerHTML=cardMarkup('user','VibeNest Member',1,0,20,'Sign in to save your level and XP.','');return}
  try{
-  const {data,error}=await c.rpc('vn_progress_get_state');
-  if(error)throw error;
-  const d=data?.user||data?.user_progress||data||{};
+  let d=null;
+  // Prefer the persisted row so the visible XP matches the database.
+  const saved=await c.from('vn_user_progress').select('xp,level').eq('user_id',u.id).maybeSingle();
+  if(!saved.error&&saved.data)d=saved.data;
+  // Fallback to the RPC if direct table access is unavailable.
+  if(!d){
+   const state=await c.rpc('vn_progress_get_state');
+   if(state.error)throw state.error;
+   const payload=state.data;
+   d=payload?.user||payload?.user_progress||null;
+   if(!d&&payload&&payload.xp!==undefined)d=payload;
+  }
+  if(!d)throw new Error('No saved user progression row was returned.');
   const lvl=Number(d.level)||1,xp=Number(d.xp)||Number(d.total_xp)||0;
   let reward='Level-up rewards are small VibeCoins bonuses.';
   if(lvl>=20)reward='🏆 Maximum level reached! Total milestone rewards: 145 VibeCoins.';
   else reward=`Next milestone: level ${lvl+1} · +${USER_REWARDS[lvl+1]||0} VibeCoins`;
   host.innerHTML=cardMarkup('user',d.display_name||d.username||'VibeNest Member',lvl,xp,20,reward,'');
  }catch(e){
-  host.innerHTML=cardMarkup('user','VibeNest Member',1,0,20,'Progress saving needs the VibeNest progression SQL migration.','Level data could not load yet.');
+  host.innerHTML=cardMarkup('user','VibeNest Member',1,0,20,'Could not load saved XP.','Check the browser console for details.');
   console.warn('VibeNest progression load:',e?.message||e);
  }
 }
@@ -3638,13 +3648,23 @@ function addCommunityProgress(c){
  if(!host){host=document.createElement('div');host.id='vnCommunityProgressCard';content.appendChild(host)}
  host.innerHTML=cardMarkup('community',c.name||'Community',1,0,5,'Level 2: 10 · Level 3: 15 · Level 4: 20 · Level 5: 30 VibeCoins for the owner and leader.','');
  const client=progressClient();if(!client)return;
- client.rpc('vn_progress_get_state',{p_community_id:c.id}).then(({data,error})=>{
-  if(error)throw error;
-  const d=data?.community||data?.community_progress||{};
+ (async()=>{
+  let d=null;
+  // Prefer the persisted community row so the card reflects the saved XP.
+  const saved=await client.from('vn_community_progress').select('xp,level').eq('community_id',c.id).maybeSingle();
+  if(!saved.error&&saved.data)d=saved.data;
+  if(!d){
+   const state=await client.rpc('vn_progress_get_state',{p_community_id:c.id});
+   if(state.error)throw state.error;
+   const payload=state.data;
+   d=payload?.community||payload?.community_progress||null;
+   if(!d&&payload&&payload.xp!==undefined)d=payload;
+  }
+  if(!d)throw new Error('No saved community progression row was returned.');
   const lvl=Number(d.level)||1,xp=Number(d.xp)||Number(d.total_xp)||0;
   const milestone=lvl>=5?'🏆 Legendary community — level cap reached.':`Next milestone: level ${lvl+1} · ${COMMUNITY_REWARDS[lvl+1]||0} VibeCoins to owner and leader`;
   host.innerHTML=cardMarkup('community',c.name||'Community',lvl,xp,5,milestone,'');
- }).catch(e=>{console.warn('Community progression load:',e?.message||e);const note=host.querySelector('.vn-progress-status');if(note)note.textContent='Level data will appear after the progression SQL migration is installed.'});
+ })().catch(e=>{console.warn('Community progression load:',e?.message||e);const note=host.querySelector('.vn-progress-status');if(note)note.textContent='Could not load saved community XP yet.'});
 }
 function hookCommunityRender(){
  if(typeof window.renderCommunityDetail==='function'&&!window.renderCommunityDetail.__vnProgressHook){
