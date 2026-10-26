@@ -476,7 +476,7 @@ async function publishCommunityPost(){
  if(!c){showToast('Open a community first');return;}if(!content&&!imageFile&&!pollQuestion){showToast('Add text, a photo, or a poll');return;}if(pollQuestion&&pollOptions.length<2){showToast('A poll needs at least two options');return;}if(!pollQuestion&&pollOptions.length){showToast('Enter a poll question first');return;}if(imageFile&&(!imageFile.type.startsWith('image/')||imageFile.size>8*1024*1024)){showToast('Choose an image up to 8 MB');return;}
  if(c.id){if(!currentUser||!supabaseClient){openAuth();showToast('Sign in to post');return;}if(!c.joined){showToast('Join this community before posting');return;}const button=document.getElementById('publishCommunityPostButton');if(button)button.disabled=true;
   try{let image_url=null;if(imageFile){const ext=(imageFile.name.split('.').pop()||'jpg').toLowerCase().replace(/[^a-z0-9]/g,'')||'jpg';const path=`${currentUser.id}/post-${Date.now()}.${ext}`;const up=await supabaseClient.storage.from('post-media').upload(path,imageFile,{contentType:imageFile.type,upsert:false});if(up.error)throw new Error('Photo upload failed: '+up.error.message+'. Check the post-media storage bucket and policies.');image_url=supabaseClient.storage.from('post-media').getPublicUrl(path).data.publicUrl;}
-   const row={community_id:c.id,author_id:currentUser.id,content,image_url,poll_question:pollQuestion||null,poll_options:pollQuestion?pollOptions:null};const {data,error}=await supabaseClient.from('posts').insert(row).select().single();if(error)throw error;onlinePosts.unshift(data);await loadOnlinePosts();renderCommunityPosts();resetCommunityComposer();document.getElementById('communityComposer').style.display='none';showToast('Post published!');
+   const row={community_id:c.id,author_id:currentUser.id,content,image_url,poll_question:pollQuestion||null,poll_options:pollQuestion?pollOptions:null};const {data,error}=await supabaseClient.from('posts').insert(row).select().single();if(error)throw error;onlinePosts.unshift(data);await loadOnlinePosts();renderCommunityPosts();resetCommunityComposer();document.getElementById('communityComposer').style.display='none';window.dispatchEvent(new Event('vn:progress-refresh'));showToast('Post published!');
   }catch(error){showToast('Could not publish: '+(error.message||'Please try again.'));}finally{if(button)button.disabled=false;}
  }else{showToast('Sign in and use a community to publish rich posts.');}
 }
@@ -631,7 +631,7 @@ async function toggleOnlineJoin(id){
  }
  if(wasJoined){const {error}=await supabaseClient.from('memberships').delete().eq('community_id',id).eq('user_id',currentUser.id);if(error){showToast(error.message);return;}c.joined=false;communityMemberCounts[id]=Math.max(0,(communityMemberCounts[id]||0)-1);}
  else {const {error}=await supabaseClient.from('memberships').insert({community_id:id,user_id:currentUser.id});if(error){showToast(error.message);return;}c.joined=true;communityMemberCounts[id]=(communityMemberCounts[id]||0)+1;}
- renderOnlineCommunities();if(activeCommunity&&String(activeCommunity.id)===String(c.id)){activeCommunity=c;renderCommunityDetail();}showToast(c.joined?'Joined '+c.name:'Left '+c.name);
+ renderOnlineCommunities();if(activeCommunity&&String(activeCommunity.id)===String(c.id)){activeCommunity=c;renderCommunityDetail();}if(!wasJoined)window.dispatchEvent(new Event('vn:progress-refresh'));showToast(c.joined?'Joined '+c.name:'Left '+c.name);
  await Promise.all([refreshSocialCounts(),loadTotalCommunityPeople()]);renderOnlineCommunities();if(activeCommunity&&String(activeCommunity.id)===String(c.id))renderCommunityDetail();
 }
 const vnCommunityTemplates={
@@ -3656,8 +3656,9 @@ function hookCommunityRender(){
 function init(){ensureProfileCard();hookCommunityRender();refreshUserProgress();setTimeout(hookCommunityRender,1000)}
 document.addEventListener('DOMContentLoaded',init);
 document.addEventListener('click',e=>{const b=e.target.closest('[data-tab="profile"],[data-tab="community"],[data-tab="communities"]');if(b)setTimeout(()=>{refreshUserProgress();hookCommunityRender()},250)});
-window.addEventListener('vn:progress-refresh',refreshUserProgress);
-window.vnRefreshProgress=refreshUserProgress;
+function refreshAllProgress(){refreshUserProgress();try{const c=typeof activeCommunity!=='undefined'?activeCommunity:null;if(c?.id)addCommunityProgress(c)}catch(_){}}
+window.addEventListener('vn:progress-refresh',refreshAllProgress);
+window.vnRefreshProgress=refreshAllProgress;
 })();
 </script>
 
