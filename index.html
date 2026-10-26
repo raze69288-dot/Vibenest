@@ -3561,5 +3561,105 @@ html body #communities .vn-community-page-content{padding:2px 14px 130px!importa
 #vnMarketWalletNotice span{flex:1;min-width:0}
 #vnMarketWalletNotice button{flex:0 0 auto;border:0;border-radius:999px;padding:7px 14px;background:#fff;color:#8d2c3f;font-weight:800;box-shadow:0 2px 6px rgba(141,44,63,.15)}
 </style>
+
+<style id="vnProgressionStyles">
+
+/* VibeNest progression system */
+.vn-progress-card{margin:14px 0;padding:16px;border:1px solid #d9e9df;border-radius:18px;background:linear-gradient(145deg,#fff,#f0faf4);color:#183b2b;box-shadow:0 8px 22px #245f3d0d}
+.vn-progress-top{display:flex;align-items:center;gap:12px}
+.vn-progress-emblem{display:grid;place-items:center;flex:0 0 52px;width:52px;height:52px;border-radius:16px;background:linear-gradient(145deg,#bdebd0,#70c89b);color:#145c3a;font-size:25px;font-weight:900}
+.vn-progress-copy{min-width:0;flex:1}
+.vn-progress-copy small{display:block;color:#62816f;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+.vn-progress-copy h3{margin:3px 0;font-size:18px;line-height:1.2;color:#173d2b}
+.vn-progress-copy p{margin:0;color:#688273;font-size:12px}
+.vn-progress-level{font-size:12px;font-weight:900;color:#14633d;background:#dff5e7;border-radius:999px;padding:7px 9px;white-space:nowrap}
+.vn-progress-track{height:8px;background:#dcece2;border-radius:99px;overflow:hidden;margin:15px 0 7px}
+.vn-progress-track span{display:block;height:100%;width:0;background:linear-gradient(90deg,#63c78c,#189c61);border-radius:99px;transition:width .25s ease}
+.vn-progress-meta{display:flex;justify-content:space-between;gap:8px;font-size:11px;color:#62816f}
+.vn-progress-reward{margin-top:12px;padding:10px 11px;border-radius:12px;background:#e6f7ec;color:#286846;font-size:12px;line-height:1.45}
+.vn-progress-community{margin:12px 0;padding:14px;border:1px solid #d9e9df;border-radius:16px;background:#f6fcf8;color:#183b2b}
+.vn-progress-community .vn-progress-top{gap:10px}
+.vn-progress-community .vn-progress-emblem{width:42px;height:42px;flex-basis:42px;border-radius:13px;font-size:20px}
+.vn-progress-community .vn-progress-copy h3{font-size:16px}
+.vn-progress-status{font-size:11px;color:#71877a;margin-top:9px;line-height:1.4}
+@media(prefers-reduced-motion:reduce){.vn-progress-track span{transition:none}}
+
+</style>
+
+<script id="vnProgressionSystem">
+(function(){
+'use strict';
+const USER_REWARDS={2:5,3:5,4:5,5:10,6:5,7:5,8:5,9:5,10:15,11:5,12:5,13:5,14:5,15:20,16:5,17:5,18:5,19:5,20:30};
+const COMMUNITY_REWARDS={2:10,3:15,4:20,5:30};
+const $=id=>document.getElementById(id);
+function progressClient(){try{return typeof supabaseClient!=='undefined'?supabaseClient:null}catch(_){return null}}
+function progressUser(){try{return typeof currentUser!=='undefined'?currentUser:null}catch(_){return null}}
+function escP(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function levelForXp(xp,max){let level=1,remaining=Math.max(0,Number(xp)||0);while(level<max){const need=level*100;if(remaining<need)break;remaining-=need;level++}return {level,into:remaining,need:level*100,total:Math.max(0,Number(xp)||0)}}
+function cardMarkup(kind,name,level,xp,max,reward,status){
+ const calc=levelForXp(xp,max),pct=Math.min(100,Math.round(calc.into/calc.need*100));
+ return `<section class="${kind==='user'?'vn-progress-card':'vn-progress-community'}" aria-label="${kind==='user'?'Your level':'Community level'}">
+ <div class="vn-progress-top"><div class="vn-progress-emblem">${kind==='user'?'✦':'♧'}</div><div class="vn-progress-copy"><small>${kind==='user'?'YOUR JOURNEY':'COMMUNITY JOURNEY'}</small><h3>${escP(name|| (kind==='user'?'VibeNest Member':'Community'))}</h3><p>${kind==='user'?'Keep showing up and contributing':'Grow together through genuine member activity'}</p></div><span class="vn-progress-level">LVL ${calc.level}/${max}</span></div>
+ <div class="vn-progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${pct}"><span style="width:${pct}%"></span></div>
+ <div class="vn-progress-meta"><span>${calc.into} / ${calc.need} XP to next level</span><span>${calc.total} XP total</span></div>
+ <div class="${kind==='user'?'vn-progress-reward':'vn-progress-status'}">${escP(reward|| (kind==='user'?'Level-up rewards are small VibeCoins bonuses.':'Community milestone rewards go to the owner and designated leader.'))}</div>
+ ${status?`<div class="vn-progress-status">${escP(status)}</div>`:''}
+ </section>`;
+}
+function ensureProfileCard(){
+ const profile=$('profile');
+ if(!profile||$('vnUserProgressCard'))return;
+ const wallet=profile.querySelector('.vn-coin-profile-card');
+ if(!wallet)return;
+ const holder=document.createElement('div');holder.id='vnUserProgressCard';holder.innerHTML=cardMarkup('user','VibeNest Member',1,0,20,'Earn up to 145 VibeCoins across all level-ups.','');
+ wallet.insertAdjacentElement('afterend',holder);
+}
+async function refreshUserProgress(){
+ ensureProfileCard();const host=$('vnUserProgressCard');if(!host)return;
+ const u=progressUser(),c=progressClient();
+ if(!u||!c){host.innerHTML=cardMarkup('user','VibeNest Member',1,0,20,'Sign in to save your level and XP.','');return}
+ try{
+  const {data,error}=await c.rpc('vn_progress_get_state');
+  if(error)throw error;
+  const d=data?.user||data?.user_progress||data||{};
+  const lvl=Number(d.level)||1,xp=Number(d.xp)||Number(d.total_xp)||0;
+  let reward='Level-up rewards are small VibeCoins bonuses.';
+  if(lvl>=20)reward='🏆 Maximum level reached! Total milestone rewards: 145 VibeCoins.';
+  else reward=`Next milestone: level ${lvl+1} · +${USER_REWARDS[lvl+1]||0} VibeCoins`;
+  host.innerHTML=cardMarkup('user',d.display_name||d.username||'VibeNest Member',lvl,xp,20,reward,'');
+ }catch(e){
+  host.innerHTML=cardMarkup('user','VibeNest Member',1,0,20,'Progress saving needs the VibeNest progression SQL migration.','Level data could not load yet.');
+  console.warn('VibeNest progression load:',e?.message||e);
+ }
+}
+function addCommunityProgress(c){
+ const content=$('communityDetailContent');if(!content||!c?.id)return;
+ let host=$('vnCommunityProgressCard');
+ if(!host){host=document.createElement('div');host.id='vnCommunityProgressCard';content.appendChild(host)}
+ host.innerHTML=cardMarkup('community',c.name||'Community',1,0,5,'Level 2: 10 · Level 3: 15 · Level 4: 20 · Level 5: 30 VibeCoins for the owner and leader.','');
+ const client=progressClient();if(!client)return;
+ client.rpc('vn_progress_get_state',{p_community_id:c.id}).then(({data,error})=>{
+  if(error)throw error;
+  const d=data?.community||data?.community_progress||{};
+  const lvl=Number(d.level)||1,xp=Number(d.xp)||Number(d.total_xp)||0;
+  const milestone=lvl>=5?'🏆 Legendary community — level cap reached.':`Next milestone: level ${lvl+1} · ${COMMUNITY_REWARDS[lvl+1]||0} VibeCoins to owner and leader`;
+  host.innerHTML=cardMarkup('community',c.name||'Community',lvl,xp,5,milestone,'');
+ }).catch(e=>{console.warn('Community progression load:',e?.message||e);const note=host.querySelector('.vn-progress-status');if(note)note.textContent='Level data will appear after the progression SQL migration is installed.'});
+}
+function hookCommunityRender(){
+ if(typeof window.renderCommunityDetail==='function'&&!window.renderCommunityDetail.__vnProgressHook){
+  const original=window.renderCommunityDetail;
+  const wrapped=function(){const result=original.apply(this,arguments);try{const c=typeof activeCommunity!=='undefined'?activeCommunity:null;if(c?.id)setTimeout(()=>addCommunityProgress(c),0)}catch(_){}return result};
+  wrapped.__vnProgressHook=true;window.renderCommunityDetail=wrapped;
+ }
+}
+function init(){ensureProfileCard();hookCommunityRender();refreshUserProgress();setTimeout(hookCommunityRender,1000)}
+document.addEventListener('DOMContentLoaded',init);
+document.addEventListener('click',e=>{const b=e.target.closest('[data-tab="profile"],[data-tab="community"],[data-tab="communities"]');if(b)setTimeout(()=>{refreshUserProgress();hookCommunityRender()},250)});
+window.addEventListener('vn:progress-refresh',refreshUserProgress);
+window.vnRefreshProgress=refreshUserProgress;
+})();
+</script>
+
 </body>
 </html>
