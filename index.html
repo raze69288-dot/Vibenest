@@ -2416,6 +2416,124 @@ document.addEventListener('keydown',e=>{const panel=document.getElementById('vnC
 @media(max-width:390px){#home .vn-discover-bar{gap:7px!important;padding-left:10px!important;padding-right:10px!important}#home .vn-discover-bar .vn-home-user{flex-basis:48px!important;width:48px!important;min-width:48px!important;max-width:48px!important;height:48px!important;min-height:48px!important;max-height:48px!important}#home .vn-discover-bar .vn-search-trigger{height:46px!important;min-height:46px!important;padding:0 9px!important;gap:6px!important}#home .vn-discover-bar .vn-coin-balance-pill{flex-basis:92px!important;width:92px!important;min-width:92px!important;max-width:92px!important;height:42px!important;min-height:42px!important;max-height:42px!important;gap:3px!important;padding:0 5px!important}#home .vn-discover-bar .vn-coin-pill-icon,#home .vn-discover-bar .vn-coin-icon-svg{flex-basis:21px!important;width:21px!important;min-width:21px!important;height:21px!important;min-height:21px!important}#home .vn-discover-bar #vnCoinHomeBalance{font-size:15px!important}#home .vn-discover-bar .vn-coin-pill-plus{flex-basis:20px!important;width:20px!important;min-width:20px!important;height:20px!important;min-height:20px!important}#home .vn-discover-bar .vn-home-bell{flex-basis:44px!important;width:44px!important;min-width:44px!important;max-width:44px!important;height:44px!important;min-height:44px!important;max-height:44px!important}}
 </style>
 
+
+<style id="vn-my-communities-card-match">
+/* Make joined-community cards match the recommended cards: same cover, icon and title treatment. */
+#communities #vnJoinedCommunities.vn-joined-row{
+  display:grid!important;
+  grid-template-columns:repeat(2,minmax(0,1fr))!important;
+  gap:14px!important;
+  width:100%!important;
+  overflow:visible!important;
+  padding:6px 2px 8px!important;
+  box-sizing:border-box!important;
+  align-items:stretch!important;
+}
+#communities #vnJoinedCommunities .vn-joined-card{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  height:clamp(190px,44vw,260px)!important;
+  min-height:0!important;
+  max-height:none!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:20px!important;
+  overflow:hidden!important;
+  background:#fff!important;
+  box-shadow:0 8px 20px rgba(15,41,30,.09)!important;
+  text-align:center!important;
+  box-sizing:border-box!important;
+  cursor:pointer!important;
+}
+#communities #vnJoinedCommunities .vn-joined-card .vn-comm-cover{
+  position:absolute!important;
+  inset:0!important;
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  overflow:hidden!important;
+  border-radius:inherit!important;
+  background:linear-gradient(145deg,#e9f6ee,#cfead9)!important;
+}
+#communities #vnJoinedCommunities .vn-joined-card .vn-comm-cover img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+}
+#communities #vnJoinedCommunities .vn-joined-card .vn-comm-cover:after{
+  content:""!important;
+  position:absolute!important;
+  inset:45% 0 0!important;
+  background:linear-gradient(transparent,rgba(255,255,255,.96))!important;
+  pointer-events:none!important;
+}
+#communities #vnJoinedCommunities .vn-joined-card .vn-comm-icon{
+  position:absolute!important;
+  z-index:3!important;
+  top:0!important;
+  left:0!important;
+  width:54px!important;
+  height:54px!important;
+  display:grid!important;
+  place-items:center!important;
+  padding:0!important;
+  border-radius:0 0 14px 0!important;
+  overflow:hidden!important;
+  background:linear-gradient(145deg,#fff,#cfead9)!important;
+  box-shadow:0 4px 12px rgba(15,41,30,.16)!important;
+}
+#communities #vnJoinedCommunities .vn-joined-card .vn-comm-icon img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+}
+#communities #vnJoinedCommunities .vn-joined-card .vn-comm-card-name{
+  position:absolute!important;
+  z-index:4!important;
+  left:7px!important;
+  right:7px!important;
+  bottom:10px!important;
+  display:-webkit-box!important;
+  -webkit-box-orient:vertical!important;
+  -webkit-line-clamp:2!important;
+  line-clamp:2!important;
+  overflow:hidden!important;
+  color:#0f291e!important;
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  text-align:center!important;
+  text-shadow:0 1px 5px rgba(255,255,255,.95)!important;
+  font-size:clamp(12px,3.5vw,15px)!important;
+  font-weight:850!important;
+  line-height:1.2!important;
+  white-space:normal!important;
+  overflow-wrap:anywhere!important;
+}
+#communities #vnJoinedCommunities .vn-join-community-card{
+  width:100%!important;
+  min-width:0!important;
+  max-width:none!important;
+  height:clamp(190px,44vw,260px)!important;
+  min-height:0!important;
+  margin:0!important;
+  box-sizing:border-box!important;
+  border-radius:20px!important;
+}
+@media(max-width:380px){
+  #communities #vnJoinedCommunities.vn-joined-row{gap:10px!important}
+  #communities #vnJoinedCommunities .vn-joined-card,
+  #communities #vnJoinedCommunities .vn-join-community-card{height:clamp(175px,46vw,220px)!important}
+  #communities #vnJoinedCommunities .vn-joined-card .vn-comm-icon{width:48px!important;height:48px!important}
+}
+</style>
+
 </html>
 
 
